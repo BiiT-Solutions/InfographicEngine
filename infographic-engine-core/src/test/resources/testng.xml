@@ -1,17 +1,19 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="1" verbose="1" name="Infographic Engine v2">
     <listeners>
-        <listener class-name="com.biit.infographic.core.TestListener"></listener>
+        <listener class-name="com.biit.infographic.core.TestListener"/>
     </listeners>
 
     <test name="Infographic Engine v2" enabled="true" preserve-order="true">
         <groups>
             <run>
-                <include name="myEntityListeners"/>
+                <include name="simpleSvgGenerationTest"/>
+                <include name="colorValidation"/>
             </run>
         </groups>
         <classes>
-            <class name="com.biit.infographic.core.MyEntityTest"/>
+            <class name="com.biit.infographic.core.svg.SimpleSvgGenerationTest"/>
+            <class name="com.biit.infographic.core.svg.ColorValidationTest"/>
         </classes>
     </test>
 </suite>

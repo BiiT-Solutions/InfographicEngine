@@ -35,6 +35,11 @@
             <artifactId>batik-svg-dom</artifactId>
             <version>${batik.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-anim</artifactId>
+            <version>${batik.version}</version>
+        </dependency>
 
         <!--Testing-->
         <dependency>

@@ -1,4 +1,4 @@
-package com.biit.infographic.core.models;
+package com.biit.infographic.core.models.svg;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
