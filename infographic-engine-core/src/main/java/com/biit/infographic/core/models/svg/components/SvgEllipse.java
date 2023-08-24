@@ -16,7 +16,7 @@ public class SvgEllipse extends SvgElement {
 
     public SvgEllipse(ElementAttributes elementAttributes) {
         super(elementAttributes);
-        setElementType(ElementType.RECTANGLE);
+        setElementType(ElementType.ELLIPSE);
     }
 
     public SvgEllipse() {

@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
+import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
@@ -134,6 +135,12 @@ public class SvgDocument implements ISvgElement {
                     width = Math.max(width, ((SvgEllipse) element).getXRadius() + element.getElementAttributes().getXCoordinate());
                     x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgEllipse) element).getYRadius());
                     y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgEllipse) element).getXRadius());
+                }
+                if (element instanceof SvgLine) {
+                    height = Math.max(height, element.getElementAttributes().getYCoordinate());
+                    width = Math.max(width, element.getElementAttributes().getXCoordinate());
+                    height = Math.max(height, ((SvgLine) element).getY2Coordinate());
+                    width = Math.max(width, ((SvgLine) element).getX2Coordinate());
                 }
             }
         }

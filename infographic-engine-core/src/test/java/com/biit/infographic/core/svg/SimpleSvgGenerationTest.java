@@ -3,9 +3,11 @@ package com.biit.infographic.core.svg;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgDocument;
+import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
+import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import org.testng.Assert;
@@ -20,6 +22,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Test(groups = {"simpleSvgGenerationTest"})
 public class SimpleSvgGenerationTest {
@@ -182,6 +186,44 @@ public class SimpleSvgGenerationTest {
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawEllipseOutside.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentDrawLineTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgLine line = new SvgLine(50L, 50L, SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        svgDocument.addElement(line);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawLine.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentDrawLineOutsideTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgLine line = new SvgLine(50L, 50L, SvgDocument.DEFAULT_WIDTH + 100, SvgDocument.DEFAULT_HEIGHT + 50);
+        svgDocument.addElement(line);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawLineOutside.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentDrawLineStrokeTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgLine line = new SvgLine(50L, 50L, SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        line.setLineCap(StrokeLineCap.ROUND);
+        line.setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
+        svgDocument.addElement(line);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawLineStroke.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
     }

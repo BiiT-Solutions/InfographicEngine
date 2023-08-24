@@ -5,5 +5,7 @@ public enum ElementType {
     IMAGE,
     RECTANGLE,
     CIRCLE,
+    ELLIPSE,
+    LINE,
     TEXT;
 }
