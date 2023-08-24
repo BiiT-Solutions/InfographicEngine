@@ -1,6 +1,5 @@
 package com.biit.infographic.core.models.svg;
 
-import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

@@ -56,10 +56,10 @@ public class SvgImage extends SvgElement {
         image.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         image.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
         if (getElementAttributes().getWidth() != null) {
-            image.setAttributeNS(null, "width", getElementAttributes().getWidth());
+            image.setAttributeNS(null, "width", getElementAttributes().getWidthValue());
         }
         if (getElementAttributes().getHeight() != null) {
-            image.setAttributeNS(null, "height", getElementAttributes().getHeight());
+            image.setAttributeNS(null, "height", getElementAttributes().getHeightValue());
         }
         if (!content.startsWith(BASE_64_PREFIX)) {
             image.setAttribute("xlink:href", BASE_64_PREFIX + content);

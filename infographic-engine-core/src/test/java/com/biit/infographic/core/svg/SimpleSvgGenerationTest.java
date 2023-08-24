@@ -123,10 +123,7 @@ public class SimpleSvgGenerationTest {
         svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
                 0L));
 
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "documentDrawCircle.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
-        }
+        SvgGenerator.generate(svgDocument);
     }
 
     @AfterClass(enabled = false)

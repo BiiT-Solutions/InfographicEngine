@@ -10,10 +10,14 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class ElementAttributes {
 
     @JsonProperty("width")
-    private String width;
+    private Long width;
+
+    private Unit widthUnit = Unit.PIXELS;
 
     @JsonProperty("height")
-    private String height;
+    private Long height;
+
+    private Unit heightUnit = Unit.PIXELS;
 
     @JsonProperty("x")
     private Long xCoordinate;
@@ -57,20 +61,68 @@ public class ElementAttributes {
         setYCoordinate(yCoordinate);
     }
 
-    public String getWidth() {
+    public String getWidthValue() {
+        return getWidth() + getWidthUnit().getTag();
+    }
+
+    public Long getWidth() {
         return width;
     }
 
     public void setWidth(String width) {
-        this.width = width;
+        if (width == null) {
+            this.width = null;
+        } else {
+            try {
+                this.width = Long.parseLong(width);
+                this.widthUnit = Unit.PIXELS;
+            } catch (NumberFormatException e) {
+                if (width.endsWith("%")) {
+                    this.width = Long.parseLong(width.replaceAll("%", "").trim());
+                    this.widthUnit = Unit.PERCENTAGE;
+                }
+            }
+        }
     }
 
-    public String getHeight() {
+    public Long getHeight() {
         return height;
     }
 
     public void setHeight(String height) {
-        this.height = height;
+        if (height == null) {
+            this.height = null;
+        } else {
+            try {
+                this.height = Long.parseLong(height);
+                this.heightUnit = Unit.PIXELS;
+            } catch (NumberFormatException e) {
+                if (height.endsWith("%")) {
+                    this.height = Long.parseLong(height.replaceAll("%", "").trim());
+                    this.heightUnit = Unit.PERCENTAGE;
+                }
+            }
+        }
+    }
+
+    public String getHeightValue() {
+        return getHeight() + getHeightUnit().getTag();
+    }
+
+    public Unit getWidthUnit() {
+        return widthUnit;
+    }
+
+    public void setWidthUnit(Unit widthUnit) {
+        this.widthUnit = widthUnit;
+    }
+
+    public Unit getHeightUnit() {
+        return heightUnit;
+    }
+
+    public void setHeightUnit(Unit heightUnit) {
+        this.heightUnit = heightUnit;
     }
 
     @JsonGetter("x")

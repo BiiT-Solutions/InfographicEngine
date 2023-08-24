@@ -1,6 +1,5 @@
 package com.biit.infographic.core.models.svg;
 
-import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
@@ -26,17 +25,8 @@ public class SvgDocument implements ISvgElement {
     @JsonProperty("type")
     private LayoutType layoutType;
 
-    @JsonProperty("numColumns")
-    private int columns;
-
-    @JsonProperty("numRows")
-    private int rows;
-
     @JsonProperty("elements")
     private List<SvgElement> elements;
-
-    @JsonProperty("content")
-    private List<SvgElement> content;
 
     public long getWidth() {
         return width;
@@ -70,22 +60,6 @@ public class SvgDocument implements ISvgElement {
         this.layoutType = layoutType;
     }
 
-    public int getColumns() {
-        return columns;
-    }
-
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
     public List<SvgElement> getElements() {
         if (elements == null) {
             return new ArrayList<>();
@@ -104,17 +78,6 @@ public class SvgDocument implements ISvgElement {
         elements.add(element);
     }
 
-    public List<SvgElement> getContent() {
-        if (content == null) {
-            return new ArrayList<>();
-        }
-        return content;
-    }
-
-    public void setContent(List<SvgElement> content) {
-        this.content = content;
-    }
-
     @Override
     public Element generateSvg(Document doc) {
         // Get the root element (the 'svg' element).
@@ -123,6 +86,7 @@ public class SvgDocument implements ISvgElement {
         svgRoot.setAttributeNS(null, "height", String.valueOf(height));
 
         setSvgBackground(doc, svgRoot);
+        setViewBox(svgRoot);
 
         if (getElements() != null && !getElements().isEmpty()) {
             elements.forEach(svgElement -> {
@@ -132,6 +96,24 @@ public class SvgDocument implements ISvgElement {
         }
 
         return svgRoot;
+    }
+
+    private void setViewBox(Element svgRoot) {
+        long height = this.height;
+        long width = this.width;
+
+        if (elements != null) {
+            for (SvgElement element : elements) {
+                if (element.getElementAttributes().getHeight() != null && element.getElementAttributes().getHeightUnit() == Unit.PIXELS) {
+                    height = Math.max(height, element.getElementAttributes().getXCoordinate() + element.getElementAttributes().getHeight());
+                }
+                if (element.getElementAttributes().getWidth() != null && element.getElementAttributes().getWidthUnit() == Unit.PIXELS) {
+                    width = Math.max(width, element.getElementAttributes().getYCoordinate() + element.getElementAttributes().getWidth());
+                }
+            }
+        }
+
+        svgRoot.setAttributeNS(null, "viewBox", "0 0 " + width + " " + height);
     }
 
     private void setSvgBackground(Document doc, Element svgRoot) {

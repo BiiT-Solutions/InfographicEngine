@@ -35,10 +35,10 @@ public class SvgRectangle extends SvgElement {
         rectangle.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         rectangle.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
         if (getElementAttributes().getWidth() != null) {
-            rectangle.setAttributeNS(null, "width", getElementAttributes().getWidth());
+            rectangle.setAttributeNS(null, "width", getElementAttributes().getWidthValue());
         }
         if (getElementAttributes().getHeight() != null) {
-            rectangle.setAttributeNS(null, "height", getElementAttributes().getHeight());
+            rectangle.setAttributeNS(null, "height", getElementAttributes().getHeightValue());
         }
         if (getElementAttributes().getFill() != null) {
             rectangle.setAttributeNS(null, "fill", getElementAttributes().getFill());
