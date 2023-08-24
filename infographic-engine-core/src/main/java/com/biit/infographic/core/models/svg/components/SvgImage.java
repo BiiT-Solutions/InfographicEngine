@@ -10,34 +10,25 @@ import org.w3c.dom.Element;
 public class SvgImage extends SvgElement {
     private static final String BASE_64_PREFIX = "data:image/png;base64,";
 
-    private String name;
     private String content;
     private String href;
 
-    private SvgImage() {
-        super(new ElementAttributes("100%", "100%"));
+    private SvgImage(ElementAttributes elementAttributes) {
+        super(elementAttributes);
         setElementType(ElementType.IMAGE);
     }
 
-    public SvgImage(String name, String content) {
-        this();
-        setName(name);
+    public SvgImage(ElementAttributes elementAttributes, String id, String content) {
+        this(elementAttributes);
+        setId(id);
         setContent(content);
     }
 
-    public SvgImage(String name, String content, String href) {
-        this();
-        setName(name);
+    public SvgImage(ElementAttributes elementAttributes, String id, String content, String href) {
+        this(elementAttributes);
+        setId(id);
         setContent(content);
         setHref(href);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getContent() {
@@ -59,7 +50,9 @@ public class SvgImage extends SvgElement {
     @Override
     public Element generateSvg(Document doc) {
         final Element image = doc.createElementNS(NAMESPACE, "image");
-        image.setAttribute("id", name);
+        if (getId() != null) {
+            image.setAttribute("id", getId());
+        }
         image.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         image.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
         if (getElementAttributes().getWidth() != null) {
@@ -82,10 +75,10 @@ public class SvgImage extends SvgElement {
     @Override
     public void validateAttributes() throws InvalidAttributeException {
         if (getElementAttributes().getHeight() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have height attribute");
+            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have height attribute");
         }
         if (getElementAttributes().getWidth() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have width attribute");
+            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have width attribute");
         }
     }
 }

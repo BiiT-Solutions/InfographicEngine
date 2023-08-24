@@ -1,8 +1,8 @@
 package com.biit.infographic.core.models.svg;
 
 
-import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgImage;
+import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -53,7 +53,7 @@ public class SvgBackground implements ISvgElement {
             final SvgRectangle rectangle = new SvgRectangle("100%", "100%", backgroundColor);
             return rectangle.generateSvg(doc);
         } else if (getImage() != null) {
-            final SvgImage image = new SvgImage("background", getImage());
+            final SvgImage image = new SvgImage(new ElementAttributes("100%", "100%"), "background", getImage());
             return image.generateSvg(doc);
         }
         return null;

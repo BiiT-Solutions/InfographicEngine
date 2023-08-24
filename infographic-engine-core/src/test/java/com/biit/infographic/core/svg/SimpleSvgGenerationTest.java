@@ -1,8 +1,10 @@
 package com.biit.infographic.core.svg;
 
+import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgDocument;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import org.testng.Assert;
@@ -65,6 +67,19 @@ public class SimpleSvgGenerationTest {
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentBackgroundImage.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentImageTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        svgDocument.addElement(new SvgImage(new ElementAttributes(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgDocument.DEFAULT_WIDTH / 2), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2)), "EliseNess",
+                readBase64Image("EliseNess.txt")));
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentImage.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
     }

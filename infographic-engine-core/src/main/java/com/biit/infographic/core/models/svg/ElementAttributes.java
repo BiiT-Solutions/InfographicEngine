@@ -9,9 +9,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @JsonRootName(value = "attributes")
 public class ElementAttributes {
 
-    @JsonProperty("id")
-    private String id;
-
     @JsonProperty("width")
     private String width;
 
@@ -48,19 +45,16 @@ public class ElementAttributes {
         setFill(fill);
     }
 
-    public ElementAttributes(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
-        this(width, height, fill);
+    public ElementAttributes(Long xCoordinate, Long yCoordinate, String width, String height) {
+        this(width, height, null);
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
     }
 
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public ElementAttributes(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
+        this(width, height, fill);
+        setXCoordinate(xCoordinate);
+        setYCoordinate(yCoordinate);
     }
 
     public String getWidth() {

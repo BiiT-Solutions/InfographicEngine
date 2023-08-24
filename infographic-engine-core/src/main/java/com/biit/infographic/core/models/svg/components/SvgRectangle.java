@@ -29,6 +29,9 @@ public class SvgRectangle extends SvgElement {
     @Override
     public Element generateSvg(Document doc) {
         final Element rectangle = doc.createElementNS(NAMESPACE, "rect");
+        if (getId() != null) {
+            rectangle.setAttribute("id", getId());
+        }
         rectangle.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         rectangle.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
         if (getElementAttributes().getWidth() != null) {

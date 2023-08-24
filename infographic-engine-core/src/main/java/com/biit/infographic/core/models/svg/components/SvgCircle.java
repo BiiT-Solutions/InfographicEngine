@@ -40,14 +40,17 @@ public class SvgCircle extends SvgElement {
     @Override
     public Element generateSvg(Document doc) {
         validateAttributes();
-        final Element rectangle = doc.createElementNS(NAMESPACE, "circle");
-        rectangle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
-        rectangle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
-        rectangle.setAttributeNS(null, "r", String.valueOf(radio));
-        if (getElementAttributes().getFill() != null) {
-            rectangle.setAttributeNS(null, "fill", getElementAttributes().getFill());
+        final Element circle = doc.createElementNS(NAMESPACE, "circle");
+        if (getId() != null) {
+            circle.setAttribute("id", getId());
         }
-        return rectangle;
+        circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
+        circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
+        circle.setAttributeNS(null, "r", String.valueOf(radio));
+        if (getElementAttributes().getFill() != null) {
+            circle.setAttributeNS(null, "fill", getElementAttributes().getFill());
+        }
+        return circle;
     }
 
     @Override
