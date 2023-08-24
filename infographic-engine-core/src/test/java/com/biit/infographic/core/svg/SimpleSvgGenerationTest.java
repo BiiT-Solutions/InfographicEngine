@@ -2,9 +2,9 @@ package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgDocument;
+import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -18,9 +18,8 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@SpringBootTest
 @Test(groups = {"simpleSvgGenerationTest"})
-public class SimpleSvgGenerationTest extends AbstractTestNGSpringContextTests {
+public class SimpleSvgGenerationTest {
     private static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
 
     private String readBase64Image(String imageName) {
@@ -78,6 +77,39 @@ public class SimpleSvgGenerationTest extends AbstractTestNGSpringContextTests {
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawRectangle.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test(expectedExceptions = InvalidAttributeException.class)
+    public void documentDrawInvalidRectangleTest() {
+        SvgDocument svgDocument = new SvgDocument();
+        svgDocument.addElement(new SvgRectangle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                null, String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2), "ff0000"));
+
+        SvgGenerator.generate(svgDocument);
+    }
+
+    @Test
+    public void documentDrawCircleTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                SvgDocument.DEFAULT_WIDTH / 2));
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawCircle.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test(expectedExceptions = InvalidAttributeException.class)
+    public void documentDrawInvalidCircleTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                0L));
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawCircle.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
     }

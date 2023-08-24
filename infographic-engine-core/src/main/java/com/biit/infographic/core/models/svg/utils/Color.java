@@ -9,10 +9,16 @@ public final class Color {
     }
 
     public static boolean isValidWithTransparency(String color) {
-        return color.matches(TRANSPARENT_COLOR_VALIDATION);
+        if (color != null) {
+            return color.matches(TRANSPARENT_COLOR_VALIDATION);
+        }
+        return true;
     }
 
     public static boolean isValidWithoutTransparency(String color) {
-        return color.matches(BASIC_COLOR_VALIDATION);
+        if (color != null) {
+            return color.matches(BASIC_COLOR_VALIDATION);
+        }
+        return true;
     }
 }

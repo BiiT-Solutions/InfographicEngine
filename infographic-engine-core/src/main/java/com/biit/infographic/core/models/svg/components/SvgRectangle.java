@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.components;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,5 +41,15 @@ public class SvgRectangle extends SvgElement {
             rectangle.setAttributeNS(null, "fill", getElementAttributes().getFill());
         }
         return rectangle;
+    }
+
+    @Override
+    public void validateAttributes() throws InvalidAttributeException {
+        if (getElementAttributes().getHeight() == null) {
+            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have height attribute");
+        }
+        if (getElementAttributes().getWidth() == null) {
+            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have width attribute");
+        }
     }
 }
