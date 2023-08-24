@@ -9,7 +9,7 @@ public class ColorValidationTest {
 
     @Test
     public void checkColorWithTransparency() {
-        Assert.assertTrue(Color.isValidWithTransparency("#55AA7711"));
+        Assert.assertTrue(Color.isValidWithTransparency("#55aa7711"));
     }
 
     @Test

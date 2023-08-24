@@ -9,7 +9,7 @@ import org.w3c.dom.Element;
 
 public class SvgCircle extends SvgElement {
 
-    private Long radio;
+    private Long radius;
 
     public SvgCircle(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -24,17 +24,17 @@ public class SvgCircle extends SvgElement {
         this(new ElementAttributes(width, height, fill));
     }
 
-    public SvgCircle(Long xCoordinate, Long yCoordinate, Long radio) {
+    public SvgCircle(Long xCoordinate, Long yCoordinate, Long radius) {
         this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
-        setRadio(radio);
+        setRadius(radius);
     }
 
-    public Long getRadio() {
-        return radio;
+    public Long getRadius() {
+        return radius;
     }
 
-    public void setRadio(Long radio) {
-        this.radio = radio;
+    public void setRadius(Long radius) {
+        this.radius = radius;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SvgCircle extends SvgElement {
         }
         circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
         circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
-        circle.setAttributeNS(null, "r", String.valueOf(radio));
+        circle.setAttributeNS(null, "r", String.valueOf(radius));
         if (getElementAttributes().getFill() != null) {
             circle.setAttributeNS(null, "fill", getElementAttributes().getFill());
         }
@@ -55,8 +55,8 @@ public class SvgCircle extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-        if (radio == null || radio == 0) {
-            throw new InvalidAttributeException(this.getClass(), "Invalid radio on circle '" + getId() + "'");
+        if (radius == null || radius == 0) {
+            throw new InvalidAttributeException(this.getClass(), "Invalid radius on circle '" + getId() + "'");
         }
         if (getElementAttributes().getHeight() != null) {
             throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have height attribute");

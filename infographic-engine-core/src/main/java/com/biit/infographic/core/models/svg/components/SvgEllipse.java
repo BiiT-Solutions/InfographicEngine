@@ -9,26 +9,24 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class SvgRectangle extends SvgElement {
+public class SvgEllipse extends SvgElement {
 
     private Long xRadius = 0L;
     private Long yRadius = 0L;
 
-    public SvgRectangle(ElementAttributes elementAttributes) {
+    public SvgEllipse(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.RECTANGLE);
     }
 
-    public SvgRectangle() {
+    public SvgEllipse() {
         this(new ElementAttributes());
     }
 
-    public SvgRectangle(String width, String height, String fill) {
-        this(new ElementAttributes(width, height, fill));
-    }
-
-    public SvgRectangle(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
-        this(new ElementAttributes(xCoordinate, yCoordinate, width, height, fill));
+    public SvgEllipse(Long xCoordinate, Long yCoordinate, Long xRadius, Long yRadius, String fill) {
+        this(new ElementAttributes(xCoordinate, yCoordinate, null, null, fill));
+        setXRadius(xRadius);
+        setYRadius(yRadius);
     }
 
     @JsonGetter("xRadius")
@@ -53,18 +51,12 @@ public class SvgRectangle extends SvgElement {
 
     @Override
     public Element generateSvg(Document doc) {
-        final Element rectangle = doc.createElementNS(NAMESPACE, "rect");
+        final Element rectangle = doc.createElementNS(NAMESPACE, "ellipse");
         if (getId() != null) {
             rectangle.setAttribute("id", getId());
         }
-        rectangle.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
-        rectangle.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
-        if (getElementAttributes().getWidth() != null) {
-            rectangle.setAttributeNS(null, "width", getElementAttributes().getWidthValue());
-        }
-        if (getElementAttributes().getHeight() != null) {
-            rectangle.setAttributeNS(null, "height", getElementAttributes().getHeightValue());
-        }
+        rectangle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
+        rectangle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
         if (getElementAttributes().getFill() != null) {
             rectangle.setAttributeNS(null, "fill", getElementAttributes().getFill());
         }
@@ -79,11 +71,17 @@ public class SvgRectangle extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-        if (getElementAttributes().getHeight() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have height attribute");
+        if (getElementAttributes().getHeight() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' must not have height attribute");
         }
-        if (getElementAttributes().getWidth() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have width attribute");
+        if (getElementAttributes().getWidth() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' must not have width attribute");
+        }
+        if (getXRadius() == null || getXRadius() == 0) {
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' does not have xRadius attribute");
+        }
+        if (getYRadius() == null || getYRadius() == 0) {
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' does not have yRadius attribute");
         }
     }
 }

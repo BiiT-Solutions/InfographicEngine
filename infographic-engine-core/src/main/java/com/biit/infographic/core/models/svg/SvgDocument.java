@@ -1,5 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
@@ -8,16 +10,21 @@ import org.w3c.dom.Element;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Root class for generating an SVG document.
+ * <p>
+ * If height and width are not set, will be calculated to fit the content.
+ */
 @JsonRootName(value = "report")
 public class SvgDocument implements ISvgElement {
     public static final long DEFAULT_WIDTH = 256L;
     public static final long DEFAULT_HEIGHT = 256L;
 
     @JsonProperty("width")
-    private long width = DEFAULT_WIDTH;
+    private Long width;
 
     @JsonProperty("height")
-    private long height = DEFAULT_HEIGHT;
+    private Long height;
 
     @JsonProperty("background")
     private SvgBackground svgBackground;
@@ -82,11 +89,13 @@ public class SvgDocument implements ISvgElement {
     public Element generateSvg(Document doc) {
         // Get the root element (the 'svg' element).
         final Element svgRoot = doc.getDocumentElement();
-        svgRoot.setAttributeNS(null, "width", String.valueOf(width));
-        svgRoot.setAttributeNS(null, "height", String.valueOf(height));
+
+        setViewBox(svgRoot);
+
+        svgRoot.setAttributeNS(null, "width", String.valueOf(width != 0 ? width : DEFAULT_WIDTH));
+        svgRoot.setAttributeNS(null, "height", String.valueOf(height != 0 ? height : DEFAULT_HEIGHT));
 
         setSvgBackground(doc, svgRoot);
-        setViewBox(svgRoot);
 
         if (getElements() != null && !getElements().isEmpty()) {
             elements.forEach(svgElement -> {
@@ -99,8 +108,10 @@ public class SvgDocument implements ISvgElement {
     }
 
     private void setViewBox(Element svgRoot) {
-        long height = this.height;
-        long width = this.width;
+        long height = this.height != null ? this.height : 0L;
+        long width = this.width != null ? this.width : 0L;
+        long x = 0;
+        long y = 0;
 
         if (elements != null) {
             for (SvgElement element : elements) {
@@ -110,10 +121,33 @@ public class SvgDocument implements ISvgElement {
                 if (element.getElementAttributes().getWidth() != null && element.getElementAttributes().getWidthUnit() == Unit.PIXELS) {
                     width = Math.max(width, element.getElementAttributes().getYCoordinate() + element.getElementAttributes().getWidth());
                 }
+                x = Math.min(x, element.getElementAttributes().getXCoordinate());
+                y = Math.min(y, element.getElementAttributes().getYCoordinate());
+                if (element instanceof SvgCircle) {
+                    height = Math.max(height, ((SvgCircle) element).getRadius() + element.getElementAttributes().getYCoordinate());
+                    width = Math.max(width, ((SvgCircle) element).getRadius() + element.getElementAttributes().getXCoordinate());
+                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgCircle) element).getRadius());
+                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgCircle) element).getRadius());
+                }
+                if (element instanceof SvgEllipse) {
+                    height = Math.max(height, ((SvgEllipse) element).getYRadius() + element.getElementAttributes().getYCoordinate());
+                    width = Math.max(width, ((SvgEllipse) element).getXRadius() + element.getElementAttributes().getXCoordinate());
+                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgEllipse) element).getYRadius());
+                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgEllipse) element).getXRadius());
+                }
             }
         }
 
-        svgRoot.setAttributeNS(null, "viewBox", "0 0 " + width + " " + height);
+        //Updated width and height if are not defined.
+        if (this.width == null) {
+            this.width = Math.abs(x) + width;
+        }
+
+        if (this.height == null) {
+            this.height = Math.abs(y) + height;
+        }
+
+        svgRoot.setAttributeNS(null, "viewBox", x + " " + y + " " + (width + Math.abs(x)) + " " + (height + Math.abs(y)));
     }
 
     private void setSvgBackground(Document doc, Element svgRoot) {

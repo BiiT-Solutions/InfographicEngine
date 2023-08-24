@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.utils.Color;
+import com.biit.infographic.logger.InfograpicEngineLogger;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -177,6 +178,8 @@ public class ElementAttributes {
         }
         if (Color.isValidWithoutTransparency(fill)) {
             this.fill = fill;
+        } else {
+            InfograpicEngineLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
         }
     }
 }

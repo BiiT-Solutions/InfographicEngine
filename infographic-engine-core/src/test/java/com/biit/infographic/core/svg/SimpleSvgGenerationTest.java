@@ -4,6 +4,7 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgDocument;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
@@ -96,6 +97,21 @@ public class SimpleSvgGenerationTest {
         }
     }
 
+    @Test
+    public void documentDrawRectangleWithRadiusTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgRectangle rectangle = new SvgRectangle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgDocument.DEFAULT_WIDTH / 2), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2), "ff0000");
+        rectangle.setXRadius(25L);
+        rectangle.setXRadius(50L);
+        svgDocument.addElement(rectangle);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawRectangleWithRadius.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
     @Test(expectedExceptions = InvalidAttributeException.class)
     public void documentDrawInvalidRectangleTest() {
         SvgDocument svgDocument = new SvgDocument();
@@ -124,6 +140,50 @@ public class SimpleSvgGenerationTest {
                 0L));
 
         SvgGenerator.generate(svgDocument);
+    }
+
+    @Test
+    public void documentDrawCircleOutsideTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2 - 100, SvgDocument.DEFAULT_HEIGHT / 2 - 100,
+                SvgDocument.DEFAULT_HEIGHT));
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawCircleOutside.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentDrawEllipseTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgEllipse ellipse = new SvgEllipse(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2
+                , "ff00ff");
+        ellipse.setXRadius(25L);
+        ellipse.setYRadius(50L);
+        svgDocument.addElement(ellipse);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawEllipse.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentDrawEllipseOutsideTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgEllipse ellipse = new SvgEllipse(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT,
+                SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2
+                , "ff00ff");
+        ellipse.setXRadius(25L);
+        ellipse.setYRadius(50L);
+        svgDocument.addElement(ellipse);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawEllipseOutside.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
     }
 
     @AfterClass(enabled = false)
