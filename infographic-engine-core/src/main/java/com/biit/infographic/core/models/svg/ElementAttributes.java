@@ -32,6 +32,9 @@ public class ElementAttributes {
     @JsonProperty("fill")
     private String fill;
 
+    @JsonProperty("class")
+    private String cssClass;
+
     @JsonProperty("verticalAlign")
     private VerticalAlignment verticalAlignment;
 
@@ -156,6 +159,16 @@ public class ElementAttributes {
         return style;
     }
 
+    public void addStyle(String style) {
+        if (this.style == null) {
+            this.style = "";
+        }
+        if (!this.style.isEmpty()) {
+            this.style = this.style.concat(";");
+        }
+        this.style = this.style.concat(style);
+    }
+
     public void setStyle(String style) {
         this.style = style;
     }
@@ -173,13 +186,19 @@ public class ElementAttributes {
     }
 
     public void setFill(String fill) {
-        if (fill != null && !fill.startsWith("#")) {
-            fill = "#" + fill;
-        }
+        fill = Color.checkColor(fill);
         if (Color.isValidWithoutTransparency(fill)) {
             this.fill = fill;
         } else {
             InfograpicEngineLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
         }
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
     }
 }

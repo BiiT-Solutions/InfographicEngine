@@ -4,13 +4,16 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.utils.Color;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@JsonRootName(value = "line")
 public class SvgLine extends SvgElement {
 
 
@@ -82,7 +85,7 @@ public class SvgLine extends SvgElement {
     }
 
     public void setStrokeColor(String strokeColor) {
-        this.strokeColor = strokeColor;
+        this.strokeColor = Color.checkColor(strokeColor);
     }
 
     public List<Integer> getStrokeDash() {
@@ -108,9 +111,6 @@ public class SvgLine extends SvgElement {
     public Element generateSvg(Document doc) {
         validateAttributes();
         final Element line = doc.createElementNS(NAMESPACE, "line");
-        if (getId() != null) {
-            line.setAttribute("id", getId());
-        }
         line.setAttributeNS(null, "x1", String.valueOf(getElementAttributes().getXCoordinate()));
         line.setAttributeNS(null, "y1", String.valueOf(getElementAttributes().getYCoordinate()));
         line.setAttributeNS(null, "x2", String.valueOf(getX2Coordinate()));
@@ -124,6 +124,7 @@ public class SvgLine extends SvgElement {
         if (lineCap != null) {
             line.setAttributeNS(null, "style", "stroke-linecap:" + getLineCap().value());
         }
+        elementAttributes(line);
         return line;
     }
 

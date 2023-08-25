@@ -4,9 +4,11 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@JsonRootName(value = "circle")
 public class SvgCircle extends SvgElement {
 
     private Long radius;
@@ -41,15 +43,10 @@ public class SvgCircle extends SvgElement {
     public Element generateSvg(Document doc) {
         validateAttributes();
         final Element circle = doc.createElementNS(NAMESPACE, "circle");
-        if (getId() != null) {
-            circle.setAttribute("id", getId());
-        }
         circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
         circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
         circle.setAttributeNS(null, "r", String.valueOf(radius));
-        if (getElementAttributes().getFill() != null) {
-            circle.setAttributeNS(null, "fill", getElementAttributes().getFill());
-        }
+        elementAttributes(circle);
         return circle;
     }
 
@@ -59,13 +56,13 @@ public class SvgCircle extends SvgElement {
             throw new InvalidAttributeException(this.getClass(), "Invalid radius on circle '" + getId() + "'");
         }
         if (getElementAttributes().getHeight() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have height attribute");
+            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'height' attribute");
         }
         if (getElementAttributes().getWidth() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have width attribute");
+            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'width' attribute");
         }
         if (getElementAttributes().getFill() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have fill attribute");
+            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'fill' attribute");
         }
     }
 }

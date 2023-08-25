@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import org.w3c.dom.Element;
 
 @JsonRootName(value = "element")
 @JsonPropertyOrder(alphabetic = true)
@@ -60,7 +61,24 @@ public abstract class SvgElement implements ISvgElement {
         this.elementAttributes = elementAttributes;
     }
 
-    public void validateAttributes() throws InvalidAttributeException {
-        //Each child must implement and filter invalid attributes.
+    //Each child must implement and filter invalid attributes.
+    public abstract void validateAttributes() throws InvalidAttributeException;
+
+    public void elementAttributes(Element element) throws InvalidAttributeException {
+        if (getId() != null) {
+            element.setAttribute("id", getId());
+        }
+        if (getElementAttributes().getFill() != null) {
+            element.setAttributeNS(null, "fill", getElementAttributes().getFill());
+        }
+        if (elementAttributes.getCssClass() != null) {
+            element.setAttribute("class", elementAttributes.getCssClass());
+        }
+        if (elementAttributes.getWidth() != null) {
+            element.setAttributeNS(null, "width", getElementAttributes().getWidthValue());
+        }
+        if (elementAttributes.getHeight() != null) {
+            element.setAttributeNS(null, "height", getElementAttributes().getHeightValue());
+        }
     }
 }

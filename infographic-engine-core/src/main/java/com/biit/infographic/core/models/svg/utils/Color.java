@@ -21,4 +21,11 @@ public final class Color {
         }
         return true;
     }
+
+    public static String checkColor(String color) {
+        if (color != null && !color.startsWith("#")) {
+            color = "#" + color;
+        }
+        return color;
+    }
 }

@@ -9,6 +9,10 @@ import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
+import com.biit.infographic.core.models.svg.components.text.FontVariantType;
+import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.infographic.core.models.svg.components.text.TextAlign;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -22,12 +26,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Test(groups = {"simpleSvgGenerationTest"})
 public class SimpleSvgGenerationTest {
     private static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
+    private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
 
     private String readBase64Image(String imageName) {
         try {
@@ -224,6 +228,127 @@ public class SimpleSvgGenerationTest {
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawLineStroke.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentSimpleTextTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText("This is the first text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentSimpleText.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentLongTextLimitedLineTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        text.setLengthAdjust(FontLengthAdjust.SPACING);
+        text.setMaxLineLength(80);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextLimitedLine.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentLongTextLimitedLineForcingLengthTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        text.setTextLength("8000");
+        text.setLengthAdjust(FontLengthAdjust.SPACING);
+        text.setMaxLineLength(80);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextLimitedLineForcingLength.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentLongTextAlignRightTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        text.setTextAlign(TextAlign.RIGHT);
+        text.setMaxLineLength(80);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextAlignRight.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentLongTextJustifyTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineLength(80);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextJustify.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentLongTextJustifyRotatedTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineLength(80);
+        text.setRotate(90);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextJustifyRotated.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentSimpleTextVariantTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        SvgText text = new SvgText("This is the normal text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        text.setFontVariant(FontVariantType.NORMAL);
+        svgDocument.addElement(text);
+
+        text = new SvgText("This is the Small Caps text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2 + 50);
+        text.setFontVariant(FontVariantType.SMALL_CAPS);
+        svgDocument.addElement(text);
+
+        text = new SvgText("This is the Unicase text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2 + 100);
+        text.setFontVariant(FontVariantType.UNICASE);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentSimpleTextVariant.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
+    public void documentColoredTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText("This is the first text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        text.getElementAttributes().setFill("ff0000");
+        text.setStrokeColor("0000ff");
+        text.setStrokeWidth(0.2);
+        text.setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentColoredText.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
     }

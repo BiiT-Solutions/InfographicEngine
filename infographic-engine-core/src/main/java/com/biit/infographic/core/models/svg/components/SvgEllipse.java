@@ -5,10 +5,12 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@JsonRootName(value = "ellipse")
 public class SvgEllipse extends SvgElement {
 
     private Long xRadius = 0L;
@@ -51,37 +53,32 @@ public class SvgEllipse extends SvgElement {
 
     @Override
     public Element generateSvg(Document doc) {
-        final Element rectangle = doc.createElementNS(NAMESPACE, "ellipse");
-        if (getId() != null) {
-            rectangle.setAttribute("id", getId());
-        }
-        rectangle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
-        rectangle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
-        if (getElementAttributes().getFill() != null) {
-            rectangle.setAttributeNS(null, "fill", getElementAttributes().getFill());
-        }
+        final Element ellipse = doc.createElementNS(NAMESPACE, "ellipse");
+        ellipse.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
+        ellipse.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
         if (xRadius != null && xRadius != 0) {
-            rectangle.setAttributeNS(null, "rx", String.valueOf(getXRadius()));
+            ellipse.setAttributeNS(null, "rx", String.valueOf(getXRadius()));
         }
         if (yRadius != null && yRadius != 0) {
-            rectangle.setAttributeNS(null, "ry", String.valueOf(getYRadius()));
+            ellipse.setAttributeNS(null, "ry", String.valueOf(getYRadius()));
         }
-        return rectangle;
+        elementAttributes(ellipse);
+        return ellipse;
     }
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
         if (getElementAttributes().getHeight() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' must not have height attribute");
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' must not have 'height' attribute");
         }
         if (getElementAttributes().getWidth() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' must not have width attribute");
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' must not have 'width' attribute");
         }
         if (getXRadius() == null || getXRadius() == 0) {
-            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' does not have xRadius attribute");
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' does not have 'xRadius' attribute");
         }
         if (getYRadius() == null || getYRadius() == 0) {
-            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' does not have yRadius attribute");
+            throw new InvalidAttributeException(this.getClass(), "Ellipse '" + getId() + "' does not have 'yRadius' attribute");
         }
     }
 }

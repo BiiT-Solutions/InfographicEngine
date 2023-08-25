@@ -5,10 +5,12 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@JsonRootName(value = "rectangle")
 public class SvgRectangle extends SvgElement {
 
     private Long xRadius = 0L;
@@ -54,36 +56,25 @@ public class SvgRectangle extends SvgElement {
     @Override
     public Element generateSvg(Document doc) {
         final Element rectangle = doc.createElementNS(NAMESPACE, "rect");
-        if (getId() != null) {
-            rectangle.setAttribute("id", getId());
-        }
         rectangle.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         rectangle.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
-        if (getElementAttributes().getWidth() != null) {
-            rectangle.setAttributeNS(null, "width", getElementAttributes().getWidthValue());
-        }
-        if (getElementAttributes().getHeight() != null) {
-            rectangle.setAttributeNS(null, "height", getElementAttributes().getHeightValue());
-        }
-        if (getElementAttributes().getFill() != null) {
-            rectangle.setAttributeNS(null, "fill", getElementAttributes().getFill());
-        }
         if (xRadius != null && xRadius != 0) {
             rectangle.setAttributeNS(null, "rx", String.valueOf(getXRadius()));
         }
         if (yRadius != null && yRadius != 0) {
             rectangle.setAttributeNS(null, "ry", String.valueOf(getYRadius()));
         }
+        elementAttributes(rectangle);
         return rectangle;
     }
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
         if (getElementAttributes().getHeight() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have height attribute");
+            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have 'height' attribute");
         }
         if (getElementAttributes().getWidth() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have width attribute");
+            throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have 'width' attribute");
         }
     }
 }

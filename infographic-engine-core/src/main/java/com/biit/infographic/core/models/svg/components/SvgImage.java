@@ -4,9 +4,11 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@JsonRootName(value = "image")
 public class SvgImage extends SvgElement {
     private static final String BASE_64_PREFIX = "data:image/png;base64,";
 
@@ -50,17 +52,8 @@ public class SvgImage extends SvgElement {
     @Override
     public Element generateSvg(Document doc) {
         final Element image = doc.createElementNS(NAMESPACE, "image");
-        if (getId() != null) {
-            image.setAttribute("id", getId());
-        }
         image.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         image.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
-        if (getElementAttributes().getWidth() != null) {
-            image.setAttributeNS(null, "width", getElementAttributes().getWidthValue());
-        }
-        if (getElementAttributes().getHeight() != null) {
-            image.setAttributeNS(null, "height", getElementAttributes().getHeightValue());
-        }
         if (!content.startsWith(BASE_64_PREFIX)) {
             image.setAttribute("xlink:href", BASE_64_PREFIX + content);
         } else {
@@ -69,16 +62,17 @@ public class SvgImage extends SvgElement {
         if (href != null) {
             image.setAttribute("onclick", "window.location='" + href + "'");
         }
+        elementAttributes(image);
         return image;
     }
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
         if (getElementAttributes().getHeight() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have height attribute");
+            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have 'height' attribute");
         }
         if (getElementAttributes().getWidth() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have width attribute");
+            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have 'width' attribute");
         }
     }
 }

@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
+import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
@@ -35,6 +36,16 @@ public class SvgDocument implements ISvgElement {
 
     @JsonProperty("elements")
     private List<SvgElement> elements;
+
+    public SvgDocument() {
+        super();
+    }
+
+    public SvgDocument(Long width, Long height) {
+        this();
+        setWidth(width);
+        setHeight(height);
+    }
 
     public long getWidth() {
         return width;
@@ -141,6 +152,11 @@ public class SvgDocument implements ISvgElement {
                     width = Math.max(width, element.getElementAttributes().getXCoordinate());
                     height = Math.max(height, ((SvgLine) element).getY2Coordinate());
                     width = Math.max(width, ((SvgLine) element).getX2Coordinate());
+                }
+                if (element instanceof SvgText) {
+                    height = Math.max(height, element.getElementAttributes().getYCoordinate() + ((SvgText) element).getFontSize());
+                    final Integer maxLineLength = ((SvgText) element).getMaxLineLength();
+                    width = Math.max(width, element.getElementAttributes().getXCoordinate() + (maxLineLength != null ? maxLineLength : 0));
                 }
             }
         }
