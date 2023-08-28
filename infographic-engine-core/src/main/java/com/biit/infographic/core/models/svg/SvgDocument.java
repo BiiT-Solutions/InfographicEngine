@@ -170,7 +170,7 @@ public class SvgDocument implements ISvgElement {
             this.height = Math.abs(y) + height;
         }
 
-        svgRoot.setAttributeNS(null, "viewBox", x + " " + y + " " + (width + Math.abs(x)) + " " + (height + Math.abs(y)));
+        svgRoot.setAttributeNS(null, "viewBox", x + " " + y + " " + this.width + " " + this.height);
     }
 
     private void setSvgBackground(Document doc, Element svgRoot) {

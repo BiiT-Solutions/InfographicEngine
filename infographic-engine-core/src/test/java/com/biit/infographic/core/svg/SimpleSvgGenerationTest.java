@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -53,6 +54,15 @@ public class SimpleSvgGenerationTest {
         return directoryToBeDeleted.delete();
     }
 
+    private void checkContent(String content, String resourceFile) {
+        try {
+            Assert.assertEquals(content.trim(), new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
+                    .getResource("svg" + File.separator + resourceFile).toURI()))).trim());
+        } catch (IOException | URISyntaxException e) {
+            Assert.fail();
+        }
+    }
+
     @BeforeClass
     public void prepareFolder() throws IOException {
         Files.createDirectories(Paths.get(OUTPUT_FOLDER));
@@ -67,6 +77,7 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentBackgroundColor.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+        checkContent(SvgGenerator.generate(svgDocument), "documentBackgroundColor.svg");
     }
 
     @Test
@@ -78,6 +89,7 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentBackgroundImage.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+        checkContent(SvgGenerator.generate(svgDocument), "documentBackgroundImage.svg");
     }
 
     @Test
@@ -91,6 +103,7 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentImage.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+        checkContent(SvgGenerator.generate(svgDocument), "documentImage.svg");
     }
 
     @Test
@@ -103,6 +116,7 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawRectangle.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawRectangle.svg");
     }
 
     @Test
@@ -118,6 +132,7 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawRectangleWithRadius.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawRectangleWithRadius.svg");
     }
 
     @Test(expectedExceptions = InvalidAttributeException.class)
@@ -139,6 +154,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawCircle.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawCircle.svg");
     }
 
     @Test(expectedExceptions = InvalidAttributeException.class)
@@ -160,6 +177,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawCircleOutside.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawCircleOutside.svg");
     }
 
     @Test
@@ -176,6 +195,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawEllipse.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawEllipse.svg");
     }
 
     @Test
@@ -192,6 +213,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawEllipseOutside.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawEllipseOutside.svg");
     }
 
     @Test
@@ -204,6 +227,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawLine.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawLine.svg");
     }
 
     @Test
@@ -216,6 +241,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawLineOutside.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawLineOutside.svg");
     }
 
     @Test
@@ -230,6 +257,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentDrawLineStroke.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentDrawLineStroke.svg");
     }
 
     @Test
@@ -242,6 +271,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentSimpleText.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentSimpleText.svg");
     }
 
     @Test
@@ -256,6 +287,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentLongTextLimitedLine.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextLimitedLine.svg");
     }
 
     @Test
@@ -271,6 +304,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentLongTextLimitedLineForcingLength.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextLimitedLineForcingLength.svg");
     }
 
     @Test
@@ -285,6 +320,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentLongTextAlignRight.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextAlignRight.svg");
     }
 
     @Test
@@ -299,6 +336,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentLongTextJustify.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextJustify.svg");
     }
 
     @Test
@@ -313,6 +352,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentLongTextJustifyByWidth.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextJustifyByWidth.svg");
     }
 
     @Test
@@ -328,6 +369,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentLongTextJustifyRotated.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextJustifyRotated.svg");
     }
 
     @Test
@@ -349,6 +392,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentSimpleTextVariant.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentSimpleTextVariant.svg");
     }
 
     @Test
@@ -365,6 +410,8 @@ public class SimpleSvgGenerationTest {
                 + File.separator + "documentColoredText.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentColoredText.svg");
     }
 
     @AfterClass(enabled = false)
