@@ -302,6 +302,20 @@ public class SimpleSvgGenerationTest {
     }
 
     @Test
+    public void documentLongTextJustifyByWidthTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2, 300);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineLength(80);
+        svgDocument.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextJustifyByWidth.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+    }
+
+    @Test
     public void documentLongTextJustifyRotatedTest() throws IOException {
         SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);

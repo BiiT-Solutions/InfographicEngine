@@ -13,8 +13,11 @@ import org.w3c.dom.Element;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,8 +55,13 @@ public class SvgText extends SvgElement {
     @JsonProperty("dy")
     private String dy;
 
+    //In Characters
     @JsonProperty("maxLineSize")
     private Integer maxLineLength;
+
+    //In pixels
+    @JsonProperty("maxLineSize")
+    private Integer lineWidth;
 
     @JsonProperty("text-align")
     private TextAlign textAlign = TextAlign.LEFT;
@@ -81,6 +89,13 @@ public class SvgText extends SvgElement {
         this(new ElementAttributes(x, y, null, null, null));
         setText(text);
         setFontSize(fontSize);
+    }
+
+    public SvgText(String text, int fontSize, Long x, Long y, Integer lineWidth) {
+        this(new ElementAttributes(x, y, null, null, null));
+        setText(text);
+        setFontSize(fontSize);
+        setLineWidth(lineWidth);
     }
 
 
@@ -196,6 +211,14 @@ public class SvgText extends SvgElement {
         this.strokeDash = strokeDash;
     }
 
+    public Integer getLineWidth() {
+        return lineWidth;
+    }
+
+    public void setLineWidth(Integer lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
     @Override
     public Element generateSvg(Document doc) {
         final Element text = doc.createElementNS(NAMESPACE, "text");
@@ -231,10 +254,18 @@ public class SvgText extends SvgElement {
             text.setAttributeNS(null, "stroke-dasharray", strokeDash.stream().map(String::valueOf)
                     .collect(Collectors.joining(" ")));
         }
-        if (getMaxLineLength() != null) {
-            final List<String> lines = getLines(getText(), getMaxLineLength());
-            final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
-            final int longestLinePixels = getLinePixels(longestLine);
+
+        if (getLineWidth() != null || getMaxLineLength() != null) {
+            final List<String> lines;
+            final int longestLinePixels;
+            if (getLineWidth() != null) {
+                lines = getLinesByPixels(getText(), getLineWidth());
+                longestLinePixels = getLineWidth();
+            } else {
+                lines = getLines(getText(), getMaxLineLength());
+                final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
+                longestLinePixels = getLinePixels(longestLine);
+            }
             for (int i = 0; i < lines.size(); i++) {
                 final Element elementLine = doc.createElementNS(NAMESPACE, "tspan");
                 elementLine.setAttribute("dy", String.valueOf(getFontSize() + LINE_SEPARATION));
@@ -313,6 +344,37 @@ public class SvgText extends SvgElement {
                     }
                 }
             }
+        }
+        return lines;
+    }
+
+    private List<String> getLinesByPixels(String content, int lineWidth) {
+        final List<String> lines = new ArrayList<>();
+        if (content != null) {
+            final Deque<String> words = new ArrayDeque<>(Arrays.asList(content.split("\\s+")));
+            while (!words.isEmpty()) {
+                final StringBuilder lineToCheck = new StringBuilder();
+                String line = "";
+                while (true) {
+                    if (!lineToCheck.isEmpty()) {
+                        lineToCheck.append(" ");
+                    }
+                    if (words.peek() == null) {
+                        break;
+                    }
+                    lineToCheck.append(words.peek());
+                    if (getLinePixels(lineToCheck.toString()) < lineWidth) {
+                        line = lineToCheck.toString();
+                        words.pop();
+                    } else {
+                        break;
+                    }
+                }
+                if (!line.isEmpty()) {
+                    lines.add(line);
+                }
+            }
+
         }
         return lines;
     }
