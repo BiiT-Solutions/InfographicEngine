@@ -7,5 +7,6 @@ public enum ElementType {
     CIRCLE,
     ELLIPSE,
     LINE,
-    TEXT;
+    TEXT,
+    SCRIPT;
 }

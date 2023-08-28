@@ -9,6 +9,7 @@ import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
@@ -33,6 +34,27 @@ import java.util.Arrays;
 public class SimpleSvgGenerationTest {
     private static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
     private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
+    private static final String SCRIPT = """
+            function getColor() {
+                  const R = Math.round(Math.random() * 255)
+                    .toString(16)
+                    .padStart(2, "0");
+                        
+                  const G = Math.round(Math.random() * 255)
+                    .toString(16)
+                    .padStart(2, "0");
+                        
+                  const B = Math.round(Math.random() * 255)
+                    .toString(16)
+                    .padStart(2, "0");
+                        
+                  return `#${R}${G}${B}`;
+                }
+                
+                document.querySelector("circle").addEventListener("click", (e) => {
+                    e.target.style.fill = getColor();
+                });
+            """;
 
     private String readBase64Image(String imageName) {
         try {
@@ -412,6 +434,22 @@ public class SimpleSvgGenerationTest {
         }
 
         checkContent(SvgGenerator.generate(svgDocument), "documentColoredText.svg");
+    }
+
+    @Test
+    public void documentScriptTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                SvgDocument.DEFAULT_WIDTH / 2));
+
+        svgDocument.addElement(new SvgScript(SCRIPT));
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentScript.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentScript.svg");
     }
 
     @AfterClass(enabled = false)
