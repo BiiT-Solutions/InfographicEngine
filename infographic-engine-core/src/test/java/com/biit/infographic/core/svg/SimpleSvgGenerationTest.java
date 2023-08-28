@@ -452,6 +452,28 @@ public class SimpleSvgGenerationTest {
         checkContent(SvgGenerator.generate(svgDocument), "documentScript.svg");
     }
 
+    @Test
+    public void nestedDocumentsTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+
+        SvgDocument childDocument1 = new SvgDocument();
+        childDocument1.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                SvgDocument.DEFAULT_WIDTH / 2));
+        svgDocument.addElement(childDocument1);
+
+        SvgDocument childDocument2 = new SvgDocument();
+        childDocument2.addElement(new SvgRectangle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgDocument.DEFAULT_WIDTH / 2), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2), "ff0000"));
+        svgDocument.addElement(childDocument2);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "nestedDocuments.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+
+        checkContent(SvgGenerator.generate(svgDocument), "nestedDocuments.svg");
+    }
+
     @AfterClass(enabled = false)
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));

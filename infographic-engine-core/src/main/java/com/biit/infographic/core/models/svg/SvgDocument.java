@@ -4,6 +4,7 @@ import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
@@ -18,7 +19,7 @@ import java.util.List;
  * If height and width are not set, will be calculated to fit the content.
  */
 @JsonRootName(value = "report")
-public class SvgDocument implements ISvgElement {
+public class SvgDocument extends SvgElement {
     public static final long DEFAULT_WIDTH = 256L;
     public static final long DEFAULT_HEIGHT = 256L;
 
@@ -39,6 +40,11 @@ public class SvgDocument implements ISvgElement {
 
     public SvgDocument() {
         super();
+        setElementType(ElementType.SVG);
+    }
+
+    @Override
+    public void validateAttributes() throws InvalidAttributeException {
     }
 
     public SvgDocument(Long width, Long height) {
@@ -94,18 +100,27 @@ public class SvgDocument implements ISvgElement {
         if (elements == null) {
             elements = new ArrayList<>();
         }
+        if (element.getElementType() == ElementType.SVG) {
+            element.setElementType(ElementType.NESTED_SVG);
+        }
         elements.add(element);
     }
 
     @Override
     public Element generateSvg(Document doc) {
         // Get the root element (the 'svg' element).
-        final Element svgRoot = doc.getDocumentElement();
+        final Element svgRoot;
+        if (getElementType() == ElementType.NESTED_SVG) {
+            //Nested SVGs does not have document definition and XML headers.
+            svgRoot = doc.createElementNS(NAMESPACE, "svg");
+        } else {
+            //Set default SVG information.
+            svgRoot = doc.getDocumentElement();
+            setViewBox(svgRoot);
+        }
 
-        setViewBox(svgRoot);
-
-        svgRoot.setAttributeNS(null, "width", String.valueOf(width != 0 ? width : DEFAULT_WIDTH));
-        svgRoot.setAttributeNS(null, "height", String.valueOf(height != 0 ? height : DEFAULT_HEIGHT));
+        svgRoot.setAttributeNS(null, "width", String.valueOf(width != null && width != 0 ? width : DEFAULT_WIDTH));
+        svgRoot.setAttributeNS(null, "height", String.valueOf(height != null && height != 0 ? height : DEFAULT_HEIGHT));
 
         setSvgBackground(doc, svgRoot);
 
