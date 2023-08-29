@@ -27,7 +27,8 @@ example, please check the test inside `infographic-engine-core` module.
 
 **ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is defined as an array
+**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+defined as an array
 of integers where each integer is the length of one dash.
 
 ### Ellipse
@@ -58,7 +59,8 @@ of integers where each integer is the length of one dash.
 
 **ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is defined as an array
+**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+defined as an array
 of integers where each integer is the length of one dash.
 
 ### Image
@@ -95,7 +97,8 @@ of integers where each integer is the length of one dash.
 
 **ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is defined as an array
+**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+defined as an array
 of integers where each integer is the length of one dash.
 
 ### Rectangle
@@ -132,7 +135,8 @@ of integers where each integer is the length of one dash.
 
 **ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is defined as an array
+**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+defined as an array
 of integers where each integer is the length of one dash.
 
 ### Script
@@ -195,9 +199,28 @@ values are `left`, `right`, `center`, `justify`.
 
 **ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is defined as an array
+**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+defined as an array
 of integers where each integer is the length of one dash.
 
 # Custom Components
 
 ### Gauge
+
+**min** Minimum value on the Gauge.
+
+**max** Maximum value on the Gauge.
+
+**value** Current value on the Gauge. Where the arrow is pointing to.
+
+**type** The type of the gauge. Currently we have 'gradient' and 'five_values'.
+
+**colors** If you want to override the default colors of the gauge. Can have 5 elements.
+
+**ElementAttributes.id** The id of the element.
+
+**ElementAttributes.class** The class of the element. Useful when combined with CSS.
+
+**ElementAttributes.x** Starting point of the text on the x-axis.
+
+**ElementAttributes.y** Starting point of the text on the y-axis.

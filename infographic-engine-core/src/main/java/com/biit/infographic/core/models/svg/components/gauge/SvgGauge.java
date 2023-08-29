@@ -68,6 +68,13 @@ public class SvgGauge extends SvgElement {
         setValue(value);
     }
 
+    public SvgGauge(Long xCoordinate, Long yCoordinate, Double min, Double max, Double value, String width, String height) {
+        this(new ElementAttributes(xCoordinate, yCoordinate, width, height, null));
+        setMin(min);
+        setMax(max);
+        setValue(value);
+    }
+
     public boolean isFlip() {
         return flip;
     }
@@ -232,6 +239,14 @@ public class SvgGauge extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-
+        if (getElementAttributes().getWidth() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Gauge '" + getId() + "' does not have 'width' attribute");
+        }
+        if (getElementAttributes().getHeight() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Gauge '" + getId() + "' does not have 'height' attribute");
+        }
+        if (getElementAttributes().getFill() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Gauge '" + getId() + "' does not have 'fill' attribute");
+        }
     }
 }

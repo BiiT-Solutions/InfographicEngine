@@ -77,11 +77,11 @@ public class CustomSvgComponentsTest {
         svgDocument.addElement(gauge);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "gaugeDifferentColors.svg")), true)) {
+                + File.separator + "documentGaugeDifferentColors.svg")), true)) {
             out.println(SvgGenerator.generate(svgDocument));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "gaugeDifferentColors.svg");
+        checkContent(SvgGenerator.generate(svgDocument), "documentGaugeDifferentColors.svg");
     }
 
     @Test
