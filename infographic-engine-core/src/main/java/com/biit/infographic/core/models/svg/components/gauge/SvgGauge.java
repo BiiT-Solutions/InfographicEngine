@@ -1,4 +1,4 @@
-package com.biit.infographic.core.models.svg.components.custom;
+package com.biit.infographic.core.models.svg.components.gauge;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
@@ -16,6 +16,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @JsonRootName(value = "gauge")
 public class SvgGauge extends SvgElement {
@@ -23,6 +24,8 @@ public class SvgGauge extends SvgElement {
     private static final int ARROW_AXIS_WIDTH = 10;
     private static final int GAUGE_DEGREES = 180;
     private static final int GAUGE_HEIGHT = 77;
+
+    private static final String[] COLORS = new String[]{"#ff0000", "#ff8000", "#ffd900", "#87aa00", "#678100"};
 
     @JsonProperty("flip")
     private boolean flip = false;
@@ -109,7 +112,7 @@ public class SvgGauge extends SvgElement {
             final List<Element> children = SvgUtils.getContent(new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
                     .getResource("gauge" + File.separator + "gauge_arrow.svg").toURI()))));
             for (Element child : children) {
-                //Move children from one document to other.
+                //Move children from one document to others.
                 final Node node = doc.importNode(child, true);
                 arrowContainer.appendChild(node);
             }
@@ -162,29 +165,59 @@ public class SvgGauge extends SvgElement {
         gauge.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
 
         try {
+            final String resouce;
+            if (type == GaugeType.FIVE_VALUES) {
+                resouce = "gauge" + File.separator + "gauge_five_values.svg";
+            } else {
+                resouce = "gauge" + File.separator + "gauge_gradient.svg";
+            }
             final List<Element> children = SvgUtils.getContent(new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
-                    .getResource("gauge" + File.separator + "gauge_gradient.svg").toURI()))).trim());
+                    .getResource(resouce).toURI()))).trim());
             for (Element child : children) {
-                //Move children from one document to other.
+                //Move children from one document to others.
                 final Node node = doc.importNode(child, true);
+                //Replace colors.
+                setGradientColors(node);
                 gauge.appendChild(node);
             }
         } catch (Exception e) {
             InfograpicEngineLogger.errorMessage(this.getClass(), e);
         }
 
-        if (flip) {
-            gauge.setAttributeNS(null, "transform", " translate(" + (getElementAttributes().getXCoordinate() + GAUGE_WIDTH) + ","
-                    + (getElementAttributes().getYCoordinate()) + ") scale(-1, 1)");
-        } else {
-            gauge.setAttributeNS(null, "transform", " translate(" + getElementAttributes().getXCoordinate() + ","
-                    + getElementAttributes().getYCoordinate() + ")");
-        }
-
         gauge.appendChild(generateArrow(doc, min, max, value));
 
         elementAttributes(gauge);
         return gauge;
+    }
+
+    private void setGradientColors(Node child) {
+        if (child.getNodeName().equals("defs")) {
+            for (int i = 0; i < child.getChildNodes().getLength(); i++) {
+                if (Objects.equals(child.getChildNodes().item(i).getNodeName(), "linearGradient")) {
+                    final Node gradient = child.getChildNodes().item(i);
+                    int color = flip ? COLORS.length - 1 : 0;
+                    for (int j = 0; j < gradient.getChildNodes().getLength(); j++) {
+                        if (Objects.equals(gradient.getChildNodes().item(j).getNodeName(), "stop")) {
+                            //Replace tag on style with next color.
+                            ((Element) gradient.getChildNodes().item(j)).setAttributeNS(null, "style",
+                                    ((Element) gradient.getChildNodes().item(j)).getAttributeNS(null, "style")
+                                            .replace("GRADIENT_COLOR", COLORS[color % COLORS.length]));
+                            if (flip) {
+                                color--;
+                                if (color < 0) {
+                                    color = COLORS.length - 1;
+                                }
+                            } else {
+                                color++;
+                                if (color >= COLORS.length) {
+                                    color = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
