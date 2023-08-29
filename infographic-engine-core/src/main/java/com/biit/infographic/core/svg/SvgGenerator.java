@@ -1,7 +1,7 @@
 package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.models.svg.ISvgElement;
-import com.biit.infographic.core.models.svg.SvgDocument;
+import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.w3c.dom.DOMImplementation;
@@ -23,11 +23,11 @@ public final class SvgGenerator {
 
     }
 
-    public static String generate(SvgDocument svgDocument) {
+    public static String generate(SvgTemplate svgTemplate) {
         final DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
         final Document doc = impl.createDocument(ISvgElement.NAMESPACE, "svg", null);
 
-        svgDocument.generateSvg(doc);
+        svgTemplate.generateSvg(doc);
 
         return convertToString(doc);
     }

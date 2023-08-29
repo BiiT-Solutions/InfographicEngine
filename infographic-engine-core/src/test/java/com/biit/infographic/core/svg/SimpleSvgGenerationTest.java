@@ -2,7 +2,7 @@ package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgBackground;
-import com.biit.infographic.core.models.svg.SvgDocument;
+import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
@@ -92,382 +92,380 @@ public class SimpleSvgGenerationTest {
 
     @Test
     public void documentBackgroundColorTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.setSvgBackground(new SvgBackground().backgroundColor("#449911"));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setSvgBackground(new SvgBackground().backgroundColor("#449911"));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentBackgroundColor.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
-        checkContent(SvgGenerator.generate(svgDocument), "documentBackgroundColor.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentBackgroundColor.svg");
     }
 
     @Test
     public void documentBackgroundImageTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.setSvgBackground(new SvgBackground().image(readBase64Image("EliseNess.txt")));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setSvgBackground(new SvgBackground().image(readBase64Image("EliseNess.txt")));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentBackgroundImage.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
-        checkContent(SvgGenerator.generate(svgDocument), "documentBackgroundImage.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentBackgroundImage.svg");
     }
 
     @Test
     public void documentImageTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgImage(new ElementAttributes(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                String.valueOf(SvgDocument.DEFAULT_WIDTH / 2), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2)), "EliseNess",
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgImage(new ElementAttributes(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2)), "EliseNess",
                 readBase64Image("EliseNess.txt")));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentImage.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
-        checkContent(SvgGenerator.generate(svgDocument), "documentImage.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentImage.svg");
     }
 
     @Test
     public void documentDrawRectangleTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgRectangle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                String.valueOf(SvgDocument.DEFAULT_WIDTH / 2), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2), "ff0000"));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000"));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawRectangle.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawRectangle.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawRectangle.svg");
     }
 
     @Test
     public void documentDrawRectangleWithRadiusTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        final SvgRectangle rectangle = new SvgRectangle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                String.valueOf(SvgDocument.DEFAULT_WIDTH / 2), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2), "ff0000");
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000");
         rectangle.setXRadius(25L);
         rectangle.setXRadius(50L);
-        svgDocument.addElement(rectangle);
+        svgTemplate.addElement(rectangle);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawRectangleWithRadius.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawRectangleWithRadius.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawRectangleWithRadius.svg");
     }
 
     @Test(expectedExceptions = InvalidAttributeException.class)
     public void documentDrawInvalidRectangleTest() {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgRectangle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                null, String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2), "ff0000"));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                null, String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000"));
 
-        SvgGenerator.generate(svgDocument);
+        SvgGenerator.generate(svgTemplate);
     }
 
     @Test
     public void documentDrawCircleTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                SvgDocument.DEFAULT_WIDTH / 2));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 2));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawCircle.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawCircle.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawCircle.svg");
     }
 
     @Test(expectedExceptions = InvalidAttributeException.class)
     public void documentDrawInvalidCircleTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 0L));
 
-        SvgGenerator.generate(svgDocument);
+        SvgGenerator.generate(svgTemplate);
     }
 
     @Test
     public void documentDrawCircleOutsideTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2 - 100, SvgDocument.DEFAULT_HEIGHT / 2 - 100,
-                SvgDocument.DEFAULT_HEIGHT));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 2 - 100, SvgTemplate.DEFAULT_HEIGHT / 2 - 100,
+                SvgTemplate.DEFAULT_HEIGHT));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawCircleOutside.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawCircleOutside.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawCircleOutside.svg");
     }
 
     @Test
     public void documentDrawEllipseTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        final SvgEllipse ellipse = new SvgEllipse(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                String.valueOf(SvgDocument.DEFAULT_WIDTH / 4), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2)
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgEllipse ellipse = new SvgEllipse(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 4), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2)
                 , "ff00ff");
-        svgDocument.addElement(ellipse);
+        svgTemplate.addElement(ellipse);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawEllipse.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawEllipse.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawEllipse.svg");
     }
 
     @Test
     public void documentDrawEllipseOutsideTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        final SvgEllipse ellipse = new SvgEllipse(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT,
-                String.valueOf(SvgDocument.DEFAULT_WIDTH / 4), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2)
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgEllipse ellipse = new SvgEllipse(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 4), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2)
                 , "ff00ff");
-        svgDocument.addElement(ellipse);
+        svgTemplate.addElement(ellipse);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawEllipseOutside.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawEllipseOutside.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawEllipseOutside.svg");
     }
 
     @Test
     public void documentDrawLineTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        final SvgLine line = new SvgLine(50L, 50L, SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        svgDocument.addElement(line);
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgLine line = new SvgLine(50L, 50L, SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        svgTemplate.addElement(line);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawLine.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawLine.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawLine.svg");
     }
 
     @Test
     public void documentDrawLineOutsideTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        final SvgLine line = new SvgLine(50L, 50L, SvgDocument.DEFAULT_WIDTH + 100, SvgDocument.DEFAULT_HEIGHT + 50);
-        svgDocument.addElement(line);
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgLine line = new SvgLine(50L, 50L, SvgTemplate.DEFAULT_WIDTH + 100, SvgTemplate.DEFAULT_HEIGHT + 50);
+        svgTemplate.addElement(line);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawLineOutside.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawLineOutside.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawLineOutside.svg");
     }
 
     @Test
     public void documentDrawLineStrokeTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        final SvgLine line = new SvgLine(50L, 50L, SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgLine line = new SvgLine(50L, 50L, SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
         line.getElementStroke().setLineCap(StrokeLineCap.ROUND);
         line.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
-        svgDocument.addElement(line);
+        svgTemplate.addElement(line);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawLineStroke.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentDrawLineStroke.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawLineStroke.svg");
     }
 
     @Test
     public void documentSimpleTextTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText("This is the first text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
-        svgDocument.addElement(text);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText("This is the first text", 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentSimpleText.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentSimpleText.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentSimpleText.svg");
     }
 
     @Test
     public void documentLongTextLimitedLineTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setLengthAdjust(FontLengthAdjust.SPACING);
         text.setMaxLineLength(80);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentLongTextLimitedLine.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextLimitedLine.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextLimitedLine.svg");
     }
 
     @Test
     public void documentLongTextLimitedLineForcingLengthTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextLength("8000");
         text.setLengthAdjust(FontLengthAdjust.SPACING);
         text.setMaxLineLength(80);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentLongTextLimitedLineForcingLength.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextLimitedLineForcingLength.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextLimitedLineForcingLength.svg");
     }
 
     @Test
     public void documentLongTextAlignRightTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.RIGHT);
         text.setMaxLineLength(80);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentLongTextAlignRight.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
-
-        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextAlignRight.svg");
     }
 
     @Test
     public void documentLongTextJustifyTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineLength(80);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentLongTextJustify.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextJustify.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextJustify.svg");
     }
 
     @Test
     public void documentLongTextJustifyByWidthTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2, 300);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2, 300);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineLength(80);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentLongTextJustifyByWidth.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextJustifyByWidth.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextJustifyByWidth.svg");
     }
 
     @Test
     public void documentLongTextJustifyRotatedTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText(LONG_TEXT, 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineLength(80);
         text.setRotate(90);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentLongTextJustifyRotated.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentLongTextJustifyRotated.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextJustifyRotated.svg");
     }
 
     @Test
     public void documentSimpleTextVariantTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        SvgText text = new SvgText("This is the normal text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        SvgText text = new SvgText("This is the normal text", 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setFontVariant(FontVariantType.NORMAL);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
-        text = new SvgText("This is the Small Caps text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2 + 50);
+        text = new SvgText("This is the Small Caps text", 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2 + 50);
         text.setFontVariant(FontVariantType.SMALL_CAPS);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
-        text = new SvgText("This is the Unicase text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2 + 100);
+        text = new SvgText("This is the Unicase text", 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2 + 100);
         text.setFontVariant(FontVariantType.UNICASE);
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentSimpleTextVariant.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentSimpleTextVariant.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentSimpleTextVariant.svg");
     }
 
     @Test
     public void documentColoredTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText("This is the first text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText("This is the first text", 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.getElementAttributes().setFill("ff0000");
         text.getElementStroke().setStrokeColor("0000ff");
         text.getElementStroke().setStrokeWidth(0.2);
         text.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
-        svgDocument.addElement(text);
+        svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentColoredText.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentColoredText.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentColoredText.svg");
     }
 
     @Test
     public void documentScriptTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                SvgDocument.DEFAULT_WIDTH / 2));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 2));
 
-        svgDocument.addElement(new SvgScript(SCRIPT));
+        svgTemplate.addElement(new SvgScript(SCRIPT));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentScript.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentScript.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentScript.svg");
     }
 
     @Test
     public void nestedDocumentsTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
+        SvgTemplate svgTemplate = new SvgTemplate();
 
-        SvgDocument childDocument1 = new SvgDocument();
-        childDocument1.addElement(new SvgCircle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                SvgDocument.DEFAULT_WIDTH / 2));
-        svgDocument.addElement(childDocument1);
+        SvgTemplate childDocument1 = new SvgTemplate();
+        childDocument1.addElement(new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 2));
+        svgTemplate.addElement(childDocument1);
 
-        SvgDocument childDocument2 = new SvgDocument();
-        childDocument2.addElement(new SvgRectangle(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                String.valueOf(SvgDocument.DEFAULT_WIDTH / 2), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2), "ff0000"));
-        svgDocument.addElement(childDocument2);
+        SvgTemplate childDocument2 = new SvgTemplate();
+        childDocument2.addElement(new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000"));
+        svgTemplate.addElement(childDocument2);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "nestedDocuments.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "nestedDocuments.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "nestedDocuments.svg");
     }
 
     @AfterClass(enabled = false)

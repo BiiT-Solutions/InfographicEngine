@@ -1,8 +1,9 @@
 package com.biit.infographic.core.svg;
 
-import com.biit.infographic.core.models.svg.SvgDocument;
+import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -57,77 +58,77 @@ public class CustomSvgComponentsTest {
 
     @Test
     public void gaugeTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
-        svgDocument.addElement(new SvgGauge(1.0, 10.0, 3.0));
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgGauge(1.0, 10.0, 3.0));
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentGauge.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentGauge.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentGauge.svg");
     }
 
     @Test
     public void gaugeDifferentColorsTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
+        SvgTemplate svgTemplate = new SvgTemplate();
         final SvgGauge gauge = new SvgGauge(1.0, 10.0, 3.8);
         gauge.setColors(new String[]{"#000000", "#ff0000"});
         gauge.setFlip(true);
-        svgDocument.addElement(gauge);
+        svgTemplate.addElement(gauge);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentGaugeDifferentColors.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentGaugeDifferentColors.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentGaugeDifferentColors.svg");
     }
 
     @Test
     public void gaugeFlipTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
+        SvgTemplate svgTemplate = new SvgTemplate();
         final SvgGauge gauge = new SvgGauge(1.0, 10.0, 3.8);
         gauge.setFlip(true);
-        svgDocument.addElement(gauge);
+        svgTemplate.addElement(gauge);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentGaugeFlip.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentGaugeFlip.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentGaugeFlip.svg");
     }
 
     @Test
     public void gauge5ValuesTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
+        SvgTemplate svgTemplate = new SvgTemplate();
         final SvgGauge gauge = new SvgGauge(1.0, 5.0, 4.0);
         gauge.setType(GaugeType.FIVE_VALUES);
-        svgDocument.addElement(gauge);
+        svgTemplate.addElement(gauge);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentGauge5Values.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentGauge5Values.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentGauge5Values.svg");
     }
 
     @Test
     public void gauge5ValuesFlipTest() throws IOException {
-        SvgDocument svgDocument = new SvgDocument();
+        SvgTemplate svgTemplate = new SvgTemplate();
         final SvgGauge gauge = new SvgGauge(1.0, 5.0, 4.0);
         gauge.setType(GaugeType.FIVE_VALUES);
         gauge.setFlip(true);
-        svgDocument.addElement(gauge);
+        svgTemplate.addElement(gauge);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentGauge5ValuesFlip.svg")), true)) {
-            out.println(SvgGenerator.generate(svgDocument));
+            out.println(SvgGenerator.generate(svgTemplate));
         }
 
-        checkContent(SvgGenerator.generate(svgDocument), "documentGauge5ValuesFlip.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "documentGauge5ValuesFlip.svg");
     }
 
     @AfterClass(enabled = false)

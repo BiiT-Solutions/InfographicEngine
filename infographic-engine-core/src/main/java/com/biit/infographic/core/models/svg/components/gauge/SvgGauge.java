@@ -32,10 +32,10 @@ public class SvgGauge extends SvgElement {
     @JsonProperty("min")
     private double min = 0;
 
-    @JsonProperty("min")
+    @JsonProperty("max")
     private double max = 1;
 
-    @JsonProperty("min")
+    @JsonProperty("value")
     private double value = (double) 1 / 2;
 
     @JsonProperty("type")

@@ -18,8 +18,8 @@ import java.util.List;
  * <p>
  * If height and width are not set, will be calculated to fit the content.
  */
-@JsonRootName(value = "report")
-public class SvgDocument extends SvgElement {
+@JsonRootName(value = "template")
+public class SvgTemplate extends SvgElement {
     public static final long DEFAULT_WIDTH = 256L;
     public static final long DEFAULT_HEIGHT = 256L;
 
@@ -38,7 +38,7 @@ public class SvgDocument extends SvgElement {
     @JsonProperty("elements")
     private List<SvgElement> elements;
 
-    public SvgDocument() {
+    public SvgTemplate() {
         super();
         setElementType(ElementType.SVG);
     }
@@ -47,7 +47,7 @@ public class SvgDocument extends SvgElement {
     public void validateAttributes() throws InvalidAttributeException {
     }
 
-    public SvgDocument(Long width, Long height) {
+    public SvgTemplate(Long width, Long height) {
         this();
         setWidth(width);
         setHeight(height);
