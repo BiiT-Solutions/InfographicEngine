@@ -8,11 +8,13 @@
         <groups>
             <run>
                 <include name="simpleSvgGenerationTest"/>
+                <include name="customSvgComponentsTest"/>
                 <include name="colorValidation"/>
             </run>
         </groups>
         <classes>
             <class name="com.biit.infographic.core.svg.SimpleSvgGenerationTest"/>
+            <class name="com.biit.infographic.core.svg.CustomSvgComponentsTest"/>
             <class name="com.biit.infographic.core.svg.ColorValidationTest"/>
         </classes>
     </test>

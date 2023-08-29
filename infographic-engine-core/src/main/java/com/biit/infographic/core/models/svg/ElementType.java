@@ -9,5 +9,6 @@ public enum ElementType {
     ELLIPSE,
     LINE,
     TEXT,
-    SCRIPT;
+    SCRIPT,
+    GAUGE;
 }
