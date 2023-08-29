@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Primary
 @Service("securityService")
-public class InfograpicEngineSecurityService extends SecurityService {
+public class InfographicEngineSecurityService extends SecurityService {
 
-    private static final String VIEWER = "InfograpicEngine_VIEWER";
-    private static final String ADMIN = "InfograpicEngine_ADMIN";
-    private static final String EDITOR = "InfograpicEngine_EDITOR";
+    private static final String VIEWER = "InfographicEngine_VIEWER";
+    private static final String ADMIN = "InfographicEngine_ADMIN";
+    private static final String EDITOR = "InfographicEngine_EDITOR";
 
     private String viewerPrivilege = null;
     private String adminPrivilege = null;

@@ -6,7 +6,7 @@ import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.SvgUtils;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.utils.Color;
-import com.biit.infographic.logger.InfograpicEngineLogger;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
@@ -134,7 +134,7 @@ public class SvgGauge extends SvgElement {
                 arrowContainer.appendChild(node);
             }
         } catch (Exception e) {
-            InfograpicEngineLogger.errorMessage(this.getClass(), e);
+            InfographicEngineLogger.errorMessage(this.getClass(), e);
         }
 
         //Calculate the angle of the arrow.
@@ -198,7 +198,7 @@ public class SvgGauge extends SvgElement {
                 gauge.appendChild(node);
             }
         } catch (Exception e) {
-            InfograpicEngineLogger.errorMessage(this.getClass(), e);
+            InfographicEngineLogger.errorMessage(this.getClass(), e);
         }
 
         gauge.appendChild(generateArrow(doc, min, max, value));

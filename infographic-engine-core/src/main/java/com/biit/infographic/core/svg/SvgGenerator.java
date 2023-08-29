@@ -2,7 +2,7 @@ package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.models.svg.ISvgElement;
 import com.biit.infographic.core.models.svg.SvgDocument;
-import com.biit.infographic.logger.InfograpicEngineLogger;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -46,7 +46,7 @@ public final class SvgGenerator {
             transformer.transform(domSource, result);
             return writer.toString();
         } catch (TransformerException ex) {
-            InfograpicEngineLogger.errorMessage(SvgGenerator.class, ex);
+            InfographicEngineLogger.errorMessage(SvgGenerator.class, ex);
         }
         return null;
     }

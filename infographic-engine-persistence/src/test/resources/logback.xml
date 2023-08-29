@@ -30,7 +30,7 @@
     </appender>
 
     <!-- Custom ones -->
-    <logger name="com.biit.infographic.logger.InfograpicEngineLogger" additivity="false" level="DEBUG">
+    <logger name="com.biit.infographic.logger.InfographicEngineLogger" additivity="false" level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>

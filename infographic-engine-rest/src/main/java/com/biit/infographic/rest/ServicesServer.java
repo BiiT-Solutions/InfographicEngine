@@ -1,6 +1,6 @@
 package com.biit.infographic.rest;
 
-import com.biit.infographic.logger.InfograpicEngineLogger;
+import com.biit.infographic.logger.InfographicEngineLogger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -61,6 +61,6 @@ public class ServicesServer {
 
     @Bean
     public ApplicationListener<ContextRefreshedEvent> startupLoggingListener() {
-        return event -> InfograpicEngineLogger.info(ServicesServer.class, "### Server started ###");
+        return event -> InfographicEngineLogger.info(ServicesServer.class, "### Server started ###");
     }
 }

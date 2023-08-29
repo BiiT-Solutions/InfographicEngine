@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Defines basic log behavior. Uses log4j.properties.
  */
-public class InfograpicEngineLogger extends BasicLogger {
+public class InfographicEngineLogger extends BasicLogger {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InfograpicEngineLogger.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InfographicEngineLogger.class);
 
     /**
      * Events that have business meaning (i.e. creating category, deleting form,

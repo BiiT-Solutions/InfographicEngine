@@ -12,16 +12,16 @@ public class LoggedException extends RuntimeException {
         final String className = clazz.getName();
         switch (type) {
             case INFO:
-               InfograpicEngineLogger.info(className, message);
+               InfographicEngineLogger.info(className, message);
                 break;
             case WARNING:
-                InfograpicEngineLogger.warning(className, message);
+                InfographicEngineLogger.warning(className, message);
                 break;
             case SEVERE:
-                InfograpicEngineLogger.severe(className, message);
+                InfographicEngineLogger.severe(className, message);
                 break;
             default:
-                InfograpicEngineLogger.debug(className, message);
+                InfographicEngineLogger.debug(className, message);
                 break;
         }
     }
@@ -33,7 +33,7 @@ public class LoggedException extends RuntimeException {
 
     protected LoggedException(Class<?> clazz, Throwable e) {
         super(e);
-        InfograpicEngineLogger.errorMessage(clazz, e);
+        InfographicEngineLogger.errorMessage(clazz, e);
     }
 
     public HttpStatus getStatus() {
