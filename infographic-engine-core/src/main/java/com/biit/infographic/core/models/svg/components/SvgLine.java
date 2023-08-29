@@ -4,18 +4,13 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
-import com.biit.infographic.core.models.svg.utils.Color;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @JsonRootName(value = "line")
 public class SvgLine extends SvgElement {
-
 
     @JsonProperty("x2")
     private Long x2Coordinate;
@@ -23,21 +18,10 @@ public class SvgLine extends SvgElement {
     @JsonProperty("y2")
     private Long y2Coordinate;
 
-    @JsonProperty("stroke-width")
-    private Double strokeWidth;
-
-    @JsonProperty("stroke")
-    private String strokeColor;
-
-    @JsonProperty("stroke-dasharray")
-    private List<Integer> strokeDash;
-
-    @JsonProperty("stroke-linecap")
-    private StrokeLineCap lineCap;
-
     public SvgLine(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.LINE);
+        getElementStroke().setStrokeWidth(1.0);
     }
 
     public SvgLine() {
@@ -66,47 +50,6 @@ public class SvgLine extends SvgElement {
         this.y2Coordinate = y2Coordinate;
     }
 
-    public double getStrokeWidth() {
-        if (strokeWidth == null) {
-            return 1.0;
-        }
-        return strokeWidth;
-    }
-
-    public void setStrokeWidth(double strokeWidth) {
-        this.strokeWidth = strokeWidth;
-    }
-
-    public String getStrokeColor() {
-        if (strokeColor == null) {
-            return "black";
-        }
-        return strokeColor;
-    }
-
-    public void setStrokeColor(String strokeColor) {
-        this.strokeColor = Color.checkColor(strokeColor);
-    }
-
-    public List<Integer> getStrokeDash() {
-        return strokeDash;
-    }
-
-    public void setStrokeDash(List<Integer> strokeDash) {
-        this.strokeDash = strokeDash;
-    }
-
-    public StrokeLineCap getLineCap() {
-        if (lineCap == null) {
-            return StrokeLineCap.BUTT;
-        }
-        return lineCap;
-    }
-
-    public void setLineCap(StrokeLineCap lineCap) {
-        this.lineCap = lineCap;
-    }
-
     @Override
     public Element generateSvg(Document doc) {
         validateAttributes();
@@ -115,15 +58,7 @@ public class SvgLine extends SvgElement {
         line.setAttributeNS(null, "y1", String.valueOf(getElementAttributes().getYCoordinate()));
         line.setAttributeNS(null, "x2", String.valueOf(getX2Coordinate()));
         line.setAttributeNS(null, "y2", String.valueOf(getY2Coordinate()));
-        line.setAttributeNS(null, "stroke", getStrokeColor());
-        line.setAttributeNS(null, "stroke-width", String.valueOf(getStrokeWidth()));
-        if (strokeDash != null && !strokeDash.isEmpty()) {
-            line.setAttributeNS(null, "stroke-dasharray", strokeDash.stream().map(String::valueOf)
-                    .collect(Collectors.joining(" ")));
-        }
-        if (lineCap != null) {
-            line.setAttributeNS(null, "style", "stroke-linecap:" + getLineCap().value());
-        }
+        elementStroke(line);
         elementAttributes(line);
         return line;
     }
@@ -135,6 +70,12 @@ public class SvgLine extends SvgElement {
         }
         if (y2Coordinate == null) {
             throw new InvalidAttributeException(this.getClass(), "Invalid y2 on line '" + getId() + "'");
+        }
+        if (getElementAttributes().getHeight() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Line '" + getId() + "' must not have 'height' attribute");
+        }
+        if (getElementAttributes().getWidth() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Line '" + getId() + "' must not have 'width' attribute");
         }
     }
 }

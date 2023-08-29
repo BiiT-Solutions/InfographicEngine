@@ -13,11 +13,13 @@ public class ElementAttributes {
     @JsonProperty("width")
     private Long width;
 
+    @JsonProperty("widthUnit")
     private Unit widthUnit = Unit.PIXELS;
 
     @JsonProperty("height")
     private Long height;
 
+    @JsonProperty("heightUnit")
     private Unit heightUnit = Unit.PIXELS;
 
     @JsonProperty("x")
@@ -66,7 +68,7 @@ public class ElementAttributes {
     }
 
     public String getWidthValue() {
-        return getWidth() + getWidthUnit().getTag();
+        return getWidth() + getWidthUnit().getValue();
     }
 
     public Long getWidth() {
@@ -74,19 +76,8 @@ public class ElementAttributes {
     }
 
     public void setWidth(String width) {
-        if (width == null) {
-            this.width = null;
-        } else {
-            try {
-                this.width = Long.parseLong(width);
-                this.widthUnit = Unit.PIXELS;
-            } catch (NumberFormatException e) {
-                if (width.endsWith("%")) {
-                    this.width = Long.parseLong(width.replaceAll("%", "").trim());
-                    this.widthUnit = Unit.PERCENTAGE;
-                }
-            }
-        }
+        this.width = Unit.getValue(width);
+        this.widthUnit = Unit.getUnit(width);
     }
 
     public Long getHeight() {
@@ -94,23 +85,12 @@ public class ElementAttributes {
     }
 
     public void setHeight(String height) {
-        if (height == null) {
-            this.height = null;
-        } else {
-            try {
-                this.height = Long.parseLong(height);
-                this.heightUnit = Unit.PIXELS;
-            } catch (NumberFormatException e) {
-                if (height.endsWith("%")) {
-                    this.height = Long.parseLong(height.replaceAll("%", "").trim());
-                    this.heightUnit = Unit.PERCENTAGE;
-                }
-            }
-        }
+        this.height = Unit.getValue(height);
+        this.heightUnit = Unit.getUnit(height);
     }
 
     public String getHeightValue() {
-        return getHeight() + getHeightUnit().getTag();
+        return getHeight() + getHeightUnit().getValue();
     }
 
     public Unit getWidthUnit() {

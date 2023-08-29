@@ -4,16 +4,18 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 @JsonRootName(value = "rectangle")
 public class SvgRectangle extends SvgElement {
 
+    @JsonProperty("xRadius")
     private Long xRadius = 0L;
+
+    @JsonProperty("yRadius")
     private Long yRadius = 0L;
 
     public SvgRectangle(ElementAttributes elementAttributes) {
@@ -33,22 +35,18 @@ public class SvgRectangle extends SvgElement {
         this(new ElementAttributes(xCoordinate, yCoordinate, width, height, fill));
     }
 
-    @JsonGetter("xRadius")
     public Long getXRadius() {
         return xRadius;
     }
 
-    @JsonSetter("xRadius")
     public void setXRadius(Long xRadius) {
         this.xRadius = xRadius;
     }
 
-    @JsonGetter("yRadius")
     public Long getYRadius() {
         return yRadius;
     }
 
-    @JsonSetter("yRadius")
     public void setYRadius(Long yRadius) {
         this.yRadius = yRadius;
     }
@@ -64,6 +62,7 @@ public class SvgRectangle extends SvgElement {
         if (yRadius != null && yRadius != 0) {
             rectangle.setAttributeNS(null, "ry", String.valueOf(getYRadius()));
         }
+        elementStroke(rectangle);
         elementAttributes(rectangle);
         return rectangle;
     }

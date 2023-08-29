@@ -157,10 +157,10 @@ public class SvgDocument extends SvgElement {
                     y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgCircle) element).getRadius());
                 }
                 if (element instanceof SvgEllipse) {
-                    height = Math.max(height, ((SvgEllipse) element).getYRadius() + element.getElementAttributes().getYCoordinate());
-                    width = Math.max(width, ((SvgEllipse) element).getXRadius() + element.getElementAttributes().getXCoordinate());
-                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgEllipse) element).getYRadius());
-                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgEllipse) element).getXRadius());
+                    height = Math.max(height, element.getElementAttributes().getHeight() + element.getElementAttributes().getYCoordinate());
+                    width = Math.max(width, element.getElementAttributes().getWidth() + element.getElementAttributes().getXCoordinate());
+                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - element.getElementAttributes().getWidth());
+                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - element.getElementAttributes().getHeight());
                 }
                 if (element instanceof SvgLine) {
                     height = Math.max(height, element.getElementAttributes().getYCoordinate());

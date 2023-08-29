@@ -3,8 +3,8 @@ package com.biit.infographic.core.models.svg.components.text;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
-import com.biit.infographic.core.models.svg.utils.Color;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.w3c.dom.Document;
@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @JsonRootName(value = "text")
 public class SvgText extends SvgElement {
@@ -28,14 +27,14 @@ public class SvgText extends SvgElement {
     @JsonProperty("contentText")
     private String text;
 
-    @JsonProperty("font-family")
+    @JsonProperty("fontFamily")
     private String fontFamily = "sans-serif";
 
-    @JsonProperty("font-size")
+    @JsonProperty("fontSize")
     private int fontSize = 0;
 
     //Font variant must be available on the font.
-    @JsonProperty("font-variant")
+    @JsonProperty("fontVariant")
     private FontVariantType fontVariant;
 
     //Rotate uses translate, that rotates not only the element, but also the distance between (0,0) and (x,y)
@@ -47,7 +46,10 @@ public class SvgText extends SvgElement {
     private FontLengthAdjust lengthAdjust;
 
     @JsonProperty("textLength")
-    private String textLength;
+    private Long textLength;
+
+    @JsonProperty("textLengthUnit")
+    private Unit textLengthUnit = Unit.PIXELS;
 
     @JsonProperty("dx")
     private String dx;
@@ -56,24 +58,15 @@ public class SvgText extends SvgElement {
     private String dy;
 
     //In Characters
-    @JsonProperty("maxLineSize")
+    @JsonProperty("maxLineLength")
     private Integer maxLineLength;
 
     //In pixels
-    @JsonProperty("maxLineSize")
+    @JsonProperty("maxLineWidth")
     private Integer lineWidth;
 
-    @JsonProperty("text-align")
+    @JsonProperty("textAlign")
     private TextAlign textAlign = TextAlign.LEFT;
-
-    @JsonProperty("stroke-width")
-    private Double strokeWidth;
-
-    @JsonProperty("stroke")
-    private String strokeColor;
-
-    @JsonProperty("stroke-dasharray")
-    private List<Integer> strokeDash;
 
     public SvgText(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -139,12 +132,29 @@ public class SvgText extends SvgElement {
         this.lengthAdjust = lengthAdjust;
     }
 
-    public String getTextLength() {
+    public Long getTextLength() {
         return textLength;
     }
 
+    public String getTextLengthValue() {
+        return getTextLength() + getTextLengthUnit().getValue();
+    }
+
     public void setTextLength(String textLength) {
+        this.textLength = Unit.getValue(textLength);
+        this.textLengthUnit = Unit.getUnit(textLength);
+    }
+
+    public void setTextLength(Long textLength) {
         this.textLength = textLength;
+    }
+
+    public Unit getTextLengthUnit() {
+        return textLengthUnit;
+    }
+
+    public void setTextLengthUnit(Unit textLengthUnit) {
+        this.textLengthUnit = textLengthUnit;
     }
 
     public String getDx() {
@@ -187,30 +197,6 @@ public class SvgText extends SvgElement {
         this.textAlign = textAlign;
     }
 
-    public String getStrokeColor() {
-        return strokeColor;
-    }
-
-    public void setStrokeColor(String strokeColor) {
-        this.strokeColor = Color.checkColor(strokeColor);
-    }
-
-    public Double getStrokeWidth() {
-        return strokeWidth;
-    }
-
-    public void setStrokeWidth(Double strokeWidth) {
-        this.strokeWidth = strokeWidth;
-    }
-
-    public List<Integer> getStrokeDash() {
-        return strokeDash;
-    }
-
-    public void setStrokeDash(List<Integer> strokeDash) {
-        this.strokeDash = strokeDash;
-    }
-
     public Integer getLineWidth() {
         return lineWidth;
     }
@@ -240,19 +226,13 @@ public class SvgText extends SvgElement {
             text.setAttributeNS(null, "lengthAdjust", getLengthAdjust().getTag());
         }
         if (getTextLength() != null) {
-            text.setAttributeNS(null, "textLength", getTextLength());
+            text.setAttributeNS(null, "textLength", getTextLengthValue());
         }
         if (getDx() != null) {
             text.setAttributeNS(null, "dx", getDx());
         }
         if (getDy() != null) {
             text.setAttributeNS(null, "dy", getDy());
-        }
-        text.setAttributeNS(null, "stroke", getStrokeColor());
-        text.setAttributeNS(null, "stroke-width", String.valueOf(getStrokeWidth()));
-        if (strokeDash != null && !strokeDash.isEmpty()) {
-            text.setAttributeNS(null, "stroke-dasharray", strokeDash.stream().map(String::valueOf)
-                    .collect(Collectors.joining(" ")));
         }
 
         if (getLineWidth() != null || getMaxLineLength() != null) {
@@ -285,6 +265,7 @@ public class SvgText extends SvgElement {
             getElementAttributes().addStyle("text-align:" + getTextAlign().getStyle());
         }
 
+        elementStroke(text);
         elementAttributes(text);
         return text;
     }

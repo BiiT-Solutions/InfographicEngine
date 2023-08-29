@@ -46,6 +46,7 @@ public class SvgCircle extends SvgElement {
         circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
         circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
         circle.setAttributeNS(null, "r", String.valueOf(radius));
+        elementStroke(circle);
         elementAttributes(circle);
         return circle;
     }
@@ -60,9 +61,6 @@ public class SvgCircle extends SvgElement {
         }
         if (getElementAttributes().getWidth() != null) {
             throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'width' attribute");
-        }
-        if (getElementAttributes().getFill() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'fill' attribute");
         }
     }
 }

@@ -74,5 +74,11 @@ public class SvgImage extends SvgElement {
         if (getElementAttributes().getWidth() == null) {
             throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have 'width' attribute");
         }
+        if (getElementAttributes().getFill() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must not have 'fill' attribute");
+        }
+        if (getElementAttributes().getCssClass() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must not have 'class' attribute");
+        }
     }
 }

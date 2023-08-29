@@ -207,10 +207,8 @@ public class SimpleSvgGenerationTest {
     public void documentDrawEllipseTest() throws IOException {
         SvgDocument svgDocument = new SvgDocument();
         final SvgEllipse ellipse = new SvgEllipse(SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2,
-                SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2
+                String.valueOf(SvgDocument.DEFAULT_WIDTH / 4), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2)
                 , "ff00ff");
-        ellipse.setXRadius(25L);
-        ellipse.setYRadius(50L);
         svgDocument.addElement(ellipse);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
@@ -225,10 +223,8 @@ public class SimpleSvgGenerationTest {
     public void documentDrawEllipseOutsideTest() throws IOException {
         SvgDocument svgDocument = new SvgDocument();
         final SvgEllipse ellipse = new SvgEllipse(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT,
-                SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2
+                String.valueOf(SvgDocument.DEFAULT_WIDTH / 4), String.valueOf(SvgDocument.DEFAULT_HEIGHT / 2)
                 , "ff00ff");
-        ellipse.setXRadius(25L);
-        ellipse.setYRadius(50L);
         svgDocument.addElement(ellipse);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
@@ -271,8 +267,8 @@ public class SimpleSvgGenerationTest {
     public void documentDrawLineStrokeTest() throws IOException {
         SvgDocument svgDocument = new SvgDocument();
         final SvgLine line = new SvgLine(50L, 50L, SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
-        line.setLineCap(StrokeLineCap.ROUND);
-        line.setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
+        line.getElementStroke().setLineCap(StrokeLineCap.ROUND);
+        line.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
         svgDocument.addElement(line);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
@@ -423,9 +419,9 @@ public class SimpleSvgGenerationTest {
         SvgDocument svgDocument = new SvgDocument(SvgDocument.DEFAULT_WIDTH, SvgDocument.DEFAULT_HEIGHT);
         final SvgText text = new SvgText("This is the first text", 12, SvgDocument.DEFAULT_WIDTH / 2, SvgDocument.DEFAULT_HEIGHT / 2);
         text.getElementAttributes().setFill("ff0000");
-        text.setStrokeColor("0000ff");
-        text.setStrokeWidth(0.2);
-        text.setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
+        text.getElementStroke().setStrokeColor("0000ff");
+        text.getElementStroke().setStrokeWidth(0.2);
+        text.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
         svgDocument.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
