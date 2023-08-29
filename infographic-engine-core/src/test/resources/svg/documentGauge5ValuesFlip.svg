@@ -5,13 +5,13 @@
                 
             <linearGradient id="color1">
                       
-                <stop style="stop-color:#ff0000;stop-opacity:1"/>
+                <stop style="stop-color:#678100;stop-opacity:1"/>
                     
             </linearGradient>
                 
             <linearGradient id="color2">
                       
-                <stop style="stop-color:#ff8000;stop-opacity:1"/>
+                <stop style="stop-color:#87aa00;stop-opacity:1"/>
                     
             </linearGradient>
                 
@@ -23,13 +23,13 @@
                 
             <linearGradient id="color4">
                       
-                <stop style="stop-color:#87aa00;stop-opacity:1"/>
+                <stop style="stop-color:#ff8000;stop-opacity:1"/>
                     
             </linearGradient>
                 
             <linearGradient id="color5">
                       
-                <stop style="stop-color:#678100;stop-opacity:1"/>
+                <stop style="stop-color:#ff0000;stop-opacity:1"/>
                     
             </linearGradient>
               

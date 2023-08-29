@@ -69,6 +69,22 @@ public class CustomSvgComponentsTest {
     }
 
     @Test
+    public void gaugeDifferentColorsTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgGauge gauge = new SvgGauge(1.0, 10.0, 3.8);
+        gauge.setColors(new String[]{"#000000", "#ff0000"});
+        gauge.setFlip(true);
+        svgDocument.addElement(gauge);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "gaugeDifferentColors.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+
+        checkContent(SvgGenerator.generate(svgDocument), "gaugeDifferentColors.svg");
+    }
+
+    @Test
     public void gaugeFlipTest() throws IOException {
         SvgDocument svgDocument = new SvgDocument();
         final SvgGauge gauge = new SvgGauge(1.0, 10.0, 3.8);
@@ -96,6 +112,22 @@ public class CustomSvgComponentsTest {
         }
 
         checkContent(SvgGenerator.generate(svgDocument), "documentGauge5Values.svg");
+    }
+
+    @Test
+    public void gauge5ValuesFlipTest() throws IOException {
+        SvgDocument svgDocument = new SvgDocument();
+        final SvgGauge gauge = new SvgGauge(1.0, 5.0, 4.0);
+        gauge.setType(GaugeType.FIVE_VALUES);
+        gauge.setFlip(true);
+        svgDocument.addElement(gauge);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentGauge5ValuesFlip.svg")), true)) {
+            out.println(SvgGenerator.generate(svgDocument));
+        }
+
+        checkContent(SvgGenerator.generate(svgDocument), "documentGauge5ValuesFlip.svg");
     }
 
     @AfterClass(enabled = false)

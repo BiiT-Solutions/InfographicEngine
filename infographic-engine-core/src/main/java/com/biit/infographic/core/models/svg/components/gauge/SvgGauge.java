@@ -5,6 +5,7 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.SvgUtils;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.utils.Color;
 import com.biit.infographic.logger.InfograpicEngineLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -25,8 +26,6 @@ public class SvgGauge extends SvgElement {
     private static final int GAUGE_DEGREES = 180;
     private static final int GAUGE_HEIGHT = 77;
 
-    private static final String[] COLORS = new String[]{"#ff0000", "#ff8000", "#ffd900", "#87aa00", "#678100"};
-
     @JsonProperty("flip")
     private boolean flip = false;
 
@@ -41,6 +40,9 @@ public class SvgGauge extends SvgElement {
 
     @JsonProperty("type")
     private GaugeType type;
+
+    @JsonProperty("colors")
+    private String[] colors = new String[]{"#ff0000", "#ff8000", "#ffd900", "#87aa00", "#678100"};
 
     public SvgGauge(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -106,11 +108,19 @@ public class SvgGauge extends SvgElement {
         this.type = type;
     }
 
+    public String[] getColors() {
+        return colors;
+    }
+
+    public void setColors(String[] colors) {
+        this.colors = colors;
+    }
+
     public Element generateArrow(Document doc, Double min, Double max, Double value) {
         final Element arrowContainer = doc.createElementNS(NAMESPACE, "g");
         try {
-            final List<Element> children = SvgUtils.getContent(new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
-                    .getResource("gauge" + File.separator + "gauge_arrow.svg").toURI()))));
+            final List<Element> children = SvgUtils.getContent(Files.readString(Paths.get(getClass().getClassLoader()
+                    .getResource("gauge" + File.separator + "gauge_arrow.svg").toURI())));
             for (Element child : children) {
                 //Move children from one document to others.
                 final Node node = doc.importNode(child, true);
@@ -171,8 +181,8 @@ public class SvgGauge extends SvgElement {
             } else {
                 resouce = "gauge" + File.separator + "gauge_gradient.svg";
             }
-            final List<Element> children = SvgUtils.getContent(new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
-                    .getResource(resouce).toURI()))).trim());
+            final List<Element> children = SvgUtils.getContent(Files.readString(Paths.get(getClass().getClassLoader()
+                    .getResource(resouce).toURI())).trim());
             for (Element child : children) {
                 //Move children from one document to others.
                 final Node node = doc.importNode(child, true);
@@ -192,24 +202,24 @@ public class SvgGauge extends SvgElement {
 
     private void setGradientColors(Node child) {
         if (child.getNodeName().equals("defs")) {
+            int color = flip ? getColors().length - 1 : 0;
             for (int i = 0; i < child.getChildNodes().getLength(); i++) {
                 if (Objects.equals(child.getChildNodes().item(i).getNodeName(), "linearGradient")) {
                     final Node gradient = child.getChildNodes().item(i);
-                    int color = flip ? COLORS.length - 1 : 0;
                     for (int j = 0; j < gradient.getChildNodes().getLength(); j++) {
                         if (Objects.equals(gradient.getChildNodes().item(j).getNodeName(), "stop")) {
                             //Replace tag on style with next color.
                             ((Element) gradient.getChildNodes().item(j)).setAttributeNS(null, "style",
                                     ((Element) gradient.getChildNodes().item(j)).getAttributeNS(null, "style")
-                                            .replace("GRADIENT_COLOR", COLORS[color % COLORS.length]));
+                                            .replace("CUSTOM_COLOR", Color.checkColor(getColors()[color % getColors().length])));
                             if (flip) {
                                 color--;
                                 if (color < 0) {
-                                    color = COLORS.length - 1;
+                                    color = getColors().length - 1;
                                 }
                             } else {
                                 color++;
-                                if (color >= COLORS.length) {
+                                if (color >= getColors().length) {
                                     color = 0;
                                 }
                             }
