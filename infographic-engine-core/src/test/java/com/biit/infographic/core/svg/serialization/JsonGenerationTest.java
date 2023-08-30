@@ -102,6 +102,12 @@ public class JsonGenerationTest {
         check(svgTemplate, svgTemplate1);
     }
 
+    @Test
+    public void allContentTest() throws JsonProcessingException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setId("Parent");
+    }
+
     @AfterClass(enabled = false)
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));

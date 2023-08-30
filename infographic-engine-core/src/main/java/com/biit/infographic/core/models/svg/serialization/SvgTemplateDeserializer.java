@@ -5,25 +5,23 @@ import com.biit.infographic.core.models.svg.LayoutType;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.SvgTemplate;
-import com.biit.infographic.logger.InfographicEngineLogger;
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SvgTemplateDeserializer extends StdDeserializer<SvgTemplate> {
+public class SvgTemplateDeserializer extends SvgElementDeserializer<SvgTemplate> {
 
 
     public SvgTemplateDeserializer() {
         super(SvgTemplate.class);
     }
 
+    @Override
     public void deserialize(SvgTemplate element, JsonNode jsonObject, DeserializationContext context) throws IOException {
+        super.deserialize(element, jsonObject, context);
         if (jsonObject.get("background") != null) {
             element.setSvgBackground(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("background").toPrettyString(), SvgBackground.class));
         }
@@ -47,20 +45,5 @@ public class SvgTemplateDeserializer extends StdDeserializer<SvgTemplate> {
             }
         }
         element.setElements(templateElements);
-    }
-
-
-    @Override
-    public SvgTemplate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
-        final JsonNode jsonObject = jsonParser.getCodec().readTree(jsonParser);
-        try {
-            final SvgTemplate svgTemplate = new SvgTemplate();
-            deserialize(svgTemplate, jsonObject, deserializationContext);
-            return svgTemplate;
-        } catch (NullPointerException e) {
-            InfographicEngineLogger.severe(this.getClass().getName(), "Invalid node:\n" + jsonObject.toPrettyString());
-            InfographicEngineLogger.errorMessage(this.getClass().getName(), e);
-            throw new RuntimeException(e);
-        }
     }
 }
