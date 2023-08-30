@@ -30,7 +30,7 @@ public class ElementAttributesDeserializer extends StdDeserializer<ElementAttrib
         elementAttributes.setStyle(DeserializerParser.parseString("style", jsonObject));
         elementAttributes.setFill(DeserializerParser.parseString("fill", jsonObject));
         elementAttributes.setCssClass(DeserializerParser.parseString("class", jsonObject));
-        elementAttributes.setVerticalAlignment(VerticalAlignment.valueOf(DeserializerParser.parseString("verticalAlign", jsonObject)));
+        elementAttributes.setVerticalAlignment(VerticalAlignment.getAlignment(DeserializerParser.parseString("verticalAlign", jsonObject)));
 
         return elementAttributes;
     }

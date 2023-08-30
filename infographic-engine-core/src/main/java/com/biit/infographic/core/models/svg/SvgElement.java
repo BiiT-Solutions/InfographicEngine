@@ -22,7 +22,7 @@ public abstract class SvgElement implements ISvgElement {
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("type")
+    @JsonProperty("elementType")
     private ElementType elementType;
 
     @JsonProperty("attributes")

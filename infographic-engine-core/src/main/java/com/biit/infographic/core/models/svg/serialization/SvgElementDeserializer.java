@@ -36,7 +36,7 @@ public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDe
         final JsonNode jsonObject = jsonParser.getCodec().readTree(jsonParser);
 
         try {
-            final ElementType type = ElementType.fromString(jsonObject.get("type").asText());
+            final ElementType type = ElementType.fromString(jsonObject.get("elementType").asText());
             if (type == null) {
                 return null;
             }

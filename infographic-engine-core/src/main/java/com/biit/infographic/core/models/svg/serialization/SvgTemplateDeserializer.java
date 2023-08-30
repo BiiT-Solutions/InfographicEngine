@@ -34,10 +34,14 @@ public class SvgTemplateDeserializer extends StdDeserializer<SvgTemplate> {
         if (elementsJson != null) {
             if (elementsJson.isArray()) {
                 for (JsonNode elementJson : elementsJson) {
-                    final ElementType type = ElementType.fromString(elementJson.get("type").toPrettyString());
+                    final ElementType type = ElementType.fromString(elementJson.get("elementType").textValue());
                     if (type != null) {
-                        templateElements.add((SvgElement) ObjectMapperFactory.getObjectMapper()
-                                .readValue(elementJson.toPrettyString(), type.getRelatedClass()));
+                        final SvgElement childElement = (SvgElement) ObjectMapperFactory.getObjectMapper()
+                                .readValue(elementJson.toPrettyString(), type.getRelatedClass());
+                        if (childElement.getElementType() == ElementType.SVG) {
+                            childElement.setElementType(ElementType.NESTED_SVG);
+                        }
+                        templateElements.add(childElement);
                     }
                 }
             }

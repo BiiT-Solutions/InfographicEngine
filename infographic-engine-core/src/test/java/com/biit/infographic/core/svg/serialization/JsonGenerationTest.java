@@ -2,7 +2,9 @@ package com.biit.infographic.core.svg.serialization;
 
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.svg.SvgGenerator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +49,10 @@ public class JsonGenerationTest {
         return objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(template);
     }
 
+    private void check(SvgTemplate sourceTemplate, SvgTemplate newTemplate) {
+        Assert.assertEquals(SvgGenerator.generate(newTemplate), SvgGenerator.generate(sourceTemplate));
+    }
+
     @BeforeClass
     public void prepareFolder() throws IOException {
         Files.createDirectories(Paths.get(OUTPUT_FOLDER));
@@ -59,6 +65,7 @@ public class JsonGenerationTest {
         String jsonText = generateJson(svgTemplate);
 
         SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
     }
 
     @Test
@@ -69,6 +76,30 @@ public class JsonGenerationTest {
         String jsonText = generateJson(svgTemplate);
 
         SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
+    }
+
+    @Test
+    public void nestedDocumentsTest() throws JsonProcessingException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setId("Parent");
+
+        SvgTemplate childDocument1 = new SvgTemplate();
+        childDocument1.addElement(new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 2));
+        childDocument1.setId("Child1");
+        svgTemplate.addElement(childDocument1);
+
+        SvgTemplate childDocument2 = new SvgTemplate();
+        childDocument2.addElement(new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000"));
+        childDocument2.setId("Child2");
+        svgTemplate.addElement(childDocument2);
+
+        String jsonText = generateJson(svgTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
     }
 
     @AfterClass(enabled = false)
