@@ -19,12 +19,16 @@ public class SvgTextDeserializer extends SvgElementDeserializer<SvgText> {
     @Override
     public void deserialize(SvgText element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         super.deserialize(element, jsonObject, context);
-        element.setText(DeserializerParser.parseString("text", jsonObject));
+        element.setText(DeserializerParser.parseString("contentText", jsonObject));
         element.setFontFamily(DeserializerParser.parseString("fontFamily", jsonObject));
         element.setFontSize(DeserializerParser.parseInteger("fontSize", jsonObject));
-        element.setFontVariant(FontVariantType.getVariant(DeserializerParser.parseString("fontVariant", jsonObject)));
+        if (DeserializerParser.parseString("fontVariant", jsonObject) != null) {
+            element.setFontVariant(FontVariantType.getVariant(DeserializerParser.parseString("fontVariant", jsonObject)));
+        }
         element.setRotate(DeserializerParser.parseLong("rotate", jsonObject));
-        element.setLengthAdjust(FontLengthAdjust.getLengthAdjust(DeserializerParser.parseString("lengthAdjust", jsonObject)));
+        if (DeserializerParser.parseString("lengthAdjust", jsonObject) != null) {
+            element.setLengthAdjust(FontLengthAdjust.getLengthAdjust(DeserializerParser.parseString("lengthAdjust", jsonObject)));
+        }
         element.setTextLength(DeserializerParser.parseLong("textLength", jsonObject));
         element.setTextLengthUnit(Unit.getUnit(DeserializerParser.parseString("textLengthUnit", jsonObject)));
         element.setDx(DeserializerParser.parseLong("dx", jsonObject));

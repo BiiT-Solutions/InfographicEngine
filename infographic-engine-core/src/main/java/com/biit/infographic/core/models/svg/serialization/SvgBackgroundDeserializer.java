@@ -20,7 +20,7 @@ public class SvgBackgroundDeserializer extends StdDeserializer<SvgBackground> {
 
     public void deserialize(SvgBackground element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         element.setBackgroundColor(DeserializerParser.parseString("backgroundColor", jsonObject));
-        element.setImage(DeserializerParser.parseString("backgroundColor", jsonObject));
+        element.setImage(DeserializerParser.parseString("image", jsonObject));
     }
 
 
