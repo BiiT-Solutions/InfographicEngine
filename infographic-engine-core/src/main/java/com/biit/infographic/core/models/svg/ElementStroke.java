@@ -1,12 +1,15 @@
 package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
+import com.biit.infographic.core.models.svg.serialization.ElementStrokeDeserializer;
 import com.biit.infographic.core.models.svg.utils.Color;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.List;
 
+@JsonDeserialize(using = ElementStrokeDeserializer.class)
 @JsonRootName(value = "border")
 public class ElementStroke {
 

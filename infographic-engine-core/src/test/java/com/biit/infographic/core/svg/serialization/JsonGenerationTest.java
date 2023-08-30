@@ -1,7 +1,8 @@
-package com.biit.infographic.core.svg.json;
+package com.biit.infographic.core.svg.serialization;
 
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -49,7 +50,24 @@ public class JsonGenerationTest {
         Files.createDirectories(Paths.get(OUTPUT_FOLDER));
     }
 
+    @Test
+    public void documentBackgroundColorTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setSvgBackground(new SvgBackground().backgroundColor("#449911"));
+        String jsonText = generateJson(svgTemplate);
 
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+    }
+
+    @Test
+    public void documentDrawRectangleTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000"));
+        String jsonText = generateJson(svgTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+    }
 
     @AfterClass(enabled = false)
     public void removeFolder() {

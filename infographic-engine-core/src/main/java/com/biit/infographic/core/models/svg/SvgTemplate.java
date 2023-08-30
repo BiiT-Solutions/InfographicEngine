@@ -5,8 +5,11 @@ import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserializer;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -18,16 +21,12 @@ import java.util.List;
  * <p>
  * If height and width are not set, will be calculated to fit the content.
  */
+@JsonDeserialize(using = SvgTemplateDeserializer.class)
 @JsonRootName(value = "template")
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class SvgTemplate extends SvgElement {
     public static final long DEFAULT_WIDTH = 256L;
     public static final long DEFAULT_HEIGHT = 256L;
-
-    @JsonProperty("width")
-    private Long width;
-
-    @JsonProperty("height")
-    private Long height;
 
     @JsonProperty("background")
     private SvgBackground svgBackground;
@@ -38,35 +37,23 @@ public class SvgTemplate extends SvgElement {
     @JsonProperty("elements")
     private List<SvgElement> elements;
 
-    public SvgTemplate() {
-        super();
+    public SvgTemplate(ElementAttributes elementAttributes) {
+        super(elementAttributes);
         setElementType(ElementType.SVG);
+    }
+
+    public SvgTemplate() {
+        this(new ElementAttributes());
+    }
+
+    public SvgTemplate(Long width, Long height) {
+        this(new ElementAttributes(String.valueOf(width), String.valueOf(height), null));
+        getElementAttributes().setWidthUnit(Unit.PIXELS);
+        getElementAttributes().setHeightUnit(Unit.PIXELS);
     }
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-    }
-
-    public SvgTemplate(Long width, Long height) {
-        this();
-        setWidth(width);
-        setHeight(height);
-    }
-
-    public long getWidth() {
-        return width;
-    }
-
-    public void setWidth(long width) {
-        this.width = width;
-    }
-
-    public long getHeight() {
-        return height;
-    }
-
-    public void setHeight(long height) {
-        this.height = height;
     }
 
     public SvgBackground getSvgBackground() {
@@ -119,8 +106,10 @@ public class SvgTemplate extends SvgElement {
             setViewBox(svgRoot);
         }
 
-        svgRoot.setAttributeNS(null, "width", String.valueOf(width != null && width != 0 ? width : DEFAULT_WIDTH));
-        svgRoot.setAttributeNS(null, "height", String.valueOf(height != null && height != 0 ? height : DEFAULT_HEIGHT));
+        svgRoot.setAttributeNS(null, "width", String.valueOf(getElementAttributes().getWidth() != null
+                && getElementAttributes().getWidth() != 0 ? getElementAttributes().getWidth() : DEFAULT_WIDTH));
+        svgRoot.setAttributeNS(null, "height", String.valueOf(getElementAttributes().getHeight() != null
+                && getElementAttributes().getHeight() != 0 ? getElementAttributes().getHeight() : DEFAULT_HEIGHT));
 
         setSvgBackground(doc, svgRoot);
 
@@ -135,8 +124,8 @@ public class SvgTemplate extends SvgElement {
     }
 
     private void setViewBox(Element svgRoot) {
-        long height = this.height != null ? this.height : 0L;
-        long width = this.width != null ? this.width : 0L;
+        long height = getElementAttributes().getHeight() != null ? getElementAttributes().getHeight() : 0L;
+        long width = getElementAttributes().getWidth() != null ? getElementAttributes().getWidth() : 0L;
         long x = 0;
         long y = 0;
 
@@ -177,15 +166,16 @@ public class SvgTemplate extends SvgElement {
         }
 
         //Updated width and height if are not defined.
-        if (this.width == null) {
-            this.width = Math.abs(x) + width;
+        if (getElementAttributes().getWidth() == null) {
+            getElementAttributes().setWidth(Math.abs(x) + width);
         }
 
-        if (this.height == null) {
-            this.height = Math.abs(y) + height;
+        if (getElementAttributes().getHeight() == null) {
+            getElementAttributes().setHeight(Math.abs(y) + height);
         }
 
-        svgRoot.setAttributeNS(null, "viewBox", x + " " + y + " " + this.width + " " + this.height);
+        svgRoot.setAttributeNS(null, "viewBox", x + " " + y + " " + getElementAttributes().getWidth()
+                + " " + getElementAttributes().getHeight());
     }
 
     private void setSvgBackground(Document doc, Element svgRoot) {

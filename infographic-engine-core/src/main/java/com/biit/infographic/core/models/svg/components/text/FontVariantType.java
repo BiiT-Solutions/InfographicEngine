@@ -29,4 +29,15 @@ public enum FontVariantType {
     public String getTag() {
         return tag;
     }
+
+    public static FontVariantType getVariant(String parameter) {
+        if (parameter != null) {
+            for (FontVariantType variantType : FontVariantType.values()) {
+                if (variantType.name().equalsIgnoreCase(parameter)) {
+                    return variantType;
+                }
+            }
+        }
+        return FontVariantType.NONE;
+    }
 }

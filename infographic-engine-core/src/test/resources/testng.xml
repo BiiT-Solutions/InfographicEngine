@@ -17,7 +17,7 @@
             <class name="com.biit.infographic.core.svg.SimpleSvgGenerationTest"/>
             <class name="com.biit.infographic.core.svg.CustomSvgComponentsTest"/>
             <class name="com.biit.infographic.core.svg.ColorValidationTest"/>
-            <class name="com.biit.infographic.core.svg.json.JsonGenerationTest"/>
+            <class name="com.biit.infographic.core.svg.serialization.JsonGenerationTest"/>
         </classes>
     </test>
 </suite>

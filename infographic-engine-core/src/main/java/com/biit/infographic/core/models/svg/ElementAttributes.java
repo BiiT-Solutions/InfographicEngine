@@ -1,12 +1,16 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.serialization.ElementAttributesDeserializer;
 import com.biit.infographic.core.models.svg.utils.Color;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+@JsonDeserialize(using = ElementAttributesDeserializer.class)
 @JsonRootName(value = "attributes")
 public class ElementAttributes {
 
@@ -46,8 +50,8 @@ public class ElementAttributes {
 
     public ElementAttributes(String width, String height) {
         this();
-        setWidth(width);
-        setHeight(height);
+        setWidthValue(width);
+        setHeightValue(height);
     }
 
     public ElementAttributes(String width, String height, String fill) {
@@ -67,6 +71,7 @@ public class ElementAttributes {
         setYCoordinate(yCoordinate);
     }
 
+    @JsonIgnore
     public String getWidthValue() {
         return getWidth() + getWidthUnit().getValue();
     }
@@ -75,7 +80,12 @@ public class ElementAttributes {
         return width;
     }
 
-    public void setWidth(String width) {
+    public void setWidth(Long width) {
+        this.width = width;
+    }
+
+    @JsonIgnore
+    public void setWidthValue(String width) {
         this.width = Unit.getValue(width);
         this.widthUnit = Unit.getUnit(width);
     }
@@ -84,11 +94,17 @@ public class ElementAttributes {
         return height;
     }
 
-    public void setHeight(String height) {
+    public void setHeight(Long height) {
+        this.height = height;
+    }
+
+    @JsonIgnore
+    public void setHeightValue(String height) {
         this.height = Unit.getValue(height);
         this.heightUnit = Unit.getUnit(height);
     }
 
+    @JsonIgnore
     public String getHeightValue() {
         return getHeight() + getHeightUnit().getValue();
     }

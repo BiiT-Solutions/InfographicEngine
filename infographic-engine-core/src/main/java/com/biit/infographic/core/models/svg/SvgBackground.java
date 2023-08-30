@@ -3,17 +3,21 @@ package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.serialization.SvgBackgroundDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@JsonDeserialize(using = SvgBackgroundDeserializer.class)
 @JsonRootName(value = "background")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SvgBackground implements ISvgElement {
+
     @JsonProperty("backgroundColor")
     private String backgroundColor = null;
 

@@ -4,16 +4,27 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.SvgImageDeserializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@JsonDeserialize(using = SvgImageDeserializer.class)
 @JsonRootName(value = "image")
 public class SvgImage extends SvgElement {
     private static final String BASE_64_PREFIX = "data:image/png;base64,";
 
+    @JsonProperty("content")
     private String content;
+
+    @JsonProperty("href")
     private String href;
+
+    public SvgImage() {
+        this(new ElementAttributes());
+    }
 
     private SvgImage(ElementAttributes elementAttributes) {
         super(elementAttributes);

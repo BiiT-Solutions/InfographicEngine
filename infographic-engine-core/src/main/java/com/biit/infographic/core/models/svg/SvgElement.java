@@ -2,14 +2,18 @@ package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.SvgElementDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Element;
 
 import java.util.stream.Collectors;
 
+@JsonDeserialize(using = SvgElementDeserializer.class)
+//@JsonSerialize(using = SvgElementSerializer.class)
 @JsonRootName(value = "element")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -24,7 +28,7 @@ public abstract class SvgElement implements ISvgElement {
     @JsonProperty("attributes")
     private ElementAttributes elementAttributes;
 
-    @JsonProperty("border")
+    @JsonProperty("stroke")
     private ElementStroke elementStroke;
 
     public SvgElement() {

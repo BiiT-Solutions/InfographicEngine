@@ -4,13 +4,18 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.SvgCircleDeserializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@JsonDeserialize(using = SvgCircleDeserializer.class)
 @JsonRootName(value = "circle")
 public class SvgCircle extends SvgElement {
 
+    @JsonProperty("radius")
     private Long radius;
 
     public SvgCircle(ElementAttributes elementAttributes) {

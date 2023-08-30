@@ -15,4 +15,15 @@ public enum TextAlign {
     public String getStyle() {
         return style;
     }
+
+    public static TextAlign getAlignment(String parameter) {
+        if (parameter != null) {
+            for (TextAlign textAlign : TextAlign.values()) {
+                if (textAlign.name().equalsIgnoreCase(parameter)) {
+                    return textAlign;
+                }
+            }
+        }
+        return TextAlign.LEFT;
+    }
 }

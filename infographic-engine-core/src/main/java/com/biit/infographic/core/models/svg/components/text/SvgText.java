@@ -5,8 +5,11 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.SvgTextDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -20,6 +23,7 @@ import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
 
+@JsonDeserialize(using = SvgTextDeserializer.class)
 @JsonRootName(value = "text")
 public class SvgText extends SvgElement {
     private static final int LINE_SEPARATION = 5;
@@ -52,10 +56,16 @@ public class SvgText extends SvgElement {
     private Unit textLengthUnit = Unit.PIXELS;
 
     @JsonProperty("dx")
-    private String dx;
+    private Long dx;
+
+    @JsonProperty("dxUnit")
+    private Unit dxUnit = Unit.PIXELS;
 
     @JsonProperty("dy")
-    private String dy;
+    private Long dy;
+
+    @JsonProperty("dyUnit")
+    private Unit dyUnit = Unit.PIXELS;
 
     //In Characters
     @JsonProperty("maxLineLength")
@@ -63,7 +73,7 @@ public class SvgText extends SvgElement {
 
     //In pixels
     @JsonProperty("maxLineWidth")
-    private Integer lineWidth;
+    private Integer maxLineWidth;
 
     @JsonProperty("textAlign")
     private TextAlign textAlign = TextAlign.LEFT;
@@ -84,11 +94,11 @@ public class SvgText extends SvgElement {
         setFontSize(fontSize);
     }
 
-    public SvgText(String text, int fontSize, Long x, Long y, Integer lineWidth) {
+    public SvgText(String text, int fontSize, Long x, Long y, Integer maxLineWidth) {
         this(new ElementAttributes(x, y, null, null, null));
         setText(text);
         setFontSize(fontSize);
-        setLineWidth(lineWidth);
+        setMaxLineWidth(maxLineWidth);
     }
 
 
@@ -136,6 +146,7 @@ public class SvgText extends SvgElement {
         return textLength;
     }
 
+    @JsonIgnore
     public String getTextLengthValue() {
         return getTextLength() + getTextLengthUnit().getValue();
     }
@@ -157,20 +168,46 @@ public class SvgText extends SvgElement {
         this.textLengthUnit = textLengthUnit;
     }
 
-    public String getDx() {
+    public Long getDx() {
         return dx;
     }
 
-    public void setDx(String dx) {
+    public Unit getDxUnit() {
+        return dxUnit;
+    }
+
+    public void setDxUnit(Unit dxUnit) {
+        this.dxUnit = dxUnit;
+    }
+
+    @JsonIgnore
+    public String getDxValue() {
+        return getDx() + getDxUnit().getValue();
+    }
+
+    public void setDx(Long dx) {
         this.dx = dx;
     }
 
-    public String getDy() {
+    @JsonIgnore
+    public String getDyValue() {
+        return getDy() + getDyUnit().getValue();
+    }
+
+    public Long getDy() {
         return dy;
     }
 
-    public void setDy(String dy) {
+    public void setDy(Long dy) {
         this.dy = dy;
+    }
+
+    public Unit getDyUnit() {
+        return dyUnit;
+    }
+
+    public void setDyUnit(Unit dyUnit) {
+        this.dyUnit = dyUnit;
     }
 
     public String getText() {
@@ -197,12 +234,12 @@ public class SvgText extends SvgElement {
         this.textAlign = textAlign;
     }
 
-    public Integer getLineWidth() {
-        return lineWidth;
+    public Integer getMaxLineWidth() {
+        return maxLineWidth;
     }
 
-    public void setLineWidth(Integer lineWidth) {
-        this.lineWidth = lineWidth;
+    public void setMaxLineWidth(Integer maxLineWidth) {
+        this.maxLineWidth = maxLineWidth;
     }
 
     @Override
@@ -229,18 +266,18 @@ public class SvgText extends SvgElement {
             text.setAttributeNS(null, "textLength", getTextLengthValue());
         }
         if (getDx() != null) {
-            text.setAttributeNS(null, "dx", getDx());
+            text.setAttributeNS(null, "dx", getDxValue());
         }
         if (getDy() != null) {
-            text.setAttributeNS(null, "dy", getDy());
+            text.setAttributeNS(null, "dy", getDyValue());
         }
 
-        if (getLineWidth() != null || getMaxLineLength() != null) {
+        if (getMaxLineWidth() != null || getMaxLineLength() != null) {
             final List<String> lines;
             final int longestLinePixels;
-            if (getLineWidth() != null) {
-                lines = getLinesByPixels(getText(), getLineWidth());
-                longestLinePixels = getLineWidth();
+            if (getMaxLineWidth() != null) {
+                lines = getLinesByPixels(getText(), getMaxLineWidth());
+                longestLinePixels = getMaxLineWidth();
             } else {
                 lines = getLines(getText(), getMaxLineLength());
                 final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");

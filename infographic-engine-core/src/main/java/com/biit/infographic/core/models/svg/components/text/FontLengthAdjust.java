@@ -14,4 +14,15 @@ public enum FontLengthAdjust {
         return tag;
     }
 
+    public static FontLengthAdjust getLengthAdjust(String parameter) {
+        if (parameter != null) {
+            for (FontLengthAdjust lengthAdjust : FontLengthAdjust.values()) {
+                if (lengthAdjust.name().equalsIgnoreCase(parameter)) {
+                    return lengthAdjust;
+                }
+            }
+        }
+        return FontLengthAdjust.SPACING;
+    }
+
 }

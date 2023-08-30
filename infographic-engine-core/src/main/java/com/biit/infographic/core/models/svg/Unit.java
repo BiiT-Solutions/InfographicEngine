@@ -31,7 +31,7 @@ public enum Unit {
     public static Unit getUnit(String parameter) {
         if (parameter != null) {
             for (Unit unit : Unit.values()) {
-                if (parameter.endsWith(unit.getTag())) {
+                if (parameter.endsWith(unit.getTag()) || unit.name().equalsIgnoreCase(parameter)) {
                     return unit;
                 }
             }

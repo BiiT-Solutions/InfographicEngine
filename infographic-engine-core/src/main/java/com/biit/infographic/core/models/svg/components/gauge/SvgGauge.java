@@ -5,10 +5,12 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.SvgUtils;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.SvgGaugeDeserializer;
 import com.biit.infographic.core.models.svg.utils.Color;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,6 +21,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+@JsonDeserialize(using = SvgGaugeDeserializer.class)
 @JsonRootName(value = "gauge")
 public class SvgGauge extends SvgElement {
     private static final int GAUGE_WIDTH = 170;
