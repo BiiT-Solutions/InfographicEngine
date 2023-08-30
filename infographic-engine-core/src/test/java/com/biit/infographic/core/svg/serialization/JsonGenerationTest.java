@@ -3,6 +3,7 @@ package com.biit.infographic.core.svg.serialization;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -42,7 +43,8 @@ public class JsonGenerationTest {
     }
 
     private String generateJson(SvgTemplate template) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(template);
+        //return objectMapper.setSerializationInclusion(Include.NON_NULL).enable(DeserializationFeature.UNWRAP_ROOT_VALUE).enable(SerializationFeature.WRAP_ROOT_VALUE).writeValueAsString(template);
+        return objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(template);
     }
 
     @BeforeClass

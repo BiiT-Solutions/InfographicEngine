@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 
-public abstract class SvgBackgroundDeserializer extends StdDeserializer<SvgBackground> {
+public class SvgBackgroundDeserializer extends StdDeserializer<SvgBackground> {
 
 
     public SvgBackgroundDeserializer() {

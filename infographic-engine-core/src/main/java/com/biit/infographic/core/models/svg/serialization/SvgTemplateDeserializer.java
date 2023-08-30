@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SvgTemplateDeserializer extends StdDeserializer<SvgTemplate> {
+public class SvgTemplateDeserializer extends StdDeserializer<SvgTemplate> {
 
 
     public SvgTemplateDeserializer() {
@@ -24,15 +24,17 @@ public abstract class SvgTemplateDeserializer extends StdDeserializer<SvgTemplat
     }
 
     public void deserialize(SvgTemplate element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        element.setSvgBackground(ObjectMapperFactory.getObjectMapper().readValue("background", SvgBackground.class));
-        element.setLayoutType(LayoutType.valueOf(DeserializerParser.parseString("type", jsonObject)));
+        if (jsonObject.get("background") != null) {
+            element.setSvgBackground(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("background").toPrettyString(), SvgBackground.class));
+        }
+        element.setLayoutType(LayoutType.getType(DeserializerParser.parseString("type", jsonObject)));
 
         final List<SvgElement> templateElements = new ArrayList<>();
         final JsonNode elementsJson = jsonObject.get("elements");
         if (elementsJson != null) {
             if (elementsJson.isArray()) {
                 for (JsonNode elementJson : elementsJson) {
-                    final ElementType type = ElementType.fromString(elementJson.get("type").asText());
+                    final ElementType type = ElementType.fromString(elementJson.get("type").toPrettyString());
                     if (type != null) {
                         templateElements.add((SvgElement) ObjectMapperFactory.getObjectMapper()
                                 .readValue(elementJson.toPrettyString(), type.getRelatedClass()));
