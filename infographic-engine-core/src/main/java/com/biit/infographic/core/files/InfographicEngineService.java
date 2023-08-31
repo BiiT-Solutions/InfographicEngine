@@ -5,6 +5,7 @@ import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.exceptions.InvalidParameterException;
 import com.biit.infographic.core.exceptions.ReportNotReadyException;
 import com.biit.infographic.logger.InfographicEngineLogger;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,46 +14,56 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class InfographicEngine implements IInfographicEngine {
+@Service
+public class InfographicEngineService {
 
     public static final String INFOGRAPHIC_PATH = "infographics/";
 
-    @Override
-    public List<Infographic> getInfographicReport(List<TreeNode<String>> selections) {
+    public List<InfographicTemplateAndContent> getInfographicReport() {
+        return getInfographicReport(null, "");
+    }
+
+    /**
+     * Shows only the selected items from the infography.
+     *
+     * @param selections Nodes that are selected by the user. Null if you want all of them.
+     * @return the infographic modules generated.
+     */
+    public List<InfographicTemplateAndContent> getInfographicReport(List<TreeNode<String>> selections) {
         return getInfographicReport(selections, "");
     }
 
-    @Override
-    public List<Infographic> getInfographicReport(List<TreeNode<String>> selections, String rootPath) {
-        final List<Infographic> infographics = new ArrayList<>();
-        selections = sortForestWithReference(selections, getSelectableElements(rootPath));
-        InfographicEngineLogger.debug(this.getClass().getName(), "Enabled elements '" + selections + "'.");
+    public List<InfographicTemplateAndContent> getInfographicReport(List<TreeNode<String>> selections, String rootPath) {
+        final List<InfographicTemplateAndContent> infographics = new ArrayList<>();
+        if (selections != null) {
+            selections = sortForestWithReference(selections, getSelectableElements(rootPath));
+        }
+        InfographicEngineLogger.debug(this.getClass(), "Enabled elements '" + selections + "'.");
         final List<InfographicTemplate> templates = getTemplates(selections, rootPath);
-        final Map<InfographicIndexFile, Set<IParameter>> params = getParamsFromTemplates(templates);
+        final Map<InfographicIndexFile, Set<Parameter>> params = getParamsFromTemplates(templates);
         try {
-            final Map<InfographicIndexFile, Set<IParameter>> filledParams = getValues(params);
+            final Map<InfographicIndexFile, Set<Parameter>> filledParams = getValues(params);
             for (InfographicTemplate template : templates) {
                 if (template.getTemplate() != null) {
-                    final Set<IParameter> templateParams = filledParams.get(template.getIndexFile());
+                    final Set<Parameter> templateParams = filledParams.get(template.getIndexFile());
                     if (templateParams != null) {
-                        final InfographicTemplateAndContent infographicTemplateAndContent = addContentToTemplate(rootPath, template, templateParams);
-                        infographics.add(infographicTemplateAndContent);
+                        infographics.add(addContentToTemplate(rootPath, template, templateParams));
                     }
                 }
             }
         } catch (InvalidParameterException | ElementDoesNotExistsException e) {
-            InfographicEngineLogger.errorMessage(this.getClass().getName(), e);
+            InfographicEngineLogger.errorMessage(this.getClass(), e);
         } catch (ReportNotReadyException e) {
-            InfographicEngineLogger.warning(this.getClass().getName(), e.getMessage());
+            InfographicEngineLogger.warning(this.getClass(), e.getMessage());
         }
         return infographics;
     }
 
-    private static InfographicTemplateAndContent addContentToTemplate(String rootPath, InfographicTemplate template, Set<IParameter> templateParams) {
+    private InfographicTemplateAndContent addContentToTemplate(String rootPath, InfographicTemplate template, Set<Parameter> templateParams) {
         final InfographicTemplateAndContent infographicTemplateAndContent = new InfographicTemplateAndContent(rootPath);
         infographicTemplateAndContent.setTemplate(template.getTemplate());
         final Map<String, String> variables = new HashMap<>();
-        for (IParameter param : templateParams) {
+        for (Parameter param : templateParams) {
             final Map<String, String> attributes = param.getAttributes();
             for (String key : attributes.keySet()) {
                 variables.put("#" + param.getType() + "%" + param.getName() + "%" + key + "#", attributes.get(key));
@@ -62,23 +73,20 @@ public class InfographicEngine implements IInfographicEngine {
         return infographicTemplateAndContent;
     }
 
-    @Override
     public List<TreeNode<String>> getSelectableElements() {
         return getSelectableElements("");
     }
 
-    @Override
     public List<TreeNode<String>> getSelectableElements(String rootPath) {
-        return InfographicTemplateUtils.getSelectableElementsTree(getReportPath() + rootPath);
+        return InfographicFolder.getSelectableElementsTree(getReportPath() + rootPath);
     }
 
-    @Override
-    public Map<InfographicIndexFile, Set<IParameter>> getValues(Map<InfographicIndexFile, Set<IParameter>> parameters)
+    public Map<InfographicIndexFile, Set<Parameter>> getValues(Map<InfographicIndexFile, Set<Parameter>> parameters)
             throws java.security.InvalidParameterException, ElementDoesNotExistsException, ReportNotReadyException {
-        final Map<InfographicIndexFile, Set<IParameter>> filledParams = new HashMap<>();
+        final Map<InfographicIndexFile, Set<Parameter>> filledParams = new HashMap<>();
         // Group parameters by type.
         for (InfographicIndexFile infographicDefinition : parameters.keySet()) {
-            final Map<ParameterType, Set<IParameter>> parametersByType = groupParametersByType(filledParams.get(infographicDefinition));
+            final Map<ParameterType, Set<Parameter>> parametersByType = groupParametersByType(filledParams.get(infographicDefinition));
 
 //            // Obtain parameters values.
 //            setDroolsVariablesValues(examinationResult, appointment, parametersByType.get(ParameterType.DROOLS));
@@ -97,9 +105,9 @@ public class InfographicEngine implements IInfographicEngine {
         return filledParams;
     }
 
-    private Map<ParameterType, Set<IParameter>> groupParametersByType(Set<IParameter> parameters) throws InvalidParameterException {
-        final Map<ParameterType, Set<IParameter>> parametersByType = new HashMap<>();
-        for (IParameter parameter : parameters) {
+    private Map<ParameterType, Set<Parameter>> groupParametersByType(Set<Parameter> parameters) throws InvalidParameterException {
+        final Map<ParameterType, Set<Parameter>> parametersByType = new HashMap<>();
+        for (Parameter parameter : parameters) {
             if (parameter.getType().equalsIgnoreCase(ParameterType.DROOLS.name())) {
                 parametersByType.computeIfAbsent(ParameterType.DROOLS, k -> new HashSet<>());
                 parametersByType.get(ParameterType.DROOLS).add(parameter);
@@ -120,41 +128,39 @@ public class InfographicEngine implements IInfographicEngine {
         return parametersByType;
     }
 
-    @Override
     public String getReportPath() {
         return INFOGRAPHIC_PATH;
     }
 
     protected List<InfographicTemplate> getTemplates(List<TreeNode<String>> selections, String rootPath) {
         final String reportPath = getReportPath() + rootPath;
-        return InfographicTemplateUtils.getTemplatesFromPath(reportPath, selections);
+        return InfographicFolder.getTemplatesFromPath(reportPath, selections);
     }
 
-    @Override
-    public Map<InfographicIndexFile, Set<IParameter>> getParamsFromAllTemplates(String rootPath) {
+    public Map<InfographicIndexFile, Set<Parameter>> getParamsFromAllTemplates(String rootPath) {
         final List<InfographicTemplate> templates = getTemplates(null, rootPath);
         return getParamsFromTemplates(templates);
     }
 
-    private Map<InfographicIndexFile, Set<IParameter>> getParamsFromTemplates(List<InfographicTemplate> templates) {
-        final Map<InfographicIndexFile, Set<IParameter>> params = new HashMap<>();
+    private Map<InfographicIndexFile, Set<Parameter>> getParamsFromTemplates(List<InfographicTemplate> templates) {
+        final Map<InfographicIndexFile, Set<Parameter>> params = new HashMap<>();
         for (InfographicTemplate template : templates) {
             final InfographicIndexFile templateDef = template.getIndexFile();
-            final Set<IParameter> templateParams = InfographicTemplateUtils.getParams(template);
+            final Set<Parameter> templateParams = Parameter.getParams(template);
             params.put(templateDef, templateParams);
         }
         return params;
     }
 
     /*
-     * Sorts a List<TreeNode<>> to fit the structure of another Tree
+     * Sorts a List<TreeNode<>> to fit the structure from another Tree
      */
     private List<TreeNode<String>> sortForestWithReference(List<TreeNode<String>> forest, List<TreeNode<String>> referenceForest) {
         final List<TreeNode<String>> sortedForest = new ArrayList<>();
         if (forest != null && referenceForest != null) {
             for (TreeNode<String> referenceTree : referenceForest) {
                 for (TreeNode<String> tree : forest) {
-                    if (tree != null && referenceTree.getData().equals(tree.getData())) {
+                    if (tree != null && referenceTree.getJsonFile().equals(tree.getJsonFile())) {
                         tree.setChildren(sortForestWithReference(tree.getChildren(), referenceTree.getChildren()));
                         sortedForest.add(tree);
                     }

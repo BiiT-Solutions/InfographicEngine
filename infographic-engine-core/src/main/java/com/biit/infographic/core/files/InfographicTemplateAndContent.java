@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * This class represents an Infographic with the Parameters and its values.
  */
-public class InfographicTemplateAndContent implements Infographic {
+public class InfographicTemplateAndContent {
 
     @JsonProperty("name")
     private String name;
@@ -66,7 +66,6 @@ public class InfographicTemplateAndContent implements Infographic {
         return content;
     }
 
-    @Override
     public String toJson() {
         try {
             return ObjectMapperFactory.getObjectMapper().writeValueAsString(this);

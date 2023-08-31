@@ -52,7 +52,7 @@ public abstract class BasicLogger {
         severe(logger, messageTemplate, args);
     }
 
-    public static void errorMessageNotification(Logger logger, String className,  String messageTemplate, Object... args) {
+    public static void errorMessageNotification(Logger logger, String className, String messageTemplate, Object... args) {
         severe(logger, className, messageTemplate, args);
     }
 

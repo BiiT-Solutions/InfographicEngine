@@ -32,8 +32,8 @@ public class SvgBackgroundDeserializer extends StdDeserializer<SvgBackground> {
             deserialize(svgTemplate, jsonObject, deserializationContext);
             return svgTemplate;
         } catch (NullPointerException e) {
-            InfographicEngineLogger.severe(this.getClass().getName(), "Invalid node:\n" + jsonObject.toPrettyString());
-            InfographicEngineLogger.errorMessage(this.getClass().getName(), e);
+            InfographicEngineLogger.severe(this.getClass(), "Invalid node:\n" + jsonObject.toPrettyString());
+            InfographicEngineLogger.errorMessage(this.getClass(), e);
             throw new RuntimeException(e);
         }
     }

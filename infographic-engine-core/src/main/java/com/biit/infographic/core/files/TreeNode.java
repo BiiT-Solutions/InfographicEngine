@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class TreeNode<T> {
-    private T data;
+    private final T jsonFile;
     private TreeNode<T> parent;
     private List<TreeNode<T>> children;
 
-    public TreeNode(T data) {
-        this.data = data;
+    public TreeNode(T jsonFile) {
+        this.jsonFile = jsonFile;
         children = new ArrayList<>();
     }
 
@@ -38,12 +38,8 @@ public class TreeNode<T> {
         return children;
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
+    public T getJsonFile() {
+        return jsonFile;
     }
 
     public void setParent(TreeNode<T> parent) {
@@ -67,13 +63,13 @@ public class TreeNode<T> {
             }
             str.append(prefix).append(node.toString(prefix));
         }
-        return data.toString() + (!str.isEmpty() ? "[" + str + "]" : "");
+        return jsonFile.toString() + (!str.isEmpty() ? "[" + str + "]" : "");
     }
 
-    public TreeNode<T> getChild(T data) {
-        if (data != null) {
+    public TreeNode<T> getChild(T jsonFile) {
+        if (jsonFile != null) {
             for (TreeNode<T> child : getChildren()) {
-                if (Objects.equals(child.getData(), data)) {
+                if (Objects.equals(child.getJsonFile(), jsonFile)) {
                     return child;
                 }
             }
@@ -84,7 +80,7 @@ public class TreeNode<T> {
     public List<T> flattenTree() {
         final List<T> flatTree = new ArrayList<T>();
         final List<TreeNode<T>> children = getChildren();
-        flatTree.add(getData());
+        flatTree.add(getJsonFile());
         if (children != null && !children.isEmpty()) {
             for (TreeNode<T> child : getChildren()) {
                 flatTree.addAll(child.flattenTree());
@@ -101,7 +97,7 @@ public class TreeNode<T> {
                 flatTree.addAll(child.flattenTree());
             }
         } else {
-            flatTree.add(getData());
+            flatTree.add(getJsonFile());
         }
         return flatTree;
     }

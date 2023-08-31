@@ -47,8 +47,8 @@ public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDe
             return element;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException
                  | NullPointerException e) {
-            InfographicEngineLogger.severe(this.getClass().getName(), "Invalid node:\n" + jsonObject.toPrettyString());
-            InfographicEngineLogger.errorMessage(this.getClass().getName(), e);
+            InfographicEngineLogger.severe(this.getClass(), "Invalid node:\n" + jsonObject.toPrettyString());
+            InfographicEngineLogger.errorMessage(this.getClass(), e);
             throw new InvalidAttributeException(this.getClass(), e);
         }
     }
