@@ -4,6 +4,7 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementStroke;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -48,7 +49,7 @@ public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDe
                  | NullPointerException e) {
             InfographicEngineLogger.severe(this.getClass().getName(), "Invalid node:\n" + jsonObject.toPrettyString());
             InfographicEngineLogger.errorMessage(this.getClass().getName(), e);
-            throw new RuntimeException(e);
+            throw new InvalidAttributeException(this.getClass(), e);
         }
     }
 }

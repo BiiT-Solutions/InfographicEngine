@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -103,7 +104,7 @@ public class SvgTemplate extends SvgElement {
         } else {
             //Set default SVG information.
             svgRoot = doc.getDocumentElement();
-            setViewBox(svgRoot);
+            defineViewBox(svgRoot);
         }
 
         svgRoot.setAttributeNS(null, "width", String.valueOf(getElementAttributes().getWidth() != null
@@ -123,7 +124,7 @@ public class SvgTemplate extends SvgElement {
         return svgRoot;
     }
 
-    private void setViewBox(Element svgRoot) {
+    private void defineViewBox(Element svgRoot) {
         long height = getElementAttributes().getHeight() != null ? getElementAttributes().getHeight() : 0L;
         long width = getElementAttributes().getWidth() != null ? getElementAttributes().getWidth() : 0L;
         long x = 0;
@@ -178,6 +179,7 @@ public class SvgTemplate extends SvgElement {
                 + " " + getElementAttributes().getHeight());
     }
 
+    @JsonIgnore
     private void setSvgBackground(Document doc, Element svgRoot) {
         if (svgBackground != null) {
             final Element background = svgBackground.generateSvg(doc);

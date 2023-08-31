@@ -19,7 +19,8 @@ public class SvgServices {
 
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @Operation(summary = "Generates a SVG from a template", security = @SecurityRequirement(name = "bearerAuth"))
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_ATOM_XML_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create", produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public String getAll(@RequestBody SvgTemplate svgTemplate, Authentication authentication, HttpServletRequest request) {
         return SvgGenerator.generate(svgTemplate);
     }
