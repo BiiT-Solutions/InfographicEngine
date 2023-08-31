@@ -8,6 +8,8 @@
         <groups>
             <run>
                 <include name="simpleSvgGenerationTest"/>
+                <include name="simplePngGenerationTest"/>
+                <include name="simpleJpegGenerationTest"/>
                 <include name="customSvgComponentsTest"/>
                 <include name="colorValidation"/>
                 <include name="jsonGeneration"/>
@@ -18,6 +20,8 @@
             <class name="com.biit.infographic.core.svg.CustomSvgComponentsTest"/>
             <class name="com.biit.infographic.core.svg.ColorValidationTest"/>
             <class name="com.biit.infographic.core.svg.serialization.JsonGenerationTest"/>
+            <class name="com.biit.infographic.core.image.SimplePngGenerationTest"/>
+            <class name="com.biit.infographic.core.image.SimpleJpegGenerationTest"/>
         </classes>
     </test>
 </suite>

@@ -1,4 +1,4 @@
-package com.biit.infographic.core.svg;
+package com.biit.infographic.core.generators;
 
 import com.biit.infographic.core.models.svg.ISvgElement;
 import com.biit.infographic.core.models.svg.SvgTemplate;

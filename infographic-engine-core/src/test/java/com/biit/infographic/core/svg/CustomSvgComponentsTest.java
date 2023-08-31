@@ -1,9 +1,9 @@
 package com.biit.infographic.core.svg;
 
+import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

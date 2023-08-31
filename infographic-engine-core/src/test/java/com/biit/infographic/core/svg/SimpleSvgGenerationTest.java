@@ -1,5 +1,6 @@
 package com.biit.infographic.core.svg;
 
+import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
