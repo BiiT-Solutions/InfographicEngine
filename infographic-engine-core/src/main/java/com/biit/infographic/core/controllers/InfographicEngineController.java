@@ -1,14 +1,18 @@
-package com.biit.infographic.core.engine;
+package com.biit.infographic.core.controllers;
 
 
+import com.biit.infographic.core.engine.InfographicTemplate;
+import com.biit.infographic.core.engine.InfographicTemplateAndContent;
+import com.biit.infographic.core.engine.Parameter;
+import com.biit.infographic.core.engine.ParameterType;
+import com.biit.infographic.core.engine.files.InfographicFileElement;
 import com.biit.infographic.core.engine.files.InfographicFolder;
-import com.biit.infographic.core.engine.files.InfographicIndexFile;
 import com.biit.infographic.core.engine.files.TreeNode;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.exceptions.InvalidParameterException;
 import com.biit.infographic.core.exceptions.ReportNotReadyException;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Service
-public class InfographicEngineService {
+@Controller
+public class InfographicEngineController {
 
     public static final String INFOGRAPHIC_PATH = "infographics/";
 
@@ -42,11 +46,11 @@ public class InfographicEngineService {
         if (selections != null) {
             selections = sortForestWithReference(selections, getSelectableElements());
         }
-        InfographicEngineLogger.debug(this.getClass(), "Enabled elements '" + selections + "'.");
+        InfographicEngineLogger.debug(this.getClass(), "Selected elements '" + selections + "' on infographic.");
         final List<InfographicTemplate> templates = getTemplates(selections);
-        final Map<InfographicIndexFile, Set<Parameter>> params = getParamsFromTemplates(templates);
+        final Map<InfographicFileElement, Set<Parameter>> params = getParamsFromTemplates(templates);
         try {
-            final Map<InfographicIndexFile, Set<Parameter>> filledParams = getValues(params);
+            final Map<InfographicFileElement, Set<Parameter>> filledParams = getValues(params);
             for (InfographicTemplate template : templates) {
                 if (template.getTemplate() != null) {
                     final Set<Parameter> templateParams = filledParams.get(template.getIndexFile());
@@ -79,14 +83,14 @@ public class InfographicEngineService {
     }
 
     private List<TreeNode<String>> getSelectableElements() {
-        return InfographicFolder.getSelectableElementsTree(getReportPath());
+        return new InfographicFolder(null).getSelectableElementsTree(getReportPath());
     }
 
-    private Map<InfographicIndexFile, Set<Parameter>> getValues(Map<InfographicIndexFile, Set<Parameter>> parameters)
+    private Map<InfographicFileElement, Set<Parameter>> getValues(Map<InfographicFileElement, Set<Parameter>> parameters)
             throws java.security.InvalidParameterException, ElementDoesNotExistsException, ReportNotReadyException {
-        final Map<InfographicIndexFile, Set<Parameter>> filledParams = new HashMap<>();
+        final Map<InfographicFileElement, Set<Parameter>> filledParams = new HashMap<>();
         // Group parameters by type.
-        for (InfographicIndexFile infographicDefinition : parameters.keySet()) {
+        for (InfographicFileElement infographicDefinition : parameters.keySet()) {
             final Map<ParameterType, Set<Parameter>> parametersByType = groupParametersByType(filledParams.get(infographicDefinition));
 
 //            // Obtain parameters values.
@@ -135,18 +139,18 @@ public class InfographicEngineService {
 
     private List<InfographicTemplate> getTemplates(List<TreeNode<String>> selections) {
         final String reportPath = getReportPath();
-        return InfographicFolder.getTemplatesFromPath(reportPath, selections);
+        return new InfographicFolder(null).getTemplatesFromPath(reportPath, selections);
     }
 
-    private Map<InfographicIndexFile, Set<Parameter>> getParamsFromAllTemplates() {
+    private Map<InfographicFileElement, Set<Parameter>> getParamsFromAllTemplates() {
         final List<InfographicTemplate> templates = getTemplates(null);
         return getParamsFromTemplates(templates);
     }
 
-    private Map<InfographicIndexFile, Set<Parameter>> getParamsFromTemplates(List<InfographicTemplate> templates) {
-        final Map<InfographicIndexFile, Set<Parameter>> params = new HashMap<>();
+    private Map<InfographicFileElement, Set<Parameter>> getParamsFromTemplates(List<InfographicTemplate> templates) {
+        final Map<InfographicFileElement, Set<Parameter>> params = new HashMap<>();
         for (InfographicTemplate template : templates) {
-            final InfographicIndexFile templateDef = template.getIndexFile();
+            final InfographicFileElement templateDef = template.getIndexFile();
             final Set<Parameter> templateParams = Parameter.getParams(template);
             params.put(templateDef, templateParams);
         }

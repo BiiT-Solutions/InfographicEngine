@@ -63,7 +63,7 @@ public class TreeNode<T> {
             }
             str.append(prefix).append(node.toString(prefix));
         }
-        return jsonFile.toString() + (!str.isEmpty() ? "[" + str + "]" : "");
+        return (jsonFile != null ? jsonFile.toString() : "") + (!str.isEmpty() ? "[" + str + "]" : "");
     }
 
     public TreeNode<T> getChild(T jsonFile) {

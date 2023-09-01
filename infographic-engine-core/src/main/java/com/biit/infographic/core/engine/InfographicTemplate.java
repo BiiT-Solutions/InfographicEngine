@@ -1,19 +1,19 @@
 package com.biit.infographic.core.engine;
 
-import com.biit.infographic.core.engine.files.InfographicIndexFile;
+import com.biit.infographic.core.engine.files.InfographicFileElement;
 
 public class InfographicTemplate {
-    private InfographicIndexFile indexFile;
+    private InfographicFileElement indexFile;
     private String template;
 
     public InfographicTemplate() {
     }
 
-    public InfographicIndexFile getIndexFile() {
+    public InfographicFileElement getIndexFile() {
         return indexFile;
     }
 
-    public void setIndexFile(InfographicIndexFile indexFile) {
+    public void setIndexFile(InfographicFileElement indexFile) {
         this.indexFile = indexFile;
     }
 

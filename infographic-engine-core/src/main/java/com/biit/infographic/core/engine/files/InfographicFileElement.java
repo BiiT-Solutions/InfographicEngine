@@ -3,7 +3,7 @@ package com.biit.infographic.core.engine.files;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class InfographicIndexFile {
+public class InfographicFileElement {
 
     @JsonProperty("jsonFile")
     private String jsonFile;

@@ -27,7 +27,16 @@
         </dependency>
         <dependency>
             <groupId>com.biit</groupId>
+            <artifactId>form-structure-drools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.biit</groupId>
             <artifactId>rest-server-dto</artifactId>
+        </dependency>
+        <!-- Kafka -->
+        <dependency>
+            <groupId>com.biit</groupId>
+            <artifactId>kafka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
