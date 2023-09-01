@@ -1,4 +1,4 @@
-package com.biit.infographic.core.files;
+package com.biit.infographic.core.engine.files;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -85,8 +85,12 @@ public class InfographicIndexFile {
         this.isFolder = isGroup;
     }
 
+    public String getCompleteName() {
+        return getJsonFile() + "_v" + getJsonVersion();
+    }
+
     @Override
     public String toString() {
-        return "(" + jsonFile + ", v" + jsonVersion + ")";
+        return "(" + getCompleteName() + ")";
     }
 }

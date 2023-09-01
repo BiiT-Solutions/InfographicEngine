@@ -1,4 +1,4 @@
-package com.biit.infographic.core.files;
+package com.biit.infographic.core.engine;
 
 import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.logger.InfographicEngineLogger;

@@ -1,6 +1,7 @@
-package com.biit.infographic.core.files;
+package com.biit.infographic.core.engine.files;
 
 
+import com.biit.infographic.core.engine.InfographicTemplate;
 import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.utils.file.FileReader;
@@ -150,7 +151,7 @@ public class InfographicFolder extends TreeNode<InfographicIndexFile> {
     }
 
     /**
-     * Reads the folder index.json, and from then any element or folder that is described.
+     * Reads the folder index.json, and from there any element or folder that is described.
      *
      * @param path the path to search.
      * @return A list of InfographicTree that each one represents a piece of infographic.

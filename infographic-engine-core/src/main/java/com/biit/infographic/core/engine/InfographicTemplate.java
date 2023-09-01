@@ -1,4 +1,6 @@
-package com.biit.infographic.core.files;
+package com.biit.infographic.core.engine;
+
+import com.biit.infographic.core.engine.files.InfographicIndexFile;
 
 public class InfographicTemplate {
     private InfographicIndexFile indexFile;

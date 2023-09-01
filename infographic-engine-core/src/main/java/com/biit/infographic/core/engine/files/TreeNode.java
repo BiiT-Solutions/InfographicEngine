@@ -1,4 +1,4 @@
-package com.biit.infographic.core.files;
+package com.biit.infographic.core.engine.files;
 
 import com.biit.infographic.logger.InfographicEngineLogger;
 
