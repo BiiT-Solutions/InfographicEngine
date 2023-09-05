@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class FileSearcher {
 
+    public static final String JSON_EXTENSION = ".json";
     private static final String SYSTEM_VARIABLE_CONFIG = "INFOGRAPHIC_FOLDER";
 
     /**
@@ -43,7 +44,7 @@ public class FileSearcher {
         if (readEnvironmentVariable() == null) {
             InfographicEngineLogger.info(this.getClass(),
                     "No env variable '{}' defined.", SYSTEM_VARIABLE_CONFIG);
-            throw new ElementDoesNotExistsException(this.getClass(), "No env variable '{}' defined.");
+            throw new ElementDoesNotExistsException(this.getClass(), "No env variable '" + SYSTEM_VARIABLE_CONFIG + "' defined.");
         }
         // Load Json file
         final String infographicFilePath = readEnvironmentVariable() + File.separator + path;
@@ -54,9 +55,28 @@ public class FileSearcher {
 
     private String getInfographicFromResources(String path) throws FileNotFoundException {
         // Load Json file
-        final String infographicFilePath = File.separator + path;
-        InfographicEngineLogger.debug(this.getClass().getName(), "Infographic file path: " + infographicFilePath);
-        return FileReader.getResource(infographicFilePath, StandardCharsets.UTF_8);
+        if (path.startsWith(File.separator)) {
+            path = path.substring(1);
+        }
+        InfographicEngineLogger.debug(this.getClass().getName(), "Infographic file path: " + path);
+        return FileReader.getResource(path, StandardCharsets.UTF_8);
+    }
+
+    public static String getInfographicPath(String path, InfographicFileElement definition) {
+        if (path.startsWith(File.separator)) {
+            path = path.substring(1);
+        }
+        if (definition.isFolder()) {
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+        path = path + definition.getJsonFile();
+
+        if (!definition.isFolder()) {
+            path = path + "_v" + definition.getJsonVersion() + JSON_EXTENSION;
+        }
+        return path;
     }
 
 

@@ -1,0 +1,40 @@
+{
+  "width": 960.0,
+  "height": 300.0,
+  "elementType": "SVG",
+  "type": "freeLayout",
+  "background": {
+  },
+  "elements": [
+    {
+      "elementType": "rectangle",
+      "id": "rect",
+      "ry": 18.0,
+      "commonAttributes": {
+        "fill": "#008080",
+        "x": 170,
+        "y": 75,
+        "width": 790.0,
+        "height": 150.0
+      },
+      "stroke": {
+        "strokeWidth": 3.0,
+        "strokeColor": "#000000",
+        "strokeDash": [
+          10,
+          5,
+          10,
+          5
+        ]
+      }
+    },
+    {
+      "elementType": "text",
+      "contentText": "#DROOLS%TheForm%Score#",
+      "commonAttributes": {
+        "x": 280,
+        "y": 105
+      }
+    }
+  ]
+}

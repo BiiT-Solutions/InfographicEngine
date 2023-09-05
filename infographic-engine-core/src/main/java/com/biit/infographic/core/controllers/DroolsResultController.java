@@ -80,6 +80,7 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
                         infographicTemplateAndContent.getProcessedTemplate(), SvgTemplate.class)));
             } catch (JsonProcessingException e) {
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
+                throw new RuntimeException(e);
             }
         }
 

@@ -9,7 +9,6 @@ import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserialize
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,7 +22,6 @@ import java.util.List;
  * If height and width are not set, will be calculated to fit the content.
  */
 @JsonDeserialize(using = SvgTemplateDeserializer.class)
-@JsonRootName(value = "template")
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class SvgTemplate extends SvgElement {
     public static final long DEFAULT_WIDTH = 256L;

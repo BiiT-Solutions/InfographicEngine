@@ -68,31 +68,33 @@ public class DroolsContent {
             formElements.add(droolsSubmittedForm);
             formElements.addAll(droolsSubmittedForm.getAllChildrenInHierarchy());
 
-            for (SubmittedObject submittedObject : formElements) {
-                for (Parameter parameter : parameters) {
-                    // Search for any variable defined in the parameters
-                    for (String attribute : parameter.getAttributes().keySet()) {
-                        if (parameter.getName() != null
-                                && (parameter.getName().equalsIgnoreCase(submittedObject.getTag())
-                                || parameter.getName().equals(submittedObject.getPathName()))) {
-                            String path = submittedObject.getXPath() + "/variables/" + attribute + "/text()";
+            if (parameters != null) {
+                for (SubmittedObject submittedObject : formElements) {
+                    for (Parameter parameter : parameters) {
+                        // Search for any variable defined in the parameters
+                        for (String attribute : parameter.getAttributes().keySet()) {
+                            if (parameter.getName() != null
+                                    && (parameter.getName().equalsIgnoreCase(submittedObject.getTag())
+                                    || parameter.getName().equals(submittedObject.getPathName()))) {
+                                String path = submittedObject.getXPath() + "/variables/" + attribute + "/text()";
 
-                            // Search as a variable.
-                            String value = getValue(path, document, xpathCompiler);
-                            // Not a variable, maybe a question value.
-                            if (value == null) {
-                                path = submittedObject.getXPath() + "/" + attribute + "/text()";
-                                value = getValue(path, document, xpathCompiler);
+                                // Search as a variable.
+                                String value = getValue(path, document, xpathCompiler);
+                                // Not a variable, maybe a question value.
+                                if (value == null) {
+                                    path = submittedObject.getXPath() + "/" + attribute + "/text()";
+                                    value = getValue(path, document, xpathCompiler);
+                                }
+                                final String attributeValue;
+                                if (value != null && !value.isEmpty()) {
+                                    attributeValue = value.trim();
+                                    InfographicEngineLogger.info(getClass().getName(), attribute + " " + attributeValue);
+                                } else {
+                                    attributeValue = "";
+                                    InfographicEngineLogger.warning(getClass().getName(), attribute + " has empty value.");
+                                }
+                                parameter.getAttributes().put(attribute, attributeValue);
                             }
-                            final String attributeValue;
-                            if (value != null && !value.isEmpty()) {
-                                attributeValue = new GsonBuilder().create().toJson(value.trim());
-                                InfographicEngineLogger.info(getClass().getName(), attribute + " " + attributeValue);
-                            } else {
-                                attributeValue = "";
-                                InfographicEngineLogger.warning(getClass().getName(), attribute + " has empty value.");
-                            }
-                            parameter.getAttributes().put(attribute, attributeValue);
                         }
                     }
                 }

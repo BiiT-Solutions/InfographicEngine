@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.gson.JsonSyntaxException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +26,6 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
         super(infographicFileElement);
     }
 
-    private String getPath(String root) {
-        String path = root + getDefinition().getJsonFile();
-
-        if (getDefinition().isFolder()) {
-            path = path + "/";
-        } else {
-            path = path + "_v" + getDefinition().getJsonVersion() + JSON_EXTENSION;
-        }
-        return path;
-    }
-
     public List<InfographicTemplate> getAllTemplates(String rootPath) {
         final List<InfographicTemplate> templates = new ArrayList<>();
         final InfographicTemplate template = getTemplate(rootPath);
@@ -43,7 +33,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
             templates.add(template);
         }
         for (TreeNode<InfographicFileElement> child : getChildren()) {
-            templates.addAll(((InfographicFolder) child).getAllTemplates(getPath(rootPath)));
+            templates.addAll(((InfographicFolder) child).getAllTemplates(FileSearcher.getInfographicPath(rootPath, getDefinition())));
         }
         return templates;
     }
@@ -53,10 +43,10 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
         if (getDefinition().isSelected()) {
             final List<TreeNode<InfographicFileElement>> children = getChildren();
             if (children.isEmpty()) {
-                templates.add(getTemplate(rootPath));
+                templates.add(getTemplate(rootPath + File.separator));
             } else {
                 for (TreeNode<InfographicFileElement> child : children) {
-                    templates.addAll(((InfographicFolder) child).getSelectedTemplates(getPath(rootPath)));
+                    templates.addAll(((InfographicFolder) child).getSelectedTemplates(FileSearcher.getInfographicPath(rootPath, getDefinition())));
                 }
             }
         }
@@ -76,7 +66,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
             final InfographicTemplate infographicTemplate = new InfographicTemplate();
             infographicTemplate.setIndexFile(getJsonFile());
             try {
-                infographicTemplate.setTemplate(FileReader.readFile(FileReader.getResource(getPath(path))));
+                infographicTemplate.setTemplate(FileReader.readFile(FileReader.getResource(FileSearcher.getInfographicPath(path, getDefinition()))));
             } catch (FileNotFoundException | NullPointerException e) {
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
             }
@@ -163,6 +153,9 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
     private List<InfographicFolder> getInfographicNodes(String path) {
         if (!path.endsWith(JSON_EXTENSION)) {
             try {
+                if (!path.endsWith(File.separator)) {
+                    path += File.separator;
+                }
                 // Parse index.json structure
                 InfographicEngineLogger.debug(InfographicFolder.class.getName(),
                         "Searching for '" + path + INDEX_FILE_NAME + "'.");
@@ -171,7 +164,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
                 try {
                     definedFilesOrFolders = ObjectMapperFactory.getObjectMapper().readValue(indexFile, new TypeReference<>() {
                     });
-                } catch (JsonSyntaxException | JsonProcessingException e) {
+                } catch (IllegalArgumentException | JsonSyntaxException | JsonProcessingException e) {
                     InfographicEngineLogger.info(InfographicFolder.class.getName(), "Malformed json:\n" + indexFile);
                     throw e;
                 }
@@ -181,7 +174,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
                     final InfographicFolder node = new InfographicFolder(infographicFileElement);
                     infographicFolders.add(node);
                     if (infographicFileElement.isFolder()) {
-                        for (InfographicFolder subTree : getInfographicNodes(node.getPath(path))) {
+                        for (InfographicFolder subTree : getInfographicNodes(FileSearcher.getInfographicPath(path, node.getDefinition()))) {
                             if (subTree != null) {
                                 node.addChild(subTree);
                             }

@@ -1,0 +1,11 @@
+[
+  {
+    "jsonFile": "ScoringTest",
+    "jsonVersion": 1,
+    "formName": "TheForm",
+    "formVersion": 3,
+    "selectable": true,
+    "selected": false,
+    "isGroup": false
+  }
+]

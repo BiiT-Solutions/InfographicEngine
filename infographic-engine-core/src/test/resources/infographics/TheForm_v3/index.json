@@ -1,0 +1,20 @@
+[
+  {
+    "jsonFile": "Title",
+    "jsonVersion": 1,
+    "formName": "TheForm",
+    "formVersion": 3,
+    "selectable": false,
+    "selected": true,
+    "isFolder": false
+  },
+  {
+    "jsonFile": "Score",
+    "jsonVersion": 1,
+    "formName": "TheForm",
+    "formVersion": 3,
+    "selectable": true,
+    "selected": true,
+    "isFolder": true
+  }
+]

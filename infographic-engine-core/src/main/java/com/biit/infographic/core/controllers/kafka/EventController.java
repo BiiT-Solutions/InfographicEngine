@@ -3,7 +3,7 @@ package com.biit.infographic.core.controllers.kafka;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
-import com.biit.infographic.logger.InfographicEngineLogger;
+import com.biit.infographic.logger.EventsLogger;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.kafka.consumers.EventListener;
 import com.biit.kafka.events.Event;
@@ -39,7 +39,7 @@ public class EventController {
     }
 
     private void eventHandler(Event event, String key, int partition, String topic, long timeStamp) {
-        InfographicEngineLogger.debug(this.getClass(), "Received event '{}' on topic '{}', key '{}', partition '{}' at '{}'",
+        EventsLogger.debug(this.getClass(), "Received event '{}' on topic '{}', key '{}', partition '{}' at '{}'",
                 event, topic, key, partition, LocalDateTime.ofInstant(Instant.ofEpochMilli(timeStamp),
                         TimeZone.getDefault().toZoneId()));
 
@@ -49,13 +49,13 @@ public class EventController {
 
         try {
             final DroolsSubmittedForm droolsForm = getDroolsForm(event);
-            InfographicEngineLogger.debug(this.getClass(), "Received Drools Result '{}'.", droolsForm.getName());
+            EventsLogger.debug(this.getClass(), "Received Drools Result '{}'.", droolsForm.getName());
             droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
-            InfographicEngineLogger.debug(this.getClass(), "Drools Result '{}' saved.", droolsForm.getName());
+            EventsLogger.debug(this.getClass(), "Drools Result '{}' saved.", droolsForm.getName());
             droolsResultController.process(droolsForm, createdBy);
         } catch (Exception e) {
             //Not a FormResult but maybe a SubmittedForm.
-            InfographicEngineLogger.severe(this.getClass(), "Invalid event received!!\n" + event);
+            EventsLogger.severe(this.getClass(), "Invalid event received!!\n" + event);
         }
     }
 

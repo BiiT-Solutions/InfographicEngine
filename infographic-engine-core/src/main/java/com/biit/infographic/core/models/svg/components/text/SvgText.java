@@ -27,15 +27,17 @@ import java.util.List;
 @JsonRootName(value = "text")
 public class SvgText extends SvgElement {
     private static final int LINE_SEPARATION = 5;
+    private static final int DEFAULT_FONT_SIZE = 10;
+    private static final String DEFAULT_FONT = "sans-serif";
 
     @JsonProperty("contentText")
     private String text;
 
     @JsonProperty("fontFamily")
-    private String fontFamily = "sans-serif";
+    private String fontFamily = DEFAULT_FONT;
 
     @JsonProperty("fontSize")
-    private int fontSize = 0;
+    private int fontSize = DEFAULT_FONT_SIZE;
 
     //Font variant must be available on the font.
     @JsonProperty("fontVariant")
@@ -103,7 +105,10 @@ public class SvgText extends SvgElement {
 
 
     public String getFontFamily() {
-        return fontFamily;
+        if (fontFamily != null) {
+            return fontFamily;
+        }
+        return DEFAULT_FONT;
     }
 
     public void setFontFamily(String fontFamily) {
@@ -114,8 +119,12 @@ public class SvgText extends SvgElement {
         return fontSize;
     }
 
-    public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
+    public void setFontSize(Integer fontSize) {
+        if (fontSize != null) {
+            this.fontSize = fontSize;
+        } else {
+            this.fontSize = DEFAULT_FONT_SIZE;
+        }
     }
 
     public FontVariantType getFontVariant() {
@@ -130,8 +139,12 @@ public class SvgText extends SvgElement {
         return rotate;
     }
 
-    public void setRotate(long rotate) {
-        this.rotate = rotate;
+    public void setRotate(Long rotate) {
+        if (rotate != null) {
+            this.rotate = rotate;
+        } else {
+            this.rotate = 0L;
+        }
     }
 
     public FontLengthAdjust getLengthAdjust() {

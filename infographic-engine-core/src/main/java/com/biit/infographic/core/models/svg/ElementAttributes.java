@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.serialization.ElementAttributesDeserializer;
 import com.biit.infographic.core.models.svg.utils.Color;
-import com.biit.infographic.logger.InfographicEngineLogger;
+import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = ElementAttributesDeserializer.class)
-@JsonRootName(value = "attributes")
+@JsonRootName(value = "commonAttributes")
 public class ElementAttributes {
 
     @JsonProperty("width")
@@ -186,7 +186,7 @@ public class ElementAttributes {
         if (Color.isValidWithoutTransparency(fill)) {
             this.fill = fill;
         } else {
-            InfographicEngineLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
+            SvgGeneratorLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
         }
     }
 

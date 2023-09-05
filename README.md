@@ -224,3 +224,23 @@ of integers where each integer is the length of one dash.
 **ElementAttributes.x** Starting point of the text on the x-axis.
 
 **ElementAttributes.y** Starting point of the text on the y-axis.
+
+# Parameters
+
+You can set some parameters to have dynamic texts on your infographics. Depending on the param, the content will be
+retrieved from a different system and substituted into the final SVG.
+
+## Syntax
+
+The params always have the next structure `#type%name%attributes#` where:
+
+**type** Indicates where to obtain the value. Current allowed values are: DROOLS.
+
+**name** The variable or value used to retrieve the value on the external source. Can be a variable name from Drools, a question of the form, ... 
+
+**attributes** where to obtain the value. 
+
+Some examples:
+
+`#DROOLS%BMI%Value` the question value from the BMI question obtained from Drools.
+`#DROOLS%BMI%Unit` the variable `Unit` from the BMI question obtained from Drools.

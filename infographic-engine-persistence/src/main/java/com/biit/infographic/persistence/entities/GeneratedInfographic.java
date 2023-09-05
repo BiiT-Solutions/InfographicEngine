@@ -21,7 +21,7 @@ import java.util.List;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(name = "drools_result",
+@Table(name = "generated_infographic",
         indexes = {
                 @Index(name = "ind_name", columnList = "form_name"),
                 @Index(name = "ind_version", columnList = "form_version"),
@@ -90,7 +90,7 @@ public class GeneratedInfographic extends Element {
 
     @Override
     public String toString() {
-        return "ReceivedForm{"
+        return "GeneratedInfographic{"
                 + "formName='" + formName + '\''
                 + ", formVersion=" + formVersion
                 + '}';

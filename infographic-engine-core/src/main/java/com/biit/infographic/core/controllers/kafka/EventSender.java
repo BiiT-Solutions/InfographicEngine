@@ -1,7 +1,7 @@
 package com.biit.infographic.core.controllers.kafka;
 
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
-import com.biit.infographic.logger.InfographicEngineLogger;
+import com.biit.infographic.logger.EventsLogger;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.kafka.events.KafkaEventTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,14 +23,14 @@ public class EventSender {
     }
 
     public void sendResultEvents(GeneratedInfographic generatedInfographic, String executedBy) {
-        InfographicEngineLogger.debug(this.getClass().getName(), "Preparing for sending events...");
+        EventsLogger.debug(this.getClass().getName(), "Preparing for sending events...");
         if (sendTopic != null && !sendTopic.isEmpty()) {
             //Send the complete svg as an event.
             kafkaTemplate.send(sendTopic, eventConverter.getInfographicEvent(generatedInfographic, executedBy));
-            InfographicEngineLogger.debug(this.getClass().getName(), "Event with results from '{}' and version '{}' send!",
+            EventsLogger.debug(this.getClass().getName(), "Event with results from '{}' and version '{}' send!",
                     generatedInfographic.getFormName(), generatedInfographic.getFormVersion());
         } else {
-            InfographicEngineLogger.warning(this.getClass().getName(), "Send topic not defined!");
+            EventsLogger.warning(this.getClass().getName(), "Send topic not defined!");
         }
     }
 }

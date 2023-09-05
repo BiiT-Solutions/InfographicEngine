@@ -27,8 +27,14 @@ public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDe
 
     public void deserialize(T element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         element.setId(DeserializerParser.parseString("id", jsonObject));
-        element.setElementAttributes(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("attributes").toPrettyString(), ElementAttributes.class));
-        element.setElementStroke(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("stroke").toPrettyString(), ElementStroke.class));
+        if (jsonObject.get("commonAttributes") != null) {
+            element.setElementAttributes(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("commonAttributes").toPrettyString(), ElementAttributes.class));
+        } else {
+            InfographicEngineLogger.warning(this.getClass(), "Element with id '{}' has no 'commonAttributes' defined.", element.getId());
+        }
+        if (jsonObject.get("stroke") != null) {
+            element.setElementStroke(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("stroke").toPrettyString(), ElementStroke.class));
+        }
     }
 
 

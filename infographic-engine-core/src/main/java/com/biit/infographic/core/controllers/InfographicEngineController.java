@@ -40,9 +40,7 @@ public class InfographicEngineController {
         for (InfographicTemplate template : templates) {
             if (template.getTemplate() != null) {
                 final Set<Parameter> templateParams = values.get(template.getIndexFile());
-                if (templateParams != null) {
-                    infographics.add(addContentToTemplate(template, templateParams));
-                }
+                infographics.add(addContentToTemplate(template, templateParams));
             }
         }
         return infographics;
@@ -53,10 +51,12 @@ public class InfographicEngineController {
                 template.getIndexFile() != null ? template.getIndexFile().getCompleteName() : null);
         infographicTemplateAndContent.setTemplate(template.getTemplate());
         final Map<String, String> variables = new HashMap<>();
-        for (Parameter param : templateParams) {
-            final Map<String, String> attributes = param.getAttributes();
-            for (String key : attributes.keySet()) {
-                variables.put("#" + param.getType() + "%" + param.getName() + "%" + key + "#", attributes.get(key));
+        if (templateParams != null) {
+            for (Parameter param : templateParams) {
+                final Map<String, String> attributes = param.getAttributes();
+                for (String key : attributes.keySet()) {
+                    variables.put("#" + param.getType() + "%" + param.getName() + "%" + key + "#", attributes.get(key));
+                }
             }
         }
         infographicTemplateAndContent.setContent(variables);
@@ -72,6 +72,7 @@ public class InfographicEngineController {
         final Map<InfographicFileElement, Set<Parameter>> filledParams = new HashMap<>();
         // Group parameters by type.
         for (InfographicFileElement infographicDefinition : parameters.keySet()) {
+            filledParams.put(infographicDefinition, parameters.get(infographicDefinition));
             final Map<ParameterType, Set<Parameter>> parametersByType = groupParametersByType(filledParams.get(infographicDefinition));
 
             // Update parameters with values.

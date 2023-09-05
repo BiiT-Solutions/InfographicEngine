@@ -379,7 +379,7 @@ public class SimpleSvgGenerationTest {
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineLength(80);
-        text.setRotate(90);
+        text.setRotate(90L);
         svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
