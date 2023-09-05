@@ -25,7 +25,7 @@ public abstract class SvgElement implements ISvgElement {
     @JsonProperty("elementType")
     private ElementType elementType;
 
-    @JsonProperty("attributes")
+    @JsonProperty("commonAttributes")
     private ElementAttributes elementAttributes;
 
     @JsonProperty("stroke")

@@ -4,6 +4,8 @@ import com.biit.drools.form.DroolsSubmittedCategory;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.drools.form.DroolsSubmittedQuestion;
 import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.providers.GeneratedInfographicProvider;
+import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -26,9 +30,13 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
     private final static Long FORM_ORGANIZATION = 23L;
 
     private final static String DROOLS_VARIABLE_NAME = "Score";
+    private final static String USER = "dummy@user.com";
 
     @Autowired
     private DroolsResultController droolsResultController;
+
+    @Autowired
+    private GeneratedInfographicProvider generatedInfographicProvider;
 
     private DroolsSubmittedForm droolsSubmittedForm;
 
@@ -40,6 +48,15 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
             Assert.fail("Cannot read resource 'drools/" + fileName + "'.");
         }
         return null;
+    }
+
+    private void checkContent(String content, String resourceFile) {
+        try {
+            Assert.assertEquals(content.trim(), new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
+                    .getResource("results" + File.separator + resourceFile).toURI()))).trim());
+        } catch (IOException | URISyntaxException e) {
+            Assert.fail();
+        }
     }
 
     @BeforeClass
@@ -63,7 +80,16 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
     @Test
     public void checkDroolsSubmittedForm() {
-        droolsResultController.process(droolsSubmittedForm, null);
+        droolsResultController.process(droolsSubmittedForm, USER);
+    }
+
+    @Test(dependsOnMethods = "checkDroolsSubmittedForm")
+    public void readFromDatabase() {
+        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.findLatest(FORM_NAME, FORM_VERSION, USER, FORM_ORGANIZATION).orElse(null);
+        Assert.assertNotNull(generatedInfographic);
+        Assert.assertEquals(generatedInfographic.getSvgContents().size(), 2);
+        checkContent(generatedInfographic.getSvgContents().get(0), "title.svg");
+        checkContent(generatedInfographic.getSvgContents().get(1), "scoringTest.svg");
     }
 
 }

@@ -28,7 +28,8 @@ public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDe
     public void deserialize(T element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         element.setId(DeserializerParser.parseString("id", jsonObject));
         if (jsonObject.get("commonAttributes") != null) {
-            element.setElementAttributes(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("commonAttributes").toPrettyString(), ElementAttributes.class));
+            element.setElementAttributes(ObjectMapperFactory.getObjectMapper().readValue(
+                    jsonObject.get("commonAttributes").toPrettyString(), ElementAttributes.class));
         } else {
             InfographicEngineLogger.warning(this.getClass(), "Element with id '{}' has no 'commonAttributes' defined.", element.getId());
         }

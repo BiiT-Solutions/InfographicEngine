@@ -244,3 +244,4 @@ Some examples:
 
 `#DROOLS%BMI%Value` the question value from the BMI question obtained from Drools.
 `#DROOLS%BMI%Unit` the variable `Unit` from the BMI question obtained from Drools.
+`#DROOLS%TheForm%Score` the variable `Score` at Form level.

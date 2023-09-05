@@ -5,7 +5,6 @@ import com.biit.form.submitted.implementation.SubmittedObject;
 import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

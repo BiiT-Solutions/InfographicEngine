@@ -31,7 +31,9 @@
     {
       "elementType": "text",
       "contentText": "#DROOLS%TheForm%Score#",
+      "fontSize": 45,
       "commonAttributes": {
+        "fill": "#ffffff",
         "x": 280,
         "y": 105
       }
