@@ -48,7 +48,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
         return templates;
     }
 
-    private List<InfographicTemplate> getSelectedTemplates(String rootPath) {
+    public List<InfographicTemplate> getSelectedTemplates(String rootPath) {
         final List<InfographicTemplate> templates = new ArrayList<>();
         if (getDefinition().isSelected()) {
             final List<TreeNode<InfographicFileElement>> children = getChildren();

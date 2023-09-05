@@ -2,15 +2,21 @@ package com.biit.infographic.persistence.entities;
 
 import com.biit.server.persistence.entities.Element;
 import jakarta.persistence.Cacheable;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.util.List;
 
 @Entity
 @Cacheable
@@ -22,7 +28,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
                 @Index(name = "ind_organization", columnList = "organization_id")
         })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class DroolsResult extends Element {
+public class GeneratedInfographic extends Element {
 
     @Column(name = "form_name")
     private String formName;
@@ -37,8 +43,10 @@ public class DroolsResult extends Element {
     private String createdBy;
 
     @Lob
-    @Column(name = "drools_content", columnDefinition = "TEXT", nullable = false)
-    private String form;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "svg_contents", joinColumns = @JoinColumn(name = "generated_infographic_id"))
+    @Column(name = "svg_content", columnDefinition = "TEXT", nullable = false)
+    private List<String> svgContents;
 
     public String getFormName() {
         return formName;
@@ -72,17 +80,17 @@ public class DroolsResult extends Element {
         this.createdBy = createdBy;
     }
 
-    public String getForm() {
-        return form;
+    public List<String> getSvgContents() {
+        return svgContents;
     }
 
-    public void setForm(String form) {
-        this.form = form;
+    public void setSvgContents(List<String> svgContents) {
+        this.svgContents = svgContents;
     }
 
     @Override
     public String toString() {
-        return "DroolsResult{"
+        return "ReceivedForm{"
                 + "formName='" + formName + '\''
                 + ", formVersion=" + formVersion
                 + '}';

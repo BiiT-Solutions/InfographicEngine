@@ -1,12 +1,9 @@
 package com.biit.infographic.core.engine.content;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.form.entity.TreeObject;
-import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.form.submitted.implementation.SubmittedObject;
 import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
-import com.biit.infographic.core.models.DroolsResultDTO;
-import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Component;
@@ -17,87 +14,110 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Component
 public class DroolsContent {
-
-    private final DroolsResultController droolsResultController;
-
-    public DroolsContent(DroolsResultController droolsResultController) {
-        this.droolsResultController = droolsResultController;
-    }
+    private static final String DATE_FORMAT = "dd-MM-yyyy";
+    private static final DecimalFormat DECIMAL_FORMAT_VALUES = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+    private static final DecimalFormat DECIMAL_FORMAT_GOALS = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
 
     /**
      * Search the form structure to find any variable value obtained when executing
      * the drools rules.
      *
-     * @param parameters requested parameters
+     * @param parameters          requested parameters. Are updated with the drools value
+     * @param droolsSubmittedForm the drools form to retrieve the values.
      * @throws ElementDoesNotExistsException if not found.
      */
-    private void setDroolsVariablesValues(Set<Parameter> parameters, String formName, Integer formVersion,
-                                          Long organizationId, String createdBy)
+    public void setDroolsVariablesValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm)
             throws ElementDoesNotExistsException {
-
-        final DroolsResultDTO droolsResultDTO = droolsResultController.findLatest(formName, formVersion, organizationId, createdBy);
-
-        final String droolsAnswer = droolsResultDTO.getForm();
+        if (droolsSubmittedForm == null) {
+            InfographicEngineLogger.errorMessage(getClass().getName(), "No drools content.");
+            return;
+        }
+        final String droolsAnswers = droolsSubmittedForm.generateXML();
+        if (droolsAnswers == null || droolsAnswers.isBlank()) {
+            InfographicEngineLogger.errorMessage(getClass().getName(), "No drools content.");
+            return;
+        }
         InfographicEngineLogger.debug(getClass().getName(),
-                "Setting drools variables for examination '" + droolsResultDTO.getFormName() + "'. Response from drools:\n " + droolsAnswer);
-        if (droolsAnswer == null || droolsAnswer.isEmpty()) {
-            InfographicEngineLogger.errorMessage(getClass().getName(), "No content for '{}' with version '{}'.", formName, formVersion);
-        } else {
-            try {
-                final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-                domFactory.setNamespaceAware(true);
-                final DocumentBuilder builder = domFactory.newDocumentBuilder();
-                final Document document = builder.parse(new ByteArrayInputStream(droolsAnswer.getBytes(StandardCharsets.UTF_8)));
-                final XPath xpathCompiler = XPathFactory.newInstance().newXPath();
+                "Setting drools variables for form '{}' with version '{}'.", droolsSubmittedForm.getName(), droolsSubmittedForm.getVersion());
+        try {
+            //Parse Drools value XML.
+            final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+            domFactory.setNamespaceAware(true);
+            final DocumentBuilder builder = domFactory.newDocumentBuilder();
+            final Document document = builder.parse(new ByteArrayInputStream(droolsAnswers.getBytes(StandardCharsets.UTF_8)));
+            final XPath xpathCompiler = XPathFactory.newInstance().newXPath();
 
-                final DroolsSubmittedForm droolsSubmittedForm = ObjectMapperFactory.getObjectMapper().readValue(droolsResultDTO.getForm(), DroolsSubmittedForm.class);
+            final LinkedHashSet<SubmittedObject> formElements = new LinkedHashSet<>();
+            // Allow to search on the form root too
+            formElements.add(droolsSubmittedForm);
+            formElements.addAll(droolsSubmittedForm.getAllChildrenInHierarchy());
 
-                final LinkedHashSet<TreeObject> formElements = new LinkedHashSet<>();
-                // Allow to search on the form root too
-                formElements.add(examinationResult.getFormResult());
-                formElements.addAll(examinationResult.getFormResult().getAllChildrenInHierarchy());
+            for (SubmittedObject submittedObject : formElements) {
+                for (Parameter parameter : parameters) {
+                    // Search for any variable defined in the parameters
+                    for (String attribute : parameter.getAttributes().keySet()) {
+                        if (parameter.getName() != null
+                                && (parameter.getName().equalsIgnoreCase(submittedObject.getTag())
+                                || parameter.getName().equals(submittedObject.getPathName()))) {
+                            String path = submittedObject.getXPath() + "/variables/" + attribute + "/text()";
 
-                for (TreeObject formElement : formElements) {
-                    for (Parameter parameter : parameters) {
-                        // Search for any variable defined in the parameters
-                        for (String attribute : parameter.getAttributes().keySet()) {
-                            if (parameter.getName() != null
-                                    && (parameter.getName().equalsIgnoreCase(formElement.getName()) || parameter.getName().equals(formElement.getPathName()))) {
-                                String path = formElement.getXPath() + "/variables/" + attribute + "/text()";
-
-                                // Search as a variable.
-                                String value = getValue(path, document, xpathCompiler);
-                                // Not a variable, maybe a question value.
-                                if (value == null) {
-                                    path = formElement.getXPath() + "/" + attribute + "/text()";
-                                    value = getValue(path, document, xpathCompiler);
-                                }
-                                String attributeValue;
-                                if (value != null && value.length() > 0) {
-                                    attributeValue = new GsonBuilder().create().toJson(value.trim());
-                                    InfographicEngineLogger.info(getClass().getName(), attribute + " " + attributeValue);
-                                } else {
-                                    attributeValue = "";
-                                    InfographicEngineLogger.warning(getClass().getName(), attribute + " has empty value.");
-                                }
-                                parameter.getAttributes().put(attribute, attributeValue);
+                            // Search as a variable.
+                            String value = getValue(path, document, xpathCompiler);
+                            // Not a variable, maybe a question value.
+                            if (value == null) {
+                                path = submittedObject.getXPath() + "/" + attribute + "/text()";
+                                value = getValue(path, document, xpathCompiler);
                             }
+                            final String attributeValue;
+                            if (value != null && !value.isEmpty()) {
+                                attributeValue = new GsonBuilder().create().toJson(value.trim());
+                                InfographicEngineLogger.info(getClass().getName(), attribute + " " + attributeValue);
+                            } else {
+                                attributeValue = "";
+                                InfographicEngineLogger.warning(getClass().getName(), attribute + " has empty value.");
+                            }
+                            parameter.getAttributes().put(attribute, attributeValue);
                         }
                     }
                 }
-            } catch (ParserConfigurationException | XPathExpressionException | IOException | SAXException e) {
-                InfographicEngineLogger.errorMessage(this.getClass(), e);
             }
+        } catch (ParserConfigurationException | XPathExpressionException | IOException | SAXException e) {
+            InfographicEngineLogger.errorMessage(this.getClass(), e);
         }
+    }
+
+    private String getValue(String path, Document document, XPath xpathCompiler) throws XPathExpressionException {
+        InfographicEngineLogger.debug(this.getClass().getName(), "Searching variable in '" + path + "'.");
+        final XPathExpression formulaExpression = xpathCompiler.compile(path);
+        String value = (String) formulaExpression.evaluate(document, XPathConstants.STRING);
+
+        if (value != null && !value.isEmpty()) {
+            InfographicEngineLogger.debug(getClass().toString(), "Expression '" + path + "' has a value of '" + value.trim() + "'.");
+            // If the value is a number, format it to X decimal position
+            try {
+                DECIMAL_FORMAT_VALUES.setRoundingMode(RoundingMode.DOWN);
+                value = DECIMAL_FORMAT_VALUES.format(Double.parseDouble(value));
+            } catch (IllegalArgumentException e) {
+                InfographicEngineLogger.debug(getClass().getName(), "Value '" + value + "' is not a number.");
+            }
+            return value;
+        }
+        return null;
     }
 }

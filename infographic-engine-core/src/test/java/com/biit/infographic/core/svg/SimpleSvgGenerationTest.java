@@ -469,7 +469,7 @@ public class SimpleSvgGenerationTest {
         checkContent(SvgGenerator.generate(svgTemplate), "nestedDocuments.svg");
     }
 
-    @AfterClass(enabled = false)
+    @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }

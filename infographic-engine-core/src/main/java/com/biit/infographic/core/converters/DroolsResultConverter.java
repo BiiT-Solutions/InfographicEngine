@@ -5,7 +5,9 @@ import com.biit.infographic.core.models.DroolsResultDTO;
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.server.controller.converters.ElementConverter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DroolsResultConverter extends ElementConverter<DroolsResult, DroolsResultDTO, DroolsResultConverterRequest> {
 
 

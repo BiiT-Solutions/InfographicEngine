@@ -13,6 +13,7 @@
                 <include name="customSvgComponentsTest"/>
                 <include name="colorValidation"/>
                 <include name="jsonGeneration"/>
+                <include name="templateFromDrools"/>
             </run>
         </groups>
         <classes>
@@ -22,6 +23,7 @@
             <class name="com.biit.infographic.core.svg.serialization.JsonGenerationTest"/>
             <class name="com.biit.infographic.core.image.SimplePngGenerationTest"/>
             <class name="com.biit.infographic.core.image.SimpleJpegGenerationTest"/>
+            <class name="com.biit.infographic.core.engine.TemplateFromDroolsTests"/>
         </classes>
     </test>
 </suite>

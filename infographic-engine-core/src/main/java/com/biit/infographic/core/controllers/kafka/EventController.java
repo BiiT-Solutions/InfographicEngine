@@ -1,7 +1,6 @@
 package com.biit.infographic.core.controllers.kafka;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.form.submitted.implementation.SubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
 import com.biit.infographic.logger.InfographicEngineLogger;
@@ -35,9 +34,8 @@ public class EventController {
         this.droolsResultController = droolsResultController;
 
         //Listen to topic
-        eventListener.addListener((event, offset, key, partition, topic, timeStamp) -> {
-            eventHandler(event, key, partition, topic, timeStamp);
-        });
+        eventListener.addListener((event, offset, key, partition, topic, timeStamp) ->
+                eventHandler(event, key, partition, topic, timeStamp));
     }
 
     private void eventHandler(Event event, String key, int partition, String topic, long timeStamp) {
@@ -50,7 +48,6 @@ public class EventController {
                 : event.getCreatedBy();
 
         try {
-            //Event is a FormResult
             final DroolsSubmittedForm droolsForm = getDroolsForm(event);
             InfographicEngineLogger.debug(this.getClass(), "Received Drools Result '{}'.", droolsForm.getName());
             droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
@@ -65,10 +62,6 @@ public class EventController {
 
     private DroolsSubmittedForm getDroolsForm(Event event) {
         return event.getEntity(DroolsSubmittedForm.class);
-    }
-
-    private SubmittedForm getSubmittedForm(Event event) {
-        return event.getEntity(SubmittedForm.class);
     }
 
 }

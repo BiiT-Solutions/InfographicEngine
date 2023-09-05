@@ -1,10 +1,12 @@
 package com.biit.infographic.core.controllers;
 
 
+import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.engine.InfographicTemplate;
 import com.biit.infographic.core.engine.InfographicTemplateAndContent;
 import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.engine.ParameterType;
+import com.biit.infographic.core.engine.content.DroolsContent;
 import com.biit.infographic.core.engine.files.InfographicFileElement;
 import com.biit.infographic.core.engine.files.InfographicFolder;
 import com.biit.infographic.core.engine.files.TreeNode;
@@ -14,6 +16,7 @@ import com.biit.infographic.core.exceptions.ReportNotReadyException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,45 +27,23 @@ import java.util.Set;
 @Controller
 public class InfographicEngineController {
 
-    public static final String INFOGRAPHIC_PATH = "infographics/";
+    public static final String INFOGRAPHIC_PATH = "/infographics";
+    private final DroolsContent droolsContent;
 
-    /**
-     * Default access method. No selections and basic root path.
-     *
-     * @return all the template items with its content.
-     */
-    public List<InfographicTemplateAndContent> getInfographicReport() {
-        return getInfographicReport(null);
+    public InfographicEngineController(DroolsContent droolsContent) {
+        this.droolsContent = droolsContent;
     }
 
-    /**
-     * Shows only the selected items from the infography.
-     *
-     * @param selections Nodes that are selected by the user. Null if you want all of them.
-     * @return the infographic modules generated.
-     */
-    public List<InfographicTemplateAndContent> getInfographicReport(List<TreeNode<String>> selections) {
+    public List<InfographicTemplateAndContent> addContentToTemplates(List<InfographicTemplate> templates,
+                                                                     Map<InfographicFileElement, Set<Parameter>> values) {
         final List<InfographicTemplateAndContent> infographics = new ArrayList<>();
-        if (selections != null) {
-            selections = sortForestWithReference(selections, getSelectableElements());
-        }
-        InfographicEngineLogger.debug(this.getClass(), "Selected elements '" + selections + "' on infographic.");
-        final List<InfographicTemplate> templates = getTemplates(selections);
-        final Map<InfographicFileElement, Set<Parameter>> params = getParamsFromTemplates(templates);
-        try {
-            final Map<InfographicFileElement, Set<Parameter>> filledParams = getValues(params);
-            for (InfographicTemplate template : templates) {
-                if (template.getTemplate() != null) {
-                    final Set<Parameter> templateParams = filledParams.get(template.getIndexFile());
-                    if (templateParams != null) {
-                        infographics.add(addContentToTemplate(template, templateParams));
-                    }
+        for (InfographicTemplate template : templates) {
+            if (template.getTemplate() != null) {
+                final Set<Parameter> templateParams = values.get(template.getIndexFile());
+                if (templateParams != null) {
+                    infographics.add(addContentToTemplate(template, templateParams));
                 }
             }
-        } catch (InvalidParameterException | ElementDoesNotExistsException e) {
-            InfographicEngineLogger.errorMessage(this.getClass(), e);
-        } catch (ReportNotReadyException e) {
-            InfographicEngineLogger.warning(this.getClass(), e.getMessage());
         }
         return infographics;
     }
@@ -86,17 +67,17 @@ public class InfographicEngineController {
         return new InfographicFolder(null).getSelectableElementsTree(getReportPath());
     }
 
-    private Map<InfographicFileElement, Set<Parameter>> getValues(Map<InfographicFileElement, Set<Parameter>> parameters)
-            throws java.security.InvalidParameterException, ElementDoesNotExistsException, ReportNotReadyException {
+    public Map<InfographicFileElement, Set<Parameter>> getValues(DroolsSubmittedForm droolsSubmittedForm, Map<InfographicFileElement,
+            Set<Parameter>> parameters) throws java.security.InvalidParameterException, ElementDoesNotExistsException, ReportNotReadyException {
         final Map<InfographicFileElement, Set<Parameter>> filledParams = new HashMap<>();
         // Group parameters by type.
         for (InfographicFileElement infographicDefinition : parameters.keySet()) {
             final Map<ParameterType, Set<Parameter>> parametersByType = groupParametersByType(filledParams.get(infographicDefinition));
 
-//            // Obtain parameters values.
-//            setDroolsVariablesValues(examinationResult, appointment, parametersByType.get(ParameterType.DROOLS));
-//
-//            // Obtain goals.
+            // Update parameters with values.
+            droolsContent.setDroolsVariablesValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
+
+            // Obtain goals.
 //            setGoalsVariablesValues(examinationResult, appointment, parametersByType.get(ParameterType.GOAL));
 //
 //            // Obtain defined variables.
@@ -137,17 +118,26 @@ public class InfographicEngineController {
         return INFOGRAPHIC_PATH;
     }
 
+
+    private String getTemplateBasePath(DroolsSubmittedForm droolsSubmittedForm) {
+        return getReportPath() + File.separator + droolsSubmittedForm.getName() + "_v" + droolsSubmittedForm.getVersion();
+    }
+
+    public List<InfographicTemplate> getTemplates(DroolsSubmittedForm droolsSubmittedForm) {
+        return new InfographicFolder(null).getTemplatesFromPath(getTemplateBasePath(droolsSubmittedForm), null);
+    }
+
     private List<InfographicTemplate> getTemplates(List<TreeNode<String>> selections) {
         final String reportPath = getReportPath();
         return new InfographicFolder(null).getTemplatesFromPath(reportPath, selections);
     }
 
     private Map<InfographicFileElement, Set<Parameter>> getParamsFromAllTemplates() {
-        final List<InfographicTemplate> templates = getTemplates(null);
+        final List<InfographicTemplate> templates = getTemplates((List<TreeNode<String>>) null);
         return getParamsFromTemplates(templates);
     }
 
-    private Map<InfographicFileElement, Set<Parameter>> getParamsFromTemplates(List<InfographicTemplate> templates) {
+    public Map<InfographicFileElement, Set<Parameter>> getParamsFromTemplates(List<InfographicTemplate> templates) {
         final Map<InfographicFileElement, Set<Parameter>> params = new HashMap<>();
         for (InfographicTemplate template : templates) {
             final InfographicFileElement templateDef = template.getIndexFile();

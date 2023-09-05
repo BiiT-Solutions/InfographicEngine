@@ -21,6 +21,7 @@ public class InfographicTemplateAndContent {
     private String template;
 
     @JsonProperty("content")
+    // key is "#" + type + "%" + name + "%" + key + "#"
     private Map<String, String> content;
 
     public InfographicTemplateAndContent(String name) {
@@ -62,6 +63,15 @@ public class InfographicTemplateAndContent {
         return replaceInvalidChars(template);
     }
 
+    /**
+     * Updates the template parameters with the drools content.
+     *
+     * @return the template updated.
+     */
+    public String getProcessedTemplate() {
+        return replaceInvalidChars(replaceContent(template));
+    }
+
     public Map<String, String> getContent() {
         return content;
     }
@@ -80,6 +90,13 @@ public class InfographicTemplateAndContent {
             return "";
         }
         return text.replace("\n", "").replace("\r", "");
+    }
+
+    private String replaceContent(String text) {
+        for (Map.Entry<String, String> value : content.entrySet()) {
+            text = text.replace(value.getKey(), value.getValue());
+        }
+        return text;
     }
 
     @Override
