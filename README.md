@@ -9,59 +9,58 @@ example, please check the test inside `infographic-engine-core` module.
 
 ### Circle
 
-**ElementAttributes.id** The id of the element.
+**commonAttributes.id** The id of the element.
 
-**ElementAttributes.class** The class of the element. Useful when combined with CSS.
+**commonAttributes.class** The class of the element. Useful when combined with CSS.
 
-**ElementAttributes.x** The position of the center of the circle.
+**commonAttributes.x** The position of the center of the circle.
 
-**ElementAttributes.y** The position of the center of the circle.
+**commonAttributes.y** The position of the center of the circle.
 
-**ElementAttributes.fill** The color of the circle.
+**commonAttributes.fill** The color of the circle.
 
-**ElementAttributes.style** Svg Style definition as string that will be injected on the component.
+**commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
-**ElementStroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
+**stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
-**ElementStroke.strokeWidth** The width of the stroke to be applied to the shape.
+**stroke.strokeWidth** The width of the stroke to be applied to the shape.
 
-**ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
+**stroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+**stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array
 of integers where each integer is the length of one dash.
 
 ### Ellipse
 
-**ElementAttributes.id** The id of the element.
+**commonAttributes.id** The id of the element.
 
-**ElementAttributes.class** The class of the element. Useful when combined with CSS.
+**commonAttributes.class** The class of the element. Useful when combined with CSS.
 
-**ElementAttributes.x** The position of the center of the ellipse.
+**commonAttributes.x** The position of the center of the ellipse.
 
-**ElementAttributes.y** The position of the center of the ellipse.
+**commonAttributes.y** The position of the center of the ellipse.
 
-**ElementAttributes.width** The width of the element.
+**commonAttributes.width** The width of the element.
 
-**ElementAttributes.widthUnit** The unit applied on `ElementAttributes.width`. Available values are `%` and `px`.
+**commonAttributes.widthUnit** The unit applied on `commonAttributes.width`. Available values are `%` and `px`.
 
-**ElementAttributes.height** Starting point of the text on the y-axis.
+**commonAttributes.height** Starting point of the text on the y-axis.
 
-**ElementAttributes.heightUnit** The unit applied on `ElementAttributes.height`. Available values are `%` and `px`.
+**commonAttributes.heightUnit** The unit applied on `commonAttributes.height`. Available values are `%` and `px`.
 
-**ElementAttributes.fill** The color of the ellipse.
+**commonAttributes.fill** The color of the ellipse.
 
-**ElementAttributes.style** Svg Style definition as string that will be injected on the component.
+**commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
-**ElementStroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
+**stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
-**ElementStroke.strokeWidth** The width of the stroke to be applied to the shape.
+**stroke.strokeWidth** The width of the stroke to be applied to the shape.
 
-**ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
+**stroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
-defined as an array
-of integers where each integer is the length of one dash.
+**stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+defined as an array of integers where each integer is the length of one dash.
 
 ### Image
 
@@ -69,13 +68,13 @@ of integers where each integer is the length of one dash.
 
 **href** A link if needed.
 
-**ElementAttributes.id** The id of the element.
+**commonAttributes.id** The id of the element.
 
-**ElementAttributes.class** The class of the element. Useful when combined with CSS.
+**commonAttributes.class** The class of the element. Useful when combined with CSS.
 
-**ElementAttributes.x** Starting point of the image on the x-axis in pixels.
+**commonAttributes.x** Starting point of the image on the x-axis in pixels.
 
-**ElementAttributes.y** Starting point of the image on the y-axis in pixels.
+**commonAttributes.y** Starting point of the image on the y-axis in pixels.
 
 ### Line
 
@@ -83,21 +82,21 @@ of integers where each integer is the length of one dash.
 
 **y2Coordinate** Ending point of the line on the y-axis in pixels.
 
-**ElementAttributes.x** Starting point of the line on the x-axis in pixels.
+**commonAttributes.x** Starting point of the line on the x-axis in pixels.
 
-**ElementAttributes.y** Starting point of the line on the y-axis in pixels.
+**commonAttributes.y** Starting point of the line on the y-axis in pixels.
 
-**ElementAttributes.fill** The color of the line.
+**commonAttributes.fill** The color of the line.
 
-**ElementAttributes.style** Svg Style definition as string that will be injected on the component.
+**commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
-**ElementStroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
+**stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
-**ElementStroke.strokeWidth** The width of the stroke to be applied to the shape.
+**stroke.strokeWidth** The width of the stroke to be applied to the shape.
 
-**ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
+**stroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+**stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array
 of integers where each integer is the length of one dash.
 
@@ -107,35 +106,35 @@ of integers where each integer is the length of one dash.
 
 **yRadius** To define rounded corners on y Axis.
 
-**ElementAttributes.id** The id of the element.
+**commonAttributes.id** The id of the element.
 
-**ElementAttributes.class** The class of the element. Useful when combined with CSS.
+**commonAttributes.class** The class of the element. Useful when combined with CSS.
 
-**ElementAttributes.x** Starting point of the rectangle on the x-axis in pixels.
+**commonAttributes.x** Starting point of the rectangle on the x-axis in pixels.
 
-**ElementAttributes.y** Starting point of the rectangle on the y-axis in pixels.
+**commonAttributes.y** Starting point of the rectangle on the y-axis in pixels.
 
-**ElementAttributes.width** The width of the element.
+**commonAttributes.width** The width of the element.
 
-**ElementAttributes.widthUnit** The unit applied on `ElementAttributes.width`. Available values are `%` and `px`.
+**commonAttributes.widthUnit** The unit applied on `commonAttributes.width`. Available values are `%` and `px`.
 
-**ElementAttributes.height** Starting point of the text on the y-axis.
+**commonAttributes.height** Starting point of the text on the y-axis.
 
-**ElementAttributes.heightUnit** The unit applied on `ElementAttributes.height`. Available values are `%` and `px`.
+**commonAttributes.heightUnit** The unit applied on `commonAttributes.height`. Available values are `%` and `px`.
 
-**ElementAttributes.fill** The color of the rectangle.
+**commonAttributes.fill** The color of the rectangle.
 
-**ElementAttributes.style** Svg Style definition as string that will be injected on the component.
+**commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
-**ElementAttributes.verticalAlign**
+**commonAttributes.verticalAlign**
 
-**ElementStroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
+**stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
-**ElementStroke.strokeWidth** The width of the stroke to be applied to the shape.
+**stroke.strokeWidth** The width of the stroke to be applied to the shape.
 
-**ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
+**stroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+**stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array
 of integers where each integer is the length of one dash.
 
@@ -183,23 +182,23 @@ values are `left`, `right`, `center`, `justify`.
 
 **dy** Indicates a shift along the y-axis on the position of an element or its content.
 
-**ElementAttributes.id** The id of the element.
+**commonAttributes.id** The id of the element.
 
-**ElementAttributes.class** The class of the element. Useful when combined with CSS.
+**commonAttributes.class** The class of the element. Useful when combined with CSS.
 
-**ElementAttributes.x** Starting point of the text on the x-axis.
+**commonAttributes.x** Starting point of the text on the x-axis.
 
-**ElementAttributes.y** Starting point of the text on the y-axis.
+**commonAttributes.y** Starting point of the text on the y-axis.
 
-**ElementAttributes.fill** The color of the text.
+**commonAttributes.fill** The color of the text.
 
-**ElementStroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
+**stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
-**ElementStroke.strokeWidth** The width of the stroke to be applied to the shape.
+**stroke.strokeWidth** The width of the stroke to be applied to the shape.
 
-**ElementStroke.strokeColor** The color of the stroke to be applied to the shape.
+**stroke.strokeColor** The color of the stroke to be applied to the shape.
 
-**ElementStroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+**stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array
 of integers where each integer is the length of one dash.
 
@@ -217,13 +216,13 @@ of integers where each integer is the length of one dash.
 
 **colors** If you want to override the default colors of the gauge. Can have 5 elements.
 
-**ElementAttributes.id** The id of the element.
+**commonAttributes.id** The id of the element.
 
-**ElementAttributes.class** The class of the element. Useful when combined with CSS.
+**commonAttributes.class** The class of the element. Useful when combined with CSS.
 
-**ElementAttributes.x** Starting point of the text on the x-axis.
+**commonAttributes.x** Starting point of the text on the x-axis.
 
-**ElementAttributes.y** Starting point of the text on the y-axis.
+**commonAttributes.y** Starting point of the text on the y-axis.
 
 # Parameters
 
@@ -245,3 +244,53 @@ Some examples:
 `#DROOLS%BMI%Value` the question value from the BMI question obtained from Drools.
 `#DROOLS%BMI%Unit` the variable `Unit` from the BMI question obtained from Drools.
 `#DROOLS%TheForm%Score` the variable `Score` at Form level.
+
+
+# Example of use
+
+An example of a template: a rectangle with a text that represent the score at form level. 
+
+```
+{
+  "width": 960.0,
+  "height": 300.0,
+  "elementType": "SVG",
+  "type": "freeLayout",
+  "background": {
+  },
+  "elements": [
+    {
+      "elementType": "rectangle",
+      "id": "rect",
+      "ry": 18.0,
+      "commonAttributes": {
+        "fill": "#008080",
+        "x": 170,
+        "y": 75,
+        "width": 790.0,
+        "height": 150.0
+      },
+      "stroke": {
+        "strokeWidth": 3.0,
+        "strokeColor": "#000000",
+        "strokeDash": [
+          10,
+          5,
+          10,
+          5
+        ]
+      }
+    },
+    {
+      "elementType": "text",
+      "contentText": "#DROOLS%TheForm%Score#",
+      "fontSize": 45,
+      "commonAttributes": {
+        "fill": "#ffffff",
+        "x": 280,
+        "y": 105
+      }
+    }
+  ]
+}
+```
