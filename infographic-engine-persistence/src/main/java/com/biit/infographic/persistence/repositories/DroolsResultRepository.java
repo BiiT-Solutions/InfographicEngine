@@ -1,9 +1,9 @@
 package com.biit.infographic.persistence.repositories;
 
 import com.biit.infographic.persistence.entities.DroolsResult;
+import com.biit.server.persistence.repositories.ElementRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface DroolsResultRepository extends JpaRepository<DroolsResult, Long> {
+public interface DroolsResultRepository extends ElementRepository<DroolsResult, Long> {
 
     /**
      * Find all forms that matches the search parameters. If startTime and endTime is defined, will search any appointment inside this range.

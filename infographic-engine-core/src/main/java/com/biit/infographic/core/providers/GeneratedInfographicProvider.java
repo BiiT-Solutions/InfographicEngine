@@ -3,7 +3,7 @@ package com.biit.infographic.core.providers;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
-import com.biit.server.providers.CrudProvider;
+import com.biit.server.providers.ElementProvider;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GeneratedInfographicProvider extends CrudProvider<GeneratedInfographic, Long, GeneratedInfographicRepository> {
+public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfographic, Long, GeneratedInfographicRepository> {
 
     public GeneratedInfographicProvider(GeneratedInfographicRepository repository) {
         super(repository);

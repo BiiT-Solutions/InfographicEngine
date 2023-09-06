@@ -3,7 +3,7 @@ package com.biit.infographic.core.providers;
 
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
-import com.biit.server.providers.CrudProvider;
+import com.biit.server.providers.ElementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DroolsResultProvider extends CrudProvider<DroolsResult, Long, DroolsResultRepository> {
+public class DroolsResultProvider extends ElementProvider<DroolsResult, Long, DroolsResultRepository> {
 
     @Autowired
     public DroolsResultProvider(DroolsResultRepository repository) {

@@ -40,6 +40,13 @@ public class GeneratedInfographicService extends BasicServices<GeneratedInfograp
         super(controller);
     }
 
+    @PreAuthorize("hasAnyAuthority(@securityService.adminPrivilege)")
+    @Operation(summary = "Gets all", security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeneratedInfographicDTO> getAll(HttpServletRequest request) {
+        return super.getAll(request);
+    }
+
     @Operation(hidden = true)
     @Override
     public GeneratedInfographicDTO add(@RequestBody GeneratedInfographicDTO dto, Authentication authentication, HttpServletRequest request) {
@@ -95,7 +102,7 @@ public class GeneratedInfographicService extends BasicServices<GeneratedInfograp
             @RequestParam(value = "to", required = false) OffsetDateTime to,
             Authentication authentication, HttpServletRequest request) {
 
-        canSearchForDifferentUsers(createdBy, authentication);
+        canBeDoneForDifferentUsers(createdBy, authentication);
 
         return getController().findBy(form, version, organization, createdBy,
                 from != null ? LocalDateTime.ofInstant(from.toInstant(), ZoneId.systemDefault()) : null,
@@ -123,7 +130,7 @@ public class GeneratedInfographicService extends BasicServices<GeneratedInfograp
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
             Authentication authentication, HttpServletRequest request) {
 
-        canSearchForDifferentUsers(createdBy, authentication);
+        canBeDoneForDifferentUsers(createdBy, authentication);
 
         return getController().findLatest(form, version, organization, createdBy);
     }
