@@ -60,6 +60,7 @@ public class EventConverter {
         event.setContentType(MediaType.APPLICATION_XML_VALUE);
         event.setCreatedAt(LocalDateTime.now());
         event.setReplyTo(applicationName);
+        event.setTag(generatedInfographic.getFormName());
         event.setCustomProperty(EventCustomProperties.FACT_TYPE, INFOGRAPHIC_VARIABLE_EVENT_TYPE);
         return event;
     }
