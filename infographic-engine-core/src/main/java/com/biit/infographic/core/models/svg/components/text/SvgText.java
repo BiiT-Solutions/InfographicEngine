@@ -29,6 +29,7 @@ public class SvgText extends SvgElement {
     private static final int LINE_SEPARATION = 5;
     private static final int DEFAULT_FONT_SIZE = 10;
     private static final String DEFAULT_FONT = "sans-serif";
+    private static final double MAGIC_INKSCAPE_FONT_Y_CORRECTION = 0.63;
 
     @JsonProperty("contentText")
     private String text;
@@ -79,6 +80,9 @@ public class SvgText extends SvgElement {
 
     @JsonProperty("textAlign")
     private TextAlign textAlign = TextAlign.LEFT;
+
+    @JsonProperty("fontWeight")
+    private FontWeight fontWeight;
 
     public SvgText(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -133,6 +137,14 @@ public class SvgText extends SvgElement {
 
     public void setFontVariant(FontVariantType fontVariant) {
         this.fontVariant = fontVariant;
+    }
+
+    public FontWeight getFontWeight() {
+        return fontWeight;
+    }
+
+    public void setFontWeight(FontWeight fontWeight) {
+        this.fontWeight = fontWeight;
     }
 
     public long getRotate() {
@@ -259,7 +271,8 @@ public class SvgText extends SvgElement {
     public Element generateSvg(Document doc) {
         final Element text = doc.createElementNS(NAMESPACE, "text");
         text.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
-        text.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
+        text.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()
+                + getFontSize() * MAGIC_INKSCAPE_FONT_Y_CORRECTION));
         if (getFontVariant() != null) {
             text.setAttributeNS(null, "font-variant", getFontVariant().getTag());
         }
@@ -303,7 +316,10 @@ public class SvgText extends SvgElement {
                 if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
                     elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
                 }
-                elementLine.setAttribute("style", getTextAlign().getStyle());
+                final String style = generateStyle(null).toString();
+                if (!style.isBlank()) {
+                    elementLine.setAttribute("style", style);
+                }
                 elementLine.setTextContent(lines.get(i));
                 text.appendChild(elementLine);
             }
@@ -318,6 +334,29 @@ public class SvgText extends SvgElement {
         elementStroke(text);
         elementAttributes(text);
         return text;
+    }
+
+    @Override
+    protected StringBuilder generateStyle(StringBuilder style) {
+        style = super.generateStyle(style);
+        if (getTextAlign() != null) {
+            style.append(getTextAlign().getStyle());
+        }
+        if (getFontWeight() != null) {
+            style.append(getFontWeight().getStyle());
+        }
+        if (getFontFamily() != null) {
+            style.append("font-family:");
+            style.append(getFontFamily());
+            style.append(";");
+        }
+        if (getTextAlign() != null && !getTextAlign().getStyle().isBlank()) {
+            style.append("text-align:");
+            style.append(getTextAlign().getStyle());
+            style.append(";");
+        }
+
+        return style;
     }
 
 

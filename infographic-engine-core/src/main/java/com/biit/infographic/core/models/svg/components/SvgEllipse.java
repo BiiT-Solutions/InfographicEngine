@@ -33,10 +33,10 @@ public class SvgEllipse extends SvgElement {
         ellipse.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
         ellipse.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
         if (getElementAttributes().getWidth() != null && getElementAttributes().getWidth() != 0) {
-            ellipse.setAttributeNS(null, "rx", String.valueOf(getElementAttributes().getWidthValue()));
+            ellipse.setAttributeNS(null, "rx", String.valueOf(generateRealWidth()));
         }
         if (getElementAttributes().getHeight() != null && getElementAttributes().getHeight() != 0) {
-            ellipse.setAttributeNS(null, "ry", String.valueOf(getElementAttributes().getHeightValue()));
+            ellipse.setAttributeNS(null, "ry", String.valueOf(generateRealHeight()));
         }
         elementStroke(ellipse);
         elementAttributes(ellipse);

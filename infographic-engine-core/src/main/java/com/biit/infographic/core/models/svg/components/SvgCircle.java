@@ -48,8 +48,8 @@ public class SvgCircle extends SvgElement {
     public Element generateSvg(Document doc) {
         validateAttributes();
         final Element circle = doc.createElementNS(NAMESPACE, "circle");
-        circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
-        circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
+        circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate() + getRadius()));
+        circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate() + getRadius()));
         circle.setAttributeNS(null, "r", String.valueOf(radius));
         elementStroke(circle);
         elementAttributes(circle);

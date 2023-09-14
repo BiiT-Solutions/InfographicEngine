@@ -21,6 +21,12 @@ public class SvgBackground implements ISvgElement {
     @JsonProperty("backgroundColor")
     private String backgroundColor = null;
 
+    @JsonProperty("xRadius")
+    private Long xRadius = 0L;
+
+    @JsonProperty("yRadius")
+    private Long yRadius = 0L;
+
     //As Base64.
     @JsonProperty("image")
     private String image = null;
@@ -36,6 +42,22 @@ public class SvgBackground implements ISvgElement {
     public SvgBackground backgroundColor(String backgroundColor) {
         setBackgroundColor(backgroundColor);
         return this;
+    }
+
+    public Long getxRadius() {
+        return xRadius;
+    }
+
+    public void setxRadius(Long xRadius) {
+        this.xRadius = xRadius;
+    }
+
+    public Long getyRadius() {
+        return yRadius;
+    }
+
+    public void setyRadius(Long yRadius) {
+        this.yRadius = yRadius;
     }
 
     public String getImage() {
@@ -55,6 +77,8 @@ public class SvgBackground implements ISvgElement {
     public Element generateSvg(Document doc) {
         if (getBackgroundColor() != null) {
             final SvgRectangle rectangle = new SvgRectangle("100%", "100%", backgroundColor);
+            rectangle.setXRadius(xRadius);
+            rectangle.setYRadius(yRadius);
             return rectangle.generateSvg(doc);
         } else if (getImage() != null) {
             final SvgImage image = new SvgImage(new ElementAttributes("100%", "100%"), "background", getImage());

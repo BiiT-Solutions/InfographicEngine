@@ -14,7 +14,7 @@
                 <include name="colorValidation"/>
                 <include name="jsonGeneration"/>
                 <include name="templateFromDrools"/>
-                <exclude name="cadt"/>
+                <include name="cadt"/>
             </run>
         </groups>
         <classes>

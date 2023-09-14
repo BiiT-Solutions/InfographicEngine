@@ -154,6 +154,9 @@ public class ElementAttributes {
     }
 
     public String getStyle() {
+        if (style == null) {
+            return "";
+        }
         return style;
     }
 

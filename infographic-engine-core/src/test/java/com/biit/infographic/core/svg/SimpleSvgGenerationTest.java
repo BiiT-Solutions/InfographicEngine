@@ -34,7 +34,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 @Test(groups = {"simpleSvgGenerationTest"})
-public class SimpleSvgGenerationTest {
+public class SimpleSvgGenerationTest extends  SvgGeneration {
     private static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
     private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
     private static final String SCRIPT = """
@@ -59,39 +59,7 @@ public class SimpleSvgGenerationTest {
                 });
             """;
 
-    private String readBase64Image(String imageName) {
-        try {
-            return new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
-                    .getResource("images" + File.separator + imageName).toURI())));
-        } catch (Exception e) {
-            Assert.fail("Cannot read resource 'images/" + imageName + "'.");
-        }
-        return null;
-    }
 
-    private boolean deleteDirectory(File directoryToBeDeleted) {
-        File[] allContents = directoryToBeDeleted.listFiles();
-        if (allContents != null) {
-            for (File file : allContents) {
-                deleteDirectory(file);
-            }
-        }
-        return directoryToBeDeleted.delete();
-    }
-
-    private void checkContent(String content, String resourceFile) {
-        try {
-            Assert.assertEquals(content.trim(), new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
-                    .getResource("svg" + File.separator + resourceFile).toURI()))).trim());
-        } catch (IOException | URISyntaxException e) {
-            Assert.fail();
-        }
-    }
-
-    @BeforeClass
-    public void prepareFolder() throws IOException {
-        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
-    }
 
     @Test
     public void documentBackgroundColorTest() throws IOException {
@@ -502,10 +470,5 @@ public class SimpleSvgGenerationTest {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPathAreaFilled.svg");
-    }
-
-    @AfterClass
-    public void removeFolder() {
-        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

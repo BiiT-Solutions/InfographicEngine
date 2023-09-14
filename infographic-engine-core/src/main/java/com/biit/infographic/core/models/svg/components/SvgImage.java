@@ -5,11 +5,18 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgImageDeserializer;
+import com.biit.infographic.logger.SvgGeneratorLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Base64;
 
 @JsonDeserialize(using = SvgImageDeserializer.class)
 @JsonRootName(value = "image")
@@ -50,6 +57,24 @@ public class SvgImage extends SvgElement {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @JsonIgnore
+    public void setFromFile(File inputFile) {
+        // load file from /src/test/resources
+        try {
+            final byte[] fileContent = FileUtils.readFileToByteArray(inputFile);
+            setContent(Base64.getEncoder().encodeToString(fileContent));
+        } catch (NullPointerException | IOException e) {
+            SvgGeneratorLogger.errorMessage(this.getClass(), e);
+        }
+
+    }
+
+    @JsonIgnore
+    public void setFromResource(String resourcePath) {
+        // load file from /src/test/resources
+        setFromFile(new File(getClass().getClassLoader().getResource(resourcePath).getFile()));
     }
 
     public String getHref() {

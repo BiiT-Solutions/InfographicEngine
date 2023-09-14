@@ -92,6 +92,10 @@ public class SvgTemplate extends SvgElement {
         elements.add(element);
     }
 
+    public void addElements(List<SvgElement> elements) {
+        elements.forEach(this::addElement);
+    }
+
     @Override
     public Element generateSvg(Document doc) {
         // Get the root element (the 'svg' element).
@@ -141,14 +145,14 @@ public class SvgTemplate extends SvgElement {
                 if (element instanceof SvgCircle) {
                     height = Math.max(height, ((SvgCircle) element).getRadius() + element.getElementAttributes().getYCoordinate());
                     width = Math.max(width, ((SvgCircle) element).getRadius() + element.getElementAttributes().getXCoordinate());
-                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgCircle) element).getRadius());
-                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgCircle) element).getRadius());
+//                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgCircle) element).getRadius());
+//                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgCircle) element).getRadius());
                 }
                 if (element instanceof SvgEllipse) {
                     height = Math.max(height, element.getElementAttributes().getHeight() + element.getElementAttributes().getYCoordinate());
                     width = Math.max(width, element.getElementAttributes().getWidth() + element.getElementAttributes().getXCoordinate());
-                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - element.getElementAttributes().getWidth());
-                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - element.getElementAttributes().getHeight());
+//                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - element.getElementAttributes().getWidth());
+//                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - element.getElementAttributes().getHeight());
                 }
                 if (element instanceof SvgLine) {
                     height = Math.max(height, element.getElementAttributes().getYCoordinate());

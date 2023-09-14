@@ -57,8 +57,8 @@ public class SvgRectangle extends SvgElement {
     @Override
     public Element generateSvg(Document doc) {
         final Element rectangle = doc.createElementNS(NAMESPACE, "rect");
-        rectangle.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
-        rectangle.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
+        rectangle.setAttributeNS(null, "x", String.valueOf(generateRealXCoordinate()));
+        rectangle.setAttributeNS(null, "y", String.valueOf(generateRealYCoordinate()));
         if (xRadius != null && xRadius != 0) {
             rectangle.setAttributeNS(null, "rx", String.valueOf(getXRadius()));
         }

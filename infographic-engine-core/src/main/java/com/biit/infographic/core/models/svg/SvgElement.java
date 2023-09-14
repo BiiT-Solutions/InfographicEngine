@@ -83,6 +83,42 @@ public abstract class SvgElement implements ISvgElement {
         this.elementAttributes = elementAttributes;
     }
 
+    /**
+     * Stroke is included on the width and must be subtracted.
+     *
+     * @return a string format including unit if needed.
+     */
+    protected String generateRealWidth() {
+        return (getElementAttributes().getWidth() - getElementStroke().getStrokeWidth()) + getElementAttributes().getWidthUnit().getValue();
+    }
+
+    /**
+     * Stroke is included on the width and must be subtracted.
+     *
+     * @return a string format including unit if needed.
+     */
+    protected String generateRealHeight() {
+        return (getElementAttributes().getHeight() - getElementStroke().getStrokeWidth()) + getElementAttributes().getHeightUnit().getValue();
+    }
+
+    /**
+     * Stroke is included on the X and must be subtracted.
+     *
+     * @return the calculated coordinate
+     */
+    protected Double generateRealXCoordinate() {
+        return (getElementAttributes().getXCoordinate() + getElementStroke().getStrokeWidth() / 2);
+    }
+
+    /**
+     * Stroke is included on the y and must be subtracted.
+     *
+     * @return the calculated coordinate
+     */
+    protected Double generateRealYCoordinate() {
+        return (getElementAttributes().getYCoordinate() + getElementStroke().getStrokeWidth() / 2);
+    }
+
     //Each child must implement and filter invalid attributes.
     public abstract void validateAttributes() throws InvalidAttributeException;
 
@@ -97,10 +133,14 @@ public abstract class SvgElement implements ISvgElement {
             element.setAttribute("class", elementAttributes.getCssClass());
         }
         if (elementAttributes.getWidth() != null) {
-            element.setAttributeNS(null, "width", getElementAttributes().getWidthValue());
+            element.setAttributeNS(null, "width", generateRealWidth());
         }
         if (elementAttributes.getHeight() != null) {
-            element.setAttributeNS(null, "height", getElementAttributes().getHeightValue());
+            element.setAttributeNS(null, "height", generateRealHeight());
+        }
+        final String style = generateStyle(new StringBuilder(getElementAttributes().getStyle())).toString();
+        if (!style.isBlank()) {
+            element.setAttributeNS(null, "style", style);
         }
     }
 
@@ -114,9 +154,19 @@ public abstract class SvgElement implements ISvgElement {
                 element.setAttributeNS(null, "stroke-dasharray", elementStroke.getStrokeDash().stream().map(String::valueOf)
                         .collect(Collectors.joining(" ")));
             }
-            if (elementStroke.getLineCap() != null && elementStroke.getLineCap() != StrokeLineCap.BUTT) {
-                element.setAttributeNS(null, "style", "stroke-linecap:" + elementStroke.getLineCap().value());
-            }
         }
     }
+
+    protected StringBuilder generateStyle(StringBuilder style) {
+        if (style == null) {
+            style = new StringBuilder();
+        }
+        if (elementStroke.getLineCap() != null && elementStroke.getLineCap() != StrokeLineCap.BUTT) {
+            style.append("stroke-linecap:");
+            style.append(elementStroke.getLineCap().value());
+            style.append(";");
+        }
+        return style;
+    }
+
 }
