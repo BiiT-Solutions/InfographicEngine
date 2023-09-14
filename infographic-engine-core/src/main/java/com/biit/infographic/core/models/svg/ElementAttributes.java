@@ -40,6 +40,9 @@ public class ElementAttributes {
     @JsonProperty("fill")
     private String fill;
 
+    @JsonProperty("fillOpacity")
+    private Double fillOpacity;
+
     @JsonProperty("class")
     private String cssClass;
 
@@ -71,6 +74,13 @@ public class ElementAttributes {
         this(width, height, fill);
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
+    }
+
+    public ElementAttributes(Long xCoordinate, Long yCoordinate, String width, String height, String fill, Double fillOpacity) {
+        this(width, height, fill);
+        setXCoordinate(xCoordinate);
+        setYCoordinate(yCoordinate);
+        setFillOpacity(fillOpacity);
     }
 
     @JsonIgnore
@@ -197,6 +207,18 @@ public class ElementAttributes {
             } else {
                 SvgGeneratorLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
             }
+        }
+    }
+
+    public Double getFillOpacity() {
+        return fillOpacity;
+    }
+
+    public void setFillOpacity(Double fillOpacity) {
+        if (fillOpacity < 0 || fillOpacity > 1) {
+            SvgGeneratorLogger.warning(this.getClass(), "Opacity value '" + fillOpacity + "' is invalid and therefore ignored.");
+        } else {
+            this.fillOpacity = fillOpacity;
         }
     }
 

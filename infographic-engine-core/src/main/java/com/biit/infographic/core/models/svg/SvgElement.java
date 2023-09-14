@@ -129,6 +129,9 @@ public abstract class SvgElement implements ISvgElement {
         if (getElementAttributes().getFill() != null) {
             element.setAttributeNS(null, "fill", getElementAttributes().getFill());
         }
+        if (getElementAttributes().getFillOpacity() != null) {
+            element.setAttributeNS(null, "fill-opacity", String.valueOf(getElementAttributes().getFillOpacity()));
+        }
         if (elementAttributes.getCssClass() != null) {
             element.setAttribute("class", elementAttributes.getCssClass());
         }

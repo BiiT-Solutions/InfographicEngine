@@ -27,6 +27,8 @@ import java.util.List;
 @Test(groups = "cadt")
 public class CADT extends SvgGeneration {
     private static final Double DEFAULT_STROKE_WIDTH = 8.33D;
+    private static final Double ALFA_SECONDARY = 0.5D;
+    private static final Double ALFA_PRIMARY = 0.75D;
     private static final String BORDER_COLOR = "b49057";
     private static final String UNIVERSAL_COLOR = "919ee1";
     private static final String SOCIETY_COLOR = "7ccadf";
@@ -134,6 +136,16 @@ public class CADT extends SvgGeneration {
         final SvgLine titleLine = new SvgLine(UNIVERSAL_COLOR, DEFAULT_STROKE_WIDTH, 281L, 655L, 1152L, 655L);
         universalElements.add(titleLine);
 
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(281L, 659L, 871L, 190L, UNIVERSAL_COLOR, ALFA_SECONDARY);
+        universalElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(281L, 857L, 871L, 190L, UNIVERSAL_COLOR, ALFA_PRIMARY);
+        universalElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(281L, 1055L, 871L, 190L, UNIVERSAL_COLOR, ALFA_SECONDARY);
+        universalElements.add(content3);
+
         return universalElements;
     }
 
@@ -164,6 +176,16 @@ public class CADT extends SvgGeneration {
 
         final SvgLine titleLine = new SvgLine(SOCIETY_COLOR, DEFAULT_STROKE_WIDTH, 1240L, 453L, 2111L, 453L);
         societyElements.add(titleLine);
+
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(1240L, 457L, 871L, 190L, SOCIETY_COLOR, ALFA_SECONDARY);
+        societyElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(1240L, 655L, 871L, 190L, SOCIETY_COLOR, ALFA_PRIMARY);
+        societyElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(1240L, 852L, 871L, 190L, SOCIETY_COLOR, ALFA_SECONDARY);
+        societyElements.add(content3);
 
         return societyElements;
     }
@@ -196,6 +218,16 @@ public class CADT extends SvgGeneration {
         final SvgLine titleLine = new SvgLine(VISION_COLOR, DEFAULT_STROKE_WIDTH, 2896L, 453L, 3766L, 453L);
         visionElements.add(titleLine);
 
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(2896L, 457L, 871L, 190L, VISION_COLOR, ALFA_SECONDARY);
+        visionElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(2896L, 655L, 871L, 190L, VISION_COLOR, ALFA_PRIMARY);
+        visionElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(2896L, 852L, 871L, 190L, VISION_COLOR, ALFA_SECONDARY);
+        visionElements.add(content3);
+
         return visionElements;
     }
 
@@ -227,6 +259,16 @@ public class CADT extends SvgGeneration {
         final SvgLine titleLine = new SvgLine(STRENGTH_COLOR, DEFAULT_STROKE_WIDTH, 3855L, 653L, 4725L, 653L);
         strengthElements.add(titleLine);
 
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(3855L, 659L, 871L, 190L, STRENGTH_COLOR, ALFA_SECONDARY);
+        strengthElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(3855L, 857L, 871L, 190L, STRENGTH_COLOR, ALFA_PRIMARY);
+        strengthElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(3855L, 1055L, 871L, 190L, STRENGTH_COLOR, ALFA_SECONDARY);
+        strengthElements.add(content3);
+
         return strengthElements;
     }
 
@@ -253,11 +295,21 @@ public class CADT extends SvgGeneration {
         final SvgText title = new SvgText("STRUCTURE", 67, FontWeight.BOLD, STRUCTURE_COLOR, 680L, 1421L);
         structureElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 281L, 1483L, 1151L, 1483L);
+        final SvgLine titleLine = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 281L, 1483L, 1152L, 1483L);
         structureElements.add(titleLine);
 
-        final SvgLine titleLineButton = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 281L, 2187L, 1151L, 2187L);
+        final SvgLine titleLineButton = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 281L, 2187L, 1152L, 2187L);
         structureElements.add(titleLineButton);
+
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(281L, 1487L, 871L, 190L, STRUCTURE_COLOR, ALFA_SECONDARY);
+        structureElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(281L, 1685L, 871L, 190L, STRUCTURE_COLOR, ALFA_PRIMARY);
+        structureElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(281L, 1883L, 871L, 190L, STRUCTURE_COLOR, ALFA_SECONDARY);
+        structureElements.add(content3);
 
         return structureElements;
     }
@@ -285,13 +337,37 @@ public class CADT extends SvgGeneration {
         final SvgText title = new SvgText("INSPIRATION", 67, FontWeight.BOLD, INSPIRATION_COLOR, 1191L, 1421L);
         inspirationElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 1162L, 1483L, 2032L, 1483L);
+        final SvgLine titleLine = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 1162L, 1483L, 2033L, 1483L);
         inspirationElements.add(titleLine);
 
-        final SvgLine titleLineBottom = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 1162L, 2187L, 2032L, 2187L);
+        final SvgLine titleLineBottom = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 1162L, 2187L, 2033L, 2187L);
         inspirationElements.add(titleLineBottom);
 
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(1162L, 1487L, 871L, 190L, INSPIRATION_COLOR, ALFA_SECONDARY);
+        inspirationElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(1162L, 1685L, 871L, 190L, INSPIRATION_COLOR, ALFA_PRIMARY);
+        inspirationElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(1162L, 1883L, 871L, 190L, INSPIRATION_COLOR, ALFA_SECONDARY);
+        inspirationElements.add(content3);
+
         return inspirationElements;
+    }
+
+    private List<SvgElement> generateStructureInspiration() {
+        final List<SvgElement> structureInspirationElements = new ArrayList<>();
+        //Title
+        final SvgText title = new SvgText("-", 67, FontWeight.BOLD, "272727", 1146L, 1416L);
+        structureInspirationElements.add(title);
+
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(281L, 2083L, 1750L, 100L, STRUCTURE_COLOR, ALFA_PRIMARY);
+        structureInspirationElements.add(content1);
+
+
+        return structureInspirationElements;
     }
 
     private List<SvgElement> generateAdaptability() {
@@ -317,11 +393,21 @@ public class CADT extends SvgGeneration {
         final SvgText title = new SvgText("ADAPTABILITY", 67, FontWeight.BOLD, ADAPTABILITY_COLOR, 3285L, 1421L);
         adaptabilityElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2974L, 1483L, 3844L, 1483L);
+        final SvgLine titleLine = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2974L, 1483L, 3845L, 1483L);
         adaptabilityElements.add(titleLine);
 
-        final SvgLine titleLineBottom = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2974L, 2187L, 3844L, 2187L);
+        final SvgLine titleLineBottom = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2974L, 2187L, 3845L, 2187L);
         adaptabilityElements.add(titleLineBottom);
+
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(2974L, 1487L, 871L, 190L, ADAPTABILITY_COLOR, ALFA_SECONDARY);
+        adaptabilityElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(2974L, 1685L, 871L, 190L, ADAPTABILITY_COLOR, ALFA_PRIMARY);
+        adaptabilityElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(2974L, 1883L, 871L, 190L, ADAPTABILITY_COLOR, ALFA_SECONDARY);
+        adaptabilityElements.add(content3);
 
         return adaptabilityElements;
     }
@@ -355,7 +441,30 @@ public class CADT extends SvgGeneration {
         final SvgLine titleLineButton = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 3854L, 2187L, 4725L, 2187L);
         actionElements.add(titleLineButton);
 
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(3854L, 1487L, 871L, 190L, ACTION_COLOR, ALFA_SECONDARY);
+        actionElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(3854L, 1685L, 871L, 190L, ACTION_COLOR, ALFA_PRIMARY);
+        actionElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(3854L, 1883L, 871L, 190L, ACTION_COLOR, ALFA_SECONDARY);
+        actionElements.add(content3);
+
         return actionElements;
+    }
+
+    private List<SvgElement> generateAdaptabilityAction() {
+        final List<SvgElement> adaptabilityActionElements = new ArrayList<>();
+        //Title
+        final SvgText title = new SvgText("-", 67, FontWeight.BOLD, "272727", 3839L, 1416L);
+        adaptabilityActionElements.add(title);
+
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(2974L, 2083L, 1750L, 100L, ADAPTABILITY_COLOR, ALFA_PRIMARY);
+        adaptabilityActionElements.add(content1);
+
+        return adaptabilityActionElements;
     }
 
     private List<SvgElement> generateMaterialAttachment() {
@@ -386,6 +495,16 @@ public class CADT extends SvgGeneration {
         final SvgLine titleLine = new SvgLine(MATERIAL_ATTACHMENT_COLOR, DEFAULT_STROKE_WIDTH, 281L, 3016L, 1152L, 3016L);
         materialAttachmentElements.add(titleLine);
 
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(281L, 2434L, 871L, 190L, MATERIAL_ATTACHMENT_COLOR, ALFA_SECONDARY);
+        materialAttachmentElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(281L, 2632L, 871L, 190L, MATERIAL_ATTACHMENT_COLOR, ALFA_PRIMARY);
+        materialAttachmentElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(281L, 2830L, 871L, 190L, MATERIAL_ATTACHMENT_COLOR, ALFA_SECONDARY);
+        materialAttachmentElements.add(content3);
+
         return materialAttachmentElements;
     }
 
@@ -414,8 +533,18 @@ public class CADT extends SvgGeneration {
         final SvgText title = new SvgText("COMMUNICATION", 67, FontWeight.BOLD, COMMUNICATION_COLOR, 1243L, 2580L);
         communicationElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(COMMUNICATION_COLOR, DEFAULT_STROKE_WIDTH, 1240L, 3241L, 2111L, 3241L);
+        final SvgLine titleLine = new SvgLine(COMMUNICATION_COLOR, DEFAULT_STROKE_WIDTH, 1240L, 3230L, 2111L, 3230L);
         communicationElements.add(titleLine);
+
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(1240L, 2644L, 871L, 190L, COMMUNICATION_COLOR, ALFA_SECONDARY);
+        communicationElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(1240L, 2842L, 871L, 190L, COMMUNICATION_COLOR, ALFA_PRIMARY);
+        communicationElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(1240L, 3040L, 871L, 190L, COMMUNICATION_COLOR, ALFA_SECONDARY);
+        communicationElements.add(content3);
 
         return communicationElements;
     }
@@ -445,8 +574,18 @@ public class CADT extends SvgGeneration {
         final SvgText title = new SvgText("SELF AWARE", 67, FontWeight.BOLD, SELF_AWARE_COLOR, 2898L, 2580L);
         selfAwareElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(SELF_AWARE_COLOR, DEFAULT_STROKE_WIDTH, 2896L, 3245L, 3766L, 3245L);
+        final SvgLine titleLine = new SvgLine(SELF_AWARE_COLOR, DEFAULT_STROKE_WIDTH, 2896L, 3230L, 3766L, 3230L);
         selfAwareElements.add(titleLine);
+
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(2896L, 2644L, 871L, 190L, SELF_AWARE_COLOR, ALFA_SECONDARY);
+        selfAwareElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(2896L, 2842L, 871L, 190L, SELF_AWARE_COLOR, ALFA_PRIMARY);
+        selfAwareElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(2896L, 3040L, 871L, 190L, SELF_AWARE_COLOR, ALFA_SECONDARY);
+        selfAwareElements.add(content3);
 
         return selfAwareElements;
     }
@@ -479,6 +618,16 @@ public class CADT extends SvgGeneration {
         final SvgLine titleLine = new SvgLine(ANALYSIS_COLOR, DEFAULT_STROKE_WIDTH, 3855L, 3016L, 4725L, 3016L);
         analysisElements.add(titleLine);
 
+        //Content
+        final SvgRectangle content1 = new SvgRectangle(3855L, 2434L, 871L, 190L, ANALYSIS_COLOR, ALFA_SECONDARY);
+        analysisElements.add(content1);
+
+        final SvgRectangle content2 = new SvgRectangle(3855L, 2632L, 871L, 190L, ANALYSIS_COLOR, ALFA_PRIMARY);
+        analysisElements.add(content2);
+
+        final SvgRectangle content3 = new SvgRectangle(3855L, 2830L, 871L, 190L, ANALYSIS_COLOR, ALFA_SECONDARY);
+        analysisElements.add(content3);
+
         return analysisElements;
     }
 
@@ -505,8 +654,10 @@ public class CADT extends SvgGeneration {
 
         svgTemplate.addElements(generateInspiration());
         svgTemplate.addElements(generateStructure());
+        svgTemplate.addElements(generateStructureInspiration());
         svgTemplate.addElements(generateAdaptability());
         svgTemplate.addElements(generateAction());
+        svgTemplate.addElements(generateAdaptabilityAction());
 
         svgTemplate.addElements(generateMaterialAttachment());
         svgTemplate.addElements(generateCommunication());
