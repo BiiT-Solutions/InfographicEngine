@@ -42,6 +42,17 @@ public class SvgPath extends SvgElement {
         }
     }
 
+    public SvgPath(String strokeColor, Double strokeWidth, Long xCoordinate, Long yCoordinate, Point... points) {
+        this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
+        getElementStroke().setStrokeColor(strokeColor);
+        getElementStroke().setStrokeWidth(strokeWidth);
+        if (points != null) {
+            setPoints(Arrays.asList(points));
+        } else {
+            setPoints(new ArrayList<>());
+        }
+    }
+
     public List<Point> getPoints() {
         if (points == null) {
             return new ArrayList<>();

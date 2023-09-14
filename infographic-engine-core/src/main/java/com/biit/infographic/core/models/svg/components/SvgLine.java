@@ -37,6 +37,14 @@ public class SvgLine extends SvgElement {
         setY2Coordinate(y2Coordinate);
     }
 
+    public SvgLine(String strokeColor, Double strokeWidth, Long x1Coordinate, Long y1Coordinate, Long x2Coordinate, Long y2Coordinate) {
+        this(new ElementAttributes(x1Coordinate, y1Coordinate, null, null));
+        getElementStroke().setStrokeColor(strokeColor);
+        getElementStroke().setStrokeWidth(strokeWidth);
+        setX2Coordinate(x2Coordinate);
+        setY2Coordinate(y2Coordinate);
+    }
+
     public Long getX2Coordinate() {
         return x2Coordinate;
     }
