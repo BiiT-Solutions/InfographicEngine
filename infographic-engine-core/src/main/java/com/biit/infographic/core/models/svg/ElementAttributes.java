@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.Objects;
+
 @JsonDeserialize(using = ElementAttributesDeserializer.class)
 @JsonRootName(value = "commonAttributes")
 public class ElementAttributes {
@@ -186,7 +188,12 @@ public class ElementAttributes {
         if (Color.isValidWithoutTransparency(fill)) {
             this.fill = fill;
         } else {
-            SvgGeneratorLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
+            //Some predefined tags.
+            if (Objects.equals("none", fill)) {
+                this.fill = fill;
+            } else {
+                SvgGeneratorLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
+            }
         }
     }
 

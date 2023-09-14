@@ -28,8 +28,7 @@ example, please check the test inside `infographic-engine-core` module.
 **stroke.strokeColor** The color of the stroke to be applied to the shape.
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
-defined as an array
-of integers where each integer is the length of one dash.
+defined as an array of integers where each integer is the length of one dash.
 
 ### Ellipse
 
@@ -97,8 +96,7 @@ defined as an array of integers where each integer is the length of one dash.
 **stroke.strokeColor** The color of the stroke to be applied to the shape.
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
-defined as an array
-of integers where each integer is the length of one dash.
+defined as an array of integers where each integer is the length of one dash.
 
 ### Rectangle
 
@@ -135,8 +133,7 @@ of integers where each integer is the length of one dash.
 **stroke.strokeColor** The color of the stroke to be applied to the shape.
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
-defined as an array
-of integers where each integer is the length of one dash.
+defined as an array of integers where each integer is the length of one dash.
 
 ### Script
 
@@ -199,8 +196,31 @@ values are `left`, `right`, `center`, `justify`.
 **stroke.strokeColor** The color of the stroke to be applied to the shape.
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
-defined as an array
-of integers where each integer is the length of one dash.
+defined as an array of integers where each integer is the length of one dash.
+
+### PATH
+
+**points** An array of point. Each point is a (x, y) value. If **commonAttributes.x** and/or **commonAttributes.y** are
+set, will be used as the starting point. Define the point as absolute coordinates.
+
+**commonAttributes.id** The id of the element.
+
+**commonAttributes.class** The class of the element. Useful when combined with CSS.
+
+**commonAttributes.x** Starting point of the text on the x-axis. (Optional)
+
+**commonAttributes.y** Starting point of the text on the y-axis. (Optional)
+
+**commonAttributes.fill** If set, will fill all the area defined by the path.
+
+**stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
+
+**stroke.strokeWidth** The width of the stroke to be applied to the shape.
+
+**stroke.strokeColor** The color of the stroke to be applied to the shape.
+
+**stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
+defined as an array of integers where each integer is the length of one dash.
 
 # Custom Components
 
@@ -235,9 +255,10 @@ The params always have the next structure `#type%name%attributes#` where:
 
 **type** Indicates where to obtain the value. Current allowed values are: DROOLS.
 
-**name** The variable or value used to retrieve the value on the external source. Can be a variable name from Drools, a question of the form, ... 
+**name** The variable or value used to retrieve the value on the external source. Can be a variable name from Drools, a
+question of the form, ...
 
-**attributes** where to obtain the value. 
+**attributes** where to obtain the value.
 
 Some examples:
 
@@ -245,10 +266,9 @@ Some examples:
 `#DROOLS%BMI%Unit` the variable `Unit` from the BMI question obtained from Drools.
 `#DROOLS%TheForm%Score` the variable `Score` at Form level.
 
-
 # Example of use
 
-An example of a template: a rectangle with a text that represent the score at form level. 
+An example of a template: a rectangle with a text that represent the score at form level.
 
 ```
 {

@@ -2,10 +2,12 @@ package com.biit.infographic.core.svg.serialization;
 
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
+import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
@@ -22,8 +24,11 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -365,6 +370,20 @@ public class JsonGenerationTest {
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000"));
         childDocument2.setId("Child2");
         svgTemplate.addElement(childDocument2);
+
+        String jsonText = generateJson(svgTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
+    }
+
+    @Test
+    public void documentDrawPathTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgPath line = new SvgPath(0L, 0L, new Point(50L, 50L), new Point(100L, 0L), new Point(200L, 150L));
+        line.getElementStroke().setLineCap(StrokeLineCap.ROUND);
+        line.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
+        svgTemplate.addElement(line);
 
         String jsonText = generateJson(svgTemplate);
 

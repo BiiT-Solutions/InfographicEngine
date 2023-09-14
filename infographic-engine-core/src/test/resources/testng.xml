@@ -14,6 +14,7 @@
                 <include name="colorValidation"/>
                 <include name="jsonGeneration"/>
                 <include name="templateFromDrools"/>
+                <exclude name="cadt"/>
             </run>
         </groups>
         <classes>
@@ -24,6 +25,7 @@
             <class name="com.biit.infographic.core.image.SimplePngGenerationTest"/>
             <class name="com.biit.infographic.core.image.SimpleJpegGenerationTest"/>
             <class name="com.biit.infographic.core.engine.TemplateFromDroolsTests"/>
+            <class name="com.biit.infographic.core.engine.CADT"/>
         </classes>
     </test>
 </suite>

@@ -4,11 +4,13 @@ import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
+import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
@@ -467,6 +469,39 @@ public class SimpleSvgGenerationTest {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "nestedDocuments.svg");
+    }
+
+    @Test
+    public void documentDrawPathTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgPath line = new SvgPath(0L, 0L, new Point(50L, 50L), new Point(100L, 0L), new Point(200L, 150L));
+        line.getElementStroke().setLineCap(StrokeLineCap.ROUND);
+        line.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
+        svgTemplate.addElement(line);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawPath.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPath.svg");
+    }
+
+    @Test
+    public void documentDrawPathAreaFilledTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgPath area = new SvgPath(0L, 0L, new Point(50L, 50L), new Point(100L, 0L), new Point(200L, 150L));
+        area.getElementStroke().setLineCap(StrokeLineCap.ROUND);
+        area.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
+        area.getElementAttributes().setFill("ff00ff");
+        svgTemplate.addElement(area);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawPath.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPathAreaFilled.svg");
     }
 
     @AfterClass
