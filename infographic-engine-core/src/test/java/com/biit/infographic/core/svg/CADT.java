@@ -127,6 +127,13 @@ public class CADT extends SvgGeneration {
         scoreCircle3.getElementAttributes().setFill(UNIVERSAL_COLOR);
         universalElements.add(scoreCircle3);
 
+        //Title
+        final SvgText title = new SvgText("UNIVERSAL", 67, FontWeight.BOLD, UNIVERSAL_COLOR, 285L, 593L);
+        universalElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(UNIVERSAL_COLOR, DEFAULT_STROKE_WIDTH, 281L, 655L, 1152L, 655L);
+        universalElements.add(titleLine);
+
         return universalElements;
     }
 
@@ -150,6 +157,13 @@ public class CADT extends SvgGeneration {
         final SvgCircle scoreCircle3 = new SvgCircle(2372L, 1495L, 46L);
         scoreCircle3.getElementAttributes().setFill(SOCIETY_COLOR);
         societyElements.add(scoreCircle3);
+
+        //Title
+        final SvgText title = new SvgText("SOCIETY", 67, FontWeight.BOLD, SOCIETY_COLOR, 1242L, 391L);
+        societyElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(SOCIETY_COLOR, DEFAULT_STROKE_WIDTH, 1240L, 453L, 2111L, 453L);
+        societyElements.add(titleLine);
 
         return societyElements;
     }
@@ -175,6 +189,13 @@ public class CADT extends SvgGeneration {
         scoreCircle3.getElementAttributes().setFill(VISION_COLOR);
         visionElements.add(scoreCircle3);
 
+        //Title
+        final SvgText title = new SvgText("VISION", 67, FontWeight.BOLD, VISION_COLOR, 2896L, 391L);
+        visionElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(VISION_COLOR, DEFAULT_STROKE_WIDTH, 2896L, 453L, 3766L, 453L);
+        visionElements.add(titleLine);
+
         return visionElements;
     }
 
@@ -199,6 +220,13 @@ public class CADT extends SvgGeneration {
         scoreCircle3.getElementAttributes().setFill(STRENGTH_COLOR);
         strengthElements.add(scoreCircle3);
 
+        //Title
+        final SvgText title = new SvgText("STRENGTH", 67, FontWeight.BOLD, STRENGTH_COLOR, 3856L, 593L);
+        strengthElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(STRENGTH_COLOR, DEFAULT_STROKE_WIDTH, 3855L, 653L, 4725L, 653L);
+        strengthElements.add(titleLine);
+
         return strengthElements;
     }
 
@@ -220,6 +248,16 @@ public class CADT extends SvgGeneration {
         final SvgCircle scoreCircle2 = new SvgCircle(2205L, 1788L, 46L);
         scoreCircle2.getElementAttributes().setFill(STRUCTURE_COLOR);
         structureElements.add(scoreCircle2);
+
+        //Title
+        final SvgText title = new SvgText("STRUCTURE", 67, FontWeight.BOLD, STRUCTURE_COLOR, 680L, 1421L);
+        structureElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 281L, 1483L, 1151L, 1483L);
+        structureElements.add(titleLine);
+
+        final SvgLine titleLineButton = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 281L, 2187L, 1151L, 2187L);
+        structureElements.add(titleLineButton);
 
         return structureElements;
     }
@@ -243,6 +281,16 @@ public class CADT extends SvgGeneration {
         scoreCircle2.getElementAttributes().setFill(INSPIRATION_COLOR);
         inspirationElements.add(scoreCircle2);
 
+        //Title
+        final SvgText title = new SvgText("INSPIRATION", 67, FontWeight.BOLD, INSPIRATION_COLOR, 1191L, 1421L);
+        inspirationElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 1162L, 1483L, 2032L, 1483L);
+        inspirationElements.add(titleLine);
+
+        final SvgLine titleLineBottom = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 1162L, 2187L, 2032L, 2187L);
+        inspirationElements.add(titleLineBottom);
+
         return inspirationElements;
     }
 
@@ -265,6 +313,16 @@ public class CADT extends SvgGeneration {
         scoreCircle2.getElementAttributes().setFill(ADAPTABILITY_COLOR);
         adaptabilityElements.add(scoreCircle2);
 
+        //Title
+        final SvgText title = new SvgText("ADAPTABILITY", 67, FontWeight.BOLD, ADAPTABILITY_COLOR, 3285L, 1421L);
+        adaptabilityElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2974L, 1483L, 3844L, 1483L);
+        adaptabilityElements.add(titleLine);
+
+        final SvgLine titleLineBottom = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2974L, 2187L, 3844L, 2187L);
+        adaptabilityElements.add(titleLineBottom);
+
         return adaptabilityElements;
     }
 
@@ -286,6 +344,16 @@ public class CADT extends SvgGeneration {
         final SvgCircle scoreCircle2 = new SvgCircle(2706L, 1788L, 46L);
         scoreCircle2.getElementAttributes().setFill(ACTION_COLOR);
         actionElements.add(scoreCircle2);
+
+        //Title
+        final SvgText title = new SvgText("ACTION", 67, FontWeight.BOLD, ACTION_COLOR, 3877L, 1421L);
+        actionElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 3854L, 1483L, 4725L, 1483L);
+        actionElements.add(titleLine);
+
+        final SvgLine titleLineButton = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 3854L, 2187L, 4725L, 2187L);
+        actionElements.add(titleLineButton);
 
         return actionElements;
     }
@@ -311,6 +379,13 @@ public class CADT extends SvgGeneration {
         scoreCircle3.getElementAttributes().setFill(MATERIAL_ATTACHMENT_COLOR);
         materialAttachmentElements.add(scoreCircle3);
 
+        //Title
+        final SvgText title = new SvgText("MATERIAL ATTACHMENT", 67, FontWeight.BOLD, MATERIAL_ATTACHMENT_COLOR, 285L, 2365L);
+        materialAttachmentElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(MATERIAL_ATTACHMENT_COLOR, DEFAULT_STROKE_WIDTH, 281L, 3016L, 1152L, 3016L);
+        materialAttachmentElements.add(titleLine);
+
         return materialAttachmentElements;
     }
 
@@ -334,6 +409,13 @@ public class CADT extends SvgGeneration {
         final SvgCircle scoreCircle3 = new SvgCircle(2372L, 2205L, 46L);
         scoreCircle3.getElementAttributes().setFill(COMMUNICATION_COLOR);
         communicationElements.add(scoreCircle3);
+
+        //Title
+        final SvgText title = new SvgText("COMMUNICATION", 67, FontWeight.BOLD, COMMUNICATION_COLOR, 1243L, 2580L);
+        communicationElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(COMMUNICATION_COLOR, DEFAULT_STROKE_WIDTH, 1240L, 3241L, 2111L, 3241L);
+        communicationElements.add(titleLine);
 
         return communicationElements;
     }
@@ -359,6 +441,13 @@ public class CADT extends SvgGeneration {
         scoreCircle3.getElementAttributes().setFill(SELF_AWARE_COLOR);
         selfAwareElements.add(scoreCircle3);
 
+        //Title
+        final SvgText title = new SvgText("SELF AWARE", 67, FontWeight.BOLD, SELF_AWARE_COLOR, 2898L, 2580L);
+        selfAwareElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(SELF_AWARE_COLOR, DEFAULT_STROKE_WIDTH, 2896L, 3245L, 3766L, 3245L);
+        selfAwareElements.add(titleLine);
+
         return selfAwareElements;
     }
 
@@ -382,6 +471,13 @@ public class CADT extends SvgGeneration {
         final SvgCircle scoreCircle3 = new SvgCircle(2706L, 2205L, 46L);
         scoreCircle3.getElementAttributes().setFill(ANALYSIS_COLOR);
         analysisElements.add(scoreCircle3);
+
+        //Title
+        final SvgText title = new SvgText("ANALYSIS", 67, FontWeight.BOLD, ANALYSIS_COLOR, 3856L, 2365L);
+        analysisElements.add(title);
+
+        final SvgLine titleLine = new SvgLine(ANALYSIS_COLOR, DEFAULT_STROKE_WIDTH, 3855L, 3016L, 4725L, 3016L);
+        analysisElements.add(titleLine);
 
         return analysisElements;
     }

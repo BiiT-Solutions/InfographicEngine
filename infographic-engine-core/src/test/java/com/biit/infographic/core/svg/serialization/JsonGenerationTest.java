@@ -277,8 +277,9 @@ public class JsonGenerationTest {
     @Test
     public void documentLongTextJustifyByWidthTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
-        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2, 300);
+        final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineWidth(300);
         text.setMaxLineLength(80);
         svgTemplate.addElement(text);
 

@@ -100,13 +100,20 @@ public class SvgText extends SvgElement {
         setFontSize(fontSize);
     }
 
-    public SvgText(String text, int fontSize, Long x, Long y, Integer maxLineWidth) {
+    public SvgText(String text, int fontSize, String color, Long x, Long y) {
         this(new ElementAttributes(x, y, null, null, null));
         setText(text);
         setFontSize(fontSize);
-        setMaxLineWidth(maxLineWidth);
+        getElementAttributes().setFill(color);
     }
 
+    public SvgText(String text, int fontSize, FontWeight weight, String color, Long x, Long y) {
+        this(new ElementAttributes(x, y, null, null, null));
+        setText(text);
+        setFontSize(fontSize);
+        setFontWeight(weight);
+        getElementAttributes().setFill(color);
+    }
 
     public String getFontFamily() {
         if (fontFamily != null) {
