@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgTextDeserializer;
+import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -27,7 +28,9 @@ import java.util.List;
 @JsonRootName(value = "text")
 public class SvgText extends SvgElement {
     private static final int LINE_SEPARATION = 5;
+    private static final int MIN_LINE_SEPARATION = 2;
     private static final int DEFAULT_FONT_SIZE = 10;
+    private static final int MINIMUM_FONT_SIZE = 4;
     private static final String DEFAULT_FONT = "sans-serif";
     private static final double MAGIC_INKSCAPE_FONT_Y_CORRECTION = 0.63;
 
@@ -39,6 +42,12 @@ public class SvgText extends SvgElement {
 
     @JsonProperty("fontSize")
     private int fontSize = DEFAULT_FONT_SIZE;
+
+    @JsonIgnore
+    private int realFontSize = DEFAULT_FONT_SIZE;
+
+    @JsonIgnore
+    private int lineSeparation = LINE_SEPARATION;
 
     //Font variant must be available on the font.
     @JsonProperty("fontVariant")
@@ -77,6 +86,9 @@ public class SvgText extends SvgElement {
     //In pixels
     @JsonProperty("maxLineWidth")
     private Integer maxLineWidth;
+
+    @JsonProperty("maxParagraphHeight")
+    private Integer maxParagraphHeight;
 
     @JsonProperty("textAlign")
     private TextAlign textAlign = TextAlign.LEFT;
@@ -133,9 +145,28 @@ public class SvgText extends SvgElement {
     public void setFontSize(Integer fontSize) {
         if (fontSize != null) {
             this.fontSize = fontSize;
+            this.realFontSize = fontSize;
         } else {
             this.fontSize = DEFAULT_FONT_SIZE;
+            this.realFontSize = DEFAULT_FONT_SIZE;
         }
+    }
+
+
+    private int getRealFontSize() {
+        return realFontSize;
+    }
+
+    private void setRealFontSize(int realFontSize) {
+        this.realFontSize = realFontSize;
+    }
+
+    private int getLineSeparation() {
+        return lineSeparation;
+    }
+
+    private void setLineSeparation(int lineSeparation) {
+        this.lineSeparation = lineSeparation;
     }
 
     public FontVariantType getFontVariant() {
@@ -274,17 +305,67 @@ public class SvgText extends SvgElement {
         this.maxLineWidth = maxLineWidth;
     }
 
+    public Integer getMaxParagraphHeight() {
+        return maxParagraphHeight;
+    }
+
+    public void setMaxParagraphHeight(Integer maxParagraphHeight) {
+        this.maxParagraphHeight = maxParagraphHeight;
+    }
+
     @Override
     public Element generateSvg(Document doc) {
         final Element text = doc.createElementNS(NAMESPACE, "text");
+
+        if (getMaxLineWidth() != null || getMaxLineLength() != null) {
+            List<String> lines;
+            int longestLinePixels;
+            //To compensate the first size reduction on the loop.
+            setLineSeparation(getLineSeparation() + 1);
+            do {
+                decreaseHeight();
+                if (getMaxLineWidth() != null) {
+                    lines = getLinesByPixels(getText(), getMaxLineWidth());
+                    longestLinePixels = getMaxLineWidth();
+                } else {
+                    lines = getLines(getText(), getMaxLineLength());
+                    final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
+                    longestLinePixels = getLineWidthPixels(longestLine);
+                }
+                //Check text is not overflowing the paragraph.
+            } while (!fitsInParagraph(lines) && (getRealFontSize() >= MINIMUM_FONT_SIZE + 1 || getLineSeparation() >= MIN_LINE_SEPARATION));
+            if (getRealFontSize() == MINIMUM_FONT_SIZE && getLineSeparation() == MIN_LINE_SEPARATION) {
+                SvgGeneratorLogger.warning(this.getClass(), "Text '{}' cannot fit on a height '{}' and width '{}'.",
+                        getText(), getMaxParagraphHeight(), getMaxLineWidth() != null ? getMaxLineWidth() : getMaxLineLength());
+            }
+            for (int i = 0; i < lines.size(); i++) {
+                final Element elementLine = doc.createElementNS(NAMESPACE, "tspan");
+                if (i > 0) {
+                    elementLine.setAttribute("dy", String.valueOf(getRealFontSize() + getLineSeparation()));
+                }
+                elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
+                if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
+                    elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
+                }
+                final String style = generateStyle(null).toString();
+                if (!style.isBlank()) {
+                    elementLine.setAttribute("style", style);
+                }
+                elementLine.setTextContent(lines.get(i));
+                text.appendChild(elementLine);
+            }
+        } else {
+            text.setTextContent(getText());
+        }
+
         text.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         text.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()
-                + getFontSize() * MAGIC_INKSCAPE_FONT_Y_CORRECTION));
+                + getRealFontSize() * MAGIC_INKSCAPE_FONT_Y_CORRECTION));
         if (getFontVariant() != null) {
             text.setAttributeNS(null, "font-variant", getFontVariant().getTag());
         }
-        if (getFontSize() != 0) {
-            text.setAttributeNS(null, "font-size", String.valueOf(getFontSize()));
+        if (getRealFontSize() != 0) {
+            text.setAttributeNS(null, "font-size", String.valueOf(getRealFontSize()));
         }
         if (getFontFamily() != null) {
             text.setAttributeNS(null, "font-family", getFontFamily());
@@ -303,35 +384,6 @@ public class SvgText extends SvgElement {
         }
         if (getDy() != null) {
             text.setAttributeNS(null, "dy", getDyValue());
-        }
-
-        if (getMaxLineWidth() != null || getMaxLineLength() != null) {
-            final List<String> lines;
-            final int longestLinePixels;
-            if (getMaxLineWidth() != null) {
-                lines = getLinesByPixels(getText(), getMaxLineWidth());
-                longestLinePixels = getMaxLineWidth();
-            } else {
-                lines = getLines(getText(), getMaxLineLength());
-                final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
-                longestLinePixels = getLinePixels(longestLine);
-            }
-            for (int i = 0; i < lines.size(); i++) {
-                final Element elementLine = doc.createElementNS(NAMESPACE, "tspan");
-                elementLine.setAttribute("dy", String.valueOf(getFontSize() + LINE_SEPARATION));
-                elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
-                if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
-                    elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
-                }
-                final String style = generateStyle(null).toString();
-                if (!style.isBlank()) {
-                    elementLine.setAttribute("style", style);
-                }
-                elementLine.setTextContent(lines.get(i));
-                text.appendChild(elementLine);
-            }
-        } else {
-            text.setTextContent(getText());
         }
 
         if (getTextAlign() != null && !getTextAlign().getStyle().isBlank()) {
@@ -381,22 +433,41 @@ public class SvgText extends SvgElement {
         if (getFontSize() == 0) {
             throw new InvalidAttributeException(this.getClass(), "Text '" + getId() + "' does not have 'fontSize' attribute");
         }
-        if (getTextAlign() == TextAlign.JUSTIFY && getMaxLineLength() == null) {
-            throw new InvalidAttributeException(this.getClass(), "Text '" + getId() + "' with property 'justify' needs 'maxLineLength' attribute");
+        if (getTextAlign() == TextAlign.JUSTIFY && (getMaxLineLength() == null && getMaxLineWidth() == null)) {
+            throw new InvalidAttributeException(this.getClass(), "Text '" + getId() + "' with property 'justify' needs 'maxLineLength' "
+                    + "or 'maxLineWidth' attribute");
+        }
+        if (getMaxLineLength() != null && getMaxLineWidth() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Text '" + getId() + "' can only have 'maxLineLength' or 'maxLineWidth' attribute");
         }
     }
 
-    private int getLinePixels(String text) {
+    private int getLineWidthPixels(String text) {
         final AffineTransform affinetransform = new AffineTransform();
         final FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
-        final Font font = new Font(getFontFamily().split(",")[0].trim(), Font.PLAIN, 12);
-        final int textwidth = (int) (font.getStringBounds(text, frc).getWidth());
-        //final int textheight = (int) (font.getStringBounds(text, frc).getHeight());
-        return textwidth;
+        final Font font = new Font(getFontFamily().split(",")[0].trim(), Font.PLAIN, getRealFontSize());
+        return (int) (font.getStringBounds(text, frc).getWidth());
+    }
+
+    private boolean fitsInParagraph(List<String> lines) {
+        if (getMaxParagraphHeight() == null) {
+            return true;
+        }
+        final int textHeight = (getRealFontSize() + getLineSeparation()) * lines.size();
+        return getMaxParagraphHeight() >= textHeight;
+    }
+
+    private void decreaseHeight() {
+        if (getLineSeparation() > MIN_LINE_SEPARATION) {
+            setLineSeparation(getLineSeparation() - 1);
+        } else {
+            setRealFontSize(getRealFontSize() - 1);
+            setLineSeparation(LINE_SEPARATION);
+        }
     }
 
     private double getLetterSpacing(String text, int maxLinePixels) {
-        final int currentPixels = getLinePixels(text);
+        final int currentPixels = getLineWidthPixels(text);
         return (double) (maxLinePixels - currentPixels) / text.length();
     }
 
@@ -440,7 +511,7 @@ public class SvgText extends SvgElement {
                         break;
                     }
                     lineToCheck.append(words.peek());
-                    if (getLinePixels(lineToCheck.toString()) < lineWidth) {
+                    if (getLineWidthPixels(lineToCheck.toString()) < lineWidth) {
                         line = lineToCheck.toString();
                         words.pop();
                     } else {

@@ -280,7 +280,6 @@ public class JsonGenerationTest {
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineWidth(300);
-        text.setMaxLineLength(80);
         svgTemplate.addElement(text);
 
         String jsonText = generateJson(svgTemplate);

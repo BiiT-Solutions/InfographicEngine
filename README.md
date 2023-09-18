@@ -161,10 +161,13 @@ Note that the font type must have the desired variant implemented or will be ign
 can be also translated.
 
 **maxLineLength** Maximum length of a line in characters number. Do not split complete words and distribute the text on
-several lines if needed.
+several lines if needed. Cannot be used with maxLineWidth parameter.
 
 **maxLineWidth** Maximum length of a line in pixels. Do not split complete words and distribute the text on
-several lines if needed.
+several lines if needed. Cannot be used with maxLineLength parameter.
+
+**maxParagraphHeight** Maximum height of the paragraph of the text. If the text does not fit, the fontSize will be
+decreased until it fits.
 
 **textAlign** Alignment of a text in a paragraph. Must be combined with `maxLineLength` or `maxLineWidth`. Allowed
 values are `left`, `right`, `center`, `justify`.
