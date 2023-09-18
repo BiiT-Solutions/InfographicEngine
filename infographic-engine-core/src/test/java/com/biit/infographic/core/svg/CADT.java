@@ -13,7 +13,9 @@ import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
-import org.testng.Assert;
+import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -27,9 +29,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Test(groups = "cadt")
 public class CADT extends SvgGeneration {
+    private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
     private static final Double DEFAULT_STROKE_WIDTH = 8.33D;
     private static final Double ALFA_SECONDARY = 0.5D;
     private static final Double ALFA_PRIMARY = 0.75D;
@@ -46,6 +50,25 @@ public class CADT extends SvgGeneration {
     private static final String COMMUNICATION_COLOR = "7ccadf";
     private static final String SELF_AWARE_COLOR = "e9a197";
     private static final String ANALYSIS_COLOR = "8bc4ab";
+    private static final int TEXT_PADDING = 25;
+    private static final int FONT_SIZE = 42;
+
+    private String getLongText(int numOfWords) {
+        String[] tokens = LONG_TEXT.split(" ");
+        tokens = ArrayUtils.subarray(tokens, 0, numOfWords);
+        return StringUtils.join(tokens, ' ') + ". ";
+    }
+
+    private SvgText generateText(Integer numberOfWords, long x, long y, int width, int height) {
+        if (numberOfWords == null) {
+            numberOfWords = new Random().nextInt(10, LONG_TEXT.split(" ").length);
+        }
+        final SvgText text = new SvgText(getLongText(numberOfWords), FONT_SIZE, x + TEXT_PADDING, y + TEXT_PADDING);
+        text.setMaxParagraphHeight(height - TEXT_PADDING * 2);
+        text.setMaxLineWidth(width - TEXT_PADDING * 2);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        return text;
+    }
 
     private SvgBackground generateBackground() {
         final SvgBackground svgBackground = new SvgBackground();
@@ -143,12 +166,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(281L, 659L, 871L, 190L, UNIVERSAL_COLOR, ALFA_SECONDARY);
         universalElements.add(content1);
+        universalElements.add(generateText(50, 281L, 659L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(281L, 857L, 871L, 190L, UNIVERSAL_COLOR, ALFA_PRIMARY);
         universalElements.add(content2);
+        universalElements.add(generateText(80, 281L, 857L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(281L, 1055L, 871L, 190L, UNIVERSAL_COLOR, ALFA_SECONDARY);
         universalElements.add(content3);
+        universalElements.add(generateText(20, 281L, 1055L, 871, 190));
 
         return universalElements;
     }
@@ -184,12 +210,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(1240L, 457L, 871L, 190L, SOCIETY_COLOR, ALFA_SECONDARY);
         societyElements.add(content1);
+        societyElements.add(generateText(null, 1240L, 457L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(1240L, 655L, 871L, 190L, SOCIETY_COLOR, ALFA_PRIMARY);
         societyElements.add(content2);
+        societyElements.add(generateText(null, 1240L, 655L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(1240L, 852L, 871L, 190L, SOCIETY_COLOR, ALFA_SECONDARY);
         societyElements.add(content3);
+        societyElements.add(generateText(null, 1240L, 852L, 871, 190));
 
         return societyElements;
     }
@@ -225,12 +254,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(2896L, 457L, 871L, 190L, VISION_COLOR, ALFA_SECONDARY);
         visionElements.add(content1);
+        visionElements.add(generateText(null, 2896L, 457L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(2896L, 655L, 871L, 190L, VISION_COLOR, ALFA_PRIMARY);
         visionElements.add(content2);
+        visionElements.add(generateText(null, 2896L, 655L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(2896L, 852L, 871L, 190L, VISION_COLOR, ALFA_SECONDARY);
         visionElements.add(content3);
+        visionElements.add(generateText(null, 2896L, 852L, 871, 190));
 
         return visionElements;
     }
@@ -266,12 +298,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(3855L, 659L, 871L, 190L, STRENGTH_COLOR, ALFA_SECONDARY);
         strengthElements.add(content1);
+        strengthElements.add(generateText(null, 3855L, 659L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(3855L, 857L, 871L, 190L, STRENGTH_COLOR, ALFA_PRIMARY);
         strengthElements.add(content2);
+        strengthElements.add(generateText(null, 3855L, 857L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(3855L, 1055L, 871L, 190L, STRENGTH_COLOR, ALFA_SECONDARY);
         strengthElements.add(content3);
+        strengthElements.add(generateText(null, 3855L, 1055L, 871, 190));
 
         return strengthElements;
     }
@@ -308,12 +343,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(281L, 1487L, 871L, 190L, STRUCTURE_COLOR, ALFA_SECONDARY);
         structureElements.add(content1);
+        structureElements.add(generateText(null, 281L, 1487L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(281L, 1685L, 871L, 190L, STRUCTURE_COLOR, ALFA_PRIMARY);
         structureElements.add(content2);
+        structureElements.add(generateText(null, 281L, 1685L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(281L, 1883L, 871L, 190L, STRUCTURE_COLOR, ALFA_SECONDARY);
         structureElements.add(content3);
+        structureElements.add(generateText(null, 281L, 1883L, 871, 190));
 
         return structureElements;
     }
@@ -350,12 +388,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(1162L, 1487L, 871L, 190L, INSPIRATION_COLOR, ALFA_SECONDARY);
         inspirationElements.add(content1);
+        inspirationElements.add(generateText(null, 1162L, 1487L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(1162L, 1685L, 871L, 190L, INSPIRATION_COLOR, ALFA_PRIMARY);
         inspirationElements.add(content2);
+        inspirationElements.add(generateText(null, 1162L, 1685L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(1162L, 1883L, 871L, 190L, INSPIRATION_COLOR, ALFA_SECONDARY);
         inspirationElements.add(content3);
+        inspirationElements.add(generateText(null, 1162L, 1883L, 871, 190));
 
         return inspirationElements;
     }
@@ -369,7 +410,7 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(281L, 2083L, 1750L, 100L, STRUCTURE_COLOR, ALFA_PRIMARY);
         structureInspirationElements.add(content1);
-
+        structureInspirationElements.add(generateText(null, 281L, 2083L, 1750, 100));
 
         return structureInspirationElements;
     }
@@ -406,12 +447,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(2974L, 1487L, 871L, 190L, ADAPTABILITY_COLOR, ALFA_SECONDARY);
         adaptabilityElements.add(content1);
+        adaptabilityElements.add(generateText(null, 2974L, 1487L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(2974L, 1685L, 871L, 190L, ADAPTABILITY_COLOR, ALFA_PRIMARY);
         adaptabilityElements.add(content2);
+        adaptabilityElements.add(generateText(null, 2974L, 1685L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(2974L, 1883L, 871L, 190L, ADAPTABILITY_COLOR, ALFA_SECONDARY);
         adaptabilityElements.add(content3);
+        adaptabilityElements.add(generateText(null, 2974L, 1883L, 871, 190));
 
         return adaptabilityElements;
     }
@@ -448,12 +492,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(3854L, 1487L, 871L, 190L, ACTION_COLOR, ALFA_SECONDARY);
         actionElements.add(content1);
+        actionElements.add(generateText(null, 3854L, 1487L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(3854L, 1685L, 871L, 190L, ACTION_COLOR, ALFA_PRIMARY);
         actionElements.add(content2);
+        actionElements.add(generateText(null, 3854L, 1685L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(3854L, 1883L, 871L, 190L, ACTION_COLOR, ALFA_SECONDARY);
         actionElements.add(content3);
+        actionElements.add(generateText(null, 3854L, 1883L, 871, 190));
 
         return actionElements;
     }
@@ -467,6 +514,7 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(2974L, 2083L, 1750L, 100L, ADAPTABILITY_COLOR, ALFA_PRIMARY);
         adaptabilityActionElements.add(content1);
+        adaptabilityActionElements.add(generateText(null, 2974L, 2083L, 1750, 100));
 
         return adaptabilityActionElements;
     }
@@ -502,12 +550,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(281L, 2434L, 871L, 190L, MATERIAL_ATTACHMENT_COLOR, ALFA_SECONDARY);
         materialAttachmentElements.add(content1);
+        materialAttachmentElements.add(generateText(null, 281L, 2434L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(281L, 2632L, 871L, 190L, MATERIAL_ATTACHMENT_COLOR, ALFA_PRIMARY);
         materialAttachmentElements.add(content2);
+        materialAttachmentElements.add(generateText(null, 281L, 2632L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(281L, 2830L, 871L, 190L, MATERIAL_ATTACHMENT_COLOR, ALFA_SECONDARY);
         materialAttachmentElements.add(content3);
+        materialAttachmentElements.add(generateText(null, 281L, 2830L, 871, 190));
 
         return materialAttachmentElements;
     }
@@ -543,12 +594,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(1240L, 2644L, 871L, 190L, COMMUNICATION_COLOR, ALFA_SECONDARY);
         communicationElements.add(content1);
+        communicationElements.add(generateText(null, 1240L, 2644L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(1240L, 2842L, 871L, 190L, COMMUNICATION_COLOR, ALFA_PRIMARY);
         communicationElements.add(content2);
+        communicationElements.add(generateText(null, 1240L, 2842L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(1240L, 3040L, 871L, 190L, COMMUNICATION_COLOR, ALFA_SECONDARY);
         communicationElements.add(content3);
+        communicationElements.add(generateText(null, 1240L, 3040L, 871, 190));
 
         return communicationElements;
     }
@@ -584,12 +638,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(2896L, 2644L, 871L, 190L, SELF_AWARE_COLOR, ALFA_SECONDARY);
         selfAwareElements.add(content1);
+        selfAwareElements.add(generateText(null, 2896L, 2644L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(2896L, 2842L, 871L, 190L, SELF_AWARE_COLOR, ALFA_PRIMARY);
         selfAwareElements.add(content2);
+        selfAwareElements.add(generateText(null, 2896L, 2842L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(2896L, 3040L, 871L, 190L, SELF_AWARE_COLOR, ALFA_SECONDARY);
         selfAwareElements.add(content3);
+        selfAwareElements.add(generateText(null, 2896L, 3040L, 871, 190));
 
         return selfAwareElements;
     }
@@ -625,12 +682,15 @@ public class CADT extends SvgGeneration {
         //Content
         final SvgRectangle content1 = new SvgRectangle(3855L, 2434L, 871L, 190L, ANALYSIS_COLOR, ALFA_SECONDARY);
         analysisElements.add(content1);
+        analysisElements.add(generateText(null, 3855L, 2434L, 871, 190));
 
         final SvgRectangle content2 = new SvgRectangle(3855L, 2632L, 871L, 190L, ANALYSIS_COLOR, ALFA_PRIMARY);
         analysisElements.add(content2);
+        analysisElements.add(generateText(null, 3855L, 2632L, 871, 190));
 
         final SvgRectangle content3 = new SvgRectangle(3855L, 2830L, 871L, 190L, ANALYSIS_COLOR, ALFA_SECONDARY);
         analysisElements.add(content3);
+        analysisElements.add(generateText(null, 3855L, 2830L, 871, 190));
 
         return analysisElements;
     }
@@ -683,6 +743,6 @@ public class CADT extends SvgGeneration {
 
     @AfterClass
     public void removeFolder() {
-        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        // Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

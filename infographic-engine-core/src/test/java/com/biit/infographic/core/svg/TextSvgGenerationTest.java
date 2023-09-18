@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -201,6 +202,6 @@ public class TextSvgGenerationTest extends SvgGeneration {
 
     @AfterClass
     public void removeFolder() {
-        // Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

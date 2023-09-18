@@ -164,13 +164,13 @@ can be also translated.
 several lines if needed. Cannot be used with maxLineWidth parameter.
 
 **maxLineWidth** Maximum length of a line in pixels. Do not split complete words and distribute the text on
-several lines if needed. Cannot be used with maxLineLength parameter.
+several lines if needed. The font must be installed on the backend. Cannot be used with maxLineLength parameter.
 
 **maxParagraphHeight** Maximum height of the paragraph of the text. If the text does not fit, the fontSize will be
 decreased until it fits.
 
 **textAlign** Alignment of a text in a paragraph. Must be combined with `maxLineLength` or `maxLineWidth`. Allowed
-values are `left`, `right`, `center`, `justify`.
+values are `left`, `right`, `center`, `justify`. For 'justify' option, the font must be installed on the backend.
 
 **textLength** Forces a length on the text.
 
