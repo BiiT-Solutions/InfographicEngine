@@ -17,6 +17,11 @@ public class SvgGradientDeserializer extends SvgElementDeserializer<SvgGradient>
     public void deserialize(SvgGradient element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         super.deserialize(element, jsonObject, context);
 
+        element.setX1Coordinate(DeserializerParser.parseLong("x1", jsonObject));
+        element.setY1Coordinate(DeserializerParser.parseLong("y1", jsonObject));
+        element.setX2Coordinate(DeserializerParser.parseLong("x2", jsonObject));
+        element.setY2Coordinate(DeserializerParser.parseLong("y2", jsonObject));
+
         final JsonNode stops = jsonObject.get("stops");
         if (stops != null) {
             if (stops.isArray()) {

@@ -198,6 +198,12 @@ public class SvgTemplate extends SvgAreaElement {
                 if (element.getElementAttributes() != null && element.getElementAttributes().getGradient() != null) {
                     final SvgGradient gradient = element.getElementAttributes().getGradient();
                     gradient.setId(SvgGradient.ID_PREFIX + ++idCounter);
+                    if (element instanceof SvgLine) {
+                        gradient.setX1Coordinate(element.getElementAttributes().getXCoordinate());
+                        gradient.setY1Coordinate(element.getElementAttributes().getYCoordinate());
+                        gradient.setX2Coordinate(((SvgLine) element).getX2Coordinate());
+                        gradient.setY2Coordinate(((SvgLine) element).getY2Coordinate());
+                    }
                     defs.appendChild(gradient.generateSvg(doc));
                 }
             }

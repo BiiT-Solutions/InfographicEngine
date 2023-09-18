@@ -4,6 +4,8 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgGradientStopDeserializer;
+import com.biit.infographic.core.models.svg.utils.Color;
+import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -42,7 +44,12 @@ public class SvgGradientStop extends SvgElement {
     }
 
     public void setColor(String color) {
-        this.color = color;
+        color = Color.checkColor(color);
+        if (Color.isValidWithoutTransparency(color)) {
+            this.color = color;
+        } else {
+            SvgGeneratorLogger.warning(this.getClass(), "Color value '" + color + "' on gradient is invalid and therefore ignored.");
+        }
     }
 
     public Double getOpacity() {

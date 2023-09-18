@@ -90,4 +90,27 @@ public class SvgLine extends SvgAreaElement {
             throw new InvalidAttributeException(this.getClass(), "Line '" + getId() + "' must not have 'width' attribute");
         }
     }
+
+    @Override
+    protected StringBuilder generateStyle(StringBuilder style) {
+        super.generateStyle(style);
+        if (style == null) {
+            style = new StringBuilder();
+        }
+        if (getElementAttributes().getGradient() != null) {
+            style.append("fill:url(#");
+            style.append(getElementAttributes().getGradient().getId());
+            style.append(");");
+        }
+        return style;
+    }
+
+    @Override
+    public void elementStroke(Element element) throws InvalidAttributeException {
+        super.elementStroke(element);
+        //Lines has the gradient on the stroke, not on the area.
+        if (getElementAttributes().getGradient() != null) {
+            element.setAttributeNS(null, "stroke", "url(#" + getElementAttributes().getGradient().getId() + ")");
+        }
+    }
 }

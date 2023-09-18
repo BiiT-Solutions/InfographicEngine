@@ -22,6 +22,18 @@ public class SvgGradient extends SvgElement {
     @JsonProperty("stops")
     private List<SvgGradientStop> stops;
 
+    @JsonProperty("x1")
+    private Long x1Coordinate;
+
+    @JsonProperty("y1")
+    private Long y1Coordinate;
+
+    @JsonProperty("x2")
+    private Long x2Coordinate;
+
+    @JsonProperty("y2")
+    private Long y2Coordinate;
+
     public SvgGradient() {
         super();
         setElementType(ElementType.GRADIENT);
@@ -32,6 +44,37 @@ public class SvgGradient extends SvgElement {
         setStops(Arrays.asList(stops));
     }
 
+    public Long getX1Coordinate() {
+        return x1Coordinate;
+    }
+
+    public void setX1Coordinate(Long x1Coordinate) {
+        this.x1Coordinate = x1Coordinate;
+    }
+
+    public Long getY1Coordinate() {
+        return y1Coordinate;
+    }
+
+    public void setY1Coordinate(Long y1Coordinate) {
+        this.y1Coordinate = y1Coordinate;
+    }
+
+    public Long getX2Coordinate() {
+        return x2Coordinate;
+    }
+
+    public void setX2Coordinate(Long x2Coordinate) {
+        this.x2Coordinate = x2Coordinate;
+    }
+
+    public Long getY2Coordinate() {
+        return y2Coordinate;
+    }
+
+    public void setY2Coordinate(Long y2Coordinate) {
+        this.y2Coordinate = y2Coordinate;
+    }
 
     public List<SvgGradientStop> getStops() {
         return stops;
@@ -53,6 +96,18 @@ public class SvgGradient extends SvgElement {
         final Element gradient = doc.createElementNS(NAMESPACE, "linearGradient");
         if (getId() != null) {
             gradient.setAttributeNS(null, "id", getId());
+        }
+        if (getX1Coordinate() != null) {
+            gradient.setAttributeNS(null, "x1", String.valueOf(getX1Coordinate()));
+        }
+        if (getY1Coordinate() != null) {
+            gradient.setAttributeNS(null, "y1", String.valueOf(getY1Coordinate()));
+        }
+        if (getX2Coordinate() != null) {
+            gradient.setAttributeNS(null, "x2", String.valueOf(getX2Coordinate()));
+        }
+        if (getY2Coordinate() != null) {
+            gradient.setAttributeNS(null, "y2", String.valueOf(getY2Coordinate()));
         }
         stops.forEach(stop -> gradient.appendChild(stop.generateSvg(doc)));
         return gradient;

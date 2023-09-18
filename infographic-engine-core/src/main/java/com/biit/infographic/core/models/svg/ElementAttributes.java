@@ -219,6 +219,7 @@ public class ElementAttributes {
     }
 
     public void setGradient(SvgGradient gradient) {
+        this.fill = null;
         this.gradient = gradient;
     }
 
