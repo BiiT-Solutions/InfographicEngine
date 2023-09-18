@@ -2,6 +2,7 @@ package com.biit.infographic.core.engine.files;
 
 
 import com.biit.infographic.core.engine.InfographicTemplate;
+import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.utils.file.FileReader;
@@ -122,7 +123,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
         return getJsonFile();
     }
 
-    public List<InfographicTemplate> getTemplatesFromPath(String rootPath, List<TreeNode<String>> selections) {
+    public List<InfographicTemplate> getTemplatesFromPath(String rootPath, List<TreeNode<String>> selections) throws MalformedTemplateException {
         final List<InfographicFolder> infographicFolderNodes = getInfographicNodes(rootPath);
         final List<InfographicTemplate> templates = new ArrayList<>();
         for (InfographicFolder node : infographicFolderNodes) {
@@ -132,7 +133,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
         return templates;
     }
 
-    public List<TreeNode<String>> getSelectableElementsTree(String rootPath) {
+    public List<TreeNode<String>> getSelectableElementsTree(String rootPath) throws MalformedTemplateException {
         final List<InfographicFolder> infographicFolderNodes = getInfographicNodes(rootPath);
         final List<TreeNode<String>> items = new ArrayList<>();
         for (InfographicFolder node : infographicFolderNodes) {
@@ -150,7 +151,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
      * @param path the path to search.
      * @return A list of InfographicTree that each one represents a piece of infographic.
      */
-    private List<InfographicFolder> getInfographicNodes(String path) {
+    private List<InfographicFolder> getInfographicNodes(String path) throws MalformedTemplateException {
         if (!path.endsWith(JSON_EXTENSION)) {
             try {
                 if (!path.endsWith(File.separator)) {
@@ -160,6 +161,9 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
                 InfographicEngineLogger.debug(InfographicFolder.class.getName(),
                         "Searching for '" + path + INDEX_FILE_NAME + "'.");
                 final String indexFile = new FileSearcher().readFile(path + INDEX_FILE_NAME);
+                if (indexFile == null) {
+                    throw new MalformedTemplateException(this.getClass(), "No index file at '" + path + INDEX_FILE_NAME + "'");
+                }
                 final List<InfographicFileElement> definedFilesOrFolders;
                 try {
                     definedFilesOrFolders = ObjectMapperFactory.getObjectMapper().readValue(indexFile, new TypeReference<>() {

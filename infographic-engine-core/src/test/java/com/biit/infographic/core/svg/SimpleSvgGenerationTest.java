@@ -60,6 +60,11 @@ public class SimpleSvgGenerationTest extends  SvgGeneration {
             """;
 
 
+    @BeforeClass
+    public void prepareFolder() throws IOException {
+        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
+    }
+
 
     @Test
     public void documentBackgroundColorTest() throws IOException {
@@ -471,5 +476,10 @@ public class SimpleSvgGenerationTest extends  SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPathAreaFilled.svg");
+    }
+
+    @AfterClass
+    public void removeFolder() {
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

@@ -13,7 +13,9 @@ import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.BufferedWriter;
@@ -21,6 +23,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -631,6 +635,11 @@ public class CADT extends SvgGeneration {
         return analysisElements;
     }
 
+    @BeforeClass
+    public void prepareFolder() throws IOException {
+        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
+    }
+
     @Test
     public void generateCADT() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
@@ -674,6 +683,6 @@ public class CADT extends SvgGeneration {
 
     @AfterClass
     public void removeFolder() {
-        // Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

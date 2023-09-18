@@ -1,5 +1,6 @@
 package com.biit.infographic.rest.exceptions;
 
+import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.server.exceptions.NotFoundException;
 import com.biit.server.exceptions.ServerExceptionControllerAdvice;
@@ -32,5 +33,11 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
         // Cannot have message as suggested here:
         // https://stackoverflow.com/questions/32123540/spring-exceptionhandler-and-httpmediatypenotacceptableexception
         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(MalformedTemplateException.class)
+    public ResponseEntity<?> malformedTemplateException(Exception ex) {
+        RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
+        return new ResponseEntity<>(new ErrorMessage("Template is malformed"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

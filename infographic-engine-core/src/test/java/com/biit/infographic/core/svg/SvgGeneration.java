@@ -41,15 +41,4 @@ public class SvgGeneration {
             Assert.fail();
         }
     }
-
-    @BeforeClass
-    public void prepareFolder() throws IOException {
-        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
-    }
-
-
-    @AfterClass
-    public void removeFolder() {
-        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
-    }
 }

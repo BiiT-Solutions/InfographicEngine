@@ -26,6 +26,7 @@
             <class name="com.biit.infographic.core.image.SimpleJpegGenerationTest"/>
             <class name="com.biit.infographic.core.engine.TemplateFromDroolsTests"/>
             <class name="com.biit.infographic.core.engine.CADT"/>
+            <class name="com.biit.infographic.core.svg.CADT"/>
         </classes>
     </test>
 </suite>

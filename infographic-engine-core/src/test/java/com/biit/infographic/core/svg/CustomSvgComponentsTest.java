@@ -4,6 +4,9 @@ import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.BufferedWriter;
@@ -11,9 +14,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Test(groups = {"customSvgComponentsTest"})
 public class CustomSvgComponentsTest extends SvgGeneration {
+
+    @BeforeClass
+    public void prepareFolder() throws IOException {
+        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
+    }
 
     @Test
     public void gaugeTest() throws IOException {
@@ -88,5 +98,10 @@ public class CustomSvgComponentsTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentGauge5ValuesFlip.svg");
+    }
+
+    @AfterClass
+    public void removeFolder() {
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

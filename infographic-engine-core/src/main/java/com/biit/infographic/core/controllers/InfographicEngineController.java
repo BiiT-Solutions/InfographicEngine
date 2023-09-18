@@ -12,6 +12,7 @@ import com.biit.infographic.core.engine.files.InfographicFolder;
 import com.biit.infographic.core.engine.files.TreeNode;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.exceptions.InvalidParameterException;
+import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.exceptions.ReportNotReadyException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.springframework.stereotype.Controller;
@@ -63,7 +64,7 @@ public class InfographicEngineController {
         return infographicTemplateAndContent;
     }
 
-    private List<TreeNode<String>> getSelectableElements() {
+    private List<TreeNode<String>> getSelectableElements() throws MalformedTemplateException {
         return new InfographicFolder(null).getSelectableElementsTree(getReportPath());
     }
 
@@ -124,16 +125,16 @@ public class InfographicEngineController {
         return getReportPath() + File.separator + droolsSubmittedForm.getName() + "_v" + droolsSubmittedForm.getVersion();
     }
 
-    public List<InfographicTemplate> getTemplates(DroolsSubmittedForm droolsSubmittedForm) {
+    public List<InfographicTemplate> getTemplates(DroolsSubmittedForm droolsSubmittedForm) throws MalformedTemplateException {
         return new InfographicFolder(null).getTemplatesFromPath(getTemplateBasePath(droolsSubmittedForm), null);
     }
 
-    private List<InfographicTemplate> getTemplates(List<TreeNode<String>> selections) {
+    private List<InfographicTemplate> getTemplates(List<TreeNode<String>> selections) throws MalformedTemplateException {
         final String reportPath = getReportPath();
         return new InfographicFolder(null).getTemplatesFromPath(reportPath, selections);
     }
 
-    private Map<InfographicFileElement, Set<Parameter>> getParamsFromAllTemplates() {
+    private Map<InfographicFileElement, Set<Parameter>> getParamsFromAllTemplates() throws MalformedTemplateException {
         final List<InfographicTemplate> templates = getTemplates((List<TreeNode<String>>) null);
         return getParamsFromTemplates(templates);
     }
