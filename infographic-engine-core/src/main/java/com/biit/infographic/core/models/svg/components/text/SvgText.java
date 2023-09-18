@@ -112,6 +112,11 @@ public class SvgText extends SvgElement {
         setFontSize(fontSize);
     }
 
+    public SvgText(String fontFamily, String text, int fontSize, Long x, Long y) {
+        this(text, fontSize, x, y);
+        setFontFamily(fontFamily);
+    }
+
     public SvgText(String text, int fontSize, String color, Long x, Long y) {
         this(new ElementAttributes(x, y, null, null, null));
         setText(text);
@@ -445,7 +450,13 @@ public class SvgText extends SvgElement {
     private int getLineWidthPixels(String text) {
         final AffineTransform affinetransform = new AffineTransform();
         final FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
-        final Font font = new Font(getFontFamily().split(",")[0].trim(), Font.PLAIN, getRealFontSize());
+        final Font font;
+        //Load the required font.
+        if (FontFactory.getFont(getFontFamily()) != null) {
+            font = FontFactory.getFont(getFontFamily()).deriveFont((float) getRealFontSize());
+        } else {
+            font = new Font(getFontFamily().split(",")[0].trim(), Font.PLAIN, getRealFontSize());
+        }
         return (int) (font.getStringBounds(text, frc).getWidth());
     }
 

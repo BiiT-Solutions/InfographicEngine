@@ -34,6 +34,7 @@ import java.util.Random;
 @Test(groups = "cadt")
 public class CADT extends SvgGeneration {
     private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
+    private static final String FONT_FAMILY = "Montserrat";
     private static final Double DEFAULT_STROKE_WIDTH = 8.33D;
     private static final Double ALFA_SECONDARY = 0.5D;
     private static final Double ALFA_PRIMARY = 0.75D;
@@ -63,7 +64,7 @@ public class CADT extends SvgGeneration {
         if (numberOfWords == null) {
             numberOfWords = new Random().nextInt(10, LONG_TEXT.split(" ").length);
         }
-        final SvgText text = new SvgText(getLongText(numberOfWords), FONT_SIZE, x + TEXT_PADDING, y + TEXT_PADDING);
+        final SvgText text = new SvgText(FONT_FAMILY, getLongText(numberOfWords), FONT_SIZE, x + TEXT_PADDING, y + TEXT_PADDING);
         text.setMaxParagraphHeight(height - TEXT_PADDING * 2);
         text.setMaxLineWidth(width - TEXT_PADDING * 2);
         text.setTextAlign(TextAlign.JUSTIFY);
@@ -738,11 +739,10 @@ public class CADT extends SvgGeneration {
                 + File.separator + "CADT.svg")), true)) {
             out.println(SvgGenerator.generate(svgTemplate));
         }
-        //checkContent(SvgGenerator.generate(svgTemplate), "CADT.svg");
     }
 
     @AfterClass
     public void removeFolder() {
-        // Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        //Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }
