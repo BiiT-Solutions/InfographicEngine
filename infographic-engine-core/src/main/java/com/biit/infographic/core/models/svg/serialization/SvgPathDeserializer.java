@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SvgPathDeserializer extends SvgElementDeserializer<SvgPath> {
+public class SvgPathDeserializer extends SvgAreaElementDeserializer<SvgPath> {
 
     public SvgPathDeserializer() {
         super(SvgPath.class);

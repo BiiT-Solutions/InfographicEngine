@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgPathDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @JsonDeserialize(using = SvgPathDeserializer.class)
 @JsonRootName(value = "path")
-public class SvgPath extends SvgElement {
+public class SvgPath extends SvgAreaElement {
 
     @JsonProperty("points")
     private List<Point> points;
@@ -66,6 +66,7 @@ public class SvgPath extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
         if (getElementAttributes().getHeight() != null) {
             throw new InvalidAttributeException(this.getClass(), "Point '" + getId() + "' must not have 'height' attribute");
         }

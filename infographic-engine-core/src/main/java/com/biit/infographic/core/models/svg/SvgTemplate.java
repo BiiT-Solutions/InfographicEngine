@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserializer;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @JsonDeserialize(using = SvgTemplateDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-public class SvgTemplate extends SvgElement {
+public class SvgTemplate extends SvgAreaElement {
     public static final long DEFAULT_WIDTH = 256L;
     public static final long DEFAULT_HEIGHT = 256L;
 
@@ -34,7 +35,7 @@ public class SvgTemplate extends SvgElement {
     private LayoutType layoutType;
 
     @JsonProperty("elements")
-    private List<SvgElement> elements;
+    private List<SvgAreaElement> elements;
 
     public SvgTemplate(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -53,6 +54,7 @@ public class SvgTemplate extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
     }
 
     public SvgBackground getSvgBackground() {
@@ -71,18 +73,18 @@ public class SvgTemplate extends SvgElement {
         this.layoutType = layoutType;
     }
 
-    public List<SvgElement> getElements() {
+    public List<SvgAreaElement> getElements() {
         if (elements == null) {
             return new ArrayList<>();
         }
         return elements;
     }
 
-    public void setElements(List<SvgElement> elements) {
+    public void setElements(List<SvgAreaElement> elements) {
         this.elements = elements;
     }
 
-    public void addElement(SvgElement element) {
+    public void addElement(SvgAreaElement element) {
         if (elements == null) {
             elements = new ArrayList<>();
         }
@@ -92,7 +94,7 @@ public class SvgTemplate extends SvgElement {
         elements.add(element);
     }
 
-    public void addElements(List<SvgElement> elements) {
+    public void addElements(List<SvgAreaElement> elements) {
         elements.forEach(this::addElement);
     }
 
@@ -114,6 +116,8 @@ public class SvgTemplate extends SvgElement {
         svgRoot.setAttributeNS(null, "height", String.valueOf(getElementAttributes().getHeight() != null
                 && getElementAttributes().getHeight() != 0 ? getElementAttributes().getHeight() : DEFAULT_HEIGHT));
 
+        generateDefs(doc, svgRoot);
+
         setSvgBackground(doc, svgRoot);
 
         if (getElements() != null && !getElements().isEmpty()) {
@@ -133,7 +137,7 @@ public class SvgTemplate extends SvgElement {
         long y = 0;
 
         if (elements != null) {
-            for (SvgElement element : elements) {
+            for (SvgAreaElement element : elements) {
                 if (element.getElementAttributes().getHeight() != null && element.getElementAttributes().getHeightUnit() == Unit.PIXELS) {
                     height = Math.max(height, element.getElementAttributes().getXCoordinate() + element.getElementAttributes().getHeight());
                 }
@@ -179,6 +183,29 @@ public class SvgTemplate extends SvgElement {
 
         svgRoot.setAttributeNS(null, "viewBox", x + " " + y + " " + getElementAttributes().getWidth()
                 + " " + getElementAttributes().getHeight());
+    }
+
+    /**
+     * Defs must include all gradient definitions.
+     *
+     * @param doc the Document DOM.
+     */
+    private void generateDefs(Document doc, Element svgRoot) {
+        final Element defs = doc.createElementNS(NAMESPACE, "defs");
+        if (elements != null && !elements.isEmpty()) {
+            int idCounter = 0;
+            for (SvgAreaElement element : elements) {
+                if (element.getElementAttributes() != null && element.getElementAttributes().getGradient() != null) {
+                    final SvgGradient gradient = element.getElementAttributes().getGradient();
+                    gradient.setId(SvgGradient.ID_PREFIX + ++idCounter);
+                    defs.appendChild(gradient.generateSvg(doc));
+                }
+            }
+
+            if (idCounter > 0) {
+                svgRoot.appendChild(defs);
+            }
+        }
     }
 
     @JsonIgnore

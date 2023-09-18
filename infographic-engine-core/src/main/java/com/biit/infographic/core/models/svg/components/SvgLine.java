@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgLineDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import org.w3c.dom.Element;
 
 @JsonDeserialize(using = SvgLineDeserializer.class)
 @JsonRootName(value = "line")
-public class SvgLine extends SvgElement {
+public class SvgLine extends SvgAreaElement {
 
     @JsonProperty("x2")
     private Long x2Coordinate;
@@ -76,6 +76,7 @@ public class SvgLine extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
         if (x2Coordinate == null) {
             throw new InvalidAttributeException(this.getClass(), "Invalid x2 on line '" + getId() + "'");
         }

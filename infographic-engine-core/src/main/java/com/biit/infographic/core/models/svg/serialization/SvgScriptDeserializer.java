@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 
-public class SvgScriptDeserializer extends SvgElementDeserializer<SvgScript> {
+public class SvgScriptDeserializer extends SvgAreaElementDeserializer<SvgScript> {
 
     public SvgScriptDeserializer() {
         super(SvgScript.class);

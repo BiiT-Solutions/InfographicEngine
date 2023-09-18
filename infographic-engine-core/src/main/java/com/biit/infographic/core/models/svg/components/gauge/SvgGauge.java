@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components.gauge;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgUtils;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgGaugeDeserializer;
@@ -23,7 +23,7 @@ import java.util.Objects;
 
 @JsonDeserialize(using = SvgGaugeDeserializer.class)
 @JsonRootName(value = "gauge")
-public class SvgGauge extends SvgElement {
+public class SvgGauge extends SvgAreaElement {
     private static final int GAUGE_WIDTH = 170;
     private static final int ARROW_AXIS_WIDTH = 10;
     private static final int GAUGE_DEGREES = 180;
@@ -242,6 +242,7 @@ public class SvgGauge extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
         if (getElementAttributes().getWidth() != null) {
             throw new InvalidAttributeException(this.getClass(), "Gauge '" + getId() + "' does not have 'width' attribute");
         }

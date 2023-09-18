@@ -8,6 +8,8 @@ import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 
 public enum ElementType {
@@ -21,7 +23,9 @@ public enum ElementType {
     PATH(SvgPath.class),
     TEXT(SvgText.class),
     SCRIPT(SvgScript.class),
-    GAUGE(SvgGauge.class);
+    GAUGE(SvgGauge.class),
+    GRADIENT(SvgGradient.class),
+    GRADIENT_STOP(SvgGradientStop.class);
 
     private final Class<?> relatedClass;
 

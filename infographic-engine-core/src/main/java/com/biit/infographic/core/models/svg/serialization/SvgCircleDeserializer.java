@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 
-public class SvgCircleDeserializer extends SvgElementDeserializer<SvgCircle> {
+public class SvgCircleDeserializer extends SvgAreaElementDeserializer<SvgCircle> {
 
     public SvgCircleDeserializer() {
         super(SvgCircle.class);

@@ -1,5 +1,6 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.serialization.ElementAttributesDeserializer;
 import com.biit.infographic.core.models.svg.utils.Color;
 import com.biit.infographic.logger.SvgGeneratorLogger;
@@ -39,6 +40,9 @@ public class ElementAttributes {
 
     @JsonProperty("fill")
     private String fill;
+
+    @JsonProperty("gradient")
+    private SvgGradient gradient;
 
     @JsonProperty("fillOpacity")
     private Double fillOpacity;
@@ -208,6 +212,14 @@ public class ElementAttributes {
                 SvgGeneratorLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
             }
         }
+    }
+
+    public SvgGradient getGradient() {
+        return gradient;
+    }
+
+    public void setGradient(SvgGradient gradient) {
+        this.gradient = gradient;
     }
 
     public Double getFillOpacity() {

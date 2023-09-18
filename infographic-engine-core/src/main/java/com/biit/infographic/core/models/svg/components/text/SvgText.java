@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components.text;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgTextDeserializer;
@@ -26,7 +26,7 @@ import java.util.List;
 
 @JsonDeserialize(using = SvgTextDeserializer.class)
 @JsonRootName(value = "text")
-public class SvgText extends SvgElement {
+public class SvgText extends SvgAreaElement {
     private static final int LINE_SEPARATION = 5;
     private static final int MIN_LINE_SEPARATION = 2;
     private static final int DEFAULT_FONT_SIZE = 10;
@@ -426,6 +426,7 @@ public class SvgText extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
         if (getElementAttributes().getWidth() != null) {
             throw new InvalidAttributeException(this.getClass(), "Text '" + getId() + "' must not have 'width' attribute");
         }

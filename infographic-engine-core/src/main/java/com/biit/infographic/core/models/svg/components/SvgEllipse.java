@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgEllipseDeserializer;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
 
 @JsonDeserialize(using = SvgEllipseDeserializer.class)
 @JsonRootName(value = "ellipse")
-public class SvgEllipse extends SvgElement {
+public class SvgEllipse extends SvgAreaElement {
 
     public SvgEllipse(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -45,6 +45,6 @@ public class SvgEllipse extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-
+        super.validateAttributes();
     }
 }

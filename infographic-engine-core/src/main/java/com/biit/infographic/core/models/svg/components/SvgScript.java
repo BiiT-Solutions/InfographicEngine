@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgScriptDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import org.w3c.dom.Element;
 
 @JsonDeserialize(using = SvgScriptDeserializer.class)
 @JsonRootName(value = "script")
-public class SvgScript extends SvgElement {
+public class SvgScript extends SvgAreaElement {
 
     @JsonProperty("script")
     private String script;
@@ -50,6 +50,7 @@ public class SvgScript extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
         if (getElementAttributes().getHeight() != null) {
             throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' does not have 'height' attribute");
         }

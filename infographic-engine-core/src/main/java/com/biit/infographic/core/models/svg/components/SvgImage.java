@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgImageDeserializer;
 import com.biit.infographic.logger.SvgGeneratorLogger;
@@ -20,7 +20,7 @@ import java.util.Base64;
 
 @JsonDeserialize(using = SvgImageDeserializer.class)
 @JsonRootName(value = "image")
-public class SvgImage extends SvgElement {
+public class SvgImage extends SvgAreaElement {
     private static final String BASE_64_PREFIX = "data:image/png;base64,";
 
     @JsonProperty("content")
@@ -105,6 +105,7 @@ public class SvgImage extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
         if (getElementAttributes().getHeight() == null) {
             throw new InvalidAttributeException(this.getClass(), "Image '" + getId() + "' must have 'height' attribute");
         }

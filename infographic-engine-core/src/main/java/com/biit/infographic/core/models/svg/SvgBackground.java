@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgBackgroundDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -75,6 +76,7 @@ public class SvgBackground implements ISvgElement {
 
     @Override
     public Element generateSvg(Document doc) {
+        validateAttributes();
         if (getBackgroundColor() != null) {
             final SvgRectangle rectangle = new SvgRectangle("100%", "100%", backgroundColor);
             rectangle.setXRadius(xRadius);
@@ -85,5 +87,10 @@ public class SvgBackground implements ISvgElement {
             return image.generateSvg(doc);
         }
         return null;
+    }
+
+    @Override
+    public void validateAttributes() throws InvalidAttributeException {
+        //Nothing.
     }
 }

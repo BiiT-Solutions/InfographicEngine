@@ -2,7 +2,7 @@ package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgBackground;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
@@ -80,8 +80,8 @@ public class CADT extends SvgGeneration {
     }
 
 
-    private List<SvgElement> generateHeader() {
-        final List<SvgElement> headerElements = new ArrayList<>();
+    private List<SvgAreaElement> generateHeader() {
+        final List<SvgAreaElement> headerElements = new ArrayList<>();
 
 
         //Name background
@@ -136,8 +136,8 @@ public class CADT extends SvgGeneration {
         return headerElements;
     }
 
-    private List<SvgElement> generateUniversal() {
-        final List<SvgElement> universalElements = new ArrayList<>();
+    private List<SvgAreaElement> generateUniversal() {
+        final List<SvgAreaElement> universalElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(UNIVERSAL_COLOR, DEFAULT_STROKE_WIDTH, 2252L, 1542L, new Point(2252L, 1292L),
@@ -180,8 +180,8 @@ public class CADT extends SvgGeneration {
         return universalElements;
     }
 
-    private List<SvgElement> generateSociety() {
-        final List<SvgElement> societyElements = new ArrayList<>();
+    private List<SvgAreaElement> generateSociety() {
+        final List<SvgAreaElement> societyElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(SOCIETY_COLOR, DEFAULT_STROKE_WIDTH, 2420L, 1542L, new Point(2420L, 1292L),
@@ -224,8 +224,8 @@ public class CADT extends SvgGeneration {
         return societyElements;
     }
 
-    private List<SvgElement> generateVision() {
-        final List<SvgElement> visionElements = new ArrayList<>();
+    private List<SvgAreaElement> generateVision() {
+        final List<SvgAreaElement> visionElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(VISION_COLOR, DEFAULT_STROKE_WIDTH, 2587L, 1542L, new Point(2587L, 1292L),
@@ -268,8 +268,8 @@ public class CADT extends SvgGeneration {
         return visionElements;
     }
 
-    private List<SvgElement> generateStrength() {
-        final List<SvgElement> strengthElements = new ArrayList<>();
+    private List<SvgAreaElement> generateStrength() {
+        final List<SvgAreaElement> strengthElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(STRENGTH_COLOR, DEFAULT_STROKE_WIDTH, 2754L, 1542L, new Point(2754L, 1292L),
@@ -312,8 +312,8 @@ public class CADT extends SvgGeneration {
         return strengthElements;
     }
 
-    private List<SvgElement> generateStructure() {
-        final List<SvgElement> structureElements = new ArrayList<>();
+    private List<SvgAreaElement> generateStructure() {
+        final List<SvgAreaElement> structureElements = new ArrayList<>();
 
         //Line
         final SvgLine line1 = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 2253L, 1694L, 2253L, 1851L);
@@ -357,8 +357,8 @@ public class CADT extends SvgGeneration {
         return structureElements;
     }
 
-    private List<SvgElement> generateInspiration() {
-        final List<SvgElement> inspirationElements = new ArrayList<>();
+    private List<SvgAreaElement> generateInspiration() {
+        final List<SvgAreaElement> inspirationElements = new ArrayList<>();
 
         //Line
         final SvgLine line1 = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 2420L, 1694L, 2420L, 1851L);
@@ -402,8 +402,8 @@ public class CADT extends SvgGeneration {
         return inspirationElements;
     }
 
-    private List<SvgElement> generateStructureInspiration() {
-        final List<SvgElement> structureInspirationElements = new ArrayList<>();
+    private List<SvgAreaElement> generateStructureInspiration() {
+        final List<SvgAreaElement> structureInspirationElements = new ArrayList<>();
         //Title
         final SvgText title = new SvgText("-", 67, FontWeight.BOLD, "272727", 1146L, 1416L);
         structureInspirationElements.add(title);
@@ -416,8 +416,8 @@ public class CADT extends SvgGeneration {
         return structureInspirationElements;
     }
 
-    private List<SvgElement> generateAdaptability() {
-        final List<SvgElement> adaptabilityElements = new ArrayList<>();
+    private List<SvgAreaElement> generateAdaptability() {
+        final List<SvgAreaElement> adaptabilityElements = new ArrayList<>();
 
         //Line
         final SvgLine line1 = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2587L, 1694L, 2587L, 1851L);
@@ -461,8 +461,8 @@ public class CADT extends SvgGeneration {
         return adaptabilityElements;
     }
 
-    private List<SvgElement> generateAction() {
-        final List<SvgElement> actionElements = new ArrayList<>();
+    private List<SvgAreaElement> generateAction() {
+        final List<SvgAreaElement> actionElements = new ArrayList<>();
 
         //Line
         final SvgLine line1 = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 2753L, 1694L, 2753L, 1851L);
@@ -506,8 +506,8 @@ public class CADT extends SvgGeneration {
         return actionElements;
     }
 
-    private List<SvgElement> generateAdaptabilityAction() {
-        final List<SvgElement> adaptabilityActionElements = new ArrayList<>();
+    private List<SvgAreaElement> generateAdaptabilityAction() {
+        final List<SvgAreaElement> adaptabilityActionElements = new ArrayList<>();
         //Title
         final SvgText title = new SvgText("-", 67, FontWeight.BOLD, "272727", 3839L, 1416L);
         adaptabilityActionElements.add(title);
@@ -520,8 +520,8 @@ public class CADT extends SvgGeneration {
         return adaptabilityActionElements;
     }
 
-    private List<SvgElement> generateMaterialAttachment() {
-        final List<SvgElement> materialAttachmentElements = new ArrayList<>();
+    private List<SvgAreaElement> generateMaterialAttachment() {
+        final List<SvgAreaElement> materialAttachmentElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(MATERIAL_ATTACHMENT_COLOR, DEFAULT_STROKE_WIDTH, 2252L, 2002L, new Point(2252L, 2252L),
@@ -564,8 +564,8 @@ public class CADT extends SvgGeneration {
         return materialAttachmentElements;
     }
 
-    private List<SvgElement> generateCommunication() {
-        final List<SvgElement> communicationElements = new ArrayList<>();
+    private List<SvgAreaElement> generateCommunication() {
+        final List<SvgAreaElement> communicationElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(COMMUNICATION_COLOR, DEFAULT_STROKE_WIDTH, 2420L, 2002L, new Point(2420L, 2341L),
@@ -608,8 +608,8 @@ public class CADT extends SvgGeneration {
         return communicationElements;
     }
 
-    private List<SvgElement> generateSelfAware() {
-        final List<SvgElement> selfAwareElements = new ArrayList<>();
+    private List<SvgAreaElement> generateSelfAware() {
+        final List<SvgAreaElement> selfAwareElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(SELF_AWARE_COLOR, DEFAULT_STROKE_WIDTH, 2587L, 2002L, new Point(2587L, 2341L),
@@ -652,8 +652,8 @@ public class CADT extends SvgGeneration {
         return selfAwareElements;
     }
 
-    private List<SvgElement> generateAnalysis() {
-        final List<SvgElement> analysisElements = new ArrayList<>();
+    private List<SvgAreaElement> generateAnalysis() {
+        final List<SvgAreaElement> analysisElements = new ArrayList<>();
 
         //Line
         final SvgPath path = new SvgPath(ANALYSIS_COLOR, DEFAULT_STROKE_WIDTH, 2754L, 2002L, new Point(2754L, 2341L),

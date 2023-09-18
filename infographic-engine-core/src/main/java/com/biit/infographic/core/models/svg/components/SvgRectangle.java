@@ -2,7 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
-import com.biit.infographic.core.models.svg.SvgElement;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgRectangleDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import org.w3c.dom.Element;
 
 @JsonDeserialize(using = SvgRectangleDeserializer.class)
 @JsonRootName(value = "rectangle")
-public class SvgRectangle extends SvgElement {
+public class SvgRectangle extends SvgAreaElement {
 
     @JsonProperty("xRadius")
     private Long xRadius = 0L;
@@ -80,6 +80,7 @@ public class SvgRectangle extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        super.validateAttributes();
         if (getElementAttributes().getHeight() == null) {
             throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have 'height' attribute");
         }
