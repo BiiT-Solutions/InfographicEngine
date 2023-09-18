@@ -322,8 +322,8 @@ public class CADT extends SvgGeneration {
         final SvgLine line1 = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 2253L, 1694L, 2253L, 1851L);
         structureElements.add(line1);
 
-        final SvgLine line2 = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 2044L, 1772L, 2253L, 1772L);
-        structureElements.add(line2);
+//        final SvgLine line2 = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 2044L, 1772L, 2253L, 1772L);
+//        structureElements.add(line2);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2205L, 1662L, 46L);
@@ -367,8 +367,8 @@ public class CADT extends SvgGeneration {
         final SvgLine line1 = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 2420L, 1694L, 2420L, 1851L);
         inspirationElements.add(line1);
 
-        final SvgLine line2 = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 2044L, 1772L, 2420L, 1772L);
-        inspirationElements.add(line2);
+//        final SvgLine line2 = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 2044L, 1772L, 2420L, 1772L);
+//        inspirationElements.add(line2);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2372L, 1662L, 46L);
@@ -407,9 +407,18 @@ public class CADT extends SvgGeneration {
 
     private List<SvgAreaElement> generateStructureInspiration() {
         final List<SvgAreaElement> structureInspirationElements = new ArrayList<>();
+
         //Title
         final SvgText title = new SvgText("-", 67, FontWeight.BOLD, "272727", 1146L, 1416L);
         structureInspirationElements.add(title);
+
+        //Line
+        final SvgLine line1 = new SvgLine(null, DEFAULT_STROKE_WIDTH, 2044L, 1772L, 2420L, 1772L);
+        line1.getElementAttributes().setGradient(new SvgGradient(
+                new SvgGradientStop(INSPIRATION_COLOR, FULL_ALPHA, 0.0),
+                new SvgGradientStop(STRUCTURE_COLOR, FULL_ALPHA, 0.5),
+                new SvgGradientStop(INSPIRATION_COLOR, FULL_ALPHA, 1.0)));
+        structureInspirationElements.add(line1);
 
         //Content
         final SvgRectangle content1 = new SvgRectangle(281L, 2083L, 1750L, 100L, null);
@@ -431,8 +440,8 @@ public class CADT extends SvgGeneration {
         final SvgLine line1 = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2587L, 1694L, 2587L, 1851L);
         adaptabilityElements.add(line1);
 
-        final SvgLine line2 = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2587L, 1772L, 2954L, 1772L);
-        adaptabilityElements.add(line2);
+//        final SvgLine line2 = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2587L, 1772L, 2954L, 1772L);
+//        adaptabilityElements.add(line2);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2539L, 1662L, 46L);
@@ -476,8 +485,8 @@ public class CADT extends SvgGeneration {
         final SvgLine line1 = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 2753L, 1694L, 2753L, 1851L);
         actionElements.add(line1);
 
-        final SvgLine line2 = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 2754L, 1772L, 2954L, 1772L);
-        actionElements.add(line2);
+//        final SvgLine line2 = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 2754L, 1772L, 2954L, 1772L);
+//        actionElements.add(line2);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2706L, 1662L, 46L);
@@ -519,6 +528,14 @@ public class CADT extends SvgGeneration {
         //Title
         final SvgText title = new SvgText("-", 67, FontWeight.BOLD, "272727", 3839L, 1416L);
         adaptabilityActionElements.add(title);
+
+        //Line
+        final SvgLine line1 = new SvgLine(null, DEFAULT_STROKE_WIDTH, 2587L, 1772L, 2954L, 1772L);
+        line1.getElementAttributes().setGradient(new SvgGradient(
+                new SvgGradientStop(ADAPTABILITY_COLOR, FULL_ALPHA, 0.0),
+                new SvgGradientStop(ACTION_COLOR, FULL_ALPHA, 0.5),
+                new SvgGradientStop(ADAPTABILITY_COLOR, FULL_ALPHA, 1.0)));
+        adaptabilityActionElements.add(line1);
 
         //Content
         final SvgRectangle content1 = new SvgRectangle(2974L, 2083L, 1750L, 100L, null);
