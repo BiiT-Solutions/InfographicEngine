@@ -85,7 +85,7 @@ public class SvgGradient extends SvgElement {
     }
 
     public void addStops(SvgGradientStop stop) {
-        if (stops.isEmpty()) {
+        if (stops == null) {
             stops = new ArrayList<>();
         }
         stops.add(stop);

@@ -1,8 +1,6 @@
 package com.biit.infographic.core.svg;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 
 import java.io.File;
 import java.io.IOException;

@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.serialization;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.VerticalAlignment;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,6 +32,10 @@ public class ElementAttributesDeserializer extends StdDeserializer<ElementAttrib
         elementAttributes.setFill(DeserializerParser.parseString("fill", jsonObject));
         elementAttributes.setCssClass(DeserializerParser.parseString("class", jsonObject));
         elementAttributes.setVerticalAlignment(VerticalAlignment.getAlignment(DeserializerParser.parseString("verticalAlign", jsonObject)));
+
+        if (jsonObject.get("gradient") != null) {
+            elementAttributes.setGradient(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("gradient").toPrettyString(), SvgGradient.class));
+        }
 
         return elementAttributes;
     }

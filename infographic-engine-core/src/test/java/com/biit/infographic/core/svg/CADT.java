@@ -16,8 +16,13 @@ import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -56,6 +61,10 @@ public class CADT extends SvgGeneration {
     private static final String ANALYSIS_COLOR = "8bc4ab";
     private static final int TEXT_PADDING = 25;
     private static final int FONT_SIZE = 42;
+
+    private final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+
+    private SvgTemplate cadtTemplate;
 
     private String getLongText(int numOfWords) {
         String[] tokens = LONG_TEXT.split(" ");
@@ -733,10 +742,10 @@ public class CADT extends SvgGeneration {
 
     @Test
     public void generateCADT() throws IOException {
-        final SvgTemplate svgTemplate = new SvgTemplate();
-        svgTemplate.getElementAttributes().setHeight(3488L);
-        svgTemplate.getElementAttributes().setWidth(5038L);
-        svgTemplate.setSvgBackground(generateBackground());
+        cadtTemplate = new SvgTemplate();
+        cadtTemplate.getElementAttributes().setHeight(3488L);
+        cadtTemplate.getElementAttributes().setWidth(5038L);
+        cadtTemplate.setSvgBackground(generateBackground());
 
         //Add big white rectangle as 2nd background.
         final SvgRectangle secondBackground = new SvgRectangle(163L, 189L, "4680px", "3153px", "ffffff");
@@ -744,31 +753,39 @@ public class CADT extends SvgGeneration {
         secondBackground.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
         secondBackground.setXRadius(70L);
         secondBackground.setYRadius(70L);
-        svgTemplate.addElement(secondBackground);
+        cadtTemplate.addElement(secondBackground);
 
-        svgTemplate.addElements(generateHeader());
-        svgTemplate.addElements(generateUniversal());
-        svgTemplate.addElements(generateSociety());
-        svgTemplate.addElements(generateVision());
-        svgTemplate.addElements(generateStrength());
+        cadtTemplate.addElements(generateHeader());
+        cadtTemplate.addElements(generateUniversal());
+        cadtTemplate.addElements(generateSociety());
+        cadtTemplate.addElements(generateVision());
+        cadtTemplate.addElements(generateStrength());
 
-        svgTemplate.addElements(generateInspiration());
-        svgTemplate.addElements(generateStructure());
-        svgTemplate.addElements(generateStructureInspiration());
-        svgTemplate.addElements(generateAdaptability());
-        svgTemplate.addElements(generateAction());
-        svgTemplate.addElements(generateAdaptabilityAction());
+        cadtTemplate.addElements(generateInspiration());
+        cadtTemplate.addElements(generateStructure());
+        cadtTemplate.addElements(generateStructureInspiration());
+        cadtTemplate.addElements(generateAdaptability());
+        cadtTemplate.addElements(generateAction());
+        cadtTemplate.addElements(generateAdaptabilityAction());
 
-        svgTemplate.addElements(generateMaterialAttachment());
-        svgTemplate.addElements(generateCommunication());
-        svgTemplate.addElements(generateSelfAware());
-        svgTemplate.addElements(generateAnalysis());
+        cadtTemplate.addElements(generateMaterialAttachment());
+        cadtTemplate.addElements(generateCommunication());
+        cadtTemplate.addElements(generateSelfAware());
+        cadtTemplate.addElements(generateAnalysis());
 
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "CADT.svg")), true)) {
-            out.println(SvgGenerator.generate(svgTemplate));
+            out.println(SvgGenerator.generate(cadtTemplate));
         }
+    }
+
+    @Test(dependsOnMethods = "generateCADT")
+    public void checkSerialization() throws JsonProcessingException {
+        String jsonText = objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(cadtTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        Assert.assertEquals(SvgGenerator.generate(cadtTemplate), SvgGenerator.generate(svgTemplate1));
     }
 
     @AfterClass

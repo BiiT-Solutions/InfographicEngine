@@ -10,6 +10,8 @@ import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
@@ -146,6 +148,25 @@ public class JsonGenerationTest {
         rectangle.setXRadius(25L);
         rectangle.setXRadius(50L);
         svgTemplate.addElement(rectangle);
+
+        String jsonText = generateJson(svgTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
+    }
+
+    @Test
+    public void documentDrawRectanglesWithGradientTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgRectangle svgRectangle1 = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), null);
+        svgRectangle1.getElementAttributes().setGradient(new SvgGradient(new SvgGradientStop("#ff0000", 1.0, 0.0), new SvgGradientStop("#0000ff", 1.0, 1.0)));
+        svgTemplate.addElement(svgRectangle1);
+
+        final SvgRectangle svgRectangle2 = new SvgRectangle(0L, 0L,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), null);
+        svgRectangle2.getElementAttributes().setGradient(new SvgGradient(new SvgGradientStop("#00ff00", 1.0, 0.0), new SvgGradientStop("#ff00ff", 1.0, 1.0)));
+        svgTemplate.addElement(svgRectangle2);
 
         String jsonText = generateJson(svgTemplate);
 
