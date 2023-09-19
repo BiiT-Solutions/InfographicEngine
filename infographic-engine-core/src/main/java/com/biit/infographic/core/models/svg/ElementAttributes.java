@@ -228,7 +228,7 @@ public class ElementAttributes {
     }
 
     public void setFillOpacity(Double fillOpacity) {
-        if (fillOpacity < 0 || fillOpacity > 1) {
+        if (fillOpacity != null && (fillOpacity < 0 || fillOpacity > 1)) {
             SvgGeneratorLogger.warning(this.getClass(), "Opacity value '" + fillOpacity + "' is invalid and therefore ignored.");
         } else {
             this.fillOpacity = fillOpacity;

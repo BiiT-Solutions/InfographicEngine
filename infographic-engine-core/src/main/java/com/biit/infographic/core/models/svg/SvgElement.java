@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.w3c.dom.Element;
 
 @JsonDeserialize(using = SvgElementDeserializer.class)
 
@@ -38,6 +39,23 @@ public abstract class SvgElement implements ISvgElement {
         this.elementType = elementType;
     }
 
+    public void elementAttributes(Element element) throws InvalidAttributeException {
+        if (getId() != null) {
+            element.setAttribute("id", getId());
+        }
+    }
+
     //Each child must implement and filter invalid attributes.
     public abstract void validateAttributes() throws InvalidAttributeException;
+
+    @Override
+    public String toString() {
+        if (getId() == null) {
+            return super.toString();
+        }
+        return "SvgElement{"
+                + "id='" + id + '\''
+                + ", elementType=" + elementType
+                + '}';
+    }
 }

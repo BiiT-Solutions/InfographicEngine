@@ -45,19 +45,19 @@ public class SvgBackground implements ISvgElement {
         return this;
     }
 
-    public Long getxRadius() {
+    public Long getXRadius() {
         return xRadius;
     }
 
-    public void setxRadius(Long xRadius) {
+    public void setXRadius(Long xRadius) {
         this.xRadius = xRadius;
     }
 
-    public Long getyRadius() {
+    public Long getYRadius() {
         return yRadius;
     }
 
-    public void setyRadius(Long yRadius) {
+    public void setYRadius(Long yRadius) {
         this.yRadius = yRadius;
     }
 

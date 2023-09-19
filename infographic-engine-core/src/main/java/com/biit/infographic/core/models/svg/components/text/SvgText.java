@@ -391,10 +391,6 @@ public class SvgText extends SvgAreaElement {
             text.setAttributeNS(null, "dy", getDyValue());
         }
 
-        if (getTextAlign() != null && !getTextAlign().getStyle().isBlank()) {
-            getElementAttributes().addStyle("text-align:" + getTextAlign().getStyle());
-        }
-
         elementStroke(text);
         elementAttributes(text);
         return text;
@@ -403,7 +399,7 @@ public class SvgText extends SvgAreaElement {
     @Override
     protected StringBuilder generateStyle(StringBuilder style) {
         style = super.generateStyle(style);
-        if (getTextAlign() != null) {
+        if (getTextAlign() != null && !getTextAlign().getStyle().isBlank()) {
             style.append(getTextAlign().getStyle());
         }
         if (getFontWeight() != null) {
@@ -412,11 +408,6 @@ public class SvgText extends SvgAreaElement {
         if (getFontFamily() != null) {
             style.append("font-family:");
             style.append(getFontFamily());
-            style.append(";");
-        }
-        if (getTextAlign() != null && !getTextAlign().getStyle().isBlank()) {
-            style.append("text-align:");
-            style.append(getTextAlign().getStyle());
             style.append(";");
         }
 

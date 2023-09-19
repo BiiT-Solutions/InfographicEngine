@@ -26,9 +26,6 @@ public class SvgTextDeserializer extends SvgAreaElementDeserializer<SvgText> {
         if (DeserializerParser.parseString("fontVariant", jsonObject) != null) {
             element.setFontVariant(FontVariantType.getVariant(DeserializerParser.parseString("fontVariant", jsonObject)));
         }
-        if (DeserializerParser.parseString("fontWeight", jsonObject) != null) {
-            element.setFontWeight(FontWeight.getWeight(DeserializerParser.parseString("fontWeight", jsonObject)));
-        }
         element.setRotate(DeserializerParser.parseLong("rotate", jsonObject));
         if (DeserializerParser.parseString("lengthAdjust", jsonObject) != null) {
             element.setLengthAdjust(FontLengthAdjust.getLengthAdjust(DeserializerParser.parseString("lengthAdjust", jsonObject)));
@@ -41,6 +38,10 @@ public class SvgTextDeserializer extends SvgAreaElementDeserializer<SvgText> {
         element.setDyUnit(Unit.getUnit(DeserializerParser.parseString("dyUnit", jsonObject)));
         element.setMaxLineLength(DeserializerParser.parseInteger("maxLineLength", jsonObject));
         element.setMaxLineWidth(DeserializerParser.parseInteger("maxLineWidth", jsonObject));
+        element.setMaxParagraphHeight(DeserializerParser.parseInteger("maxParagraphHeight", jsonObject));
         element.setTextAlign(TextAlign.getAlignment(DeserializerParser.parseString("textAlign", jsonObject)));
+        if (DeserializerParser.parseString("fontWeight", jsonObject) != null) {
+            element.setFontWeight(FontWeight.getWeight(DeserializerParser.parseString("fontWeight", jsonObject)));
+        }
     }
 }

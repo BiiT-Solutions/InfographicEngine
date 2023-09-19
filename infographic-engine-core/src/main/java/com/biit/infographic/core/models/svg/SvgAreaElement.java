@@ -92,9 +92,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
     }
 
     public void elementAttributes(Element element) throws InvalidAttributeException {
-        if (getId() != null) {
-            element.setAttribute("id", getId());
-        }
+        super.elementAttributes(element);
         if (getElementAttributes().getFill() != null) {
             element.setAttributeNS(null, "fill", getElementAttributes().getFill());
         } else if (getElementAttributes().getGradient() != null) {

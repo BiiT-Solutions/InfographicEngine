@@ -88,6 +88,8 @@ public class TextSvgGenerationTest extends SvgGeneration {
                 + File.separator + "documentLongTextAlignRight.svg")), true)) {
             out.println(SvgGenerator.generate(svgTemplate));
         }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextAlignRight.svg");
     }
 
     @Test

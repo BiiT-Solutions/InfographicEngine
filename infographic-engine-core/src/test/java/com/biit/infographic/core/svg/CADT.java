@@ -3,6 +3,7 @@ package com.biit.infographic.core.svg;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
+import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
@@ -86,8 +87,8 @@ public class CADT extends SvgGeneration {
     private SvgBackground generateBackground() {
         final SvgBackground svgBackground = new SvgBackground();
         svgBackground.setBackgroundColor("#e1dbd6");
-        svgBackground.setxRadius(104L);
-        svgBackground.setyRadius(104L);
+        svgBackground.setXRadius(104L);
+        svgBackground.setYRadius(104L);
         return svgBackground;
     }
 
@@ -785,11 +786,12 @@ public class CADT extends SvgGeneration {
         String jsonText = objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(cadtTemplate);
 
         SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
-        Assert.assertEquals(SvgGenerator.generate(cadtTemplate), SvgGenerator.generate(svgTemplate1));
+
+        Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(cadtTemplate));
     }
 
     @AfterClass
     public void removeFolder() {
-        //Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

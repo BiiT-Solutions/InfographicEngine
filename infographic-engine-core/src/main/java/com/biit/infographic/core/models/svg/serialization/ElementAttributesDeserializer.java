@@ -32,6 +32,7 @@ public class ElementAttributesDeserializer extends StdDeserializer<ElementAttrib
         elementAttributes.setFill(DeserializerParser.parseString("fill", jsonObject));
         elementAttributes.setCssClass(DeserializerParser.parseString("class", jsonObject));
         elementAttributes.setVerticalAlignment(VerticalAlignment.getAlignment(DeserializerParser.parseString("verticalAlign", jsonObject)));
+        elementAttributes.setFillOpacity(DeserializerParser.parseDouble("fillOpacity", jsonObject));
 
         if (jsonObject.get("gradient") != null) {
             elementAttributes.setGradient(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("gradient").toPrettyString(), SvgGradient.class));

@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Root class for generating an SVG document.
@@ -91,11 +92,25 @@ public class SvgTemplate extends SvgAreaElement {
         if (element.getElementType() == ElementType.SVG) {
             element.setElementType(ElementType.NESTED_SVG);
         }
+        if (element.getId() == null) {
+            element.setId(element.getElementType().name().toLowerCase() + elements.size());
+        }
         elements.add(element);
     }
 
     public void addElements(List<SvgAreaElement> elements) {
         elements.forEach(this::addElement);
+    }
+
+    public SvgElement getElement(String id) {
+        if (elements != null) {
+            for (SvgElement element : elements) {
+                if (Objects.equals(id, element.getId())) {
+                    return element;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -197,7 +212,7 @@ public class SvgTemplate extends SvgAreaElement {
             for (SvgAreaElement element : elements) {
                 if (element.getElementAttributes() != null && element.getElementAttributes().getGradient() != null) {
                     final SvgGradient gradient = element.getElementAttributes().getGradient();
-                    gradient.setId(SvgGradient.ID_PREFIX + ++idCounter);
+                    gradient.setId(SvgGradient.ID_PREFIX + "_" + element.getElementType().name().toLowerCase() + "_" + ++idCounter);
                     if (element instanceof SvgLine) {
                         gradient.setX1Coordinate(element.getElementAttributes().getXCoordinate());
                         gradient.setY1Coordinate(element.getElementAttributes().getYCoordinate());
