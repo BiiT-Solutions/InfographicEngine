@@ -39,7 +39,7 @@ public final class FontFactory {
             if (is != null) {
                 final Font font = Font.createFont(Font.TRUETYPE_FONT, is);
                 //Regular fonts are named regular, but never indexed with regular.
-                fonts.put(font.getFontName().replaceAll(FONTS_REGULAR, ""), font);
+                fonts.put(font.getFontName().replaceAll(FONTS_REGULAR, "").trim(), font);
                 SvgGeneratorLogger.debug(FontFactory.class, "Font '{}' found.", font.getFontName());
             } else {
                 SvgGeneratorLogger.severe(FontFactory.class, "Font '{}' has some issues and cannot be loaded!", fontFile);

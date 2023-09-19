@@ -222,6 +222,25 @@ public class TextSvgGenerationTest extends SvgGeneration {
         checkContent(SvgGenerator.generate(svgTemplate), "documentMontserratFont.svg");
     }
 
+    @Test
+    public void documentMondayDonuts() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        SvgText text = new SvgText("Monday Donuts", LONG_TEXT, 8, 0L, 0L);
+        text.setFontVariant(FontVariantType.NORMAL);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineWidth(200);
+        text.setMaxParagraphHeight(90);
+        svgTemplate.addElement(text);
+
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentMondayDonutsFont.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentMondayDonutsFont.svg");
+    }
+
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
