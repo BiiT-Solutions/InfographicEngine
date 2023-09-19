@@ -10,6 +10,8 @@ import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
+import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
+import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
@@ -405,6 +407,37 @@ public class JsonGenerationTest {
         line.getElementStroke().setLineCap(StrokeLineCap.ROUND);
         line.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
         svgTemplate.addElement(line);
+
+        String jsonText = generateJson(svgTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
+    }
+
+    @Test
+    public void documentMondayDonuts() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        SvgText text = new SvgText("Monday Donuts", LONG_TEXT, 8, 0L, 0L);
+        text.setFontVariant(FontVariantType.NORMAL);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineWidth(200);
+        text.setMaxParagraphHeight(90);
+        svgTemplate.addElement(text);
+
+
+        String jsonText = generateJson(svgTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
+    }
+
+    @Test
+    public void gauge5ValuesFlipTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgGauge gauge = new SvgGauge(1.0, 5.0, 4.0);
+        gauge.setType(GaugeType.FIVE_VALUES);
+        gauge.setFlip(true);
+        svgTemplate.addElement(gauge);
 
         String jsonText = generateJson(svgTemplate);
 

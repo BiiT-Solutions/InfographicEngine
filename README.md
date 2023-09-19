@@ -7,6 +7,41 @@ This software execute templates in JSON format and covert them into SVG images.
 This is a list of the implemented components and the properties that are available for each of them. For some code
 example, please check the test inside `infographic-engine-core` module.
 
+### Template
+
+This is the main component and any element must be inside this component. This will generate the SVG document with a
+viewbox and a background.
+
+**background.backgroundColor** The background color of the background.
+
+**background.xRadius** As a rectangle, the radius of the corner.
+
+**background.yRadius** As a rectangle, the radius of the corner.
+
+**background.image** Use an image and not a color. Not compatible with the other `background` parameters.
+
+**elements** Any other of the elements listed below.
+
+Example:
+
+```
+{
+  "background" : {
+    "backgroundColor" : "#449911"
+  },
+  "commonAttributes" : {
+    "widthUnit" : "PIXELS",
+    "heightUnit" : "PIXELS",
+    "x" : 128,
+    "y" : 128,
+  },
+  "elementType" : "SVG",
+  "elements" : [ ],
+  "stroke" : {
+  }
+}
+```
+
 ### Circle
 
 **commonAttributes.id** The id of the element.
@@ -21,6 +56,8 @@ example, please check the test inside `infographic-engine-core` module.
 
 **commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
+**commonAttributes.gradient** You can define a gradient rather than a color for filling the element.
+
 **stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
 **stroke.strokeWidth** The width of the stroke to be applied to the shape.
@@ -29,6 +66,30 @@ example, please check the test inside `infographic-engine-core` module.
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
+
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "widthUnit" : "PIXELS",
+      "heightUnit" : "PIXELS",
+      "x" : 128,
+      "y" : 128
+    },
+    "elementType" : "CIRCLE",
+    "id" : "circle0",
+    "radius" : 128,
+    "stroke" : {
+      "strokeWidth" : 0.0,
+      "strokeColor" : "black",
+      "strokeLinecap" : "BUTT"
+    }
+  } ]
+}
+```
 
 ### Ellipse
 
@@ -52,6 +113,8 @@ defined as an array of integers where each integer is the length of one dash.
 
 **commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
+**commonAttributes.gradient** You can define a gradient rather than a color for filling the element.
+
 **stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
 **stroke.strokeWidth** The width of the stroke to be applied to the shape.
@@ -60,6 +123,32 @@ defined as an array of integers where each integer is the length of one dash.
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
+
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "width" : 64,
+      "widthUnit" : "PIXELS",
+      "height" : 128,
+      "heightUnit" : "PIXELS",
+      "x" : 128,
+      "y" : 128,
+      "style" : "",
+      "fill" : "#ff00ff"
+    },
+    "elementType" : "ELLIPSE",
+    "id" : "ellipse0",
+    "stroke" : {
+      "strokeWidth" : 1.0,
+      "strokeColor" : "black"
+    }
+  } ]
+}
+```
 
 ### Image
 
@@ -75,6 +164,28 @@ defined as an array of integers where each integer is the length of one dash.
 
 **commonAttributes.y** Starting point of the image on the y-axis in pixels.
 
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "width" : 282,
+      "widthUnit" : "PIXELS",
+      "height" : 254,
+      "heightUnit" : "PIXELS",
+      "x" : 1272,
+      "y" : 67,
+      "style" : ""
+    },
+    "content" : "iVBORw0KGgoAAAANSUhEUgAAA...",
+    "elementType" : "IMAGE",
+    "id" : "image0"
+  } ]
+}
+```
+
 ### Line
 
 **x2Coordinate** Ending point of the line on the x-axis in pixels.
@@ -89,6 +200,8 @@ defined as an array of integers where each integer is the length of one dash.
 
 **commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
+**commonAttributes.gradient** You can define a gradient rather than a color for filling the element.
+
 **stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
 
 **stroke.strokeWidth** The width of the stroke to be applied to the shape.
@@ -97,6 +210,32 @@ defined as an array of integers where each integer is the length of one dash.
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
+
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "widthUnit" : "PIXELS",
+      "heightUnit" : "PIXELS",
+      "x" : 50,
+      "y" : 50,
+      "style" : ""
+    },
+    "elementType" : "LINE",
+    "id" : "line0",
+    "stroke" : {
+      "strokeWidth" : 1.0,
+      "strokeColor" : "black",
+      "strokeLinecap" : "BUTT"
+    },
+    "x2" : 256,
+    "y2" : 256
+  } ]
+}
+```
 
 ### Rectangle
 
@@ -124,6 +263,8 @@ defined as an array of integers where each integer is the length of one dash.
 
 **commonAttributes.style** Svg Style definition as string that will be injected on the component.
 
+**commonAttributes.gradient** You can define a gradient rather than a color for filling the element.
+
 **commonAttributes.verticalAlign**
 
 **stroke.strokeLinecap** The ending shape of the line as `round`, `butt` or `square`.
@@ -135,11 +276,96 @@ defined as an array of integers where each integer is the length of one dash.
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
 
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "width" : 128,
+      "widthUnit" : "PIXELS",
+      "height" : 128,
+      "heightUnit" : "PIXELS",
+      "x" : 128,
+      "y" : 128,
+      "style" : "",
+      "gradient" : {
+        "elementType" : "GRADIENT",
+        "stops" : [ {
+          "color" : "#ff0000",
+          "elementType" : "GRADIENT_STOP",
+          "offset" : 0.0,
+          "opacity" : 1.0
+        }, {
+          "color" : "#0000ff",
+          "elementType" : "GRADIENT_STOP",
+          "offset" : 1.0,
+          "opacity" : 1.0
+        } ]
+      }
+    },
+    "elementType" : "RECTANGLE",
+    "id" : "rectangle0",
+    "stroke" : {
+      "strokeWidth" : 0.0,
+      "strokeColor" : "black",
+      "strokeLinecap" : "BUTT"
+    },
+    "xRadius" : 0,
+    "xradius" : 0,
+    "yRadius" : 0,
+    "yradius" : 0
+  } ]
+}
+```
+
 ### Script
 
 Used in combination with other components, allows to include some basic javascript in the image to make it interactive.
 
 **script** The javascript that will be available on the image.
+
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "widthUnit" : "PIXELS",
+      "heightUnit" : "PIXELS",
+      "x" : 128,
+      "y" : 128,
+      "style" : ""
+    },
+    "elementType" : "CIRCLE",
+    "id" : "circle0",
+    "radius" : 128,
+    "stroke" : {
+      "strokeWidth" : 0.0,
+      "strokeColor" : "black",
+      "strokeLinecap" : "BUTT"
+    }
+  }, {
+    "commonAttributes" : {
+      "widthUnit" : "PIXELS",
+      "heightUnit" : "PIXELS",
+      "x" : 0,
+      "y" : 0,
+      "style" : ""
+    },
+    "elementType" : "SCRIPT",
+    "id" : "script1",
+    "script" : "function getColor() {\n      const R = Math.round(Math.random() * 255)\n        .toString(16)\n        .padStart(2, \"0\");\n\n      const G = Math.round(Math.random() * 255)\n        .toString(16)\n        .padStart(2, \"0\");\n\n      const B = Math.round(Math.random() * 255)\n        .toString(16)\n        .padStart(2, \"0\");\n\n      return `#${R}${G}${B}`;\n    }\n\n    document.querySelector(\"circle\").addEventListener(\"click\", (e) => {\n        e.target.style.fill = getColor();\n    });\n",
+    "stroke" : {
+      "strokeWidth" : 0.0,
+      "strokeColor" : "black",
+      "strokeLinecap" : "BUTT"
+    }
+  } ]
+}
+```
 
 ### Text
 
@@ -201,6 +427,41 @@ values are `left`, `right`, `center`, `justify`. For 'justify' option, the font 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
 
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "widthUnit" : "PIXELS",
+      "heightUnit" : "PIXELS",
+      "x" : 0,
+      "y" : 0,
+      "style" : ""
+    },
+    "contentText" : "Lorem ipsum dolor...",
+    "dxUnit" : "PIXELS",
+    "dyUnit" : "PIXELS",
+    "elementType" : "TEXT",
+    "fontFamily" : "Monday Donuts",
+    "fontSize" : 8,
+    "fontVariant" : "NORMAL",
+    "id" : "text0",
+    "maxLineWidth" : 200,
+    "maxParagraphHeight" : 90,
+    "rotate" : 0,
+    "stroke" : {
+      "strokeWidth" : 0.0,
+      "strokeColor" : "black",
+      "strokeLinecap" : "BUTT"
+    },
+    "textAlign" : "JUSTIFY",
+    "textLengthUnit" : "PIXELS"
+  } ]
+}
+```
+
 ### PATH
 
 **points** An array of point. Each point is a (x, y) value. If **commonAttributes.x** and/or **commonAttributes.y** are
@@ -225,6 +486,42 @@ set, will be used as the starting point. Define the point as absolute coordinate
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
 
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "commonAttributes" : {
+      "widthUnit" : "PIXELS",
+      "heightUnit" : "PIXELS",
+      "x" : 0,
+      "y" : 0,
+      "style" : "",
+      "fill" : "none"
+    },
+    "elementType" : "PATH",
+    "id" : "path0",
+    "points" : [ {
+      "x" : 50,
+      "y" : 50
+    }, {
+      "x" : 100,
+      "y" : 0
+    }, {
+      "x" : 200,
+      "y" : 150
+    } ],
+    "stroke" : {
+      "strokeWidth" : 1.0,
+      "strokeColor" : "black",
+      "strokeDash" : [ 5, 5, 10, 10, 1 ],
+      "strokeLinecap" : "ROUND"
+    }
+  } ]
+}
+```
+
 # Custom Components
 
 ### Gauge
@@ -246,6 +543,36 @@ defined as an array of integers where each integer is the length of one dash.
 **commonAttributes.x** Starting point of the text on the x-axis.
 
 **commonAttributes.y** Starting point of the text on the y-axis.
+
+Example:
+
+```
+{
+  ...
+  "elements" : [ {
+    "colors" : [ "#ff0000", "#ff8000", "#ffd900", "#87aa00", "#678100" ],
+    "commonAttributes" : {
+      "widthUnit" : "PIXELS",
+      "heightUnit" : "PIXELS",
+      "x" : 0,
+      "y" : 0,
+      "style" : ""
+    },
+    "elementType" : "GAUGE",
+    "flip" : true,
+    "id" : "gauge0",
+    "max" : 5.0,
+    "min" : 1.0,
+    "stroke" : {
+      "strokeWidth" : 0.0,
+      "strokeColor" : "black",
+      "strokeLinecap" : "BUTT"
+    },
+    "type" : "FIVE_VALUES",
+    "value" : 4.0
+  } ]
+}
+```
 
 # Parameters
 
