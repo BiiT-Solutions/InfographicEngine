@@ -21,8 +21,8 @@
     </modules>
 
     <scm>
-        <connection>scm:git:git.biit-solutions.com:BiiT/InfographicEngineV2.git</connection>
-        <developerConnection>scm:git:git.biit-solutions.com:BiiT/InfographicEngineV2.git</developerConnection>
+        <connection>scm:git:git.biit-solutions.com:Java/InfographicEngineV2.git</connection>
+        <developerConnection>scm:git:git.biit-solutions.com:Java/InfographicEngineV2.git</developerConnection>
         <tag>Infographic Engine v2</tag>
     </scm>
 
