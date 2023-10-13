@@ -64,6 +64,18 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
      * @param executedBy          the owner of the form.
      */
     public void process(DroolsSubmittedForm droolsSubmittedForm, String executedBy) {
+        //Generate SVG.
+        final List<String> svgContents = execute(droolsSubmittedForm);
+
+        //Store SVG.
+        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents, executedBy);
+        generatedInfographicProvider.save(generatedInfographic);
+
+        //Send a new event.
+        eventSender.sendResultEvents(generatedInfographic, executedBy);
+    }
+
+    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm) {
         //Get the template for this form.
         final List<InfographicTemplate> templates = infographicEngineController.getTemplates(droolsSubmittedForm);
 
@@ -83,13 +95,7 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
                 throw new RuntimeException(e);
             }
         }
-
-        //Store SVG.
-        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents, executedBy);
-        generatedInfographicProvider.save(generatedInfographic);
-
-        //Send a new event.
-        eventSender.sendResultEvents(generatedInfographic, executedBy);
+        return svgContents;
     }
 
     public DroolsResultDTO findLatest(String name, Integer version, Long organizationId, String createdBy) {
