@@ -49,6 +49,7 @@ public class SvgGradientStop extends SvgElement {
             this.color = color;
         } else {
             SvgGeneratorLogger.warning(this.getClass(), "Color value '" + color + "' on gradient is invalid and therefore ignored.");
+            this.color = color;
         }
     }
 

@@ -101,7 +101,7 @@ public class InfographicTemplateAndContent {
 
     @Override
     public String toString() {
-        if (!name.isEmpty()) {
+        if (name != null && !name.isEmpty()) {
             return name;
         }
         return super.toString();

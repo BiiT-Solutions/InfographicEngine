@@ -210,6 +210,7 @@ public class ElementAttributes {
                 this.fill = fill;
             } else {
                 SvgGeneratorLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
+                this.fill = fill;
             }
         }
     }
