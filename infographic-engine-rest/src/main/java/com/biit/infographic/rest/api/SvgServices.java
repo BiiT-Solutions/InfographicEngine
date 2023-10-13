@@ -46,6 +46,6 @@ public class SvgServices {
             produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public List<String> createFromDrools(@RequestBody DroolsSubmittedForm droolsForm, Authentication authentication, HttpServletResponse response,
                                          HttpServletRequest request) {
-        return droolsResultController.execute(droolsForm);
+        return droolsResultController.executeFromTemplates(droolsForm);
     }
 }

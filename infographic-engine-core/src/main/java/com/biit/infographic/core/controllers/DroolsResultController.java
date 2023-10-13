@@ -22,7 +22,9 @@ import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.server.controller.BasicElementController;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -40,16 +42,18 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
     private final GeneratedInfographicProvider generatedInfographicProvider;
     private final InfographicEngineController infographicEngineController;
     private final DroolsContent droolsContent;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter, EventSender eventSender,
                                      GeneratedInfographicProvider generatedInfographicProvider,
-                                     InfographicEngineController infographicEngineController, DroolsContent droolsContent) {
+                                     InfographicEngineController infographicEngineController, DroolsContent droolsContent, ObjectMapper objectMapper) {
         super(provider, converter);
         this.eventSender = eventSender;
         this.generatedInfographicProvider = generatedInfographicProvider;
         this.infographicEngineController = infographicEngineController;
         this.droolsContent = droolsContent;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
      */
     public void process(DroolsSubmittedForm droolsSubmittedForm, String executedBy) {
         //Generate SVG.
-        final List<String> svgContents = execute(droolsSubmittedForm);
+        final List<String> svgContents = executeFromTemplates(droolsSubmittedForm);
 
         //Store SVG.
         final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents, executedBy);
@@ -75,10 +79,13 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
         eventSender.sendResultEvents(generatedInfographic, executedBy);
     }
 
-    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm) {
+    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm) {
         //Get the template for this form.
         final List<InfographicTemplate> templates = infographicEngineController.getTemplates(droolsSubmittedForm);
+        return this.executeFromTemplates(droolsSubmittedForm, templates);
+    }
 
+    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, List<InfographicTemplate> templates) {
         //Replace template variables by drools values.
         final Map<InfographicFileElement, Set<Parameter>> values = infographicEngineController.getValues(droolsSubmittedForm,
                 infographicEngineController.getParamsFromTemplates(templates));
@@ -96,6 +103,19 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
             }
         }
         return svgContents;
+    }
+
+    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates) {
+        //Replace template variables by drools values.
+        return executeFromTemplates(droolsSubmittedForm, svgTemplates.stream().map(svgTemplate -> {
+            try {
+                return new InfographicTemplate(null,
+                        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(svgTemplate));
+            } catch (JsonProcessingException e) {
+                InfographicEngineLogger.errorMessage(this.getClass(), e);
+                throw new RuntimeException(e);
+            }
+        }).toList());
     }
 
     public DroolsResultDTO findLatest(String name, Integer version, Long organizationId, String createdBy) {

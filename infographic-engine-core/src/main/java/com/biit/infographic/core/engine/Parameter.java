@@ -16,6 +16,8 @@ public class Parameter {
     private static final int PARAM_NAME_FIELD_INDEX = 1;
     private static final int PARAM_ATTRIBUTE_FIELD_INDEX = 2;
 
+    private static final String VARIABLE_SEARCH = "[#][A-Z].*?[#]";
+
 
     private String name;
     private Map<String, String> attributes;
@@ -53,7 +55,7 @@ public class Parameter {
         final Set<Parameter> parameters = new HashSet<>();
         if (template.getTemplate() != null) {
             // parameters on template are written like: #NAME%TYPE%ATTR#
-            final Pattern pattern = Pattern.compile("#.*?#");
+            final Pattern pattern = Pattern.compile(VARIABLE_SEARCH);
             final Matcher matcher = pattern.matcher(template.getTemplate());
             final List<String> templateParamsList = new ArrayList<>();
             while (matcher.find()) {

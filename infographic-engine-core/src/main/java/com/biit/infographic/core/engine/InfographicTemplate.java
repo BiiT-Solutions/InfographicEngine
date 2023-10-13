@@ -9,6 +9,11 @@ public class InfographicTemplate {
     public InfographicTemplate() {
     }
 
+    public InfographicTemplate(InfographicFileElement indexFile, String template) {
+        this.indexFile = indexFile;
+        this.template = template;
+    }
+
     public InfographicFileElement getIndexFile() {
         return indexFile;
     }
