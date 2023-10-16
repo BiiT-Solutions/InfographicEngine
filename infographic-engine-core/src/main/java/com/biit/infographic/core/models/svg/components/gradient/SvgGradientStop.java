@@ -50,6 +50,9 @@ public class SvgGradientStop extends SvgElement {
         } else if (Color.isValidWithTransparency(color)) {
             this.color = color.substring(0, Color.COLOR_WITH_TRANSPARENCY_LENGTH - 1);
             setOpacity(Color.getOpacity(color));
+        } else if (Color.isValidName(color)) {
+            this.color = color;
+            setOpacity(null);
         } else {
             SvgGeneratorLogger.warning(this.getClass(), "Color value '" + color + "' on gradient is invalid and therefore ignored.");
             this.color = color;

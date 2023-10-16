@@ -1,5 +1,8 @@
 package com.biit.infographic.core.models.svg.utils;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +15,15 @@ public final class Color {
     private static final int RGB_VALUES = 256;
 
     private static final Pattern HEXADECIMAL_PATTERN = Pattern.compile("\\p{XDigit}+");
+
+    private static final List<String> COLORS = new ArrayList<>();
+
+    static {
+        final Field[] names = java.awt.Color.class.getFields();
+        for (Field name : names) {
+            COLORS.add(name.getName());
+        }
+    }
 
     private Color() {
 
@@ -29,6 +41,10 @@ public final class Color {
             return color.matches(BASIC_COLOR_VALIDATION);
         }
         return true;
+    }
+
+    public static boolean isValidName(String color) {
+        return COLORS.stream().anyMatch(color::equalsIgnoreCase);
     }
 
     private static boolean isHexadecimal(String input) {
