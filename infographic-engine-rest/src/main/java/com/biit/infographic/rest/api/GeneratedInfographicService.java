@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +41,7 @@ public class GeneratedInfographicService extends BasicServices<GeneratedInfograp
         super(controller);
     }
 
-    @PreAuthorize("hasAnyAuthority(@securityService.adminPrivilege)")
+    @PostFilter("hasAnyAuthority(@securityService.adminPrivilege)")
     @Operation(summary = "Gets all", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeneratedInfographicDTO> getAll(HttpServletRequest request) {

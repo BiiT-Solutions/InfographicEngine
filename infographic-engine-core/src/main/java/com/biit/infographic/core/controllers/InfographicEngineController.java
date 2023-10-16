@@ -122,7 +122,8 @@ public class InfographicEngineController {
 
 
     private String getTemplateBasePath(DroolsSubmittedForm droolsSubmittedForm) {
-        return getReportPath() + File.separator + droolsSubmittedForm.getName() + "_v" + droolsSubmittedForm.getVersion();
+        return getReportPath() + File.separator + droolsSubmittedForm.getName() + "_v"
+                + (droolsSubmittedForm.getVersion() != null ? droolsSubmittedForm.getVersion() : 1);
     }
 
     public List<InfographicTemplate> getTemplates(DroolsSubmittedForm droolsSubmittedForm) throws MalformedTemplateException {
