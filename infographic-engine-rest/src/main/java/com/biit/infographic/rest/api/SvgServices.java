@@ -55,7 +55,8 @@ public class SvgServices {
 
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @Operation(summary = "Generates a SVG from a drools input. The template must be on the system.", security = @SecurityRequirement(name = "bearerAuth"))
-    @PostMapping(value = "/create/drools/plain",  produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE}, consumes = MediaType.TEXT_PLAIN_VALUE)
+    @PostMapping(value = "/create/drools/plain", consumes = MediaType.TEXT_PLAIN_VALUE,
+            produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public List<String> executeDroolsEngineFromText(@RequestBody final String droolsFormContent, Authentication authentication) {
         final DroolsSubmittedForm droolsSubmittedForm;
