@@ -38,4 +38,12 @@ public final class Color {
         }
         return color;
     }
+
+    public static Double getOpacity(String color) {
+        if (color.length() < 8) {
+            return null;
+        }
+        return ((double) Integer.parseInt(color.substring(color.length() - 2), 16))
+                / 256;
+    }
 }

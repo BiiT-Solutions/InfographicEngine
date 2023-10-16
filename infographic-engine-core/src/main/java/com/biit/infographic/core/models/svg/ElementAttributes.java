@@ -204,6 +204,9 @@ public class ElementAttributes {
         fill = Color.checkColor(fill);
         if (Color.isValidWithoutTransparency(fill)) {
             this.fill = fill;
+        } else if (Color.isValidWithTransparency(fill)) {
+            this.fill = fill.substring(0, 7);
+            setFillOpacity(Color.getOpacity(fill));
         } else {
             //Some predefined tags.
             if (Objects.equals("none", fill)) {
