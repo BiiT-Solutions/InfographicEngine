@@ -2,6 +2,7 @@ package com.biit.infographic.core.svg;
 
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
@@ -23,11 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -39,6 +45,8 @@ import java.util.List;
 @SpringBootTest
 @Test(groups = "cadt")
 public class CadtFromDrools extends AbstractTestNGSpringContextTests {
+    protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
+
     private static final String FONT_FAMILY = "Montserrat";
     private static final Double DEFAULT_STROKE_WIDTH = 8.33D;
     private static final Double ALPHA_SECONDARY = 0.5D;
@@ -129,6 +137,16 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
 
     private SvgTemplate cadtTemplate;
 
+    protected boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
     private void checkContent(String content, String resourceFile) {
         try {
             Assert.assertEquals(content.trim(), new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
@@ -172,9 +190,9 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         name.setFontWeight(FontWeight.BOLD);
         headerElements.add(name);
 
-        final SvgText position = new SvgText("for big business director", 83, 2062L, 215L);
-        position.setFontFamily("Arial-BoldMT, Arial, sans-serif");
-        headerElements.add(position);
+//        final SvgText position = new SvgText("for big business director", 83, 2062L, 215L);
+//        position.setFontFamily("Arial-BoldMT, Arial, sans-serif");
+//        headerElements.add(position);
 
         //Logo
         final SvgImage logo = new SvgImage();
@@ -185,30 +203,35 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         logo.getElementAttributes().setHeight(254L);
         headerElements.add(logo);
 
+        return headerElements;
+    }
+
+    private List<SvgAreaElement> generateScore() {
+        final List<SvgAreaElement> scoreElements = new ArrayList<>();
         //Score circle
         final SvgCircle scoreCircle = new SvgCircle(3540L, 80L, 113L);
         scoreCircle.getElementAttributes().setFill("ffffff");
         scoreCircle.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
         scoreCircle.getElementStroke().setStrokeColor(BORDER_COLOR);
-        headerElements.add(scoreCircle);
+        scoreElements.add(scoreCircle);
 
 
         final SvgText score = new SvgText("90", 80, 3610L, 129L);
         score.setFontFamily("Arial-BoldMT, Arial, sans-serif");
         score.setFontWeight(FontWeight.BOLD);
-        headerElements.add(score);
+        scoreElements.add(score);
 
         final SvgLine scoreSeparator = new SvgLine(3622L, 192L, 3680L, 192L);
         scoreSeparator.getElementStroke().setStrokeWidth(4D);
         scoreSeparator.getElementStroke().setLineCap(StrokeLineCap.ROUND);
-        headerElements.add(scoreSeparator);
+        scoreElements.add(scoreSeparator);
 
         final SvgText scoreTotal = new SvgText("100", 80, 3588L, 205L);
         scoreTotal.setFontFamily("Arial-BoldMT, Arial, sans-serif");
         scoreTotal.setFontWeight(FontWeight.BOLD);
-        headerElements.add(scoreTotal);
+        scoreElements.add(scoreTotal);
 
-        return headerElements;
+        return scoreElements;
     }
 
     private List<SvgAreaElement> generateUniversal() {
@@ -798,6 +821,11 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         return analysisElements;
     }
 
+    @BeforeClass
+    public void prepareFolder() throws IOException {
+        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
+    }
+
     @Test
     public void generateCADT() throws IOException {
         cadtTemplate = new SvgTemplate();
@@ -814,6 +842,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         cadtTemplate.addElement(secondBackground);
 
         cadtTemplate.addElements(generateHeader());
+        cadtTemplate.addElements(generateScore());
         cadtTemplate.addElements(generateUniversal());
         cadtTemplate.addElements(generateSociety());
         cadtTemplate.addElements(generateVision());
@@ -830,13 +859,29 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         cadtTemplate.addElements(generateCommunication());
         cadtTemplate.addElements(generateSelfAware());
         cadtTemplate.addElements(generateAnalysis());
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "CADT_v1.json")), true)) {
+            out.println(cadtTemplate.toJson());
+        }
     }
 
     @Test(dependsOnMethods = "generateCADT")
-    public void executeCadt() throws FileNotFoundException, JsonProcessingException {
+    public void executeCadt() throws IOException {
         final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
         final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(cadtTemplate));
         Assert.assertEquals(svgResults.size(), 1);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "CADTFromDrools.svg")), true)) {
+            out.println(svgResults.get(0));
+        }
+
         checkContent(svgResults.get(0), "cadtFromDrools.svg");
+    }
+
+    @AfterClass
+    public void removeFolder() {
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

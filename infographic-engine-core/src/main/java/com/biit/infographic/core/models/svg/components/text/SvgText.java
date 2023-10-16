@@ -503,6 +503,10 @@ public class SvgText extends SvgAreaElement {
         final List<String> lines = new ArrayList<>();
         if (content != null) {
             final Deque<String> words = new ArrayDeque<>(Arrays.asList(content.split("\\s+")));
+            if (words.size() == 1) {
+                lines.add(words.pop());
+                return lines;
+            }
             while (!words.isEmpty()) {
                 final StringBuilder lineToCheck = new StringBuilder();
                 String line = "";

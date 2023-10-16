@@ -25,7 +25,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         generatedInfographic.setOrganizationId(droolsSubmittedForm.getOrganizationId());
         generatedInfographic.setCreatedBy(executedBy);
         generatedInfographic.setFormName(droolsSubmittedForm.getName());
-        generatedInfographic.setFormVersion(droolsSubmittedForm.getVersion());
+        generatedInfographic.setFormVersion(droolsSubmittedForm.getVersion() != null ? droolsSubmittedForm.getVersion() : 1);
         generatedInfographic.setOrganizationId(droolsSubmittedForm.getOrganizationId());
         return generatedInfographic;
     }

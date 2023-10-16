@@ -6,10 +6,12 @@ import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -237,5 +239,13 @@ public class SvgTemplate extends SvgAreaElement {
                 svgRoot.appendChild(background);
             }
         }
+    }
+
+    public String toJson() throws JsonProcessingException {
+        return ObjectMapperFactory.getObjectMapper().writeValueAsString(this);
+    }
+
+    public static SvgTemplate fromJson(String json) throws JsonProcessingException {
+        return ObjectMapperFactory.getObjectMapper().readValue(json, SvgTemplate.class);
     }
 }

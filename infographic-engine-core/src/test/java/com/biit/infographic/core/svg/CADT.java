@@ -783,10 +783,7 @@ public class CADT extends SvgGeneration {
 
     @Test(dependsOnMethods = "generateCADT")
     public void checkSerialization() throws JsonProcessingException {
-        String jsonText = objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(cadtTemplate);
-
-        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
-
+        SvgTemplate svgTemplate1 = SvgTemplate.fromJson(cadtTemplate.toJson());
         Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(cadtTemplate));
     }
 

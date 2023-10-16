@@ -108,7 +108,7 @@ public class SimplePngGenerationTest {
                 + File.separator + "documentImage.png"), PngGenerator.generate(svgTemplate));
     }
 
-    @AfterClass(enabled = false)
+    @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
