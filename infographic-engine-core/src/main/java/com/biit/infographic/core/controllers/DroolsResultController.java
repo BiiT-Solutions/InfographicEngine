@@ -82,7 +82,7 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
     public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm) {
         //Get the template for this form.
         final List<InfographicTemplate> templates = infographicEngineController.getTemplates(droolsSubmittedForm);
-        return this.executeFromTemplates(droolsSubmittedForm, templates);
+        return executeFromTemplates(droolsSubmittedForm, templates);
     }
 
     public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, List<InfographicTemplate> templates) {

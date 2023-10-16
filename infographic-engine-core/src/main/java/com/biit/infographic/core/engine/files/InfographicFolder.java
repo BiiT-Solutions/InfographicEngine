@@ -11,7 +11,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,11 +70,33 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
             final InfographicTemplate infographicTemplate = new InfographicTemplate();
             infographicTemplate.setIndexFile(getJsonFile());
             try {
-                infographicTemplate.setTemplate(FileReader.readFile(FileReader.getResource(FileSearcher.getInfographicPath(path, getDefinition()))));
-            } catch (FileNotFoundException | NullPointerException e) {
-                InfographicEngineLogger.errorMessage(this.getClass(), e);
+                //infographicTemplate.setTemplate(FileReader.readFile(FileReader.getResource(FileSearcher.getInfographicPath(path, getDefinition()))));
+                infographicTemplate.setTemplate(getTemplateFromPath(path));
+            } catch (IOException | NullPointerException e) {
+                InfographicEngineLogger.warning(this.getClass(), "No template found on path '" + path + "'. Searching on resources.");
+                try {
+                    infographicTemplate.setTemplate(getTemplateFromResource(path));
+                } catch (IOException | NullPointerException e2) {
+                    InfographicEngineLogger.errorMessage(this.getClass(), e2);
+                }
             }
             return infographicTemplate;
+        }
+    }
+
+    private String getTemplateFromPath(String path) throws IOException {
+        try {
+            return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IOException("No template file at path '" + path + "'");
+        }
+    }
+
+    private String getTemplateFromResource(String path) throws IOException {
+        try {
+            return FileReader.readFile(FileReader.getResource(FileSearcher.getInfographicPath(path, getDefinition())));
+        } catch (IOException e) {
+            throw new IOException("No template file at resource '" + path + "'");
         }
     }
 
@@ -153,45 +178,79 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
      */
     private List<InfographicFolder> getInfographicNodes(String path) throws MalformedTemplateException {
         if (!path.endsWith(JSON_EXTENSION)) {
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+            // Parse index.json structure
+            InfographicEngineLogger.debug(InfographicFolder.class.getName(),
+                    "Searching for '" + path + INDEX_FILE_NAME + "'.");
             try {
-                if (!path.endsWith(File.separator)) {
-                    path += File.separator;
-                }
-                // Parse index.json structure
-                InfographicEngineLogger.debug(InfographicFolder.class.getName(),
-                        "Searching for '" + path + INDEX_FILE_NAME + "'.");
-                final String indexFile = new FileSearcher().readFile(path + INDEX_FILE_NAME);
-                if (indexFile == null) {
-                    throw new MalformedTemplateException(this.getClass(), "No index file at '" + path + INDEX_FILE_NAME + "'");
-                }
-                final List<InfographicFileElement> definedFilesOrFolders;
-                try {
-                    definedFilesOrFolders = ObjectMapperFactory.getObjectMapper().readValue(indexFile, new TypeReference<>() {
-                    });
-                } catch (IllegalArgumentException | JsonSyntaxException | JsonProcessingException e) {
-                    InfographicEngineLogger.info(InfographicFolder.class.getName(), "Malformed json:\n" + indexFile);
-                    throw e;
-                }
-
-                final List<InfographicFolder> infographicFolders = new ArrayList<>();
-                for (InfographicFileElement infographicFileElement : definedFilesOrFolders) {
-                    final InfographicFolder node = new InfographicFolder(infographicFileElement);
-                    infographicFolders.add(node);
-                    if (infographicFileElement.isFolder()) {
-                        for (InfographicFolder subTree : getInfographicNodes(FileSearcher.getInfographicPath(path, node.getDefinition()))) {
-                            if (subTree != null) {
-                                node.addChild(subTree);
-                            }
-                        }
-                    }
-                }
-                return infographicFolders;
-            } catch (NullPointerException | JsonProcessingException e) {
-                InfographicEngineLogger.warning(InfographicFolder.class.getName(),
-                        "File '" + path + INDEX_FILE_NAME + "' not found or invalid.");
+                //Try absolute path
+                return getInfographicNodesFromPath(path);
+            } catch (MalformedTemplateException e) {
+                //Try resources
+                return getInfographicNodesFromResources(path);
             }
         }
         return new ArrayList<>();
+    }
+
+    private List<InfographicFolder> getInfographicNodesFromPath(String path) throws MalformedTemplateException {
+        if (!path.endsWith(JSON_EXTENSION)) {
+            try {
+                final String indexFile = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+                return readIndexFile(path, indexFile);
+            } catch (MalformedTemplateException | IOException | NullPointerException e) {
+                InfographicEngineLogger.warning(InfographicFolder.class.getName(),
+                        "File '" + path + INDEX_FILE_NAME + "' not found or invalid.");
+                throw new MalformedTemplateException(this.getClass(), "No index file at resource '" + path + INDEX_FILE_NAME + "'");
+            }
+        }
+        return new ArrayList<>();
+    }
+
+
+    private List<InfographicFolder> getInfographicNodesFromResources(String path) throws MalformedTemplateException {
+        if (!path.endsWith(JSON_EXTENSION)) {
+            try {
+                final String indexFile = new FileSearcher().readFile(path + INDEX_FILE_NAME);
+                return readIndexFile(path, indexFile);
+            } catch (NullPointerException | JsonProcessingException e) {
+                InfographicEngineLogger.warning(InfographicFolder.class.getName(),
+                        "File '" + path + INDEX_FILE_NAME + "' not found or invalid.");
+                throw new MalformedTemplateException(this.getClass(), "No index file at resource '" + path + INDEX_FILE_NAME + "'");
+            }
+        }
+        return new ArrayList<>();
+    }
+
+
+    private List<InfographicFolder> readIndexFile(String path, String indexFile) throws JsonProcessingException {
+        if (indexFile == null) {
+            throw new MalformedTemplateException(this.getClass(), "No index file found.");
+        }
+        final List<InfographicFileElement> definedFilesOrFolders;
+        try {
+            definedFilesOrFolders = ObjectMapperFactory.getObjectMapper().readValue(indexFile, new TypeReference<>() {
+            });
+        } catch (IllegalArgumentException | JsonSyntaxException | JsonProcessingException e) {
+            InfographicEngineLogger.info(InfographicFolder.class.getName(), "Malformed json:\n" + indexFile);
+            throw e;
+        }
+
+        final List<InfographicFolder> infographicFolders = new ArrayList<>();
+        for (InfographicFileElement infographicFileElement : definedFilesOrFolders) {
+            final InfographicFolder node = new InfographicFolder(infographicFileElement);
+            infographicFolders.add(node);
+            if (infographicFileElement.isFolder()) {
+                for (InfographicFolder subTree : getInfographicNodes(FileSearcher.getInfographicPath(path, node.getDefinition()))) {
+                    if (subTree != null) {
+                        node.addChild(subTree);
+                    }
+                }
+            }
+        }
+        return infographicFolders;
     }
 
 }
