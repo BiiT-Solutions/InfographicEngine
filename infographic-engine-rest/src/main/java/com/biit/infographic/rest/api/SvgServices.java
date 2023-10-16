@@ -2,6 +2,7 @@ package com.biit.infographic.rest.api;
 
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.server.exceptions.BadRequestException;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,7 +59,7 @@ public class SvgServices {
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @Operation(summary = "Generates a SVG from a drools input. The template must be on the system.", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(value = "/create/drools/plain", consumes = MediaType.TEXT_PLAIN_VALUE,
-            produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE})
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<String> executeDroolsEngineFromText(@RequestBody final String droolsFormContent, Authentication authentication) {
         final DroolsSubmittedForm droolsSubmittedForm;
@@ -66,5 +69,28 @@ public class SvgServices {
             throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
         }
         return droolsResultController.executeFromTemplates(droolsSubmittedForm);
+    }
+
+    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
+    @Operation(summary = "Generates the first SVG from a drools input. If multiples templates are generated, only the first one is returned."
+            + " The template must be on the system.", security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping(value = "/create/drools/plain/first", consumes = MediaType.TEXT_PLAIN_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public String getFirst(@RequestBody final String droolsFormContent, Authentication authentication, HttpServletResponse response) {
+        final DroolsSubmittedForm droolsSubmittedForm;
+        try {
+            droolsSubmittedForm = DroolsSubmittedForm.getFromJson(droolsFormContent);
+        } catch (JsonProcessingException ex) {
+            throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
+        }
+        final List<String> svg = droolsResultController.executeFromTemplates(droolsSubmittedForm);
+        if (svg.isEmpty()) {
+            throw new ElementDoesNotExistsException(this.getClass(), "No svg obtained from this input.");
+        }
+        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                .filename("Infographic.svg").build();
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        return svg.get(0);
     }
 }

@@ -23,9 +23,16 @@ public class FileSearcher {
      * @param path the path of the infographic folder.
      * @return the content of the index.json
      */
-    public String readFile(String path) {
+    public String readFile(String path) throws FileNotFoundException {
         try {
             return getInfographicFromEnvironmentalVariable(path);
+        } catch (ElementDoesNotExistsException | IOException e) {
+            InfographicEngineLogger.debug(this.getClass().getName(),
+                    "File not found on global variable folder set by environmental variable for path '{}'.",
+                    path);
+        }
+        try {
+            return getInfographicFromDefaultFolder(path);
         } catch (ElementDoesNotExistsException | IOException e) {
             InfographicEngineLogger.debug(this.getClass().getName(),
                     "File not found on global variable folder set by environmental variable for path '{}'.",
@@ -37,7 +44,7 @@ public class FileSearcher {
             InfographicEngineLogger.debug(this.getClass().getName(),
                     "File not found on resources folder for path '{}'.", path);
         }
-        return null;
+        throw new FileNotFoundException("File not found on for path '" + path + "'.");
     }
 
     private String getInfographicFromEnvironmentalVariable(String path) throws IOException {
@@ -53,6 +60,13 @@ public class FileSearcher {
         return Files.readString(Paths.get(infographicFilePath), StandardCharsets.UTF_8);
     }
 
+    private String getInfographicFromDefaultFolder(String path) throws IOException {
+        // Load Json file
+        InfographicEngineLogger.debug(this.getClass().getName(),
+                "Infographic file path: " + path);
+        return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+    }
+
     private String getInfographicFromResources(String path) throws FileNotFoundException {
         // Load Json file
         if (path.startsWith(File.separator)) {
@@ -63,9 +77,6 @@ public class FileSearcher {
     }
 
     public static String getInfographicPath(String path, InfographicFileElement definition) {
-        if (path.startsWith(File.separator)) {
-            path = path.substring(1);
-        }
         if (definition.isFolder()) {
             if (!path.endsWith(File.separator)) {
                 path += File.separator;
