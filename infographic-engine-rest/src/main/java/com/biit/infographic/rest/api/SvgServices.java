@@ -4,16 +4,20 @@ import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.server.exceptions.BadRequestException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,5 +51,19 @@ public class SvgServices {
     public List<String> createFromDrools(@RequestBody DroolsSubmittedForm droolsForm, Authentication authentication, HttpServletResponse response,
                                          HttpServletRequest request) {
         return droolsResultController.executeFromTemplates(droolsForm);
+    }
+
+    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
+    @Operation(summary = "Generates a SVG from a drools input. The template must be on the system.", security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping(value = "/create/drools/plain", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> executeDroolsEngineFromText(@RequestBody final String droolsFormContent, Authentication authentication) {
+        final DroolsSubmittedForm droolsSubmittedForm;
+        try {
+            droolsSubmittedForm = DroolsSubmittedForm.getFromJson(droolsFormContent);
+        } catch (JsonProcessingException ex) {
+            throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
+        }
+        return droolsResultController.executeFromTemplates(droolsSubmittedForm);
     }
 }
