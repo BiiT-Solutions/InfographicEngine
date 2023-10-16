@@ -52,7 +52,7 @@ public class ElementStroke {
         if (Color.isValidWithoutTransparency(strokeColor)) {
             this.strokeColor = strokeColor;
         } else if (Color.isValidWithTransparency(strokeColor)) {
-            this.strokeColor = strokeColor.substring(0, 7);
+            this.strokeColor = strokeColor.substring(0, Color.COLOR_WITH_TRANSPARENCY_LENGTH - 1);
             setStrokeOpacity(Color.getOpacity(strokeColor));
         } else {
             //Some predefined tags.
