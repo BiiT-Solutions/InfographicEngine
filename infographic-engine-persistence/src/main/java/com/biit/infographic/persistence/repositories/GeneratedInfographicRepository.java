@@ -30,8 +30,8 @@ public interface GeneratedInfographicRepository extends ElementRepository<Genera
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
             (:organizationId IS NULL OR a.organizationId = :organizationId) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy) AND
-            ((:lowerTimeBoundary IS NULL OR a.createdAt >= :lowerTimeBoundary) AND
-            (:upperTimeBoundary IS NULL OR a.createdAt <= :upperTimeBoundary))
+            ((cast(:lowerTimeBoundary as date) IS NULL OR a.createdAt >= :lowerTimeBoundary) AND
+            (cast(:upperTimeBoundary as date) IS NULL OR a.createdAt <= :upperTimeBoundary))
             ORDER BY a.createdAt DESC
             """)
     List<GeneratedInfographic> findBy(String formName, Integer formVersion, Long organizationId, String createdBy,
