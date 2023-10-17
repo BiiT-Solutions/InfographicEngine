@@ -4,8 +4,6 @@ import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
 import com.biit.server.providers.ElementProvider;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,11 +34,6 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
     }
 
     public Optional<GeneratedInfographic> findLatest(String name, Integer version, String createdBy, Long organizationId) {
-        final List<GeneratedInfographic> results = getRepository().findLatest(name, version, createdBy, organizationId,
-                PageRequest.of(0, 1, Sort.Direction.DESC, "createdAt"));
-        if (results.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(results.get(0));
+        return getRepository().findLatest(name, version, createdBy, organizationId);
     }
 }
