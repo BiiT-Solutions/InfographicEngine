@@ -8,6 +8,7 @@ import com.biit.infographic.core.models.GeneratedInfographicDTO;
 import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
+import com.biit.logger.ExceptionType;
 import com.biit.server.controller.BasicElementController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class GeneratedInfographicController extends BasicElementController<Gener
                 .findLatest(name, version, createdBy, organizationId)
                 .orElseThrow(() -> new FormNotFoundException(this.getClass(),
                         "No infographic found with name '" + name + "', version '" + version + "', creator '"
-                                + createdBy + "' and organization '" + organizationId + "'.")));
+                                + createdBy + "' and organization '" + organizationId + "'.", ExceptionType.DEBUG)));
     }
 
     public List<GeneratedInfographicDTO> findBy(String name, Integer version, Long organizationId, String createdBy,

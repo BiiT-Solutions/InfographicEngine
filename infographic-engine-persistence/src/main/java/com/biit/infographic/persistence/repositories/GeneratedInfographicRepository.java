@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Transactional
@@ -47,14 +46,14 @@ public interface GeneratedInfographicRepository extends ElementRepository<Genera
      * @param createdBy      the type of the appointment (can be null for any type).
      * @return a list of infographics.
      */
-    @Query(value = """
-            SELECT TOP 1 a FROM GeneratedInfographic a WHERE
+    @Query("""
+            SELECT a FROM GeneratedInfographic a WHERE
             (:formName IS NULL OR a.formName = :formName) AND
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
             (:organizationId IS NULL OR a.organizationId = :organizationId) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy)
             ORDER BY a.createdAt DESC
-            """, nativeQuery = true)
-    Optional<GeneratedInfographic> findLatest(String formName, Integer formVersion, String createdBy, Long organizationId);
+            """)
+    List<GeneratedInfographic> findBy(String formName, Integer formVersion, String createdBy, Long organizationId);
 
 }

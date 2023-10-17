@@ -1,5 +1,6 @@
 package com.biit.infographic.rest.exceptions;
 
+import com.biit.infographic.core.exceptions.FormNotFoundException;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.server.exceptions.NotFoundException;
@@ -39,5 +40,11 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
     public ResponseEntity<?> malformedTemplateException(Exception ex) {
         RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
         return new ResponseEntity<>(new ErrorMessage("Template is malformed"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(FormNotFoundException.class)
+    public ResponseEntity<?> formNotFoundException(Exception ex) {
+        RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
+        return new ResponseEntity<>(new ErrorMessage("No data found"), HttpStatus.NOT_FOUND);
     }
 }

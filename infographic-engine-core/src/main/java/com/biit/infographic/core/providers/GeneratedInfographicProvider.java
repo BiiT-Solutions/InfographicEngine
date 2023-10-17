@@ -34,6 +34,10 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
     }
 
     public Optional<GeneratedInfographic> findLatest(String name, Integer version, String createdBy, Long organizationId) {
-        return getRepository().findLatest(name, version, createdBy, organizationId);
+        final List<GeneratedInfographic> results = getRepository().findBy(name, version, createdBy, organizationId);
+        if (results.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(results.get(0));
     }
 }
