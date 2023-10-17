@@ -2,7 +2,6 @@ package com.biit.infographic.core.svg;
 
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
-import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
@@ -19,7 +18,6 @@ import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
 import com.biit.utils.file.FileReader;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -30,7 +28,6 @@ import org.testng.annotations.Test;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,7 +58,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
     private static final String UNIVERSAL_COLOR_3 = "#DROOLS%CADT%UniversalCell3Color#";
     private static final String SOCIETY_TEXT_1 = "#DROOLS%CADT%SocietyCell1#";
     private static final String SOCIETY_TEXT_2 = "#DROOLS%CADT%SocietyCell2#";
-    private static final String SOCIETY_TEXT_3 = "#DROOLS%CADT%SocietyCell2#";
+    private static final String SOCIETY_TEXT_3 = "#DROOLS%CADT%SocietyCell3#";
     private static final String SOCIETY_COLOR_1 = "#DROOLS%CADT%SocietyCell1Color#";
     private static final String SOCIETY_COLOR_2 = "#DROOLS%CADT%SocietyCell2Color#";
     private static final String SOCIETY_COLOR_3 = "#DROOLS%CADT%SocietyCell3Color#";
