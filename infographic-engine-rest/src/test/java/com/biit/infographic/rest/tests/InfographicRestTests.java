@@ -376,4 +376,24 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         final List<GeneratedInfographicDTO> results = Arrays.asList(objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO[].class));
         Assert.assertEquals(results.size(), 0);
     }
+
+
+    //Last form added has version 2.
+    @Test(dependsOnMethods = "populateDatabase")
+    public void getLatestInfographicByUser() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("createdBy", USER_NAME);
+
+        MvcResult createResult = mockMvc.perform(get("/infographic/find/latest")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .params(requestParams)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        final GeneratedInfographicDTO results = objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO.class);
+        Assert.assertEquals(results.getFormVersion(), 2);
+    }
 }
