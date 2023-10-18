@@ -187,7 +187,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         name.setFontWeight(FontWeight.BOLD);
         headerElements.add(name);
 
-        final SvgText position = new SvgText("CADT Results", 83, 2062L, 215L);
+        final SvgText position = new SvgText("CADT Results", 83, 2248L, 215L);
         position.setFontFamily("Arial-BoldMT, Arial, sans-serif");
         headerElements.add(position);
 
