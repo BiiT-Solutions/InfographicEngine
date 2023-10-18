@@ -66,8 +66,8 @@ public class EventController {
         } catch (JsonProcessingException e) {
             EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
         } catch (Exception e) {
-            //Not a FormResult but maybe a SubmittedForm.
             EventsLogger.severe(this.getClass(), "Invalid event received!!\n" + event);
+            EventsLogger.errorMessage(this.getClass(), e);
         }
     }
 
