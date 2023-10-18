@@ -4,7 +4,9 @@ import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.kafka.DroolsSubmittedFormPayload;
 import com.biit.infographic.core.controllers.kafka.EventController;
 import com.biit.infographic.core.providers.DroolsResultProvider;
+import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.DroolsResult;
+import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.kafka.config.ObjectMapperFactory;
 import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
@@ -32,6 +34,9 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private DroolsResultProvider droolsResultProvider;
+
+    @Autowired
+    private GeneratedInfographicProvider generatedInfographicProvider;
 
     private String readEventPayload(String resourceFile) {
         try {
@@ -64,5 +69,10 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
                 droolsSubmittedFormPayloadStored.getJson(), DroolsSubmittedForm.class);
         Assert.assertEquals(droolsSubmittedFormStored.getName(), "CADT");
         Assert.assertFalse(droolsSubmittedFormStored.getFormVariables().isEmpty());
+
+        Optional<GeneratedInfographic> generatedInfographicOptional = generatedInfographicProvider.findLatest(null, null, EVENT_CREATOR, null);
+        Assert.assertTrue(generatedInfographicOptional.isPresent());
+        Assert.assertTrue(generatedInfographicOptional.get().getSvgContents().get(0).length() > 10000);
+
     }
 }
