@@ -3,7 +3,6 @@ package com.biit.infographic.persistence.repositories;
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.server.persistence.repositories.ElementRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -55,6 +54,6 @@ public interface DroolsResultRepository extends ElementRepository<DroolsResult, 
             (:createdBy IS NULL OR a.createdBy = :createdBy)
             ORDER BY a.createdAt DESC
             """)
-    List<DroolsResult> findLatest(String formName, Integer formVersion, String createdBy, Long organizationId, Pageable pageable);
+    List<DroolsResult> findBy(String formName, Integer formVersion, String createdBy, Long organizationId);
 
 }

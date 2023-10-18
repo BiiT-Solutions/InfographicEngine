@@ -5,8 +5,6 @@ import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.server.providers.ElementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,8 +26,7 @@ public class DroolsResultProvider extends ElementProvider<DroolsResult, Long, Dr
     }
 
     public Optional<DroolsResult> findLatest(String name, Integer version, String createdBy, Long organizationId) {
-        final List<DroolsResult> results = getRepository().findLatest(name, version, createdBy, organizationId,
-                PageRequest.of(0, 1, Sort.Direction.DESC, "createdAt"));
+        final List<DroolsResult> results = getRepository().findBy(name, version, createdBy, organizationId);
         if (results.isEmpty()) {
             return Optional.empty();
         }

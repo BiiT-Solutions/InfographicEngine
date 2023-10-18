@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@Test(groups = "eventParserTest")
+@Test(groups = "eventParser")
 public class EventParserTests {
 
     private String readEventPayload(String resourceFile) {

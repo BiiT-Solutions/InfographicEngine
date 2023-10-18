@@ -20,7 +20,7 @@ import java.util.TimeZone;
 
 @Controller
 public class EventController {
-    private static final String FACT_TYPE = "DroolsResultForm";
+    public static final String ALLOWED_FACT_TYPE = "DroolsResultForm";
 
     private final EventConverter eventConverter;
 
@@ -42,7 +42,7 @@ public class EventController {
                 eventHandler(event, key, partition, topic, timeStamp));
     }
 
-    private void eventHandler(Event event, String key, int partition, String topic, long timeStamp) {
+    public void eventHandler(Event event, String key, int partition, String topic, long timeStamp) {
         EventsLogger.debug(this.getClass(), "Received event '{}' on topic '{}', key '{}', partition '{}' at '{}'",
                 event, topic, key, partition, LocalDateTime.ofInstant(Instant.ofEpochMilli(timeStamp),
                         TimeZone.getDefault().toZoneId()));
@@ -53,14 +53,13 @@ public class EventController {
 
         try {
             if (event.getCustomProperties() != null) {
-                if (!Objects.equals(event.getCustomProperty(EventCustomProperties.FACT_TYPE), FACT_TYPE)) {
-                    EventsLogger.info(this.getClass(), "Event ignored.");
+                if (!Objects.equals(event.getCustomProperty(EventCustomProperties.FACT_TYPE), ALLOWED_FACT_TYPE)) {
+                    EventsLogger.debug(this.getClass(), "Event ignored.");
                     return;
                 }
             }
             final DroolsSubmittedForm droolsForm = getDroolsForm(event);
             EventsLogger.info(this.getClass(), "Received Drools Result '{}'.", droolsForm.getName());
-            EventsLogger.info(this.getClass(), "With content '{}'.", droolsForm.getName());
             droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
             EventsLogger.debug(this.getClass(), "Drools Result '{}' saved.", droolsForm.getName());
             droolsResultController.process(droolsForm, createdBy);
