@@ -16,6 +16,7 @@
                 <include name="jsonGeneration"/>
                 <include name="templateFromDrools"/>
                 <include name="cadt"/>
+                <include name="eventParserTest"/>
             </run>
         </groups>
         <classes>
@@ -29,6 +30,7 @@
             <class name="com.biit.infographic.core.engine.TemplateFromDroolsTests"/>
             <class name="com.biit.infographic.core.engine.CADT"/>
             <class name="com.biit.infographic.core.svg.CADT"/>
+            <class name="com.biit.infographic.core.engine.EventParserTests"/>
         </classes>
     </test>
 </suite>

@@ -9,7 +9,6 @@ import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.kafka.consumers.EventListener;
 import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
-import com.biit.kafka.events.EventPayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Controller;
 
@@ -73,16 +72,11 @@ public class EventController {
     }
 
     private DroolsSubmittedForm getDroolsForm(Event event) throws JsonProcessingException {
-        return ObjectMapperFactory.getObjectMapper().readValue(getDroolsEventPayload(event).json, DroolsSubmittedForm.class);
+        return ObjectMapperFactory.getObjectMapper().readValue(getDroolsEventPayload(event).getJson(), DroolsSubmittedForm.class);
     }
 
 
     private DroolsSubmittedFormPayload getDroolsEventPayload(Event event) {
         return event.getEntity(DroolsSubmittedFormPayload.class);
-    }
-
-
-    private static class DroolsSubmittedFormPayload implements EventPayload {
-        private String json;
     }
 }
