@@ -12,7 +12,7 @@ public class ElementDoesNotExistsException extends LoggedException {
     }
 
     public ElementDoesNotExistsException(Class<?> clazz, String message) {
-        super(clazz, message, ExceptionType.SEVERE, HttpStatus.BAD_REQUEST);
+        super(clazz, message, ExceptionType.DEBUG, HttpStatus.BAD_REQUEST);
     }
 
     public ElementDoesNotExistsException(Class<?> clazz) {
