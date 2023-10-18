@@ -31,8 +31,8 @@ public class EventParserTests {
     public void parseEvent() throws JsonProcessingException {
         final DroolsSubmittedFormPayload droolsSubmittedFormPayload = ObjectMapperFactory.getObjectMapper().readValue(
                 readEventPayload("EventPayload.txt"), DroolsSubmittedFormPayload.class);
-        final DroolsSubmittedForm droolsSubmittedForm = com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory.getObjectMapper()
-                .readValue(droolsSubmittedFormPayload.getJson(), DroolsSubmittedForm.class);
+        final DroolsSubmittedForm droolsSubmittedForm = ObjectMapperFactory.getObjectMapper().readValue(
+                droolsSubmittedFormPayload.getJson(), DroolsSubmittedForm.class);
 
         Assert.assertEquals(droolsSubmittedForm.getName(), "CADT");
         Assert.assertFalse(droolsSubmittedForm.getFormVariables().isEmpty());

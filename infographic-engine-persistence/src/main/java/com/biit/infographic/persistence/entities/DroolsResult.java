@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.util.Objects;
+
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -52,8 +54,8 @@ public class DroolsResult extends Element {
         return formVersion;
     }
 
-    public void setFormVersion(int formVersion) {
-        this.formVersion = formVersion;
+    public void setFormVersion(Integer formVersion) {
+        this.formVersion = Objects.requireNonNullElse(formVersion, 1);
     }
 
     public Long getOrganizationId() {

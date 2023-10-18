@@ -65,6 +65,7 @@ public class EventController {
             droolsResultController.process(droolsForm, createdBy);
         } catch (JsonProcessingException e) {
             EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
+            EventsLogger.errorMessage(this.getClass(), e);
         } catch (Exception e) {
             EventsLogger.severe(this.getClass(), "Invalid event received!!\n" + event);
             EventsLogger.errorMessage(this.getClass(), e);
