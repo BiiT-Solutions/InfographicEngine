@@ -187,9 +187,9 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         name.setFontWeight(FontWeight.BOLD);
         headerElements.add(name);
 
-//        final SvgText position = new SvgText("for big business director", 83, 2062L, 215L);
-//        position.setFontFamily("Arial-BoldMT, Arial, sans-serif");
-//        headerElements.add(position);
+        final SvgText position = new SvgText("CADT Results", 83, 2062L, 215L);
+        position.setFontFamily("Arial-BoldMT, Arial, sans-serif");
+        headerElements.add(position);
 
         //Logo
         final SvgImage logo = new SvgImage();
@@ -839,7 +839,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         cadtTemplate.addElement(secondBackground);
 
         cadtTemplate.addElements(generateHeader());
-        cadtTemplate.addElements(generateScore());
+        //cadtTemplate.addElements(generateScore());
         cadtTemplate.addElements(generateUniversal());
         cadtTemplate.addElements(generateSociety());
         cadtTemplate.addElements(generateVision());
