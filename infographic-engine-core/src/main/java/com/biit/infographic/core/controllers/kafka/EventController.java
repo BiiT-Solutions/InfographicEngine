@@ -59,7 +59,8 @@ public class EventController {
                 }
             }
             final DroolsSubmittedForm droolsForm = getDroolsForm(event);
-            EventsLogger.debug(this.getClass(), "Received Drools Result '{}'.", droolsForm.getName());
+            EventsLogger.info(this.getClass(), "Received Drools Result '{}'.", droolsForm.getName());
+            EventsLogger.info(this.getClass(), "With content '{}'.", droolsForm.getName());
             droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
             EventsLogger.debug(this.getClass(), "Drools Result '{}' saved.", droolsForm.getName());
             droolsResultController.process(droolsForm, createdBy);
