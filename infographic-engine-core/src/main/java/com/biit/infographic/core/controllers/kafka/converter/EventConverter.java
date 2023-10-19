@@ -41,7 +41,12 @@ public class EventConverter {
         final DroolsResult receivedForm = new DroolsResult();
         receivedForm.setForm(ObjectMapperFactory.getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(event.getPayload()));
         receivedForm.setCreatedBy(event.getCreatedBy());
-        receivedForm.setFormName(droolsSubmittedForm.getName());
+        //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
+        if (event.getTag() != null) {
+            receivedForm.setFormName(event.getTag());
+        } else {
+            receivedForm.setFormName(droolsSubmittedForm.getName());
+        }
         receivedForm.setFormVersion(droolsSubmittedForm.getVersion());
         receivedForm.setOrganizationId(droolsSubmittedForm.getOrganizationId());
         return receivedForm;
