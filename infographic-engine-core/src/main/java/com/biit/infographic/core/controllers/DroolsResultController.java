@@ -73,7 +73,8 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
         final List<String> svgContents = executeFromTemplates(droolsSubmittedForm);
 
         //Store SVG.
-        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents, event, executedBy);
+        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents,
+                event, executedBy);
         generatedInfographicProvider.save(generatedInfographic);
 
         //Send a new event.
