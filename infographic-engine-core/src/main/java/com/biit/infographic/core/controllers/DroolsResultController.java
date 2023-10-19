@@ -21,6 +21,7 @@ import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
+import com.biit.kafka.events.Event;
 import com.biit.server.controller.BasicElementController;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,12 +68,12 @@ public class DroolsResultController extends BasicElementController<DroolsResult,
      * @param droolsSubmittedForm the answers obtained from base form drool engine.
      * @param executedBy          the owner of the form.
      */
-    public void process(DroolsSubmittedForm droolsSubmittedForm, String executedBy) {
+    public void process(DroolsSubmittedForm droolsSubmittedForm, Event event, String executedBy) {
         //Generate SVG.
         final List<String> svgContents = executeFromTemplates(droolsSubmittedForm);
 
         //Store SVG.
-        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents, executedBy);
+        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents, event, executedBy);
         generatedInfographicProvider.save(generatedInfographic);
 
         //Send a new event.

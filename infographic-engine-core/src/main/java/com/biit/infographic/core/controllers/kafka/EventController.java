@@ -62,7 +62,7 @@ public class EventController {
             EventsLogger.info(this.getClass(), "Received Drools Result '{}'/'{}'.", droolsForm.getName(), event.getTag());
             droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
             EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
-            droolsResultController.process(droolsForm, createdBy);
+            droolsResultController.process(droolsForm, event, createdBy);
         } catch (JsonProcessingException e) {
             EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
             EventsLogger.errorMessage(this.getClass(), e);

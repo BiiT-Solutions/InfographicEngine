@@ -3,6 +3,7 @@ package com.biit.infographic.core.providers;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
+import com.biit.kafka.events.Event;
 import com.biit.server.providers.ElementProvider;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,17 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         super(repository);
     }
 
-    public GeneratedInfographic createGeneratedInfographic(DroolsSubmittedForm droolsSubmittedForm, List<String> svgContents, String executedBy) {
+    public GeneratedInfographic createGeneratedInfographic(DroolsSubmittedForm droolsSubmittedForm, List<String> svgContents, Event event, String executedBy) {
         final GeneratedInfographic generatedInfographic = new GeneratedInfographic();
         generatedInfographic.setSvgContents(svgContents);
         generatedInfographic.setOrganizationId(droolsSubmittedForm.getOrganizationId());
         generatedInfographic.setCreatedBy(executedBy);
-        generatedInfographic.setFormName(droolsSubmittedForm.getName());
+        //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
+        if (event.getTag() != null) {
+            generatedInfographic.setFormName(event.getTag());
+        } else {
+            generatedInfographic.setFormName(droolsSubmittedForm.getName());
+        }
         generatedInfographic.setFormVersion(droolsSubmittedForm.getVersion() != null ? droolsSubmittedForm.getVersion() : 1);
         generatedInfographic.setOrganizationId(droolsSubmittedForm.getOrganizationId());
         return generatedInfographic;
