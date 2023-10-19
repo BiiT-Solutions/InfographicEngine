@@ -182,14 +182,14 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         nameRectangle.setYRadius(60L);
         headerElements.add(nameRectangle);
 
-        final SvgText name = new SvgText("MARIA GARCIA", 100, 2137L, 116L);
+        final SvgText name = new SvgText("CADT Results", 100, 2160L, 165L);
         name.setFontFamily("Arial-BoldMT, Arial, sans-serif");
         name.setFontWeight(FontWeight.BOLD);
         headerElements.add(name);
 
-        final SvgText position = new SvgText("CADT Results", 83, 2248L, 215L);
-        position.setFontFamily("Arial-BoldMT, Arial, sans-serif");
-        headerElements.add(position);
+//        final SvgText position = new SvgText("CADT Results", 83, 2248L, 215L);
+//        position.setFontFamily("Arial-BoldMT, Arial, sans-serif");
+//        headerElements.add(position);
 
         //Logo
         final SvgImage logo = new SvgImage();
