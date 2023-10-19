@@ -11,7 +11,6 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -42,7 +41,6 @@ public class GeneratedInfographic extends Element {
     @Column(name = "created_by")
     private String createdBy;
 
-    @Lob
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "svg_contents", joinColumns = @JoinColumn(name = "generated_infographic_id"))
     @Column(name = "svg_content", columnDefinition = "TEXT", nullable = false)

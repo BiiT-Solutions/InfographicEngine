@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -38,7 +37,6 @@ public class DroolsResult extends Element {
     @Column(name = "created_by")
     private String createdBy;
 
-    @Lob
     @Column(name = "drools_content", columnDefinition = "TEXT", nullable = false)
     private String form;
 
