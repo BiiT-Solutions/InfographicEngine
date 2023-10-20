@@ -19,6 +19,9 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
     @JsonProperty("stroke")
     private ElementStroke elementStroke;
 
+    @JsonProperty("href")
+    private String href;
+
     public SvgAreaElement() {
         setElementAttributes(new ElementAttributes());
         setElementStroke(new ElementStroke());
@@ -54,6 +57,15 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
     public void setElementAttributes(ElementAttributes elementAttributes) {
         this.elementAttributes = elementAttributes;
     }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
+
 
     /**
      * Stroke is included on the width and must be subtracted.
@@ -113,6 +125,9 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         final String style = generateStyle(new StringBuilder(getElementAttributes().getStyle())).toString();
         if (!style.isBlank()) {
             element.setAttributeNS(null, "style", style);
+        }
+        if (href != null) {
+            element.setAttribute("onclick", "window.location='" + href + "'");
         }
     }
 
