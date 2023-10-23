@@ -74,6 +74,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
     private static final String STRENGTH_COLOR_1 = "#DROOLS%CADT%StrengthCell1Color#";
     private static final String STRENGTH_COLOR_2 = "#DROOLS%CADT%StrengthCell2Color#";
     private static final String STRENGTH_COLOR_3 = "#DROOLS%CADT%StrengthCell3Color#";
+
     private static final String STRUCTURE_TEXT_1 = "#DROOLS%CADT%StructureCell1#";
     private static final String STRUCTURE_TEXT_2 = "#DROOLS%CADT%StructureCell2#";
     private static final String STRUCTURE_TEXT_3 = "#DROOLS%CADT%StructureCell3#";
@@ -100,6 +101,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
     private static final String ACTION_COLOR_2 = "#DROOLS%CADT%ActionCell2Color#";
     private static final String ACTION_COLOR_3 = "#DROOLS%CADT%ActionCell3Color#";
     private static final String ADAPTABILITY_ACTION_TEXT = "#DROOLS%CADT%AdaptabilityActionCell#";
+
     private static final String MATERIAL_ATTACHMENT_TEXT_1 = "#DROOLS%CADT%MatterialAttachementCell1#";
     private static final String MATERIAL_ATTACHMENT_TEXT_2 = "#DROOLS%CADT%MatterialAttachementCell2#";
     private static final String MATERIAL_ATTACHMENT_TEXT_3 = "#DROOLS%CADT%MatterialAttachementCell3#";
@@ -124,6 +126,42 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
     private static final String ANALYSIS_COLOR_1 = "#DROOLS%CADT%AnalysisCell1Color#";
     private static final String ANALYSIS_COLOR_2 = "#DROOLS%CADT%AnalysisCell2Color#";
     private static final String ANALYSIS_COLOR_3 = "#DROOLS%CADT%AnalysisCell3Color#";
+
+    private static final String UNIVERSAL_CIRCLE_COLOR_1 = "#DROOLS%CADT%UniversalCircle1Color#";
+    private static final String UNIVERSAL_CIRCLE_COLOR_2 = "#DROOLS%CADT%UniversalCircle2Color#";
+    private static final String UNIVERSAL_CIRCLE_COLOR_3 = "#DROOLS%CADT%UniversalCircle3Color#";
+    private static final String SOCIETY_CIRCLE_COLOR_1 = "#DROOLS%CADT%SocietyCircle1Color#";
+    private static final String SOCIETY_CIRCLE_COLOR_2 = "#DROOLS%CADT%SocietyCircle2Color#";
+    private static final String SOCIETY_CIRCLE_COLOR_3 = "#DROOLS%CADT%SocietyCircle3Color#";
+    private static final String VISION_CIRCLE_COLOR_1 = "#DROOLS%CADT%VisionCircle1Color#";
+    private static final String VISION_CIRCLE_COLOR_2 = "#DROOLS%CADT%VisionCircle2Color#";
+    private static final String VISION_CIRCLE_COLOR_3 = "#DROOLS%CADT%VisionCircle3Color#";
+    private static final String STRENGTH_CIRCLE_COLOR_1 = "#DROOLS%CADT%StrengthCircle1Color#";
+    private static final String STRENGTH_CIRCLE_COLOR_2 = "#DROOLS%CADT%StrengthCircle2Color#";
+    private static final String STRENGTH_CIRCLE_COLOR_3 = "#DROOLS%CADT%StrengthCircle3Color#";
+
+    private static final String STRUCTURE_CIRCLE_COLOR_1 = "#DROOLS%CADT%StructureCircle1Color#";
+    private static final String STRUCTURE_CIRCLE_COLOR_2 = "#DROOLS%CADT%StructureCircle2Color#";
+    private static final String INSPIRATION_CIRCLE_COLOR_1 = "#DROOLS%CADT%InspirationCircle1Color#";
+    private static final String INSPIRATION_CIRCLE_COLOR_2 = "#DROOLS%CADT%InspirationCircle2Color#";
+    private static final String ADAPTABILITY_CIRCLE_COLOR_1 = "#DROOLS%CADT%AdaptabilityCircle1Color#";
+    private static final String ADAPTABILITY_CIRCLE_COLOR_2 = "#DROOLS%CADT%AdaptabilityCircle2Color#";
+    private static final String ACTION_CIRCLE_COLOR_1 = "#DROOLS%CADT%ActionCircle1Color#";
+    private static final String ACTION_CIRCLE_COLOR_2 = "#DROOLS%CADT%ActionCircle2Color#";
+
+    private static final String MATERIAL_ATTACHMENT_CIRCLE_COLOR_1 = "#DROOLS%CADT%MaterialAttachmentCircle1Color#";
+    private static final String MATERIAL_ATTACHMENT_CIRCLE_COLOR_2 = "#DROOLS%CADT%MaterialAttachmentCircle2Color#";
+    private static final String MATERIAL_ATTACHMENT_CIRCLE_COLOR_3 = "#DROOLS%CADT%MaterialAttachmentCircle3Color#";
+    private static final String COMMUNICATION_CIRCLE_COLOR_1 = "#DROOLS%CADT%CommunicationCircle1Color#";
+    private static final String COMMUNICATION_CIRCLE_COLOR_2 = "#DROOLS%CADT%CommunicationCircle2Color#";
+    private static final String COMMUNICATION_CIRCLE_COLOR_3 = "#DROOLS%CADT%CommunicationCircle3Color#";
+    private static final String SELF_AWARE_CIRCLE_COLOR_1 = "#DROOLS%CADT%SelfAwareCircle1Color#";
+    private static final String SELF_AWARE_CIRCLE_COLOR_2 = "#DROOLS%CADT%SelfAwareCircle2Color#";
+    private static final String SELF_AWARE_CIRCLE_COLOR_3 = "#DROOLS%CADT%SelfAwareCircle3Color#";
+    private static final String ANALYSIS_CIRCLE_COLOR_1 = "#DROOLS%CADT%AnalysisCircle1Color#";
+    private static final String ANALYSIS_CIRCLE_COLOR_2 = "#DROOLS%CADT%AnalysisCircle2Color#";
+    private static final String ANALYSIS_CIRCLE_COLOR_3 = "#DROOLS%CADT%AnalysisCircle3Color#";
+
     private static final int TEXT_PADDING = 25;
     private static final int FONT_SIZE = 42;
 
@@ -235,28 +273,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> universalElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(UNIVERSAL_COLOR_1, DEFAULT_STROKE_WIDTH, 2252L, 1542L, new Point(2252L, 1292L),
+        final SvgPath path = new SvgPath(UNIVERSAL_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2252L, 1542L, new Point(2252L, 1292L),
                 new Point(2218L, 1250L), new Point(281L, 1250L));
         universalElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2205L, 1244L, 46L);
-        scoreCircle1.getElementAttributes().setFill(UNIVERSAL_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(UNIVERSAL_CIRCLE_COLOR_1);
         universalElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2205L, 1370L, 46L);
-        scoreCircle2.getElementAttributes().setFill(UNIVERSAL_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(UNIVERSAL_CIRCLE_COLOR_2);
         universalElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2205L, 1495L, 46L);
-        scoreCircle3.getElementAttributes().setFill(UNIVERSAL_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(UNIVERSAL_CIRCLE_COLOR_3);
         universalElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("UNIVERSAL", 67, FontWeight.BOLD, UNIVERSAL_COLOR_1, 285L, 593L);
+        final SvgText title = new SvgText("UNIVERSAL", 67, FontWeight.BOLD, UNIVERSAL_CIRCLE_COLOR_1, 285L, 593L);
         universalElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(UNIVERSAL_COLOR_1, DEFAULT_STROKE_WIDTH, 281L, 655L, 1152L, 655L);
+        final SvgLine titleLine = new SvgLine(UNIVERSAL_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 281L, 655L, 1152L, 655L);
         universalElements.add(titleLine);
 
         //Content
@@ -279,28 +317,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> societyElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(SOCIETY_COLOR_1, DEFAULT_STROKE_WIDTH, 2420L, 1542L, new Point(2420L, 1292L),
+        final SvgPath path = new SvgPath(SOCIETY_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2420L, 1542L, new Point(2420L, 1292L),
                 new Point(2177L, 1048L), new Point(1240L, 1048L));
         societyElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2372L, 1244L, 46L);
-        scoreCircle1.getElementAttributes().setFill(SOCIETY_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(SOCIETY_CIRCLE_COLOR_1);
         societyElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2372L, 1370L, 46L);
-        scoreCircle2.getElementAttributes().setFill(SOCIETY_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(SOCIETY_CIRCLE_COLOR_2);
         societyElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2372L, 1495L, 46L);
-        scoreCircle3.getElementAttributes().setFill(SOCIETY_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(SOCIETY_CIRCLE_COLOR_3);
         societyElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("SOCIETY", 67, FontWeight.BOLD, SOCIETY_COLOR_1, 1242L, 391L);
+        final SvgText title = new SvgText("SOCIETY", 67, FontWeight.BOLD, SOCIETY_CIRCLE_COLOR_1, 1242L, 391L);
         societyElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(SOCIETY_COLOR_1, DEFAULT_STROKE_WIDTH, 1240L, 453L, 2111L, 453L);
+        final SvgLine titleLine = new SvgLine(SOCIETY_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 1240L, 453L, 2111L, 453L);
         societyElements.add(titleLine);
 
         //Content
@@ -323,28 +361,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> visionElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(VISION_COLOR_1, DEFAULT_STROKE_WIDTH, 2587L, 1542L, new Point(2587L, 1292L),
+        final SvgPath path = new SvgPath(VISION_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2587L, 1542L, new Point(2587L, 1292L),
                 new Point(2829L, 1048L), new Point(3767L, 1048L));
         visionElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2539L, 1244L, 46L);
-        scoreCircle1.getElementAttributes().setFill(VISION_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(VISION_CIRCLE_COLOR_1);
         visionElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2539L, 1370L, 46L);
-        scoreCircle2.getElementAttributes().setFill(VISION_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(VISION_CIRCLE_COLOR_2);
         visionElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2539L, 1495L, 46L);
-        scoreCircle3.getElementAttributes().setFill(VISION_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(VISION_CIRCLE_COLOR_3);
         visionElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("VISION", 67, FontWeight.BOLD, VISION_COLOR_1, 2896L, 391L);
+        final SvgText title = new SvgText("VISION", 67, FontWeight.BOLD, VISION_CIRCLE_COLOR_1, 2896L, 391L);
         visionElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(VISION_COLOR_1, DEFAULT_STROKE_WIDTH, 2896L, 453L, 3766L, 453L);
+        final SvgLine titleLine = new SvgLine(VISION_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2896L, 453L, 3766L, 453L);
         visionElements.add(titleLine);
 
         //Content
@@ -367,28 +405,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> strengthElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(STRENGTH_COLOR_1, DEFAULT_STROKE_WIDTH, 2754L, 1542L, new Point(2754L, 1292L),
+        final SvgPath path = new SvgPath(STRENGTH_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2754L, 1542L, new Point(2754L, 1292L),
                 new Point(2795L, 1250L), new Point(4725L, 1250L));
         strengthElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2706L, 1244L, 46L);
-        scoreCircle1.getElementAttributes().setFill(STRENGTH_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(STRENGTH_CIRCLE_COLOR_1);
         strengthElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2706L, 1370L, 46L);
-        scoreCircle2.getElementAttributes().setFill(STRENGTH_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(STRENGTH_CIRCLE_COLOR_2);
         strengthElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2706L, 1495L, 46L);
-        scoreCircle3.getElementAttributes().setFill(STRENGTH_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(STRENGTH_CIRCLE_COLOR_3);
         strengthElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("STRENGTH", 67, FontWeight.BOLD, STRENGTH_COLOR_1, 3856L, 593L);
+        final SvgText title = new SvgText("STRENGTH", 67, FontWeight.BOLD, STRENGTH_CIRCLE_COLOR_1, 3856L, 593L);
         strengthElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(STRENGTH_COLOR_1, DEFAULT_STROKE_WIDTH, 3855L, 653L, 4725L, 653L);
+        final SvgLine titleLine = new SvgLine(STRENGTH_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 3855L, 653L, 4725L, 653L);
         strengthElements.add(titleLine);
 
         //Content
@@ -411,7 +449,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> structureElements = new ArrayList<>();
 
         //Line
-        final SvgLine line1 = new SvgLine(STRUCTURE_COLOR_1, DEFAULT_STROKE_WIDTH, 2253L, 1694L, 2253L, 1851L);
+        final SvgLine line1 = new SvgLine(STRUCTURE_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2253L, 1694L, 2253L, 1851L);
         structureElements.add(line1);
 
 //        final SvgLine line2 = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 2044L, 1772L, 2253L, 1772L);
@@ -419,18 +457,18 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2205L, 1662L, 46L);
-        scoreCircle1.getElementAttributes().setFill(STRUCTURE_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(STRUCTURE_CIRCLE_COLOR_1);
         structureElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2205L, 1788L, 46L);
-        scoreCircle2.getElementAttributes().setFill(STRUCTURE_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(STRUCTURE_CIRCLE_COLOR_2);
         structureElements.add(scoreCircle2);
 
         //Title
-        final SvgText title = new SvgText("STRUCTURE", 67, FontWeight.BOLD, STRUCTURE_COLOR_1, 680L, 1421L);
+        final SvgText title = new SvgText("STRUCTURE", 67, FontWeight.BOLD, STRUCTURE_CIRCLE_COLOR_1, 680L, 1421L);
         structureElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(STRUCTURE_COLOR_1, DEFAULT_STROKE_WIDTH, 281L, 1483L, 1152L, 1483L);
+        final SvgLine titleLine = new SvgLine(STRUCTURE_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 281L, 1483L, 1152L, 1483L);
         structureElements.add(titleLine);
 
 //        final SvgLine titleLineButton = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 281L, 2187L, 1152L, 2187L);
@@ -456,7 +494,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> inspirationElements = new ArrayList<>();
 
         //Line
-        final SvgLine line1 = new SvgLine(INSPIRATION_COLOR_1, DEFAULT_STROKE_WIDTH, 2420L, 1694L, 2420L, 1851L);
+        final SvgLine line1 = new SvgLine(INSPIRATION_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2420L, 1694L, 2420L, 1851L);
         inspirationElements.add(line1);
 
 //        final SvgLine line2 = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 2044L, 1772L, 2420L, 1772L);
@@ -464,18 +502,18 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2372L, 1662L, 46L);
-        scoreCircle1.getElementAttributes().setFill(INSPIRATION_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(INSPIRATION_CIRCLE_COLOR_1);
         inspirationElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2372L, 1788L, 46L);
-        scoreCircle2.getElementAttributes().setFill(INSPIRATION_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(INSPIRATION_CIRCLE_COLOR_2);
         inspirationElements.add(scoreCircle2);
 
         //Title
-        final SvgText title = new SvgText("INSPIRATION", 67, FontWeight.BOLD, INSPIRATION_COLOR_1, 1191L, 1421L);
+        final SvgText title = new SvgText("INSPIRATION", 67, FontWeight.BOLD, INSPIRATION_CIRCLE_COLOR_1, 1191L, 1421L);
         inspirationElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(INSPIRATION_COLOR_1, DEFAULT_STROKE_WIDTH, 1162L, 1483L, 2033L, 1483L);
+        final SvgLine titleLine = new SvgLine(INSPIRATION_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 1162L, 1483L, 2033L, 1483L);
         inspirationElements.add(titleLine);
 
 //        final SvgLine titleLineBottom = new SvgLine(INSPIRATION_COLOR, DEFAULT_STROKE_WIDTH, 1162L, 2187L, 2033L, 2187L);
@@ -509,7 +547,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         line1.getElementAttributes().setGradient(new SvgGradient(
                 new SvgGradientStop(INSPIRATION_COLOR_1, FULL_ALPHA, 0.0),
                 new SvgGradientStop(STRUCTURE_COLOR_1, FULL_ALPHA, 0.5),
-                new SvgGradientStop(INSPIRATION_COLOR_1, FULL_ALPHA, 1.0)));
+                new SvgGradientStop(INSPIRATION_COLOR_2, FULL_ALPHA, 1.0)));
         structureInspirationElements.add(line1);
 
         //Content
@@ -519,7 +557,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         structureInspirationElements.add(generateText(STRUCTURE_INSPIRATION_TEXT, 281L, 2083L, 1750, 100));
 
         final SvgLine titleLineButton = new SvgLine(null, DEFAULT_STROKE_WIDTH, 281L, 2187L, 2033L, 2187L);
-        titleLineButton.getElementAttributes().setGradient(new SvgGradient(new SvgGradientStop(STRUCTURE_COLOR_1, FULL_ALPHA, 0.0), new SvgGradientStop(INSPIRATION_COLOR_1, FULL_ALPHA, 1.0)));
+        titleLineButton.getElementAttributes().setGradient(new SvgGradient(new SvgGradientStop(STRUCTURE_CIRCLE_COLOR_1, FULL_ALPHA, 0.0), new SvgGradientStop(INSPIRATION_CIRCLE_COLOR_1, FULL_ALPHA, 1.0)));
         structureInspirationElements.add(titleLineButton);
 
         return structureInspirationElements;
@@ -529,7 +567,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> adaptabilityElements = new ArrayList<>();
 
         //Line
-        final SvgLine line1 = new SvgLine(ADAPTABILITY_COLOR_1, DEFAULT_STROKE_WIDTH, 2587L, 1694L, 2587L, 1851L);
+        final SvgLine line1 = new SvgLine(ADAPTABILITY_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2587L, 1694L, 2587L, 1851L);
         adaptabilityElements.add(line1);
 
 //        final SvgLine line2 = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 2587L, 1772L, 2954L, 1772L);
@@ -537,11 +575,11 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2539L, 1662L, 46L);
-        scoreCircle1.getElementAttributes().setFill(ADAPTABILITY_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(ADAPTABILITY_CIRCLE_COLOR_1);
         adaptabilityElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2539L, 1788L, 46L);
-        scoreCircle2.getElementAttributes().setFill(ADAPTABILITY_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(ADAPTABILITY_CIRCLE_COLOR_2);
         adaptabilityElements.add(scoreCircle2);
 
         //Title
@@ -574,7 +612,7 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> actionElements = new ArrayList<>();
 
         //Line
-        final SvgLine line1 = new SvgLine(ACTION_COLOR_1, DEFAULT_STROKE_WIDTH, 2753L, 1694L, 2753L, 1851L);
+        final SvgLine line1 = new SvgLine(ACTION_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2753L, 1694L, 2753L, 1851L);
         actionElements.add(line1);
 
 //        final SvgLine line2 = new SvgLine(ACTION_COLOR, DEFAULT_STROKE_WIDTH, 2754L, 1772L, 2954L, 1772L);
@@ -582,11 +620,11 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2706L, 1662L, 46L);
-        scoreCircle1.getElementAttributes().setFill(ACTION_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(ACTION_CIRCLE_COLOR_1);
         actionElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2706L, 1788L, 46L);
-        scoreCircle2.getElementAttributes().setFill(ACTION_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(ACTION_CIRCLE_COLOR_2);
         actionElements.add(scoreCircle2);
 
         //Title
@@ -624,9 +662,9 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         //Line
         final SvgLine line1 = new SvgLine(null, DEFAULT_STROKE_WIDTH, 2587L, 1772L, 2954L, 1772L);
         line1.getElementAttributes().setGradient(new SvgGradient(
-                new SvgGradientStop(ADAPTABILITY_COLOR_1, FULL_ALPHA, 0.0),
-                new SvgGradientStop(ACTION_COLOR_1, FULL_ALPHA, 0.5),
-                new SvgGradientStop(ADAPTABILITY_COLOR_1, FULL_ALPHA, 1.0)));
+                new SvgGradientStop(ADAPTABILITY_CIRCLE_COLOR_1, FULL_ALPHA, 0.0),
+                new SvgGradientStop(ACTION_CIRCLE_COLOR_1, FULL_ALPHA, 0.5),
+                new SvgGradientStop(ADAPTABILITY_CIRCLE_COLOR_2, FULL_ALPHA, 1.0)));
         adaptabilityActionElements.add(line1);
 
         //Content
@@ -646,28 +684,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> materialAttachmentElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(MATERIAL_ATTACHMENT_COLOR_1, DEFAULT_STROKE_WIDTH, 2252L, 2002L, new Point(2252L, 2252L),
+        final SvgPath path = new SvgPath(MATERIAL_ATTACHMENT_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2252L, 2002L, new Point(2252L, 2252L),
                 new Point(2075L, 2430L), new Point(281L, 2430L));
         materialAttachmentElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2205L, 1954L, 46L);
-        scoreCircle1.getElementAttributes().setFill(MATERIAL_ATTACHMENT_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(MATERIAL_ATTACHMENT_CIRCLE_COLOR_1);
         materialAttachmentElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2205L, 2080L, 46L);
-        scoreCircle2.getElementAttributes().setFill(MATERIAL_ATTACHMENT_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(MATERIAL_ATTACHMENT_CIRCLE_COLOR_2);
         materialAttachmentElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2205L, 2205L, 46L);
-        scoreCircle3.getElementAttributes().setFill(MATERIAL_ATTACHMENT_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(MATERIAL_ATTACHMENT_CIRCLE_COLOR_3);
         materialAttachmentElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("MATERIAL ATTACHMENT", 67, FontWeight.BOLD, MATERIAL_ATTACHMENT_COLOR_1, 285L, 2365L);
+        final SvgText title = new SvgText("MATERIAL ATTACHMENT", 67, FontWeight.BOLD, MATERIAL_ATTACHMENT_CIRCLE_COLOR_1, 285L, 2365L);
         materialAttachmentElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(MATERIAL_ATTACHMENT_COLOR_1, DEFAULT_STROKE_WIDTH, 281L, 3016L, 1152L, 3016L);
+        final SvgLine titleLine = new SvgLine(MATERIAL_ATTACHMENT_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 281L, 3016L, 1152L, 3016L);
         materialAttachmentElements.add(titleLine);
 
         //Content
@@ -690,28 +728,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> communicationElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(COMMUNICATION_COLOR_1, DEFAULT_STROKE_WIDTH, 2420L, 2002L, new Point(2420L, 2341L),
+        final SvgPath path = new SvgPath(COMMUNICATION_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2420L, 2002L, new Point(2420L, 2341L),
                 new Point(2111L, 2640L), new Point(1240L, 2640L));
         communicationElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2372L, 1954L, 46L);
-        scoreCircle1.getElementAttributes().setFill(COMMUNICATION_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(COMMUNICATION_CIRCLE_COLOR_1);
         communicationElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2372L, 2080L, 46L);
-        scoreCircle2.getElementAttributes().setFill(COMMUNICATION_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(COMMUNICATION_CIRCLE_COLOR_2);
         communicationElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2372L, 2205L, 46L);
-        scoreCircle3.getElementAttributes().setFill(COMMUNICATION_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(COMMUNICATION_CIRCLE_COLOR_3);
         communicationElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("COMMUNICATION", 67, FontWeight.BOLD, COMMUNICATION_COLOR_1, 1243L, 2580L);
+        final SvgText title = new SvgText("COMMUNICATION", 67, FontWeight.BOLD, COMMUNICATION_CIRCLE_COLOR_1, 1243L, 2580L);
         communicationElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(COMMUNICATION_COLOR_1, DEFAULT_STROKE_WIDTH, 1240L, 3230L, 2111L, 3230L);
+        final SvgLine titleLine = new SvgLine(COMMUNICATION_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 1240L, 3230L, 2111L, 3230L);
         communicationElements.add(titleLine);
 
         //Content
@@ -734,28 +772,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> selfAwareElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(SELF_AWARE_COLOR_1, DEFAULT_STROKE_WIDTH, 2587L, 2002L, new Point(2587L, 2341L),
+        final SvgPath path = new SvgPath(SELF_AWARE_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2587L, 2002L, new Point(2587L, 2341L),
                 new Point(2896L, 2640L), new Point(3767L, 2640L));
         selfAwareElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2539L, 1954L, 46L);
-        scoreCircle1.getElementAttributes().setFill(SELF_AWARE_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(SELF_AWARE_CIRCLE_COLOR_1);
         selfAwareElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2539L, 2080L, 46L);
-        scoreCircle2.getElementAttributes().setFill(SELF_AWARE_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(SELF_AWARE_CIRCLE_COLOR_2);
         selfAwareElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2539L, 2205L, 46L);
-        scoreCircle3.getElementAttributes().setFill(SELF_AWARE_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(SELF_AWARE_CIRCLE_COLOR_3);
         selfAwareElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("SELF AWARE", 67, FontWeight.BOLD, SELF_AWARE_COLOR_1, 2898L, 2580L);
+        final SvgText title = new SvgText("SELF AWARE", 67, FontWeight.BOLD, SELF_AWARE_CIRCLE_COLOR_1, 2898L, 2580L);
         selfAwareElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(SELF_AWARE_COLOR_1, DEFAULT_STROKE_WIDTH, 2896L, 3230L, 3766L, 3230L);
+        final SvgLine titleLine = new SvgLine(SELF_AWARE_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2896L, 3230L, 3766L, 3230L);
         selfAwareElements.add(titleLine);
 
         //Content
@@ -778,28 +816,28 @@ public class CadtFromDrools extends AbstractTestNGSpringContextTests {
         final List<SvgAreaElement> analysisElements = new ArrayList<>();
 
         //Line
-        final SvgPath path = new SvgPath(ANALYSIS_COLOR_1, DEFAULT_STROKE_WIDTH, 2754L, 2002L, new Point(2754L, 2341L),
+        final SvgPath path = new SvgPath(ANALYSIS_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 2754L, 2002L, new Point(2754L, 2341L),
                 new Point(2931L, 2430L), new Point(4725L, 2430L));
         analysisElements.add(path);
 
         //Circles
         final SvgCircle scoreCircle1 = new SvgCircle(2706L, 1954L, 46L);
-        scoreCircle1.getElementAttributes().setFill(ANALYSIS_COLOR_1);
+        scoreCircle1.getElementAttributes().setFill(ANALYSIS_CIRCLE_COLOR_1);
         analysisElements.add(scoreCircle1);
 
         final SvgCircle scoreCircle2 = new SvgCircle(2706L, 2080L, 46L);
-        scoreCircle2.getElementAttributes().setFill(ANALYSIS_COLOR_2);
+        scoreCircle2.getElementAttributes().setFill(ANALYSIS_CIRCLE_COLOR_2);
         analysisElements.add(scoreCircle2);
 
         final SvgCircle scoreCircle3 = new SvgCircle(2706L, 2205L, 46L);
-        scoreCircle3.getElementAttributes().setFill(ANALYSIS_COLOR_3);
+        scoreCircle3.getElementAttributes().setFill(ANALYSIS_CIRCLE_COLOR_3);
         analysisElements.add(scoreCircle3);
 
         //Title
-        final SvgText title = new SvgText("ANALYSIS", 67, FontWeight.BOLD, ANALYSIS_COLOR_1, 3856L, 2365L);
+        final SvgText title = new SvgText("ANALYSIS", 67, FontWeight.BOLD, ANALYSIS_CIRCLE_COLOR_1, 3856L, 2365L);
         analysisElements.add(title);
 
-        final SvgLine titleLine = new SvgLine(ANALYSIS_COLOR_1, DEFAULT_STROKE_WIDTH, 3855L, 3016L, 4725L, 3016L);
+        final SvgLine titleLine = new SvgLine(ANALYSIS_CIRCLE_COLOR_1, DEFAULT_STROKE_WIDTH, 3855L, 3016L, 4725L, 3016L);
         analysisElements.add(titleLine);
 
         //Content
