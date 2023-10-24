@@ -27,7 +27,7 @@ import java.util.List;
                 @Index(name = "ind_organization", columnList = "organization_id")
         })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class GeneratedInfographic extends Element {
+public class GeneratedInfographic extends Element<Long> {
 
     @Column(name = "form_name")
     private String formName;

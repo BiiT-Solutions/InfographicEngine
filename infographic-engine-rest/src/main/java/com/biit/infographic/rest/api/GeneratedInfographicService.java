@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/infographic")
 @SecurityRequirement(name = "bearerAuth")
-public class GeneratedInfographicService extends BasicServices<GeneratedInfographic, GeneratedInfographicDTO, GeneratedInfographicRepository,
+public class GeneratedInfographicService extends BasicServices<GeneratedInfographic, Long, GeneratedInfographicDTO, GeneratedInfographicRepository,
         GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter, GeneratedInfographicController> {
 
     protected GeneratedInfographicService(GeneratedInfographicController controller) {

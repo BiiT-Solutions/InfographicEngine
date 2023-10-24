@@ -4,7 +4,7 @@ import com.biit.server.controllers.models.ElementDTO;
 
 import java.util.List;
 
-public class GeneratedInfographicDTO extends ElementDTO {
+public class GeneratedInfographicDTO extends ElementDTO<Long> {
 
     private String formName;
 

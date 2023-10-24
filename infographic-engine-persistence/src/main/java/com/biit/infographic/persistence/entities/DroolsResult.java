@@ -23,7 +23,7 @@ import java.util.Objects;
                 @Index(name = "ind_organization", columnList = "organization_id")
         })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class DroolsResult extends Element {
+public class DroolsResult extends Element<Long> {
 
     @Column(name = "form_name")
     private String formName;

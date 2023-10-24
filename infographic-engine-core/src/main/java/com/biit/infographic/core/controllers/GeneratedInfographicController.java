@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-public class GeneratedInfographicController extends BasicElementController<GeneratedInfographic, GeneratedInfographicDTO, GeneratedInfographicRepository,
-        GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter> {
+public class GeneratedInfographicController extends BasicElementController<GeneratedInfographic, Long, GeneratedInfographicDTO,
+        GeneratedInfographicRepository, GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter> {
 
 
     @Autowired

@@ -8,7 +8,6 @@ import com.biit.infographic.core.converters.models.DroolsResultConverterRequest;
 import com.biit.infographic.core.engine.InfographicTemplate;
 import com.biit.infographic.core.engine.InfographicTemplateAndContent;
 import com.biit.infographic.core.engine.Parameter;
-import com.biit.infographic.core.engine.content.DroolsContent;
 import com.biit.infographic.core.engine.files.InfographicFileElement;
 import com.biit.infographic.core.exceptions.FormNotFoundException;
 import com.biit.infographic.core.generators.SvgGenerator;
@@ -35,24 +34,22 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-public class DroolsResultController extends BasicElementController<DroolsResult, DroolsResultDTO, DroolsResultRepository,
+public class DroolsResultController extends BasicElementController<DroolsResult, Long, DroolsResultDTO, DroolsResultRepository,
         DroolsResultProvider, DroolsResultConverterRequest, DroolsResultConverter> {
 
     private final EventSender eventSender;
     private final GeneratedInfographicProvider generatedInfographicProvider;
     private final InfographicEngineController infographicEngineController;
-    private final DroolsContent droolsContent;
     private final ObjectMapper objectMapper;
 
     @Autowired
     protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter, EventSender eventSender,
                                      GeneratedInfographicProvider generatedInfographicProvider,
-                                     InfographicEngineController infographicEngineController, DroolsContent droolsContent, ObjectMapper objectMapper) {
+                                     InfographicEngineController infographicEngineController, ObjectMapper objectMapper) {
         super(provider, converter);
         this.eventSender = eventSender;
         this.generatedInfographicProvider = generatedInfographicProvider;
         this.infographicEngineController = infographicEngineController;
-        this.droolsContent = droolsContent;
         this.objectMapper = objectMapper;
     }
 

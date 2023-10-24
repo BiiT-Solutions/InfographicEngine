@@ -2,7 +2,7 @@ package com.biit.infographic.core.models;
 
 import com.biit.server.controllers.models.ElementDTO;
 
-public class DroolsResultDTO extends ElementDTO {
+public class DroolsResultDTO extends ElementDTO<Long> {
 
     private String formName;
 
