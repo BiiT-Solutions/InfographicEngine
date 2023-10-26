@@ -4,6 +4,8 @@ import com.biit.server.controllers.models.ElementDTO;
 
 public class DroolsResultDTO extends ElementDTO<Long> {
 
+    private Long id;
+
     private String formName;
 
     private int formVersion;
@@ -13,6 +15,16 @@ public class DroolsResultDTO extends ElementDTO<Long> {
     private String createdBy;
 
     private String form;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFormName() {
         return formName;

@@ -20,7 +20,7 @@ import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
-import com.biit.server.controller.BasicElementController;
+import com.biit.server.controller.ElementController;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-public class DroolsResultController extends BasicElementController<DroolsResult, Long, DroolsResultDTO, DroolsResultRepository,
+public class DroolsResultController extends ElementController<DroolsResult, Long, DroolsResultDTO, DroolsResultRepository,
         DroolsResultProvider, DroolsResultConverterRequest, DroolsResultConverter> {
 
     private final EventSender eventSender;

@@ -1,5 +1,6 @@
 package com.biit.infographic.rest.api;
 
+import com.biit.server.rest.ElementServices;
 import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.converters.GeneratedInfographicConverter;
 import com.biit.infographic.core.converters.models.GeneratedInfographicConverterRequest;
@@ -7,7 +8,6 @@ import com.biit.infographic.core.models.GeneratedInfographicDTO;
 import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
-import com.biit.server.rest.BasicServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/infographic")
 @SecurityRequirement(name = "bearerAuth")
-public class GeneratedInfographicService extends BasicServices<GeneratedInfographic, Long, GeneratedInfographicDTO, GeneratedInfographicRepository,
+public class GeneratedInfographicService extends ElementServices<GeneratedInfographic, Long, GeneratedInfographicDTO, GeneratedInfographicRepository,
         GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter, GeneratedInfographicController> {
 
     protected GeneratedInfographicService(GeneratedInfographicController controller) {

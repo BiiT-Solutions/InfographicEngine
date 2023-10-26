@@ -9,7 +9,7 @@ import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
 import com.biit.logger.ExceptionType;
-import com.biit.server.controller.BasicElementController;
+import com.biit.server.controller.ElementController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-public class GeneratedInfographicController extends BasicElementController<GeneratedInfographic, Long, GeneratedInfographicDTO,
+public class GeneratedInfographicController extends ElementController<GeneratedInfographic, Long, GeneratedInfographicDTO,
         GeneratedInfographicRepository, GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter> {
 
 

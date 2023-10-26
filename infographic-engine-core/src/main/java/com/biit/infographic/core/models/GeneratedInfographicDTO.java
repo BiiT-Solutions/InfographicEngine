@@ -6,6 +6,8 @@ import java.util.List;
 
 public class GeneratedInfographicDTO extends ElementDTO<Long> {
 
+    private Long id;
+
     private String formName;
 
     private int formVersion;
@@ -15,6 +17,16 @@ public class GeneratedInfographicDTO extends ElementDTO<Long> {
     private String createdBy;
 
     private List<String> svgContents;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFormName() {
         return formName;
