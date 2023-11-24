@@ -2,7 +2,7 @@ package com.biit.infographic.core.controllers;
 
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.kafka.EventSender;
+import com.biit.infographic.core.controllers.kafka.DroolsEventSender;
 import com.biit.infographic.core.converters.DroolsResultConverter;
 import com.biit.infographic.core.converters.models.DroolsResultConverterRequest;
 import com.biit.infographic.core.engine.InfographicTemplate;
@@ -37,17 +37,17 @@ import java.util.Set;
 public class DroolsResultController extends ElementController<DroolsResult, Long, DroolsResultDTO, DroolsResultRepository,
         DroolsResultProvider, DroolsResultConverterRequest, DroolsResultConverter> {
 
-    private final EventSender eventSender;
+    private final DroolsEventSender droolsEventSender;
     private final GeneratedInfographicProvider generatedInfographicProvider;
     private final InfographicEngineController infographicEngineController;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter, EventSender eventSender,
+    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter, DroolsEventSender droolsEventSender,
                                      GeneratedInfographicProvider generatedInfographicProvider,
                                      InfographicEngineController infographicEngineController, ObjectMapper objectMapper) {
         super(provider, converter);
-        this.eventSender = eventSender;
+        this.droolsEventSender = droolsEventSender;
         this.generatedInfographicProvider = generatedInfographicProvider;
         this.infographicEngineController = infographicEngineController;
         this.objectMapper = objectMapper;
@@ -74,7 +74,7 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
         generatedInfographicProvider.save(generatedInfographic);
 
         //Send a new event.
-        eventSender.sendResultEvents(generatedInfographic, executedBy);
+        droolsEventSender.sendResultEvents(generatedInfographic, executedBy);
     }
 
     public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm) {

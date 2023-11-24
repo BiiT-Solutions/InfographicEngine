@@ -10,6 +10,8 @@ import com.biit.kafka.consumers.EventListener;
 import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Controller;
 
 import java.time.Instant;
@@ -19,6 +21,7 @@ import java.util.TimeZone;
 
 
 @Controller
+@ConditionalOnExpression("${spring.kafka.enabled:false}")
 public class EventController {
     public static final String ALLOWED_FACT_TYPE = "DroolsResultForm";
 
@@ -29,7 +32,7 @@ public class EventController {
     private final DroolsResultController droolsResultController;
 
 
-    public EventController(EventListener eventListener,
+    public EventController(@Autowired(required = false) EventListener eventListener,
                            EventConverter eventConverter,
                            DroolsResultRepository droolsResultRepository,
                            DroolsResultController droolsResultController) {
@@ -38,8 +41,10 @@ public class EventController {
         this.droolsResultController = droolsResultController;
 
         //Listen to topic
-        eventListener.addListener((event, offset, key, partition, topic, timeStamp) ->
-                eventHandler(event, key, partition, topic, timeStamp));
+        if (eventListener != null) {
+            eventListener.addListener((event, offset, key, partition, topic, timeStamp) ->
+                    eventHandler(event, key, partition, topic, timeStamp));
+        }
     }
 
     public void eventHandler(Event event, String key, int partition, String topic, long timeStamp) {
