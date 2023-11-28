@@ -58,7 +58,7 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
         event.setCreatedBy(EVENT_CREATOR);
 
 
-        eventController.eventHandler(event, "", 0, "", System.currentTimeMillis());
+        eventController.eventHandler(event, "", "", 0, "", System.currentTimeMillis());
 
         //Ensure that result is stored.
         Optional<DroolsResult> droolsResultOptional = droolsResultProvider.findLatest(null, null, EVENT_CREATOR, null);
