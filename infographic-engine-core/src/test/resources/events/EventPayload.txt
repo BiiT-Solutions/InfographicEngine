@@ -1,3 +1,74 @@
 {
-  "json" : "{\n  \"class\" : \"com.biit.drools.form.DroolsSubmittedForm\",\n  \"tag\" : \"CADT\",\n  \"children\" : [ {\n    \"class\" : \"com.biit.drools.form.DroolsSubmittedCategory\",\n    \"tag\" : \"Form\",\n    \"text\" : \"Form\",\n    \"children\" : [ {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedGroup\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ {\n        \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n        \"tag\" : \"Form\",\n        \"text\" : \"Form\",\n        \"children\" : [ ],\n        \"answers\" : [ \"receptive\" ]\n      }, {\n        \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n        \"tag\" : \"Form\",\n        \"text\" : \"Form\",\n        \"children\" : [ ],\n        \"answers\" : [ \"visionary\" ]\n      }, {\n        \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n        \"tag\" : \"Form\",\n        \"text\" : \"Form\",\n        \"children\" : [ ],\n        \"answers\" : [ \"strategist\" ]\n      } ],\n      \"repeatable\" : \"false\",\n      \"numberOfIterations\" : \"0\"\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedGroup\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ {\n        \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n        \"tag\" : \"Form\",\n        \"text\" : \"Form\",\n        \"children\" : [ ],\n        \"answers\" : [ \"banker\" ]\n      }, {\n        \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n        \"tag\" : \"Form\",\n        \"text\" : \"Form\",\n        \"children\" : [ ],\n        \"answers\" : [ \"leader\" ]\n      }, {\n        \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n        \"tag\" : \"Form\",\n        \"text\" : \"Form\",\n        \"children\" : [ ],\n        \"answers\" : [ \"scientist\" ]\n      } ],\n      \"repeatable\" : \"false\",\n      \"numberOfIterations\" : \"0\"\n    } ]\n  }, {\n    \"class\" : \"com.biit.drools.form.DroolsSubmittedCategory\",\n    \"tag\" : \"Form\",\n    \"text\" : \"Form\",\n    \"children\" : [ {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"flexibility\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"independence\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"communication-skills\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"business-minded\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"persuasiveness\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"decisiveness\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"building-and-maintaining\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"multicultural-sensitivity\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"cooperation\" ]\n    }, {\n      \"class\" : \"com.biit.drools.form.DroolsSubmittedQuestion\",\n      \"tag\" : \"Form\",\n      \"text\" : \"Form\",\n      \"children\" : [ ],\n      \"answers\" : [ \"goal-setting\" ]\n    } ]\n  } ],\n  \"applicationName\" : \"\",\n  \"formVariables\" : \"{\\n  \\\"/DroolsSubmittedForm[@label='CADT']\\\" : {\\n    \\\"StructureInspirationScore\\\" : 1.0,\\n    \\\"ReceptiveScore\\\" : 0.0,\\n    \\\"BankerScore\\\" : 0.0,\\n    \\\"StrategistScore\\\" : 0.0,\\n    \\\"LeaderScore\\\" : 0.0,\\n    \\\"InnovatorScore\\\" : 0.0,\\n    \\\"TradesmanScore\\\" : 0.0,\\n    \\\"TotalScore\\\" : 12.0,\\n    \\\"ScientistScore\\\" : 0.0,\\n    \\\"VisionaryScore\\\" : 0.0,\\n    \\\"AdaptabilityActionScore\\\" : 1.0\\n  }\\n}\"\n}"
+  "class" : "com.biit.drools.form.DroolsSubmittedForm",
+  "tag" : "CADT",
+  "children" : [ {
+    "class" : "com.biit.drools.form.DroolsSubmittedCategory",
+    "tag" : "archetype",
+    "text" : "archetype",
+    "children" : [ {
+      "class" : "com.biit.drools.form.DroolsSubmittedGroup",
+      "tag" : "inspiration",
+      "text" : "inspiration",
+      "children" : [ {
+        "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+        "tag" : "nhm_card_choice1",
+        "text" : "nhm_card_choice1",
+        "children" : [ ],
+        "answers" : [ "innovator" ]
+      }, {
+        "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+        "tag" : "nhm_card_choice2",
+        "text" : "nhm_card_choice2",
+        "children" : [ ],
+        "answers" : [ "visionary" ]
+      }, {
+        "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+        "tag" : "nhm_card_choice3",
+        "text" : "nhm_card_choice3",
+        "children" : [ ],
+        "answers" : [ "strategist" ]
+      } ],
+      "repeatable" : "false",
+      "numberOfIterations" : "0"
+    }, {
+      "class" : "com.biit.drools.form.DroolsSubmittedGroup",
+      "tag" : "structure",
+      "text" : "structure",
+      "children" : [ {
+        "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+        "tag" : "nhm_card_choice4",
+        "text" : "nhm_card_choice4",
+        "children" : [ ],
+        "answers" : [ "leader" ]
+      }, {
+        "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+        "tag" : "nhm_card_choice5",
+        "text" : "nhm_card_choice5",
+        "children" : [ ],
+        "answers" : [ "tradesman" ]
+      }, {
+        "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+        "tag" : "nhm_card_choice6",
+        "text" : "nhm_card_choice6",
+        "children" : [ ],
+        "answers" : [ "scientist" ]
+      } ],
+      "repeatable" : "false",
+      "numberOfIterations" : "0"
+    } ]
+  }, {
+    "class" : "com.biit.drools.form.DroolsSubmittedCategory",
+    "tag" : "competency",
+    "text" : "competency",
+    "children" : [ {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "competency_choice",
+      "text" : "competency_choice",
+      "children" : [ ],
+      "answers" : [ "client-oriented", "direction", "flexibility", "goal-setting", "independence", "leadership", "multicultural-sensitivity", "planification", "problem-analysis", "tenacity" ]
+    } ]
+  } ],
+  "applicationName" : "",
+  "version" : 1,
+  "formVariables" : "{\n  \"/DroolsSubmittedForm[@label='CADT']\" : {\n    \"StructureInspirationScore\" : -1.0,\n    \"ReceptiveScore\" : -1.0,\n    \"BankerScore\" : -1.0,\n    \"StrategistScore\" : 0.0,\n    \"LeaderScore\" : 2.0,\n    \"InnovatorScore\" : 0.0,\n    \"TradesmanScore\" : -1.0,\n    \"TotalScore\" : 11.0,\n    \"ScientistScore\" : 2.0,\n    \"VisionaryScore\" : 0.0,\n    \"AdaptabilityActionScore\" : 1.0\n  }\n}"
 }

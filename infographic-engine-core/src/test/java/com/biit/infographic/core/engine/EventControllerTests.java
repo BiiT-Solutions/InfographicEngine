@@ -1,7 +1,6 @@
 package com.biit.infographic.core.engine;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.kafka.DroolsSubmittedFormPayload;
 import com.biit.infographic.core.controllers.kafka.EventController;
 import com.biit.infographic.core.providers.DroolsResultProvider;
 import com.biit.infographic.core.providers.GeneratedInfographicProvider;
@@ -51,9 +50,7 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
     @Test
     public void checkEventParsing() throws JsonProcessingException {
         Event event = new Event();
-        final DroolsSubmittedFormPayload droolsSubmittedFormPayload = ObjectMapperFactory.getObjectMapper().readValue(
-                readEventPayload("EventPayload.txt"), DroolsSubmittedFormPayload.class);
-        event.setPayload(droolsSubmittedFormPayload);
+        event.setPayload(readEventPayload("EventPayload.txt"));
         event.setCustomProperty(EventCustomProperties.FACT_TYPE, EventController.ALLOWED_FACT_TYPE);
         event.setCreatedBy(EVENT_CREATOR);
 
@@ -63,10 +60,8 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
         //Ensure that result is stored.
         Optional<DroolsResult> droolsResultOptional = droolsResultProvider.findLatest(null, null, EVENT_CREATOR, null);
         Assert.assertTrue(droolsResultOptional.isPresent());
-        final DroolsSubmittedFormPayload droolsSubmittedFormPayloadStored = ObjectMapperFactory.getObjectMapper().readValue(
-                droolsResultOptional.get().getForm(), DroolsSubmittedFormPayload.class);
         final DroolsSubmittedForm droolsSubmittedFormStored = ObjectMapperFactory.getObjectMapper().readValue(
-                droolsSubmittedFormPayloadStored.getJson(), DroolsSubmittedForm.class);
+                droolsResultOptional.get().getForm(), DroolsSubmittedForm.class);
         Assert.assertEquals(droolsSubmittedFormStored.getName(), "CADT");
         Assert.assertFalse(droolsSubmittedFormStored.getFormVariables().isEmpty());
 

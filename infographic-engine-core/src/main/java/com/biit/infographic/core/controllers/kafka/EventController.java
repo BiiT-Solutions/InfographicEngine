@@ -3,7 +3,6 @@ package com.biit.infographic.core.controllers.kafka;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
-import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.logger.EventsLogger;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.kafka.consumers.EventListener;
@@ -79,11 +78,6 @@ public class EventController {
     }
 
     private DroolsSubmittedForm getDroolsForm(Event event) throws JsonProcessingException {
-        return ObjectMapperFactory.getObjectMapper().readValue(getDroolsEventPayload(event).getJson(), DroolsSubmittedForm.class);
-    }
-
-
-    private DroolsSubmittedFormPayload getDroolsEventPayload(Event event) {
-        return event.getEntity(DroolsSubmittedFormPayload.class);
+        return event.getEntity(DroolsSubmittedForm.class);
     }
 }

@@ -3,7 +3,6 @@ package com.biit.infographic.core.controllers.kafka.converter;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
-import com.biit.kafka.config.ObjectMapperFactory;
 import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
 import com.biit.kafka.events.EventSubject;
@@ -39,7 +38,7 @@ public class EventConverter {
 
     public DroolsResult getDroolsContent(Event event, DroolsSubmittedForm droolsSubmittedForm) throws JsonProcessingException {
         final DroolsResult receivedForm = new DroolsResult();
-        receivedForm.setForm(ObjectMapperFactory.getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(event.getPayload()));
+        receivedForm.setForm(event.getPayload());
         receivedForm.setCreatedBy(event.getCreatedBy());
         //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
         if (event.getTag() != null) {
