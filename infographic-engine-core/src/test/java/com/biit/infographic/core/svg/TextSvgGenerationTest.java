@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 @Test(groups = {"svgText"})
 public class TextSvgGenerationTest extends SvgGeneration {
     private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
+    private static final String LONG_TEXT_WITH_NEW_LINES = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor." + SvgText.NEW_LINE_SYMBOL + " Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu." + SvgText.NEW_LINE_SYMBOL + SvgText.NEW_LINE_SYMBOL + " In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
 
     @BeforeClass
     public void prepareFolder() throws IOException {
@@ -109,6 +110,22 @@ public class TextSvgGenerationTest extends SvgGeneration {
     }
 
     @Test
+    public void documentLongTextJustifyWithNewLineTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT_WITH_NEW_LINES, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineLength(80);
+        svgTemplate.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextJustifyWithNewLine.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextJustifyWithNewLine.svg");
+    }
+
+    @Test
     public void documentLongTextJustifyByWidthTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
@@ -122,6 +139,22 @@ public class TextSvgGenerationTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextJustifyByWidth.svg");
+    }
+
+    @Test
+    public void documentLongTextJustifyByWidthWithNewLinesTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText(LONG_TEXT_WITH_NEW_LINES, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineWidth(300);
+        svgTemplate.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextJustifyByWidthWithNewLines.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextJustifyByWidthWithNewLines.svg");
     }
 
     @Test

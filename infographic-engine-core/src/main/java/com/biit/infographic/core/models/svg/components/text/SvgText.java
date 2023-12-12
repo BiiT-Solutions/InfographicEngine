@@ -23,10 +23,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
+import java.util.Objects;
 
 @JsonDeserialize(using = SvgTextDeserializer.class)
 @JsonRootName(value = "text")
 public class SvgText extends SvgAreaElement {
+    public static final String NEW_LINE_SYMBOL = "\n";
     private static final int LINE_SEPARATION = 5;
     private static final int MIN_LINE_SEPARATION = 2;
     private static final int DEFAULT_FONT_SIZE = 10;
@@ -350,7 +352,9 @@ public class SvgText extends SvgAreaElement {
                 }
                 elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
                 if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
-                    elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
+                    if (!lines.get(i).endsWith(NEW_LINE_SYMBOL)) {
+                        elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
+                    }
                 }
                 final String style = generateStyle(null).toString();
                 if (!style.isBlank()) {
@@ -478,14 +482,30 @@ public class SvgText extends SvgAreaElement {
         final List<String> lines = new ArrayList<>();
         if (content != null) {
             while (!content.isBlank()) {
-                if (content.length() < maxLineLength) {
+                if (content.startsWith(NEW_LINE_SYMBOL)) {
+                    lines.add("");
+                    content = content.substring(NEW_LINE_SYMBOL.length() + 1);
+                    continue;
+                }
+                final int endOfLine;
+                //New Line forced by user.
+                if (content.indexOf(NEW_LINE_SYMBOL) > 0 && content.indexOf(NEW_LINE_SYMBOL) < maxLineLength) {
+                    endOfLine = content.indexOf(NEW_LINE_SYMBOL) + NEW_LINE_SYMBOL.length();
+                } else {
+                    endOfLine = maxLineLength;
+                }
+                if (content.length() < endOfLine) {
                     lines.add(content);
                     break;
                 }
-                final String pieceOfText = content.substring(0, maxLineLength);
+                final String pieceOfText = content.substring(0, endOfLine);
                 for (int i = pieceOfText.length() - 1; i >= 0; i--) {
                     if (Character.isWhitespace(pieceOfText.charAt(i))) {
                         lines.add(pieceOfText.substring(0, i));
+                        //Add new line separator for later
+                        if (Objects.equals(pieceOfText.charAt(i) + "", NEW_LINE_SYMBOL)) {
+                            lines.set(lines.size() - 1, lines.get(lines.size() - 1) + NEW_LINE_SYMBOL);
+                        }
                         try {
                             content = content.substring(i + 1);
                         } catch (IndexOutOfBoundsException e) {
@@ -517,7 +537,20 @@ public class SvgText extends SvgAreaElement {
                     if (words.peek() == null) {
                         break;
                     }
-                    lineToCheck.append(words.peek());
+
+                    //New Line forced by user.
+                    final String word = words.peek();
+                    if (Objects.equals(word.trim(), NEW_LINE_SYMBOL)) {
+                        words.pop();
+                        break;
+                    } else if (word.endsWith(NEW_LINE_SYMBOL)) {
+                        lineToCheck.append(word, 0, word.lastIndexOf(NEW_LINE_SYMBOL));
+                        line = lineToCheck.toString();
+                        words.pop();
+                        break;
+                    } else {
+                        lineToCheck.append(words.peek());
+                    }
                     if (getLineWidthPixels(lineToCheck.toString()) < lineWidth) {
                         line = lineToCheck.toString();
                         words.pop();
