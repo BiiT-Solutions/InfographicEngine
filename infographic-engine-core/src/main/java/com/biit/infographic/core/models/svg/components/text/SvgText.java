@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -352,7 +353,7 @@ public class SvgText extends SvgAreaElement {
                 }
                 elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
                 if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
-                    if (!lines.get(i).endsWith(NEW_LINE_SYMBOL)) {
+                    if (!lines.get(i).endsWith(NEW_LINE_SYMBOL) && !lines.get(i).trim().isEmpty()) {
                         elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
                     }
                 }
@@ -360,7 +361,8 @@ public class SvgText extends SvgAreaElement {
                 if (!style.isBlank()) {
                     elementLine.setAttribute("style", style);
                 }
-                elementLine.setTextContent(lines.get(i));
+                //Add text without new line character.
+                elementLine.setTextContent(lines.get(i).replaceAll(NEW_LINE_SYMBOL, " "));
                 text.appendChild(elementLine);
             }
         } else {
@@ -522,7 +524,7 @@ public class SvgText extends SvgAreaElement {
     private List<String> getLinesByPixels(String content, int lineWidth) {
         final List<String> lines = new ArrayList<>();
         if (content != null) {
-            final Deque<String> words = new ArrayDeque<>(Arrays.asList(content.split("\\s+")));
+            final Deque<String> words = new ArrayDeque<>(Arrays.asList(content.split("[ \\t\\x0B\\f\\r]+")));
             if (words.size() == 1) {
                 lines.add(words.pop());
                 return lines;
@@ -530,6 +532,7 @@ public class SvgText extends SvgAreaElement {
             while (!words.isEmpty()) {
                 final StringBuilder lineToCheck = new StringBuilder();
                 String line = "";
+                long extraLines = 0;
                 while (true) {
                     if (!lineToCheck.isEmpty()) {
                         lineToCheck.append(" ");
@@ -540,13 +543,16 @@ public class SvgText extends SvgAreaElement {
 
                     //New Line forced by user.
                     final String word = words.peek();
-                    if (Objects.equals(word.trim(), NEW_LINE_SYMBOL)) {
-                        words.pop();
-                        break;
-                    } else if (word.endsWith(NEW_LINE_SYMBOL)) {
-                        lineToCheck.append(word, 0, word.lastIndexOf(NEW_LINE_SYMBOL));
+//                    if (Objects.equals(word.trim(), NEW_LINE_SYMBOL)) {
+//                        words.pop();
+//                        break;
+//                    } else
+                    if (word.endsWith(NEW_LINE_SYMBOL)) {
+                        lineToCheck.append(word);
                         line = lineToCheck.toString();
                         words.pop();
+                        //Add extra lines if multiple line symbols appear.
+                        extraLines = Math.max(0, StringUtils.countMatches(word, NEW_LINE_SYMBOL) - 1);
                         break;
                     } else {
                         lineToCheck.append(words.peek());
@@ -558,9 +564,12 @@ public class SvgText extends SvgAreaElement {
                         break;
                     }
                 }
-                if (!line.isEmpty()) {
-                    lines.add(line);
+                // if (!line.isEmpty()) {
+                lines.add(line);
+                for (int i = 0; i < extraLines; i++) {
+                    lines.add(" ");
                 }
+                //}
             }
 
         }
