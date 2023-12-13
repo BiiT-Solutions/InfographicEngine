@@ -289,6 +289,13 @@ public class SvgText extends SvgAreaElement {
         this.text = text;
     }
 
+    private String addSpacesToNewLines(String text) {
+        if (text == null) {
+            return null;
+        }
+        return text.replaceAll("(\n)(?! )", "$1 ");
+    }
+
     public Integer getMaxLineLength() {
         return maxLineLength;
     }
@@ -526,6 +533,7 @@ public class SvgText extends SvgAreaElement {
     private List<String> getLinesByPixels(String content, int lineWidth) {
         final List<String> lines = new ArrayList<>();
         if (content != null) {
+            content = addSpacesToNewLines(content);
             final Deque<String> words = new ArrayDeque<>(Arrays.asList(content.split("[ \\t\\x0B\\f\\r]+")));
             if (words.size() == 1) {
                 lines.add(words.pop());
@@ -543,25 +551,20 @@ public class SvgText extends SvgAreaElement {
                         break;
                     }
 
-                    //New Line forced by user.
-                    final String word = words.peek();
-//                    if (Objects.equals(word.trim(), NEW_LINE_SYMBOL)) {
-//                        words.pop();
-//                        break;
-//                    } else
-                    if (word.endsWith(NEW_LINE_SYMBOL)) {
-                        lineToCheck.append(word);
-                        line = lineToCheck.toString();
-                        words.pop();
-                        //Add extra lines if multiple line symbols appear.
-                        extraLines = Math.max(0, StringUtils.countMatches(word, NEW_LINE_SYMBOL) - 1);
-                        break;
-                    } else {
-                        lineToCheck.append(words.peek());
-                    }
+                    lineToCheck.append(words.peek());
                     if (getLineWidthPixels(lineToCheck.toString()) < lineWidth) {
-                        line = lineToCheck.toString();
-                        words.pop();
+                        final String word = words.peek();
+                        //New Line forced by user.
+                        if (word.endsWith(NEW_LINE_SYMBOL)) {
+                            line = lineToCheck.toString();
+                            words.pop();
+                            //Add extra lines if multiple line symbols appear.
+                            extraLines = Math.max(0, StringUtils.countMatches(word, NEW_LINE_SYMBOL) - 1);
+                            break;
+                        } else {
+                            line = lineToCheck.toString();
+                            words.pop();
+                        }
                     } else {
                         break;
                     }

@@ -4,9 +4,15 @@ import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.VerticalAlignment;
+import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.BufferedWriter;
@@ -14,6 +20,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +29,29 @@ import java.util.List;
 public class CADTCustomerTest extends SvgGeneration {
 
     private static final String TITLE = "NATURAL STRENGTH AND NATURAL POTENTIAL";
+    private static final String INTRODUCTION_TITLE = "INTRODUCTION";
+    private static final String INTRODUCTION_CONTENT = "The CADT assessment provides you with your natural strength and potential. By choosing your favourites from the 8 archetypes CADT determines what your natural tendencies are, while choosing from the 24 competencies CADT determines what your current behaviours are. Each archetype has associated key competencies. In case they are in tune (i.e. you have chosen them) it means that these competences provide you with energy and that you are able to use them appropriately even under pressure. If they are not in tune (i.e. you have not chosen them) it means that you either do not recognise them in yourself or that you have not developed them yet, but that you are naturally oriented to develop them.";
 
     private static final String BORDER_COLOR = "b49057";
+
+    private static final Double DEFAULT_STROKE_WIDTH = 8D;
+
+    private static final int GROUP_TEXTS_WIDTHS = 835;
+    private static final int INTRODUCTION_TEXTS_WIDTHS = 2182;
+
+
+    private static final String UNIVERSAL_COLOR = "919ee1";
+    private static final String SOCIETY_COLOR = "7ccadf";
+    private static final String VISION_COLOR = "e9a197";
+    private static final String STRENGTH_COLOR = "919ee1";
+    private static final String STRUCTURE_COLOR = "8bc4ab";
+    private static final String INSPIRATION_COLOR = "919ee1";
+    private static final String ADAPTABILITY_COLOR = "7ccadf";
+    private static final String ACTION_COLOR = "e9a197";
+    private static final String MATERIAL_ATTACHMENT_COLOR = "8bc4ab";
+    private static final String COMMUNICATION_COLOR = "7ccadf";
+    private static final String SELF_AWARE_COLOR = "e9a197";
+    private static final String ANALYSIS_COLOR = "8bc4ab";
 
     private SvgTemplate cadtTemplate;
 
@@ -33,7 +62,7 @@ public class CADTCustomerTest extends SvgGeneration {
     }
 
     private List<SvgAreaElement> generateHeader() {
-        final List<SvgAreaElement> headerElements = new ArrayList<>();
+        final List<SvgAreaElement> elements = new ArrayList<>();
 
 
         //Title background
@@ -42,15 +71,292 @@ public class CADTCustomerTest extends SvgGeneration {
         nameRectangle.getElementStroke().setStrokeWidth(7.07);
         nameRectangle.setXRadius(25L);
         nameRectangle.setYRadius(30L);
-        headerElements.add(nameRectangle);
+        elements.add(nameRectangle);
 
-        final SvgText title = new SvgText(TITLE, 30, 2137L, 116L);
+        final SvgText title = new SvgText(TITLE, 40, 766L, 239L);
         title.setFontFamily("Arial-BoldMT, Arial, sans-serif");
         title.setFontWeight(FontWeight.BOLD);
-        headerElements.add(title);
+        elements.add(title);
 
 
-        return headerElements;
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateIntroduction() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+        final SvgText title = new SvgText(INTRODUCTION_TITLE, 40, 1107L, 351L);
+        title.setFontFamily("Arial-BoldMT, Arial, sans-serif");
+        title.setFontWeight(FontWeight.BOLD);
+        elements.add(title);
+
+        final SvgText text = new SvgText("Arial", INTRODUCTION_CONTENT, 32, 147L, 407L);
+        text.setMaxParagraphHeight(188);
+        text.setMaxLineWidth(INTRODUCTION_TEXTS_WIDTHS);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(text);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateSelectedExample() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText selectedText = new SvgText("Arial", "selected", 32, 552L, 729L);
+        elements.add(selectedText);
+
+        final SvgCircle scoreCircle1 = new SvgCircle(692L, 691L, 47L);
+        scoreCircle1.getElementAttributes().setFill(UNIVERSAL_COLOR);
+        elements.add(scoreCircle1);
+
+        final SvgCircle scoreCircle2 = new SvgCircle(809L, 691L, 47L);
+        scoreCircle2.getElementAttributes().setFill(VISION_COLOR);
+        elements.add(scoreCircle2);
+
+        final SvgCircle scoreCircle3 = new SvgCircle(928L, 691L, 47L);
+        scoreCircle3.getElementAttributes().setFill(ADAPTABILITY_COLOR);
+        elements.add(scoreCircle3);
+
+        final SvgCircle scoreCircle4 = new SvgCircle(1043L, 691L, 47L);
+        scoreCircle4.getElementAttributes().setFill(MATERIAL_ATTACHMENT_COLOR);
+        elements.add(scoreCircle4);
+
+        final SvgCircle emptyCircle1 = new SvgCircle(1340L, 691L, 47L);
+        emptyCircle1.getElementAttributes().setFill("ffffffff");
+        emptyCircle1.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        emptyCircle1.getElementStroke().setStrokeColor(UNIVERSAL_COLOR);
+        elements.add(emptyCircle1);
+
+        final SvgCircle emptyCircle2 = new SvgCircle(1457L, 691L, 47L);
+        emptyCircle2.getElementAttributes().setFill("ffffffff");
+        emptyCircle2.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        emptyCircle2.getElementStroke().setStrokeColor(VISION_COLOR);
+        elements.add(emptyCircle2);
+
+        final SvgCircle emptyCircle3 = new SvgCircle(1574L, 691L, 47L);
+        emptyCircle3.getElementAttributes().setFill("ffffffff");
+        emptyCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        emptyCircle3.getElementStroke().setStrokeColor(ADAPTABILITY_COLOR);
+        elements.add(emptyCircle3);
+
+        final SvgCircle emptyCircle4 = new SvgCircle(1691L, 691L, 47L);
+        emptyCircle4.getElementAttributes().setFill("ffffffff");
+        emptyCircle4.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        emptyCircle4.getElementStroke().setStrokeColor(MATERIAL_ATTACHMENT_COLOR);
+        elements.add(emptyCircle4);
+
+        final SvgText notSelectedText = new SvgText("Arial", "not selected", 32, 1813L, 724L);
+        elements.add(notSelectedText);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generatePrimaryValuesTitle() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+        final SvgText title = new SvgText("YOUR PRIMARY NATURAL POWER AND NATURAL POTENTIAL", 36, 700L, 893L);
+        title.setFontFamily("Arial-BoldMT, Arial, sans-serif");
+        title.setFontWeight(FontWeight.BOLD);
+        elements.add(title);
+
+        final SvgRectangle rectangle = new SvgRectangle(619L, 948L, "1248px", "59px", "f0edebff");
+        elements.add(rectangle);
+
+        final SvgText rectangleText = new SvgText("Arial", "I am a global citizen", 32, 1243L, 964L);
+        rectangleText.setMaxParagraphHeight(59);
+        rectangleText.setMaxLineWidth(1248);
+        rectangleText.setTextAlign(TextAlign.CENTER);
+        rectangleText.getElementAttributes().setVerticalAlignment(VerticalAlignment.MIDDLE);
+        elements.add(rectangleText);
+
+        final SvgText paragraphText = new SvgText("Arial", "Your CADT assessments results shows that you are more inline with leadership competences, as you have a natural tendency to be a receptive, helpful, compassionate and empathetic human being able to act as a saviour.", 32, 147L, 1035L);
+        paragraphText.setMaxParagraphHeight(66);
+        paragraphText.setMaxLineWidth(INTRODUCTION_TEXTS_WIDTHS);
+        paragraphText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphText);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generatePrimaryValuesCircles() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText firstGroupTitle = new SvgText("Arial-BoldMT, Arial, sans-serif", "UNIVERSAL", 32, 1115L, 1171L);
+        firstGroupTitle.setMaxParagraphHeight(59);
+        firstGroupTitle.setMaxLineWidth(1248);
+        firstGroupTitle.setTextAlign(TextAlign.CENTER);
+        firstGroupTitle.getElementAttributes().setVerticalAlignment(VerticalAlignment.MIDDLE);
+        firstGroupTitle.getElementAttributes().setFill(UNIVERSAL_COLOR);
+        firstGroupTitle.setFontWeight(FontWeight.BOLD);
+        elements.add(firstGroupTitle);
+
+        final SvgLine firstGroupLine = new SvgLine(UNIVERSAL_COLOR, DEFAULT_STROKE_WIDTH, 1119L, 1300L, 1119L, 1640L);
+        elements.add(firstGroupLine);
+
+        final SvgCircle firstScoreCircleBorder = new SvgCircle(1062L, 1233L, 56L);
+        firstScoreCircleBorder.getElementAttributes().setFill("ffffff");
+        firstScoreCircleBorder.getElementStroke().setStrokeColor(UNIVERSAL_COLOR);
+        firstScoreCircleBorder.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircleBorder);
+        
+        final SvgCircle firstScoreCircle1 = new SvgCircle(1075L, 1246L, 43L);
+        firstScoreCircle1.getElementAttributes().setFill(UNIVERSAL_COLOR);
+        firstScoreCircle1.getElementStroke().setStrokeColor(UNIVERSAL_COLOR);
+        firstScoreCircle1.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircle1);
+
+        final SvgCircle firstScoreCircle2 = new SvgCircle(1075L, 1437L, 43L);
+        firstScoreCircle2.getElementAttributes().setFill(UNIVERSAL_COLOR);
+        firstScoreCircle2.getElementStroke().setStrokeColor(UNIVERSAL_COLOR);
+        firstScoreCircle2.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircle2);
+
+        final SvgCircle firstScoreCircle3 = new SvgCircle(1075L, 1570L, 43L);
+        firstScoreCircle3.getElementAttributes().setFill("ffffff");
+        firstScoreCircle3.getElementStroke().setStrokeColor(UNIVERSAL_COLOR);
+        firstScoreCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircle3);
+
+        final SvgText secondGroupTitle = new SvgText("Arial-BoldMT, Arial, sans-serif", "SELF-AWARE", 32, 1365L, 1171L);
+        secondGroupTitle.setMaxParagraphHeight(59);
+        secondGroupTitle.setMaxLineWidth(1248);
+        secondGroupTitle.setTextAlign(TextAlign.CENTER);
+        secondGroupTitle.getElementAttributes().setVerticalAlignment(VerticalAlignment.MIDDLE);
+        secondGroupTitle.getElementAttributes().setFill(SELF_AWARE_COLOR);
+        secondGroupTitle.setFontWeight(FontWeight.BOLD);
+        elements.add(secondGroupTitle);
+
+        final SvgLine secondGroupLine = new SvgLine(SELF_AWARE_COLOR, DEFAULT_STROKE_WIDTH, 1365L, 1300L, 1365L, 1640L);
+        elements.add(secondGroupLine);
+
+        final SvgCircle secondScoreCircleBorder = new SvgCircle(1308L, 1233L, 56L);
+        secondScoreCircleBorder.getElementAttributes().setFill("ffffff");
+        secondScoreCircleBorder.getElementStroke().setStrokeColor(SELF_AWARE_COLOR);
+        secondScoreCircleBorder.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircleBorder);
+
+        final SvgCircle secondScoreCircle1 = new SvgCircle(1321L, 1246L, 43L);
+        secondScoreCircle1.getElementAttributes().setFill(SELF_AWARE_COLOR);
+        secondScoreCircle1.getElementStroke().setStrokeColor(SELF_AWARE_COLOR);
+        secondScoreCircle1.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircle1);
+
+        final SvgCircle secondScoreCircle2 = new SvgCircle(1321L, 1437L, 43L);
+        secondScoreCircle2.getElementAttributes().setFill(SELF_AWARE_COLOR);
+        secondScoreCircle2.getElementStroke().setStrokeColor(SELF_AWARE_COLOR);
+        secondScoreCircle2.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircle2);
+
+        final SvgCircle secondScoreCircle3 = new SvgCircle(1321L, 1570L, 43L);
+        secondScoreCircle3.getElementAttributes().setFill("ffffff");
+        secondScoreCircle3.getElementStroke().setStrokeColor(SELF_AWARE_COLOR);
+        secondScoreCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircle3);
+
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generatePrimaryValuesTexts() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText paragraphLeftText = new SvgText("Arial", "By nature, you are a receptive, focused on caring for others. You are quick to sense when something is wrong with people and try to solve it asap.",
+                32, 147L, 1157L);
+        paragraphLeftText.setMaxParagraphHeight(246);
+        paragraphLeftText.setMaxLineWidth(GROUP_TEXTS_WIDTHS);
+        paragraphLeftText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphLeftText);
+
+        final SvgText paragraphLeftConsiderationsText = new SvgText("Arial", "Choosing the interpersonal competence means you see yourself as a helpful and empathetic person, happy to offer solutions. You have the ability to listen without judging but may become abstracted in someone else’s problem.\n\n" +
+                "Considerations:\nYou may feel insecure, oversensitive, chaotic, or self-sacrificing due to an anti-social feeling. This could have a hidden reason to occur so the ideal is to focus on your multicultural sensitivity being openness a key theme.",
+                32, 147L, 1439L);
+        paragraphLeftConsiderationsText.setMaxParagraphHeight(400);
+        paragraphLeftConsiderationsText.setMaxLineWidth(GROUP_TEXTS_WIDTHS);
+        paragraphLeftConsiderationsText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphLeftConsiderationsText);
+
+        final SvgText paragraphRightText = new SvgText("Arial", "By nature you are a leader, self-confident, calm, decisive, dynamic, reliable and warm with others. A person of integrity and authority who takes responsibility for both your own and organization’s actions.",
+                32, 1490L, 1157L);
+        paragraphRightText.setMaxParagraphHeight(246);
+        paragraphRightText.setMaxLineWidth(GROUP_TEXTS_WIDTHS);
+        paragraphRightText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphRightText);
+
+        final SvgText paragraphRightConsiderationsText = new SvgText("Arial", "Selecting both competences means you know what you want, and because of that you easily take and give responsibility, being able to delegate and motivate when people have the right competences, focused on achieving results.\n\n" +
+                "Considerations:\n The competencies you have already developed in this area will naturally develop further through the experience. However you must take care of not becoming arrogant during the process and evaluating your closure to human concerns.",
+                32, 1490L, 1439L);
+        paragraphRightConsiderationsText.setMaxParagraphHeight(400);
+        paragraphRightConsiderationsText.setMaxLineWidth(GROUP_TEXTS_WIDTHS);
+        paragraphRightConsiderationsText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphRightConsiderationsText);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateSecondaryValuesTitle() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+        final SvgText title = new SvgText("YOUR SECONDARY NATURAL POWER AND NATURAL POTENTIAL", 36, 668L, 2118L);
+        title.setFontFamily("Arial-BoldMT, Arial, sans-serif");
+        title.setFontWeight(FontWeight.BOLD);
+        elements.add(title);
+
+        final SvgRectangle rectangle = new SvgRectangle(619L, 2173L, "1248px", "59px", "f0edebff");
+        elements.add(rectangle);
+
+        final SvgText rectangleText = new SvgText("Arial", "I am commercially powerful", 32, 1243L, 2190L);
+        rectangleText.setMaxParagraphHeight(59);
+        rectangleText.setMaxLineWidth(1248);
+        rectangleText.setTextAlign(TextAlign.CENTER);
+        rectangleText.getElementAttributes().setVerticalAlignment(VerticalAlignment.MIDDLE);
+        elements.add(rectangleText);
+
+        final SvgText paragraphText = new SvgText("Arial", "Your CADT assessments results shows that you are more inline with commercial competences, as you have a natural tendency to be strategic and strong taking actions and to have a powerful ability to communicate.", 32, 147L, 2260L);
+        paragraphText.setMaxParagraphHeight(66);
+        paragraphText.setMaxLineWidth(INTRODUCTION_TEXTS_WIDTHS);
+        paragraphText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphText);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateSecondaryValuesTexts() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText paragraphLeftText = new SvgText("Arial", "By nature, you are a strategist who use creativity to start transformative processes that lead to cyclical growth.",
+                32, 147L, 2382L);
+        paragraphLeftText.setMaxParagraphHeight(246);
+        paragraphLeftText.setMaxLineWidth(800);
+        paragraphLeftText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphLeftText);
+
+        final SvgText paragraphLeftConsiderationsText = new SvgText("Arial", "By choosing decisiveness you recognize yourself as able to make clear, effective and impulsive decisions when there is no time for research.\n\n" +
+                "Considerations:\nYou maybe act combatively, jealously or dominantly without accepting someone else’s opinion or opposition. Also could be perjudicial to work with a double agenda. \n" +
+                "This could have a hidden reason to occur so the ideal is to work on your judgement skills being honesty a key theme.",
+                32, 147L, 2664L);
+        paragraphLeftConsiderationsText.setMaxParagraphHeight(400);
+        paragraphLeftConsiderationsText.setMaxLineWidth(800);
+        paragraphLeftConsiderationsText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphLeftConsiderationsText);
+
+        final SvgText paragraphRightText = new SvgText("Arial", "By nature you are a salesman focused on communication, able to interact and build relations easily. You know how to share information verbally and enjoy out-smarting competitors with your associative skills.",
+                32, 1490L, 2382L);
+        paragraphRightText.setMaxParagraphHeight(246);
+        paragraphRightText.setMaxLineWidth(800);
+        paragraphRightText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphRightText);
+
+        final SvgText paragraphRightConsiderationsText = new SvgText("Arial", "However you haven’t choose any related competences so probably you don’t recognize yourself as such, being perceived as indifferent or unreliable, restless and rushed when must communicate or indecisive in a commercial environment.\n\n" +
+                "Considerations:\nOften there is a combination of reasons why a person could not recognize with their natural tendencies. Now the ideal would be start working on your communication skills being yourself and your interlocutor a key theme.",
+                32, 1490L, 2664L);
+        paragraphRightConsiderationsText.setMaxParagraphHeight(400);
+        paragraphRightConsiderationsText.setMaxLineWidth(800);
+        paragraphRightConsiderationsText.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphRightConsiderationsText);
+
+        return elements;
+    }
+
+    @BeforeClass
+    public void prepareFolder() throws IOException {
+        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
     }
 
     @Test
@@ -58,14 +364,26 @@ public class CADTCustomerTest extends SvgGeneration {
         cadtTemplate = new SvgTemplate();
         cadtTemplate.getElementAttributes().setHeight(3495L);
         cadtTemplate.getElementAttributes().setWidth(2481L);
-        //cadtTemplate.setSvgBackground(generateBackground());
+        cadtTemplate.setSvgBackground(generateBackground());
 
         cadtTemplate.addElements(generateHeader());
+        cadtTemplate.addElements(generateIntroduction());
+        cadtTemplate.addElements(generateSelectedExample());
+        cadtTemplate.addElements(generatePrimaryValuesTitle());
+        cadtTemplate.addElements(generatePrimaryValuesCircles());
+        cadtTemplate.addElements(generatePrimaryValuesTexts());
+        cadtTemplate.addElements(generateSecondaryValuesTitle());
+        cadtTemplate.addElements(generateSecondaryValuesTexts());
 
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "CADT_Customer.svg")), true)) {
             out.println(SvgGenerator.generate(cadtTemplate));
         }
+    }
+
+    @AfterClass
+    public void removeFolder() {
+        //Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }
