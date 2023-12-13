@@ -13,6 +13,8 @@ import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -81,6 +83,15 @@ public class CADTCustomerTest extends SvgGeneration {
         title.setFontFamily("Arial-BoldMT, Arial, sans-serif");
         title.setFontWeight(FontWeight.BOLD);
         elements.add(title);
+
+        //Logo
+        final SvgImage logo = new SvgImage();
+        logo.setFromResource("images/NHM-Logo.png");
+        logo.getElementAttributes().setXCoordinate(2052L);
+        logo.getElementAttributes().setYCoordinate(67L);
+        logo.getElementAttributes().setWidth(282L);
+        logo.getElementAttributes().setHeight(254L);
+        elements.add(logo);
 
 
         return elements;
@@ -493,6 +504,12 @@ public class CADTCustomerTest extends SvgGeneration {
                 + File.separator + "CADT_Customer.svg")), true)) {
             out.println(SvgGenerator.generate(cadtTemplate));
         }
+    }
+
+    @Test(dependsOnMethods = "generateCADT")
+    public void checkSerialization() throws JsonProcessingException {
+        SvgTemplate svgTemplate1 = SvgTemplate.fromJson(cadtTemplate.toJson());
+        Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(cadtTemplate));
     }
 
     @AfterClass
