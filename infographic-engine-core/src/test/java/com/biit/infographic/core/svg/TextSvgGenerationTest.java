@@ -45,6 +45,20 @@ public class TextSvgGenerationTest extends SvgGeneration {
     }
 
     @Test
+    public void documentSimpleTextTestWithNewLine() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText("This is the first text\n with a new line\n\n and a paragraph.", 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
+        svgTemplate.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentSimpleTextWithNewLine.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentSimpleTextWithNewLine.svg");
+    }
+
+    @Test
     public void documentLongTextLimitedLineTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);

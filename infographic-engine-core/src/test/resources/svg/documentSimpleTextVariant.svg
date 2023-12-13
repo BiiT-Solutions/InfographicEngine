@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="256" zoomAndPan="magnify" contentStyleType="text/css" height="256" viewBox="0 0 256 256" preserveAspectRatio="xMidYMid meet" version="1.0">
-    <text x="128" font-size="12" y="135.56" style="font-family:sans-serif;" font-family="sans-serif" id="text0" font-variant="normal">This is the normal text</text>
-    <text x="128" font-size="12" y="185.56" style="font-family:sans-serif;" font-family="sans-serif" id="text1" font-variant="small-caps">This is the Small Caps text</text>
-    <text x="128" font-size="12" y="235.56" style="font-family:sans-serif;" font-family="sans-serif" id="text2" font-variant="unicase">This is the Unicase text</text>
+    <text x="128" font-size="12" y="135.56" style="font-family:sans-serif;" font-family="sans-serif" id="text0" font-variant="normal">
+        <tspan style="font-family:sans-serif;" x="128">This is the normal text</tspan>
+    </text>
+    <text x="128" font-size="12" y="185.56" style="font-family:sans-serif;" font-family="sans-serif" id="text1" font-variant="small-caps">
+        <tspan style="font-family:sans-serif;" x="128">This is the Small Caps text</tspan>
+    </text>
+    <text x="128" font-size="12" y="235.56" style="font-family:sans-serif;" font-family="sans-serif" id="text2" font-variant="unicase">
+        <tspan style="font-family:sans-serif;" x="128">This is the Unicase text</tspan>
+    </text>
 </svg>
+

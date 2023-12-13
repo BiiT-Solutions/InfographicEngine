@@ -325,48 +325,50 @@ public class SvgText extends SvgAreaElement {
     public Element generateSvg(Document doc) {
         final Element text = doc.createElementNS(NAMESPACE, "text");
 
-        if (getMaxLineWidth() != null || getMaxLineLength() != null) {
-            List<String> lines;
-            int longestLinePixels;
-            //To compensate the first size reduction on the loop.
-            setLineSeparation(getLineSeparation() + 1);
-            do {
-                decreaseHeight();
-                if (getMaxLineWidth() != null) {
-                    lines = getLinesByPixels(getText(), getMaxLineWidth());
-                    longestLinePixels = getMaxLineWidth();
-                } else {
-                    lines = getLines(getText(), getMaxLineLength());
-                    final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
-                    longestLinePixels = getLineWidthPixels(longestLine);
-                }
-                //Check text is not overflowing the paragraph.
-            } while (!fitsInParagraph(lines) && (getRealFontSize() >= MINIMUM_FONT_SIZE + 1 || getLineSeparation() >= MIN_LINE_SEPARATION));
-            if (getRealFontSize() == MINIMUM_FONT_SIZE && getLineSeparation() == MIN_LINE_SEPARATION) {
-                SvgGeneratorLogger.warning(this.getClass(), "Text '{}' cannot fit on a height '{}' and width '{}'.",
-                        getText(), getMaxParagraphHeight(), getMaxLineWidth() != null ? getMaxLineWidth() : getMaxLineLength());
+        List<String> lines;
+        int longestLinePixels;
+        //To compensate the first size reduction on the loop.
+        setLineSeparation(getLineSeparation() + 1);
+        do {
+            decreaseHeight();
+            if (getMaxLineWidth() != null) {
+                lines = getLinesByPixels(getText(), getMaxLineWidth());
+                longestLinePixels = getMaxLineWidth();
+            } else {
+                lines = getLines(getText(), getMaxLineLength() != null ? getMaxLineLength() : Integer.MAX_VALUE);
+                final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
+                longestLinePixels = getLineWidthPixels(longestLine);
             }
-            for (int i = 0; i < lines.size(); i++) {
-                final Element elementLine = doc.createElementNS(NAMESPACE, "tspan");
-                if (i > 0) {
-                    elementLine.setAttribute("dy", String.valueOf(getRealFontSize() + getLineSeparation()));
-                }
-                elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
-                if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
-                    if (!lines.get(i).endsWith(NEW_LINE_SYMBOL) && !lines.get(i).trim().isEmpty()) {
-                        elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
-                    }
-                }
-                final String style = generateStyle(null).toString();
-                if (!style.isBlank()) {
-                    elementLine.setAttribute("style", style);
-                }
-                //Add text without new line character.
-                elementLine.setTextContent(lines.get(i).replaceAll(NEW_LINE_SYMBOL, " "));
-                text.appendChild(elementLine);
+            //Check text is not overflowing the paragraph.
+        } while (!fitsInParagraph(lines) && (getRealFontSize() >= MINIMUM_FONT_SIZE + 1 || getLineSeparation() >= MIN_LINE_SEPARATION));
+        if (getRealFontSize() == MINIMUM_FONT_SIZE && getLineSeparation() == MIN_LINE_SEPARATION) {
+            SvgGeneratorLogger.warning(this.getClass(), "Text '{}' cannot fit on a height '{}' and width '{}'.",
+                    getText(), getMaxParagraphHeight(), getMaxLineWidth() != null ? getMaxLineWidth() : getMaxLineLength());
+        }
+        int emptyLinesCounter = 0;
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).trim().isEmpty()) {
+                emptyLinesCounter++;
+                continue;
             }
-        } else {
-            text.setTextContent(getText());
+            final Element elementLine = doc.createElementNS(NAMESPACE, "tspan");
+            if (i > 0) {
+                elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation())));
+            }
+            elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
+            if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
+                if (!lines.get(i).endsWith(NEW_LINE_SYMBOL) && !lines.get(i).trim().isEmpty()) {
+                    elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
+                }
+            }
+            final String style = generateStyle(null).toString();
+            if (!style.isBlank()) {
+                elementLine.setAttribute("style", style);
+            }
+            //Add text without new line character.
+            elementLine.setTextContent(lines.get(i).replaceAll(NEW_LINE_SYMBOL, " "));
+            text.appendChild(elementLine);
+            emptyLinesCounter = 0;
         }
 
         text.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
