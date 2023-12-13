@@ -53,6 +53,8 @@ public class CADTCustomerTest extends SvgGeneration {
     private static final String SELF_AWARE_COLOR = "e9a197";
     private static final String ANALYSIS_COLOR = "8bc4ab";
 
+    private static final String INTELLECTUAL_PROPERTY_DISCLAIM_COLOR = "d3d4d4ff";
+
     private SvgTemplate cadtTemplate;
 
     private SvgBackground generateBackground() {
@@ -179,7 +181,7 @@ public class CADTCustomerTest extends SvgGeneration {
     private List<SvgAreaElement> generatePrimaryValuesCircles() {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText firstGroupTitle = new SvgText("Arial-BoldMT, Arial, sans-serif", "UNIVERSAL", 32, 1115L, 1171L);
+        final SvgText firstGroupTitle = new SvgText("Sofia Sans Extra Condensed", "UNIVERSAL", 32, 1115L, 1171L);
         firstGroupTitle.setMaxParagraphHeight(59);
         firstGroupTitle.setMaxLineWidth(1248);
         firstGroupTitle.setTextAlign(TextAlign.CENTER);
@@ -215,7 +217,7 @@ public class CADTCustomerTest extends SvgGeneration {
         firstScoreCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
         elements.add(firstScoreCircle3);
 
-        final SvgText secondGroupTitle = new SvgText("Arial-BoldMT, Arial, sans-serif", "SELF-AWARE", 32, 1365L, 1171L);
+        final SvgText secondGroupTitle = new SvgText("Sofia Sans Extra Condensed", "SELF-AWARE", 32, 1365L, 1171L);
         secondGroupTitle.setMaxParagraphHeight(59);
         secondGroupTitle.setMaxLineWidth(1248);
         secondGroupTitle.setTextAlign(TextAlign.CENTER);
@@ -248,6 +250,85 @@ public class CADTCustomerTest extends SvgGeneration {
         final SvgCircle secondScoreCircle3 = new SvgCircle(1321L, 1570L, 43L);
         secondScoreCircle3.getElementAttributes().setFill("ffffff");
         secondScoreCircle3.getElementStroke().setStrokeColor(SELF_AWARE_COLOR);
+        secondScoreCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircle3);
+
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateSecondaryValuesCircles() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText firstGroupTitle = new SvgText("Sofia Sans Extra Condensed", "STRENGTH", 32, 1115L, 2399L);
+        firstGroupTitle.setMaxParagraphHeight(59);
+        firstGroupTitle.setMaxLineWidth(1248);
+        firstGroupTitle.setTextAlign(TextAlign.CENTER);
+        firstGroupTitle.getElementAttributes().setVerticalAlignment(VerticalAlignment.MIDDLE);
+        firstGroupTitle.getElementAttributes().setFill(UNIVERSAL_COLOR);
+        firstGroupTitle.setFontWeight(FontWeight.BOLD);
+        elements.add(firstGroupTitle);
+
+        final SvgLine firstGroupLine = new SvgLine(STRENGTH_COLOR, DEFAULT_STROKE_WIDTH, 1119L, 2550L, 1119L, 2850L);
+        elements.add(firstGroupLine);
+
+        final SvgCircle firstScoreCircleBorder = new SvgCircle(1062L, 2458L, 56L);
+        firstScoreCircleBorder.getElementAttributes().setFill("ffffff");
+        firstScoreCircleBorder.getElementStroke().setStrokeColor(STRENGTH_COLOR);
+        firstScoreCircleBorder.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircleBorder);
+
+        final SvgCircle firstScoreCircle1 = new SvgCircle(1075L, 2471L, 43L);
+        firstScoreCircle1.getElementAttributes().setFill(STRENGTH_COLOR);
+        firstScoreCircle1.getElementStroke().setStrokeColor(STRENGTH_COLOR);
+        firstScoreCircle1.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircle1);
+
+        final SvgCircle firstScoreCircle2 = new SvgCircle(1075L, 2662L, 43L);
+        firstScoreCircle2.getElementAttributes().setFill(STRENGTH_COLOR);
+        firstScoreCircle2.getElementStroke().setStrokeColor(STRENGTH_COLOR);
+        firstScoreCircle2.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircle2);
+
+        final SvgCircle firstScoreCircle3 = new SvgCircle(1075L, 2791L, 43L);
+        firstScoreCircle3.getElementAttributes().setFill("ffffff");
+        firstScoreCircle3.getElementStroke().setStrokeColor(STRENGTH_COLOR);
+        firstScoreCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(firstScoreCircle3);
+
+        final SvgText secondGroupTitle = new SvgText("Sofia Sans Extra Condensed", "COMMUNICATION", 32, 1365L, 2399L);
+        secondGroupTitle.setMaxParagraphHeight(59);
+        secondGroupTitle.setMaxLineWidth(1248);
+        secondGroupTitle.setTextAlign(TextAlign.CENTER);
+        secondGroupTitle.getElementAttributes().setVerticalAlignment(VerticalAlignment.MIDDLE);
+        secondGroupTitle.getElementAttributes().setFill(COMMUNICATION_COLOR);
+        secondGroupTitle.setFontWeight(FontWeight.BOLD);
+        elements.add(secondGroupTitle);
+
+        final SvgLine secondGroupLine = new SvgLine(COMMUNICATION_COLOR, DEFAULT_STROKE_WIDTH, 1365L, 2550L, 1365L, 2850L);
+        elements.add(secondGroupLine);
+
+        final SvgCircle secondScoreCircleBorder = new SvgCircle(1308L, 2458L, 56L);
+        secondScoreCircleBorder.getElementAttributes().setFill("ffffff");
+        secondScoreCircleBorder.getElementStroke().setStrokeColor(COMMUNICATION_COLOR);
+        secondScoreCircleBorder.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircleBorder);
+
+        final SvgCircle secondScoreCircle1 = new SvgCircle(1321L, 2471L, 43L);
+        secondScoreCircle1.getElementAttributes().setFill(COMMUNICATION_COLOR);
+        secondScoreCircle1.getElementStroke().setStrokeColor(COMMUNICATION_COLOR);
+        secondScoreCircle1.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircle1);
+
+        final SvgCircle secondScoreCircle2 = new SvgCircle(1321L, 2662L, 43L);
+        secondScoreCircle2.getElementAttributes().setFill(COMMUNICATION_COLOR);
+        secondScoreCircle2.getElementStroke().setStrokeColor(COMMUNICATION_COLOR);
+        secondScoreCircle2.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        elements.add(secondScoreCircle2);
+
+        final SvgCircle secondScoreCircle3 = new SvgCircle(1321L, 2791L, 43L);
+        secondScoreCircle3.getElementAttributes().setFill("ffffff");
+        secondScoreCircle3.getElementStroke().setStrokeColor(COMMUNICATION_COLOR);
         secondScoreCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
         elements.add(secondScoreCircle3);
 
@@ -354,6 +435,17 @@ public class CADTCustomerTest extends SvgGeneration {
         return elements;
     }
 
+    private List<SvgAreaElement> generateIntellectualPropertyTexts() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText text = new SvgText("Intellectual property disclaim...", 32, 550L, 3346L);
+        text.setFontFamily("Arial-BoldMT, Arial, sans-serif");
+        text.getElementAttributes().setFill(INTELLECTUAL_PROPERTY_DISCLAIM_COLOR);
+        elements.add(text);
+
+        return elements;
+    }
+
     @BeforeClass
     public void prepareFolder() throws IOException {
         Files.createDirectories(Paths.get(OUTPUT_FOLDER));
@@ -373,7 +465,9 @@ public class CADTCustomerTest extends SvgGeneration {
         cadtTemplate.addElements(generatePrimaryValuesCircles());
         cadtTemplate.addElements(generatePrimaryValuesTexts());
         cadtTemplate.addElements(generateSecondaryValuesTitle());
+        cadtTemplate.addElements(generateSecondaryValuesCircles());
         cadtTemplate.addElements(generateSecondaryValuesTexts());
+        cadtTemplate.addElements(generateIntellectualPropertyTexts());
 
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
