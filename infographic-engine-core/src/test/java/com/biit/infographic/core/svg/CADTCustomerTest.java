@@ -1,11 +1,13 @@
 package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.generators.SvgGenerator;
+import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.VerticalAlignment;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
@@ -178,6 +180,14 @@ public class CADTCustomerTest extends SvgGeneration {
         return elements;
     }
 
+    private List<SvgAreaElement> generatePrimaryCard(){
+        final List<SvgAreaElement> elements = new ArrayList<>();
+        elements.add(new SvgImage(
+                new ElementAttributes(1043L, 1411L, "400", "600"), "EliseNess",
+                readBase64Image("EliseNess.txt")));
+        return elements;
+    }
+
     private List<SvgAreaElement> generatePrimaryValuesCircles() {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
@@ -198,7 +208,7 @@ public class CADTCustomerTest extends SvgGeneration {
         firstScoreCircleBorder.getElementStroke().setStrokeColor(UNIVERSAL_COLOR);
         firstScoreCircleBorder.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
         elements.add(firstScoreCircleBorder);
-        
+
         final SvgCircle firstScoreCircle1 = new SvgCircle(1075L, 1246L, 43L);
         firstScoreCircle1.getElementAttributes().setFill(UNIVERSAL_COLOR);
         firstScoreCircle1.getElementStroke().setStrokeColor(UNIVERSAL_COLOR);
@@ -254,6 +264,14 @@ public class CADTCustomerTest extends SvgGeneration {
         elements.add(secondScoreCircle3);
 
 
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateSecondaryCard(){
+        final List<SvgAreaElement> elements = new ArrayList<>();
+        elements.add(new SvgImage(
+                new ElementAttributes(1043L, 2637L, "400", "600"), "EliseNess",
+                readBase64Image("EliseNess.txt")));
         return elements;
     }
 
@@ -331,7 +349,6 @@ public class CADTCustomerTest extends SvgGeneration {
         secondScoreCircle3.getElementStroke().setStrokeColor(COMMUNICATION_COLOR);
         secondScoreCircle3.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
         elements.add(secondScoreCircle3);
-
 
         return elements;
     }
@@ -462,9 +479,11 @@ public class CADTCustomerTest extends SvgGeneration {
         cadtTemplate.addElements(generateIntroduction());
         cadtTemplate.addElements(generateSelectedExample());
         cadtTemplate.addElements(generatePrimaryValuesTitle());
+        cadtTemplate.addElements(generatePrimaryCard());
         cadtTemplate.addElements(generatePrimaryValuesCircles());
         cadtTemplate.addElements(generatePrimaryValuesTexts());
         cadtTemplate.addElements(generateSecondaryValuesTitle());
+        cadtTemplate.addElements(generateSecondaryCard());
         cadtTemplate.addElements(generateSecondaryValuesCircles());
         cadtTemplate.addElements(generateSecondaryValuesTexts());
         cadtTemplate.addElements(generateIntellectualPropertyTexts());
