@@ -1,0 +1,137 @@
+<DroolsSubmittedForm label="CADT">
+    <variables>
+        <FirstGroupFirstSelectionArchetypeText>
+            <![CDATA[Receptive Default Description Text]]></FirstGroupFirstSelectionArchetypeText>
+        <SecondGroupSecondSelectionSecondCompetenceColor>
+            <![CDATA[8bc4abbf]]></SecondGroupSecondSelectionSecondCompetenceColor>
+        <SecondGroupFirstSelectionSecondCompetenceColor>
+            <![CDATA[ffffff]]></SecondGroupFirstSelectionSecondCompetenceColor>
+        <FirstGroupSecondSelectionArchetypeText>
+            <![CDATA[Innovator Second Selection Default Text]]></FirstGroupSecondSelectionArchetypeText>
+        <SecondGroupFirstSelectionArchetypeText>
+            <![CDATA[Leader Selection Default Text]]></SecondGroupFirstSelectionArchetypeText>
+        <SecondSelectionsTitle>
+            <![CDATA[I am an innovator and banker]]></SecondSelectionsTitle>
+        <FirstGroupSecondSelectionTitle>
+            <![CDATA[SOCIETY]]></FirstGroupSecondSelectionTitle>
+        <FirstSelectionsIntroduction>
+            <![CDATA[I am a receptive and leader introduction.]]></FirstSelectionsIntroduction>
+        <FirstGroupSecondSelectionConsiderations>
+            <![CDATA[Innovator Second Selection Considerations Text]]></FirstGroupSecondSelectionConsiderations>
+        <FirstGroupFirstSelectionConsiderations>
+            <![CDATA[Receptive Default Considerations Text]]></FirstGroupFirstSelectionConsiderations>
+        <SecondGroupSecondSelectionArchetypeColor>
+            <![CDATA[8bc4abbf]]></SecondGroupSecondSelectionArchetypeColor>
+        <SecondSelectionsIntroduction>
+            <![CDATA[I am an innovator and banker introduction.]]></SecondSelectionsIntroduction>
+        <FirstGroupSecondSelectionFirstCompetenceColor>
+            <![CDATA[ffffff]]></FirstGroupSecondSelectionFirstCompetenceColor>
+        <SecondGroupSecondSelectionFirstCompetenceColor>
+            <![CDATA[ffffff]]></SecondGroupSecondSelectionFirstCompetenceColor>
+        <SecondSelectionsCard>
+            <![CDATA[card1]]></SecondSelectionsCard>
+        <FirstSelectionsTitle>
+            <![CDATA[I am a receptive and leader]]></FirstSelectionsTitle>
+        <SecondGroupFirstSelectionArchetypeColor>
+            <![CDATA[e9a197bf]]></SecondGroupFirstSelectionArchetypeColor>
+        <SecondGroupFirstSelectionTitle>
+            <![CDATA[SELF AWARE]]></SecondGroupFirstSelectionTitle>
+        <SecondGroupSecondSelectionTitle>
+            <![CDATA[MATERIAL ATTACHMENT]]></SecondGroupSecondSelectionTitle>
+        <FirstGroupFirstSelectionFirstCompetenceColor>
+            <![CDATA[ffffff]]></FirstGroupFirstSelectionFirstCompetenceColor>
+        <SecondGroupFirstSelectionFirstCompetenceColor>
+            <![CDATA[e9a197bf]]></SecondGroupFirstSelectionFirstCompetenceColor>
+        <SecondGroupSecondSelectionConsiderations>
+            <![CDATA[Considerations with Tenacity]]></SecondGroupSecondSelectionConsiderations>
+        <FirstGroupFirstSelectionSecondCompetenceColor>
+            <![CDATA[ffffff]]></FirstGroupFirstSelectionSecondCompetenceColor>
+        <FirstGroupSecondSelectionSecondCompetenceColor>
+            <![CDATA[ffffff]]></FirstGroupSecondSelectionSecondCompetenceColor>
+        <SecondGroupSecondSelectionArchetypeText>
+            <![CDATA[Banker Second Default Text]]></SecondGroupSecondSelectionArchetypeText>
+        <FirstGroupSecondSelectionArchetypeColor>
+            <![CDATA[7ccadfbf]]></FirstGroupSecondSelectionArchetypeColor>
+        <FirstGroupFirstSelectionTitle>
+            <![CDATA[UNIVERSAL]]></FirstGroupFirstSelectionTitle>
+        <FirstGroupFirstSelectionArchetypeColor>
+            <![CDATA[919ee1bf]]></FirstGroupFirstSelectionArchetypeColor>
+        <SecondGroupFirstSelectionConsiderations>
+            <![CDATA[Considerations with Leadership]]></SecondGroupFirstSelectionConsiderations>
+    </variables>
+
+    <children>
+        <DroolsSubmittedCategory name="archetype">
+            <variables></variables>
+            <children>
+                <DroolsSubmittedGroup name="inspiration">
+                    <variables></variables>
+                    <children>
+                        <DroolsSubmittedQuestion name="nhm_card_choice1">
+                            <variables></variables>
+                            <value>
+                                <![CDATA[receptive]]></value>
+                        </DroolsSubmittedQuestion>
+
+                        <DroolsSubmittedQuestion name="nhm_card_choice2">
+                            <variables></variables>
+                            <value>
+                                <![CDATA[visionary]]></value>
+                        </DroolsSubmittedQuestion>
+
+                        <DroolsSubmittedQuestion name="nhm_card_choice3">
+                            <variables></variables>
+                            <value>
+                                <![CDATA[innovator]]></value>
+                        </DroolsSubmittedQuestion>
+
+                    </children>
+
+                </DroolsSubmittedGroup>
+
+                <DroolsSubmittedGroup name="structure">
+                    <variables></variables>
+                    <children>
+                        <DroolsSubmittedQuestion name="nhm_card_choice4">
+                            <variables></variables>
+                            <value>
+                                <![CDATA[leader]]></value>
+                        </DroolsSubmittedQuestion>
+
+                        <DroolsSubmittedQuestion name="nhm_card_choice5">
+                            <variables></variables>
+                            <value>
+                                <![CDATA[tradesman]]></value>
+                        </DroolsSubmittedQuestion>
+
+                        <DroolsSubmittedQuestion name="nhm_card_choice6">
+                            <variables></variables>
+                            <value>
+                                <![CDATA[banker]]></value>
+                        </DroolsSubmittedQuestion>
+
+                    </children>
+
+                </DroolsSubmittedGroup>
+
+            </children>
+
+        </DroolsSubmittedCategory>
+
+        <DroolsSubmittedCategory name="competency">
+            <variables></variables>
+            <children>
+                <DroolsSubmittedQuestion name="competency_choice">
+                    <variables>
+                    </variables>
+                    <value>
+                        <![CDATA[engagement conscientiousness tenacity leadership planification discipline client-oriented communication-skills goal-setting direction]]></value>
+                </DroolsSubmittedQuestion>
+
+            </children>
+
+        </DroolsSubmittedCategory>
+
+    </children>
+
+</DroolsSubmittedForm>

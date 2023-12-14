@@ -144,7 +144,7 @@ public class SvgImage extends SvgAreaElement {
         if (resource != null && content == null) {
             finalContent = getFromPath(resource);
         }
-        if (!finalContent.startsWith(BASE_64_PREFIX)) {
+        if (finalContent != null && !finalContent.startsWith(BASE_64_PREFIX)) {
             image.setAttributeNS("http://www.w3.org/1999/xlink", "href", BASE_64_PREFIX + finalContent);
         } else {
             image.setAttributeNS("http://www.w3.org/1999/xlink", "href", finalContent);

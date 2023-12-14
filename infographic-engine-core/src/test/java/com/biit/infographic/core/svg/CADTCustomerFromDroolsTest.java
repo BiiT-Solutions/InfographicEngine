@@ -60,56 +60,51 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
     private static final String FORTH_BULLET_COLOR = "8bc4ab";
     private static final String INTELLECTUAL_PROPERTY_DISCLAIM_COLOR = "d3d4d4ff";
 
-    private static final String FIRST_CHOICE_TITLE = "I am a global citizen";
-    private static final String FIRST_CHOICE_INTRODUCTION = "Your CADT assessments results shows that you are more inline with leadership competences, as you have a natural tendency to be a receptive, helpful, compassionate and empathetic human being able to act as a saviour.";
+    private static final String FIRST_CHOICE_TITLE = "#DROOLS%CADT%FirstSelectionsTitle#";
+    private static final String FIRST_CHOICE_INTRODUCTION = "#DROOLS%CADT%FirstSelectionsIntroduction#";
 
-    private static final String FIRST_CHOICE_CARD = "EliseNess.txt";
+    private static final String FIRST_CHOICE_CARD = "#DROOLS%CADT%FirstSelectionsCard#";
 
-    private static final String FIRST_GROUP_FIRST_CHOICE_TEXT = "By nature, you are a receptive, focused on caring for others. You are quick to sense when something is wrong with people and try to solve it asap.";
-    private static final String FIRST_GROUP_FIRST_CHOICE_CONSIDERATIONS = "Choosing the interpersonal competence means you see yourself as a helpful and empathetic person, happy to offer solutions. You have the ability to listen without judging but may become abstracted in someone else’s problem.\n\n" +
-            "Considerations:\nYou may feel insecure, oversensitive, chaotic, or self-sacrificing due to an anti-social feeling. This could have a hidden reason to occur so the ideal is to focus on your multicultural sensitivity being openness a key theme.";
+    private static final String FIRST_GROUP_FIRST_CHOICE_TEXT = "#DROOLS%CADT%FirstGroupFirstSelectionArchetypeText#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%FirstGroupFirstSelectionConsiderations#";
 
-    private static final String SECOND_GROUP_FIRST_CHOICE_TEXT = "By nature you are a leader, self-confident, calm, decisive, dynamic, reliable and warm with others. A person of integrity and authority who takes responsibility for both your own and organization’s actions.";
-    private static final String SECOND_GROUP_FIRST_CHOICE_CONSIDERATIONS = "Selecting both competences means you know what you want, and because of that you easily take and give responsibility, being able to delegate and motivate when people have the right competences, focused on achieving results.\n\n" +
-            "Considerations:\n The competencies you have already developed in this area will naturally develop further through the experience. However you must take care of not becoming arrogant during the process and evaluating your closure to human concerns.";
+    private static final String SECOND_GROUP_FIRST_CHOICE_TEXT = "#DROOLS%CADT%SecondGroupFirstSelectionArchetypeText#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%SecondGroupFirstSelectionConsiderations#";
 
-    private static final String FIRST_GROUP_FIRST_CHOICE_BULLET_TITLE = "UNIVERSAL";
-    private static final String FIRST_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "919ee1";
-    private static final String FIRST_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "919ee1";
-    private static final String FIRST_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "ffffff";
+    private static final String FIRST_GROUP_FIRST_CHOICE_BULLET_TITLE = "#DROOLS%CADT%FirstGroupFirstSelectionTitle#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupFirstSelectionArchetypeColor#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupFirstSelectionFirstCompetenceColor#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupFirstSelectionSecondCompetenceColor#";
 
-    private static final String SECOND_GROUP_FIRST_CHOICE_BULLET_TITLE = "SELF-AWARE";
-    private static final String SECOND_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "e9a197";
-    private static final String SECOND_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "e9a197";
-    private static final String SECOND_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "ffffff";
+    private static final String SECOND_GROUP_FIRST_CHOICE_BULLET_TITLE = "#DROOLS%CADT%SecondGroupFirstSelectionTitle#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupFirstSelectionArchetypeColor#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupFirstSelectionFirstCompetenceColor#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupFirstSelectionSecondCompetenceColor#";
 
-    private static final String SECOND_CHOICE_TITLE = "I am commercially powerful";
+    private static final String SECOND_CHOICE_TITLE = "#DROOLS%CADT%SecondSelectionsTitle#";
 
-    private static final String SECOND_CHOICE_INTRODUCTION = "Your CADT assessments results shows that you are more inline with commercial competences, as you have a natural tendency to be strategic and strong taking actions and to have a powerful ability to communicate.";
+    private static final String SECOND_CHOICE_INTRODUCTION = "#DROOLS%CADT%SecondSelectionsIntroduction#";
 
-    private static final String SECOND_CHOICE_CARD = "EliseNess.txt";
+    private static final String SECOND_CHOICE_CARD = "#DROOLS%CADT%SecondSelectionsCard#";
 
-    private static final String FIRST_GROUP_SECOND_CHOICE_TEXT = "By nature, you are a strategist who use creativity to start transformative processes that lead to cyclical growth.";
-    private static final String FIRST_GROUP_SECOND_CHOICE_CONSIDERATIONS = "By choosing decisiveness you recognize yourself as able to make clear, effective and impulsive decisions when there is no time for research.\n\n" +
-            "Considerations:\nYou maybe act combatively, jealously or dominantly without accepting someone else’s opinion or opposition. Also could be perjudicial to work with a double agenda. \n" +
-            "This could have a hidden reason to occur so the ideal is to work on your judgement skills being honesty a key theme.";
-    private static final String SECOND_GROUP_SECOND_CHOICE_TEXT = "By nature you are a salesman focused on communication, able to interact and build relations easily. You know how to share information verbally and enjoy out-smarting competitors with your associative skills.";
-    private static final String SECOND_GROUP_SECOND_CHOICE_CONSIDERATIONS = "However you haven’t choose any related competences so probably you don’t recognize yourself as such, being perceived as indifferent or unreliable, restless and rushed when must communicate or indecisive in a commercial environment.\n\n" +
-            "Considerations:\nOften there is a combination of reasons why a person could not recognize with their natural tendencies. Now the ideal would be start working on your communication skills being yourself and your interlocutor a key theme.";
+    private static final String FIRST_GROUP_SECOND_CHOICE_TEXT = "#DROOLS%CADT%FirstGroupSecondSelectionArchetypeText#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%FirstGroupSecondSelectionConsiderations#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_TEXT = "#DROOLS%CADT%SecondGroupSecondSelectionArchetypeText#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%SecondGroupSecondSelectionConsiderations#";
 
-    private static final String FIRST_GROUP_SECOND_CHOICE_BULLET_TITLE = "STRENGTH";
-    private static final String FIRST_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "919ee1";
-    private static final String FIRST_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "919ee1";
-    private static final String FIRST_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "ffffff";
+    private static final String FIRST_GROUP_SECOND_CHOICE_BULLET_TITLE = "#DROOLS%CADT%FirstGroupSecondSelectionTitle#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupSecondSelectionArchetypeColor#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupSecondSelectionFirstCompetenceColor#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupSecondSelectionSecondCompetenceColor#";
 
-    private static final String SECOND_GROUP_SECOND_CHOICE_BULLET_TITLE = "COMMUNICATION";
-    private static final String SECOND_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "7ccadf";
-    private static final String SECOND_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "7ccadf";
-    private static final String SECOND_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "ffffff";
+    private static final String SECOND_GROUP_SECOND_CHOICE_BULLET_TITLE = "#DROOLS%CADT%SecondGroupSecondSelectionTitle#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupSecondSelectionArchetypeColor#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupSecondSelectionFirstCompetenceColor#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupSecondSelectionSecondCompetenceColor#";
 
     private SvgTemplate cadtTemplate;
 
-    private final static String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadt.json";
+    private final static String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadtCustomer.json";
 
     @Autowired
     private DroolsResultController droolsResultController;
@@ -363,9 +358,9 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
 
     private List<SvgAreaElement> generateSecondaryCard() {
         final List<SvgAreaElement> elements = new ArrayList<>();
-        elements.add(new SvgImage(
-                new ElementAttributes(1043L, 2637L, "400", "600"), "EliseNess",
-                readBase64Image(SECOND_CHOICE_CARD)));
+        final SvgImage svgImage = new SvgImage(new ElementAttributes(1043L, 2637L, "400", "600"),
+                "images/" + SECOND_CHOICE_CARD, true);
+        elements.add(svgImage);
         return elements;
     }
 

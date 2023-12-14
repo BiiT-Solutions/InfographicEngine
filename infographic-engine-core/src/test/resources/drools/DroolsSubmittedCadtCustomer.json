@@ -1,0 +1,113 @@
+{
+  "class": "com.biit.drools.form.DroolsSubmittedForm",
+  "tag": "CADT",
+  "children": [
+    {
+      "class": "com.biit.drools.form.DroolsSubmittedCategory",
+      "tag": "archetype",
+      "text": "archetype",
+      "children": [
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedGroup",
+          "tag": "inspiration",
+          "text": "inspiration",
+          "children": [
+            {
+              "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+              "tag": "nhm_card_choice1",
+              "text": "nhm_card_choice1",
+              "children": [],
+              "answers": [
+                "receptive"
+              ]
+            },
+            {
+              "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+              "tag": "nhm_card_choice2",
+              "text": "nhm_card_choice2",
+              "children": [],
+              "answers": [
+                "visionary"
+              ]
+            },
+            {
+              "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+              "tag": "nhm_card_choice3",
+              "text": "nhm_card_choice3",
+              "children": [],
+              "answers": [
+                "innovator"
+              ]
+            }
+          ],
+          "repeatable": "false",
+          "numberOfIterations": "0"
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedGroup",
+          "tag": "structure",
+          "text": "structure",
+          "children": [
+            {
+              "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+              "tag": "nhm_card_choice4",
+              "text": "nhm_card_choice4",
+              "children": [],
+              "answers": [
+                "leader"
+              ]
+            },
+            {
+              "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+              "tag": "nhm_card_choice5",
+              "text": "nhm_card_choice5",
+              "children": [],
+              "answers": [
+                "tradesman"
+              ]
+            },
+            {
+              "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+              "tag": "nhm_card_choice6",
+              "text": "nhm_card_choice6",
+              "children": [],
+              "answers": [
+                "banker"
+              ]
+            }
+          ],
+          "repeatable": "false",
+          "numberOfIterations": "0"
+        }
+      ]
+    },
+    {
+      "class": "com.biit.drools.form.DroolsSubmittedCategory",
+      "tag": "competency",
+      "text": "competency",
+      "children": [
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "competency_choice",
+          "text": "competency_choice",
+          "children": [],
+          "answers": [
+            "client-oriented",
+            "communication-skills",
+            "conscientiousness",
+            "direction",
+            "discipline",
+            "engagement",
+            "goal-setting",
+            "leadership",
+            "planification",
+            "tenacity"
+          ]
+        }
+      ]
+    }
+  ],
+  "applicationName": "",
+  "version": 1,
+  "formVariables": "{\n  \"/DroolsSubmittedForm[@label='CADT']\" : {\n    \"FirstGroupFirstSelectionArchetypeText\" : \"Receptive Default Description Text\",\n    \"SecondGroupSecondSelectionSecondCompetenceColor\" : \"8bc4abbf\",\n    \"SecondGroupFirstSelectionSecondCompetenceColor\" : \"ffffff\",\n    \"FirstGroupSecondSelectionArchetypeText\" : \"Innovator Second Selection Default Text\",\n    \"SecondGroupFirstSelectionArchetypeText\" : \"Leader Selection Default Text\",\n    \"SecondSelectionsTitle\" : \"I am an innovator and banker\",\n    \"FirstGroupSecondSelectionTitle\" : \"SOCIETY\",\n    \"FirstSelectionsIntroduction\" : \"I am a receptive and leader introduction.\",\n    \"FirstGroupSecondSelectionConsiderations\" : \"Innovator Second Selection Considerations Text\",\n    \"FirstGroupFirstSelectionConsiderations\" : \"Receptive Default Considerations Text\",\n    \"SecondGroupSecondSelectionArchetypeColor\" : \"8bc4abbf\",\n    \"SecondSelectionsIntroduction\" : \"I am an innovator and banker introduction.\",\n    \"FirstGroupSecondSelectionFirstCompetenceColor\" : \"ffffff\",\n    \"SecondGroupSecondSelectionFirstCompetenceColor\" : \"ffffff\",\n    \"SecondSelectionsCard\" : \"card1\",\n  \"FirstSelectionsCard\" : \"card1\",\n    \"FirstSelectionsTitle\" : \"I am a receptive and leader\",\n    \"SecondGroupFirstSelectionArchetypeColor\" : \"e9a197bf\",\n    \"SecondGroupFirstSelectionTitle\" : \"SELF AWARE\",\n    \"SecondGroupSecondSelectionTitle\" : \"MATERIAL ATTACHMENT\",\n    \"FirstGroupFirstSelectionFirstCompetenceColor\" : \"ffffff\",\n    \"SecondGroupFirstSelectionFirstCompetenceColor\" : \"e9a197bf\",\n    \"SecondGroupSecondSelectionConsiderations\" : \"Considerations with Tenacity\",\n    \"FirstGroupFirstSelectionSecondCompetenceColor\" : \"ffffff\",\n    \"FirstGroupSecondSelectionSecondCompetenceColor\" : \"ffffff\",\n    \"SecondGroupSecondSelectionArchetypeText\" : \"Banker Second Default Text\",\n    \"FirstGroupSecondSelectionArchetypeColor\" : \"7ccadfbf\",\n    \"FirstGroupFirstSelectionTitle\" : \"UNIVERSAL\",\n    \"FirstGroupFirstSelectionArchetypeColor\" : \"919ee1bf\",\n    \"SecondGroupFirstSelectionConsiderations\" : \"Considerations with Leadership\"\n  }\n}"
+}
