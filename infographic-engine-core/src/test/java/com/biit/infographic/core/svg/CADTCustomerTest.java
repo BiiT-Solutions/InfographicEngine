@@ -125,7 +125,7 @@ public class CADTCustomerTest extends SvgGeneration {
         //Logo
         final SvgImage logo = new SvgImage();
         logo.setId("logo");
-        logo.setFromResource("images/NHM-Logo.png");
+        logo.setFromPath("images/NHM-Logo.png");
         logo.getElementAttributes().setXCoordinate(2052L);
         logo.getElementAttributes().setYCoordinate(67L);
         logo.getElementAttributes().setWidth(282L);
@@ -548,6 +548,6 @@ public class CADTCustomerTest extends SvgGeneration {
 
     @AfterClass
     public void removeFolder() {
-        //Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

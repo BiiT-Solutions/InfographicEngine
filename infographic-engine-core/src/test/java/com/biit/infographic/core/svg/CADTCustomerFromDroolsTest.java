@@ -133,6 +133,16 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
         }
     }
 
+    protected boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
 
     private SvgBackground generateBackground() {
         final SvgBackground svgBackground = new SvgBackground();
@@ -159,7 +169,7 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
 
         //Logo
         final SvgImage logo = new SvgImage();
-        logo.setFromResource("images/NHM-Logo.png");
+        logo.setFromPath("images/NHM-Logo.png");
         logo.getElementAttributes().setXCoordinate(2052L);
         logo.getElementAttributes().setYCoordinate(67L);
         logo.getElementAttributes().setWidth(282L);
@@ -590,6 +600,6 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
 
     @AfterClass
     public void removeFolder() {
-        //Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }

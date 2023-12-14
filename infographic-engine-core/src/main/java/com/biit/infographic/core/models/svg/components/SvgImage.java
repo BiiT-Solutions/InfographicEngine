@@ -1,23 +1,19 @@
 package com.biit.infographic.core.models.svg.components;
 
+import com.biit.infographic.core.files.FileSearcher;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgImageDeserializer;
-import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @JsonDeserialize(using = SvgImageDeserializer.class)
@@ -84,13 +80,11 @@ public class SvgImage extends SvgAreaElement {
         this.content = content;
     }
 
-    @JsonIgnore
-    public String setFromFile(File inputFile) {
+    public String codifyOnBase64(byte[] content) {
         // load file from /src/test/resources
         try {
-            final byte[] fileContent = FileUtils.readFileToByteArray(inputFile);
-            return Base64.getEncoder().encodeToString(fileContent);
-        } catch (NullPointerException | IOException e) {
+            return Base64.getEncoder().encodeToString(content);
+        } catch (NullPointerException e) {
             SvgGeneratorLogger.errorMessage(this.getClass(), e);
         }
         return null;
@@ -102,22 +96,18 @@ public class SvgImage extends SvgAreaElement {
      * @param resourcePath
      */
     @JsonIgnore
-    public void setFromResource(String resourcePath) {
+    public void setFromPath(String resourcePath) {
         // load file from /src/test/resources
-        this.content = getFromResource(resourcePath);
+        this.content = getFromPath(resourcePath);
     }
 
     @JsonIgnore
-    public String getFromResource(String resourcePath) {
+    public String getFromPath(String resourcePath) {
         // load file from /src/test/resources
         if (resourceAlreadyInBase64) {
-            try {
-                return FileUtils.readFileToString(new File(getClass().getClassLoader().getResource(resourcePath).getFile()), StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                InfographicEngineLogger.errorMessage(this.getClass(), e);
-            }
+            return FileSearcher.getFileAsString(resourcePath);
         }
-        return setFromFile(new File(getClass().getClassLoader().getResource(resourcePath).getFile()));
+        return codifyOnBase64(FileSearcher.getFileAsBytes(resourcePath));
     }
 
     public String getResource() {
@@ -152,7 +142,7 @@ public class SvgImage extends SvgAreaElement {
 
         String finalContent = content;
         if (resource != null && content == null) {
-            finalContent = getFromResource(resource);
+            finalContent = getFromPath(resource);
         }
         if (!finalContent.startsWith(BASE_64_PREFIX)) {
             image.setAttributeNS("http://www.w3.org/1999/xlink", "href", BASE_64_PREFIX + finalContent);

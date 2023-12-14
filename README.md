@@ -152,11 +152,15 @@ Example:
 
 ### Image
 
+An image. Can be an image to embed or dynamic a path to a resource. The resource can be on the resources folder of the
+application, or on a folder defined by the System ENV variable `FILES_FOLDER`.
+
 **content** The image as base64 that will be encrusted on the template.
 
 **href** A link if needed.
 
-**resource** A resource path where the image will be obtained after the rule's execution.
+**resource** A resource path where the image will be obtained after the rule's execution. Can exist on the resource
+folder or in a folder defined by the System ENV variable `FILES_FOLDER`.
 
 **resourceAlreadyInBase64** if the resource is already codified as base64 image or not.
 
