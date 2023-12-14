@@ -16,6 +16,7 @@ import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
 import com.biit.utils.file.FileReader;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -591,6 +592,13 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
         }
 
         checkContent(svgResults.get(0), "cadtCustomerFromDrools.svg");
+    }
+
+    @Test(dependsOnMethods = "generateCADT")
+    public void checkSerialization() throws JsonProcessingException {
+        //cadtTemplate.toJson() is what must be deployed into the infographic docker container
+        SvgTemplate svgTemplate1 = SvgTemplate.fromJson(cadtTemplate.toJson());
+        Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(cadtTemplate));
     }
 
     @AfterClass
