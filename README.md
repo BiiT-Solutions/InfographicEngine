@@ -653,3 +653,29 @@ An example of a template: a rectangle with a text that represent the score at fo
   ]
 }
 ```
+
+# HowTo create an infographic
+
+Steps of how to generate a form and shown an infographic from it.
+
+1. Create a form in Webform.
+2. Create the rules on ABCD.
+3. Link the ABCD form on Webforms.
+4. Export ABCD rules and deploy them into the Base Form Drools docker container.
+5. Export Webforms Metadata and deploy them into the Base Form Drools docker container.
+6. Generate a Form Result from Webforms. Using XFormsRunner or any other application where you can submit forms.
+7. Send the FormResult
+   to: `https://testing.biit-solutions.com/base-form-drools-engine-backend/drools/element/forms/results` and get the
+   Drools Results `DroolsSubmittedForm`. Store it as a JSON. Beware that the endpoint return an array and you only need
+   one item.
+8. Generate a `SVGTemplate` on a test with the desired structure. Populate all fields with the ABCD variables.
+9. Execute the Drools Results of step `7` on the created test. User the `droolsResultController` for this purpose.
+10. When debugging the test, get the `SvgTemplate` and convert it to JSON with its `.toJson()` method.
+11. Put the JSON into the infographic docker. Remember to create a folder with the same name of the ABCD form, and
+    an `index.json` file that points to the JSON generated.
+12. Use the `DroolsSubmittedForm` for testing the infographic docker. Access
+    to `https://testing.biit-solutions.com/infographic-engine-backend/svg/create/drools/plain` and use the file as
+    the input. 
+
+
+
