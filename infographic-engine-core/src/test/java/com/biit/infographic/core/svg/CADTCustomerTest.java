@@ -53,6 +53,8 @@ public class CADTCustomerTest extends SvgGeneration {
     private static final String FIRST_CHOICE_TITLE = "I am a global citizen";
     private static final String FIRST_CHOICE_INTRODUCTION = "Your CADT assessments results shows that you are more inline with leadership competences, as you have a natural tendency to be a receptive, helpful, compassionate and empathetic human being able to act as a saviour.";
 
+    private static final String FIRST_CHOICE_CARD = "EliseNess.txt";
+
     private static final String FIRST_GROUP_FIRST_CHOICE_TEXT = "By nature, you are a receptive, focused on caring for others. You are quick to sense when something is wrong with people and try to solve it asap.";
     private static final String FIRST_GROUP_FIRST_CHOICE_CONSIDERATIONS = "Choosing the interpersonal competence means you see yourself as a helpful and empathetic person, happy to offer solutions. You have the ability to listen without judging but may become abstracted in someone else’s problem.\n\n" +
             "Considerations:\nYou may feel insecure, oversensitive, chaotic, or self-sacrificing due to an anti-social feeling. This could have a hidden reason to occur so the ideal is to focus on your multicultural sensitivity being openness a key theme.";
@@ -74,6 +76,8 @@ public class CADTCustomerTest extends SvgGeneration {
     private static final String SECOND_CHOICE_TITLE = "I am commercially powerful";
 
     private static final String SECOND_CHOICE_INTRODUCTION = "Your CADT assessments results shows that you are more inline with commercial competences, as you have a natural tendency to be strategic and strong taking actions and to have a powerful ability to communicate.";
+
+    private static final String SECOND_CHOICE_CARD = "EliseNess.txt";
 
     private static final String FIRST_GROUP_SECOND_CHOICE_TEXT = "By nature, you are a strategist who use creativity to start transformative processes that lead to cyclical growth.";
     private static final String FIRST_GROUP_SECOND_CHOICE_CONSIDERATIONS = "By choosing decisiveness you recognize yourself as able to make clear, effective and impulsive decisions when there is no time for research.\n\n" +
@@ -120,6 +124,7 @@ public class CADTCustomerTest extends SvgGeneration {
 
         //Logo
         final SvgImage logo = new SvgImage();
+        logo.setId("logo");
         logo.setFromResource("images/NHM-Logo.png");
         logo.getElementAttributes().setXCoordinate(2052L);
         logo.getElementAttributes().setYCoordinate(67L);
@@ -229,7 +234,7 @@ public class CADTCustomerTest extends SvgGeneration {
         final List<SvgAreaElement> elements = new ArrayList<>();
         elements.add(new SvgImage(
                 new ElementAttributes(1043L, 1411L, "400", "600"), "EliseNess",
-                readBase64Image("EliseNess.txt")));
+                readBase64Image(FIRST_CHOICE_CARD)));
         return elements;
     }
 
@@ -316,7 +321,7 @@ public class CADTCustomerTest extends SvgGeneration {
         final List<SvgAreaElement> elements = new ArrayList<>();
         elements.add(new SvgImage(
                 new ElementAttributes(1043L, 2637L, "400", "600"), "EliseNess",
-                readBase64Image("EliseNess.txt")));
+                readBase64Image(SECOND_CHOICE_CARD)));
         return elements;
     }
 

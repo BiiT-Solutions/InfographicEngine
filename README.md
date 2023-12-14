@@ -152,9 +152,11 @@ Example:
 
 ### Image
 
-**content** The image as base64.
+**content** The image as base64 that will be encrusted on the template.
 
 **href** A link if needed.
+
+**resource** A resource path where the image will be obtained after the rule's execution.
 
 **commonAttributes.id** The id of the element.
 
@@ -369,7 +371,8 @@ Example:
 
 ### Text
 
-Sets a text in the image.
+Sets a text in the image. If you want to create a new line separator, use the `\n` character. The system will
+automatically split the line if founds this character.
 
 The allowed properties are:
 
@@ -440,7 +443,7 @@ Example:
       "y" : 0,
       "style" : ""
     },
-    "contentText" : "Lorem ipsum dolor...",
+    "contentText" : "Lorem ipsum dolor\n...",
     "dxUnit" : "PIXELS",
     "dyUnit" : "PIXELS",
     "elementType" : "TEXT",

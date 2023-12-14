@@ -23,11 +23,16 @@ import java.util.Base64;
 public class SvgImage extends SvgAreaElement {
     private static final String BASE_64_PREFIX = "data:image/png;base64,";
 
+    // To define a content where the image will be included on the json template.
     @JsonProperty("content")
     private String content;
 
     @JsonProperty("href")
     private String href;
+
+    // To define a resource path where the image will be read after the rules' execution.
+    @JsonProperty("resource")
+    private String resource;
 
     public SvgImage() {
         this(new ElementAttributes());
@@ -60,21 +65,40 @@ public class SvgImage extends SvgAreaElement {
     }
 
     @JsonIgnore
-    public void setFromFile(File inputFile) {
+    public String setFromFile(File inputFile) {
         // load file from /src/test/resources
         try {
             final byte[] fileContent = FileUtils.readFileToByteArray(inputFile);
-            setContent(Base64.getEncoder().encodeToString(fileContent));
+            return Base64.getEncoder().encodeToString(fileContent);
         } catch (NullPointerException | IOException e) {
             SvgGeneratorLogger.errorMessage(this.getClass(), e);
         }
-
+        return null;
     }
 
+    /**
+     * Generate a BASE 64 image from a resource. The result is encrusted on the template and cannot be changed by rules.
+     *
+     * @param resourcePath
+     */
     @JsonIgnore
     public void setFromResource(String resourcePath) {
         // load file from /src/test/resources
-        setFromFile(new File(getClass().getClassLoader().getResource(resourcePath).getFile()));
+        this.content = getFromResource(resourcePath);
+    }
+
+    @JsonIgnore
+    public String getFromResource(String resourcePath) {
+        // load file from /src/test/resources
+        return setFromFile(new File(getClass().getClassLoader().getResource(resourcePath).getFile()));
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
     }
 
     public String getHref() {
@@ -90,10 +114,15 @@ public class SvgImage extends SvgAreaElement {
         final Element image = doc.createElementNS(NAMESPACE, "image");
         image.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         image.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
-        if (!content.startsWith(BASE_64_PREFIX)) {
-            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", BASE_64_PREFIX + content);
+
+        String finalContent = content;
+        if (resource != null && content == null) {
+            finalContent = getFromResource(resource);
+        }
+        if (!finalContent.startsWith(BASE_64_PREFIX)) {
+            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", BASE_64_PREFIX + finalContent);
         } else {
-            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", content);
+            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", finalContent);
             //image.setAttributeNS("xlink:href", content);
         }
         if (href != null) {

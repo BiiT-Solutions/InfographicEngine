@@ -17,5 +17,6 @@ public class SvgImageDeserializer extends SvgAreaElementDeserializer<SvgImage> {
         super.deserialize(element, jsonObject, context);
         element.setHref(DeserializerParser.parseString("href", jsonObject));
         element.setContent(DeserializerParser.parseString("content", jsonObject));
+        element.setResource(DeserializerParser.parseString("resource", jsonObject));
     }
 }
