@@ -158,6 +158,8 @@ Example:
 
 **resource** A resource path where the image will be obtained after the rule's execution.
 
+**resourceAlreadyInBase64** if the resource is already codified as base64 image or not.
+
 **commonAttributes.id** The id of the element.
 
 **commonAttributes.class** The class of the element. Useful when combined with CSS.

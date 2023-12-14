@@ -5,6 +5,7 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgImageDeserializer;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +17,7 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @JsonDeserialize(using = SvgImageDeserializer.class)
@@ -34,6 +36,10 @@ public class SvgImage extends SvgAreaElement {
     @JsonProperty("resource")
     private String resource;
 
+    // Resource is already codified on base64 or is an image.
+    @JsonProperty("resourceAlreadyInBase64")
+    private boolean resourceAlreadyInBase64;
+
     public SvgImage() {
         this(new ElementAttributes());
     }
@@ -41,6 +47,20 @@ public class SvgImage extends SvgAreaElement {
     private SvgImage(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.IMAGE);
+        resourceAlreadyInBase64 = false;
+    }
+
+    public SvgImage(ElementAttributes elementAttributes, String resource) {
+        this(elementAttributes);
+        setId(resource);
+        setResource(resource);
+    }
+
+    public SvgImage(ElementAttributes elementAttributes, String resource, boolean resourceAlreadyInBase64) {
+        this(elementAttributes);
+        setId(resource);
+        setResource(resource);
+        setResourceAlreadyInBase64(resourceAlreadyInBase64);
     }
 
     public SvgImage(ElementAttributes elementAttributes, String id, String content) {
@@ -90,6 +110,13 @@ public class SvgImage extends SvgAreaElement {
     @JsonIgnore
     public String getFromResource(String resourcePath) {
         // load file from /src/test/resources
+        if (resourceAlreadyInBase64) {
+            try {
+                return FileUtils.readFileToString(new File(getClass().getClassLoader().getResource(resourcePath).getFile()), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                InfographicEngineLogger.errorMessage(this.getClass(), e);
+            }
+        }
         return setFromFile(new File(getClass().getClassLoader().getResource(resourcePath).getFile()));
     }
 
@@ -99,6 +126,14 @@ public class SvgImage extends SvgAreaElement {
 
     public void setResource(String resource) {
         this.resource = resource;
+    }
+
+    public boolean isResourceAlreadyInBase64() {
+        return resourceAlreadyInBase64;
+    }
+
+    public void setResourceAlreadyInBase64(boolean resourceAlreadyInBase64) {
+        this.resourceAlreadyInBase64 = resourceAlreadyInBase64;
     }
 
     public String getHref() {

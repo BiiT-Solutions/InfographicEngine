@@ -32,7 +32,9 @@
             <class name="com.biit.infographic.core.engine.TemplateFromDroolsTests"/>
             <class name="com.biit.infographic.core.engine.CADT"/>
             <class name="com.biit.infographic.core.svg.CADTTest"/>
+            <class name="com.biit.infographic.core.svg.CadtFromDroolsTest"/>
             <class name="com.biit.infographic.core.svg.CADTCustomerTest"/>
+            <class name="com.biit.infographic.core.svg.CADTCustomerFromDroolsTest"/>
             <class name="com.biit.infographic.core.engine.EventParserTests"/>
             <class name="com.biit.infographic.core.engine.EventControllerTests"/>
         </classes>
