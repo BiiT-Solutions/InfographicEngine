@@ -10,7 +10,7 @@ import java.util.Map;
 
 public final class FileSearcher {
 
-    private static final String SYSTEM_VARIABLE_CONFIG = "FILES_FOLDER";
+    private static final String SYSTEM_VARIABLE_FILES_LOCATION = "FILES_FOLDER";
 
     private FileSearcher() {
 
@@ -54,7 +54,7 @@ public final class FileSearcher {
     private static byte[] getFileFromEnvironmentalVariable(String filePath) throws FileNotFoundException {
         if (readEnvironmentVariable() == null) {
             InfographicEngineLogger.info(FileSearcher.class.getName(),
-                    "No env variable '{}' defined.", SYSTEM_VARIABLE_CONFIG);
+                    "No env variable '{}' defined.", SYSTEM_VARIABLE_FILES_LOCATION);
             throw new FileNotFoundException(FileUtils.class, "No env variable '{}' defined.");
         }
         final String systemVariablesFilePath = readEnvironmentVariable() + File.separator + filePath;
@@ -70,6 +70,6 @@ public final class FileSearcher {
 
     public static String readEnvironmentVariable() {
         final Map<String, String> env = System.getenv();
-        return env.get(SYSTEM_VARIABLE_CONFIG);
+        return env.get(SYSTEM_VARIABLE_FILES_LOCATION);
     }
 }
