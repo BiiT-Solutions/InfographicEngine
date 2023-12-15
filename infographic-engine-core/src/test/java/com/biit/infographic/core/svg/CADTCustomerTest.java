@@ -535,7 +535,7 @@ public class CADTCustomerTest extends SvgGeneration {
 
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "CADT_Customer.svg")), true)) {
+                + File.separator + "CADT_Customer_1.svg")), true)) {
             out.println(SvgGenerator.generate(cadtTemplate));
         }
     }

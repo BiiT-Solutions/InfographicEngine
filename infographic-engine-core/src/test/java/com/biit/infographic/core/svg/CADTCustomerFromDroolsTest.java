@@ -61,51 +61,51 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
     private static final String FORTH_BULLET_COLOR = "8bc4ab";
     private static final String INTELLECTUAL_PROPERTY_DISCLAIM_COLOR = "d3d4d4ff";
 
-    private static final String FIRST_CHOICE_TITLE = "#DROOLS%CADT%FirstSelectionsTitle#";
-    private static final String FIRST_CHOICE_INTRODUCTION = "#DROOLS%CADT%FirstSelectionsIntroduction#";
+    private static final String FIRST_CHOICE_TITLE = "#DROOLS%CADT_Customer_1%FirstSelectionsTitle#";
+    private static final String FIRST_CHOICE_INTRODUCTION = "#DROOLS%CADT_Customer_1%FirstSelectionsIntroduction#";
 
-    private static final String FIRST_CHOICE_CARD = "#DROOLS%CADT%FirstSelectionsCard#";
+    private static final String FIRST_CHOICE_CARD = "#DROOLS%CADT_Customer_1%FirstSelectionsCard#";
 
-    private static final String FIRST_GROUP_FIRST_CHOICE_TEXT = "#DROOLS%CADT%FirstGroupFirstSelectionArchetypeText#";
-    private static final String FIRST_GROUP_FIRST_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%FirstGroupFirstSelectionConsiderations#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_TEXT = "#DROOLS%CADT_Customer_1%FirstGroupFirstSelectionArchetypeText#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_CONSIDERATIONS = "#DROOLS%CADT_Customer_1%FirstGroupFirstSelectionConsiderations#";
 
-    private static final String SECOND_GROUP_FIRST_CHOICE_TEXT = "#DROOLS%CADT%SecondGroupFirstSelectionArchetypeText#";
-    private static final String SECOND_GROUP_FIRST_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%SecondGroupFirstSelectionConsiderations#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_TEXT = "#DROOLS%CADT_Customer_1%SecondGroupFirstSelectionArchetypeText#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_CONSIDERATIONS = "#DROOLS%CADT_Customer_1%SecondGroupFirstSelectionConsiderations#";
 
-    private static final String FIRST_GROUP_FIRST_CHOICE_BULLET_TITLE = "#DROOLS%CADT%FirstGroupFirstSelectionTitle#";
-    private static final String FIRST_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupFirstSelectionArchetypeColor#";
-    private static final String FIRST_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupFirstSelectionFirstCompetenceColor#";
-    private static final String FIRST_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupFirstSelectionSecondCompetenceColor#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_BULLET_TITLE = "#DROOLS%CADT_Customer_1%FirstGroupFirstSelectionTitle#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%FirstGroupFirstSelectionArchetypeColor#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%FirstGroupFirstSelectionFirstCompetenceColor#";
+    private static final String FIRST_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%FirstGroupFirstSelectionSecondCompetenceColor#";
 
-    private static final String SECOND_GROUP_FIRST_CHOICE_BULLET_TITLE = "#DROOLS%CADT%SecondGroupFirstSelectionTitle#";
-    private static final String SECOND_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupFirstSelectionArchetypeColor#";
-    private static final String SECOND_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupFirstSelectionFirstCompetenceColor#";
-    private static final String SECOND_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupFirstSelectionSecondCompetenceColor#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_BULLET_TITLE = "#DROOLS%CADT_Customer_1%SecondGroupFirstSelectionTitle#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%SecondGroupFirstSelectionArchetypeColor#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%SecondGroupFirstSelectionFirstCompetenceColor#";
+    private static final String SECOND_GROUP_FIRST_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%SecondGroupFirstSelectionSecondCompetenceColor#";
 
-    private static final String SECOND_CHOICE_TITLE = "#DROOLS%CADT%SecondSelectionsTitle#";
+    private static final String SECOND_CHOICE_TITLE = "#DROOLS%CADT_Customer_1%SecondSelectionsTitle#";
 
-    private static final String SECOND_CHOICE_INTRODUCTION = "#DROOLS%CADT%SecondSelectionsIntroduction#";
+    private static final String SECOND_CHOICE_INTRODUCTION = "#DROOLS%CADT_Customer_1%SecondSelectionsIntroduction#";
 
-    private static final String SECOND_CHOICE_CARD = "#DROOLS%CADT%SecondSelectionsCard#";
+    private static final String SECOND_CHOICE_CARD = "#DROOLS%CADT_Customer_1%SecondSelectionsCard#";
 
-    private static final String FIRST_GROUP_SECOND_CHOICE_TEXT = "#DROOLS%CADT%FirstGroupSecondSelectionArchetypeText#";
-    private static final String FIRST_GROUP_SECOND_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%FirstGroupSecondSelectionConsiderations#";
-    private static final String SECOND_GROUP_SECOND_CHOICE_TEXT = "#DROOLS%CADT%SecondGroupSecondSelectionArchetypeText#";
-    private static final String SECOND_GROUP_SECOND_CHOICE_CONSIDERATIONS = "#DROOLS%CADT%SecondGroupSecondSelectionConsiderations#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_TEXT = "#DROOLS%CADT_Customer_1%FirstGroupSecondSelectionArchetypeText#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_CONSIDERATIONS = "#DROOLS%CADT_Customer_1%FirstGroupSecondSelectionConsiderations#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_TEXT = "#DROOLS%CADT_Customer_1%SecondGroupSecondSelectionArchetypeText#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_CONSIDERATIONS = "#DROOLS%CADT_Customer_1%SecondGroupSecondSelectionConsiderations#";
 
-    private static final String FIRST_GROUP_SECOND_CHOICE_BULLET_TITLE = "#DROOLS%CADT%FirstGroupSecondSelectionTitle#";
-    private static final String FIRST_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupSecondSelectionArchetypeColor#";
-    private static final String FIRST_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupSecondSelectionFirstCompetenceColor#";
-    private static final String FIRST_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%FirstGroupSecondSelectionSecondCompetenceColor#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_BULLET_TITLE = "#DROOLS%CADT_Customer_1%FirstGroupSecondSelectionTitle#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%FirstGroupSecondSelectionArchetypeColor#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%FirstGroupSecondSelectionFirstCompetenceColor#";
+    private static final String FIRST_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%FirstGroupSecondSelectionSecondCompetenceColor#";
 
-    private static final String SECOND_GROUP_SECOND_CHOICE_BULLET_TITLE = "#DROOLS%CADT%SecondGroupSecondSelectionTitle#";
-    private static final String SECOND_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupSecondSelectionArchetypeColor#";
-    private static final String SECOND_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupSecondSelectionFirstCompetenceColor#";
-    private static final String SECOND_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT%SecondGroupSecondSelectionSecondCompetenceColor#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_BULLET_TITLE = "#DROOLS%CADT_Customer_1%SecondGroupSecondSelectionTitle#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_ARCHETYPE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%SecondGroupSecondSelectionArchetypeColor#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_FIRST_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%SecondGroupSecondSelectionFirstCompetenceColor#";
+    private static final String SECOND_GROUP_SECOND_CHOICE_SECOND_COMPETENCE_BULLET_COLOR = "#DROOLS%CADT_Customer_1%SecondGroupSecondSelectionSecondCompetenceColor#";
 
     private SvgTemplate cadtTemplate;
 
-    private final static String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadtCustomer.json";
+    private final static String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadtCustomer_1.json";
 
     @Autowired
     private DroolsResultController droolsResultController;

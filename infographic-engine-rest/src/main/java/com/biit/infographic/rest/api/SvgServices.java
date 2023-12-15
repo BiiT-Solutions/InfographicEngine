@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,12 +73,14 @@ public class SvgServices {
     }
 
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
-    @Operation(summary = "Generates the first SVG from a drools input. If multiples templates are generated, only the first one is returned."
+    @Operation(summary = "Generates one SVG from a drools input. If multiples templates are generated, only the selected one is returned."
             + " The template must be on the system.", security = @SecurityRequirement(name = "bearerAuth"))
-    @PostMapping(value = "/create/drools/plain/first", consumes = MediaType.TEXT_PLAIN_VALUE,
+    @PostMapping(value = "/create/drools/plain/page/{index}", consumes = MediaType.TEXT_PLAIN_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public String getFirst(@RequestBody final String droolsFormContent, Authentication authentication, HttpServletResponse response) {
+    public String getFirst(@PathVariable("index") Integer index,
+                           @RequestBody final String droolsFormContent,
+                           Authentication authentication, HttpServletResponse response) {
         final DroolsSubmittedForm droolsSubmittedForm;
         try {
             droolsSubmittedForm = DroolsSubmittedForm.getFromJson(droolsFormContent);
@@ -91,6 +94,14 @@ public class SvgServices {
         final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
                 .filename("Infographic.svg").build();
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
-        return svg.get(0);
+        if (index == null || svg.size() == 1) {
+            return svg.get(0);
+        }
+        try {
+            return svg.get(index);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new BadRequestException(this.getClass(), "No index '" + index
+                    + "' available. Total SVG generated are '" + svg.size() + "'.");
+        }
     }
 }

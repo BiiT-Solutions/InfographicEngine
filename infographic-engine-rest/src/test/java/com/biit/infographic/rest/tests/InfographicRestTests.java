@@ -297,7 +297,8 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                 .andReturn();
 
         final List<GeneratedInfographicDTO> results = Arrays.asList(objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO[].class));
-        Assert.assertEquals(results.size(), 3);
+        //2 to current logged user.
+        Assert.assertEquals(results.size(), 2);
     }
 
 
@@ -316,7 +317,8 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                 .andReturn();
 
         final List<GeneratedInfographicDTO> results = Arrays.asList(objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO[].class));
-        Assert.assertEquals(results.size(), 3);
+        //2 to current logged user.
+        Assert.assertEquals(results.size(), 2);
     }
 
 
@@ -355,7 +357,8 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                 .andReturn();
 
         final List<GeneratedInfographicDTO> results = Arrays.asList(objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO[].class));
-        Assert.assertEquals(results.size(), 4);
+        //3 to current logged user.
+        Assert.assertEquals(results.size(), 3);
     }
 
     @Test(dependsOnMethods = "populateDatabase")

@@ -1,6 +1,5 @@
 package com.biit.infographic.rest.api;
 
-import com.biit.server.rest.ElementServices;
 import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.converters.GeneratedInfographicConverter;
 import com.biit.infographic.core.converters.models.GeneratedInfographicConverterRequest;
@@ -8,6 +7,7 @@ import com.biit.infographic.core.models.GeneratedInfographicDTO;
 import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
+import com.biit.server.rest.ElementServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -102,6 +102,9 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-31T23:59:59.99Z")
             @RequestParam(value = "to", required = false) OffsetDateTime to,
             Authentication authentication, HttpServletRequest request) {
+        if (createdBy == null) {
+            createdBy = authentication.getName();
+        }
 
         canBeDoneForDifferentUsers(createdBy, authentication);
 
@@ -130,7 +133,9 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
             Authentication authentication, HttpServletRequest request) {
-
+        if (createdBy == null) {
+            createdBy = authentication.getName();
+        }
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         return getController().findLatest(form, version, organization, createdBy);
