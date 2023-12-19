@@ -244,7 +244,7 @@ public class SvgTemplate extends SvgAreaElement {
                         if (fontScript != null) {
                             defs.appendChild(fontScript);
                             embeddedFonts.add(((SvgText) element).getFontFamily());
-                            SvgGeneratorLogger.info(this.getClass(), "Font '{}' embeded!", ((SvgText) element).getFontFamily());
+                            SvgGeneratorLogger.info(this.getClass(), "Font '{}' embedded!", ((SvgText) element).getFontFamily());
                             idCounter++;
                         }
                     }
