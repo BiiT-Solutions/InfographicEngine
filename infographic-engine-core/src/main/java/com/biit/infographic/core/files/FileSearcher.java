@@ -83,8 +83,7 @@ public final class FileSearcher {
     private static byte[] getFileFromResources(String filePath) throws FileNotFoundException {
         try {
             InfographicEngineLogger.debug(FileSearcher.class.getName(), "Searching for resource file at '{}'.", filePath);
-            return FileUtils.readFileToByteArray(new File(FileUtils.class.getClassLoader()
-                    .getResource(filePath).getFile()));
+            return FileUtils.readFileToByteArray(FileReader.getResource(filePath));
         } catch (NullPointerException | IOException e) {
             InfographicEngineLogger.warning(FileSearcher.class.getName(), "No file found at resources '{}'.", filePath);
             throw new FileNotFoundException(FileUtils.class, "No file found at resources '" + filePath + "'.");
