@@ -17,8 +17,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Root class for generating an SVG document.
@@ -39,6 +41,9 @@ public class SvgTemplate extends SvgAreaElement {
 
     @JsonProperty("elements")
     private List<SvgAreaElement> elements;
+
+    @JsonProperty("embedFonts")
+    private Boolean embedFonts;
 
     public SvgTemplate(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -74,6 +79,14 @@ public class SvgTemplate extends SvgAreaElement {
 
     public void setLayoutType(LayoutType layoutType) {
         this.layoutType = layoutType;
+    }
+
+    public boolean isEmbedFonts() {
+        return embedFonts != null ? embedFonts : true;
+    }
+
+    public void setEmbedFonts(Boolean embedFonts) {
+        this.embedFonts = embedFonts;
     }
 
     public List<SvgAreaElement> getElements() {
@@ -211,6 +224,7 @@ public class SvgTemplate extends SvgAreaElement {
         final Element defs = doc.createElementNS(NAMESPACE, "defs");
         if (elements != null && !elements.isEmpty()) {
             int idCounter = 0;
+            final Set<String> embeddedFonts = new HashSet<>();
             for (SvgAreaElement element : elements) {
                 if (element.getElementAttributes() != null && element.getElementAttributes().getGradient() != null) {
                     final SvgGradient gradient = element.getElementAttributes().getGradient();
@@ -223,6 +237,16 @@ public class SvgTemplate extends SvgAreaElement {
                     }
                     defs.appendChild(gradient.generateSvg(doc));
                 }
+                if (element instanceof SvgText && isEmbedFonts()) {
+                    if (((SvgText) element).mustEmbedFont() && !embeddedFonts.contains(((SvgText) element).getFontFamily())) {
+                        final Element fontScript = ((SvgText) element).embeddedFont(doc);
+                        if (fontScript != null) {
+                            defs.appendChild(fontScript);
+                            embeddedFonts.add(((SvgText) element).getFontFamily());
+                            idCounter++;
+                        }
+                    }
+                }
             }
 
             if (idCounter > 0) {
@@ -230,6 +254,7 @@ public class SvgTemplate extends SvgAreaElement {
             }
         }
     }
+
 
     @JsonIgnore
     private void setSvgBackground(Document doc, Element svgRoot) {

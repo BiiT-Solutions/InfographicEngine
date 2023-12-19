@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -580,4 +581,35 @@ public class SvgText extends SvgAreaElement {
         }
         return lines;
     }
+
+    public boolean mustEmbedFont() {
+        return FontFactory.getFont(getFontFamily()) != null;
+    }
+
+    public Element embeddedFont(Document doc) {
+        SvgGeneratorLogger.debug(this.getClass(), "Embedding font '{}'.", getFontFamily());
+        final Element style = doc.createElementNS(NAMESPACE, "style");
+        style.setAttributeNS(null, "type", "text/css");
+        try {
+            style.setTextContent(embeddedFontScript());
+        } catch (IOException e) {
+            SvgGeneratorLogger.severe(this.getClass(), "Cannot embed font '{}'.", getFontFamily());
+            SvgGeneratorLogger.errorMessage(this.getClass(), e);
+            return null;
+        }
+        return style;
+    }
+
+    private String embeddedFontScript() throws IOException {
+        final StringBuilder script = new StringBuilder();
+//        script.append("<![CDATA[\n");
+        script.append("\n\t\t@font-face {\n");
+        script.append("\t\t\tfont-family: '").append(getFontFamily()).append("';\n");
+        script.append("\t\t\tsrc: url('data:application/font-truetype;charset=utf-8;base64,")
+                .append(FontFactory.encodeFontToBase64(getFontFamily())).append("');\n");
+        script.append("\t\t}\n\t");
+//        script.append("]]>\n");
+        return script.toString();
+    }
+
 }

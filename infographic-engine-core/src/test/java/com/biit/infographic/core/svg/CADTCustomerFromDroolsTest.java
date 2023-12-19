@@ -572,12 +572,6 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
         cadtTemplate.addElements(generateSecondaryValuesCircles());
         cadtTemplate.addElements(generateSecondaryValuesTexts());
         cadtTemplate.addElements(generateIntellectualPropertyTexts());
-
-
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "CADT_Customer.svg")), true)) {
-            out.println(SvgGenerator.generate(cadtTemplate));
-        }
     }
 
     @Test(dependsOnMethods = "generateCADT")
