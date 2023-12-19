@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg.components.text;
 
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.biit.utils.file.FileReader;
+import com.biit.utils.pool.BasePool;
 import org.apache.commons.io.FileUtils;
 
 import java.awt.Font;
@@ -17,9 +18,21 @@ import java.util.Map;
 public final class FontFactory {
     private static final String FONTS_FOLDER = "fonts";
     private static final String FONTS_REGULAR = "Regular";
-    private static final String FONTS_EXTENSION = "ttf";
+    private static final long FONTS_POOL_EXPIRATION_TIME = 60 * 60 * 1000;
     private static Map<String, Font> fonts;
     private static Map<String, String> fontsFiles;
+
+    private static BasePool<String, String> encodedFontsPool = new BasePool<>() {
+        @Override
+        public long getExpirationTime() {
+            return FONTS_POOL_EXPIRATION_TIME;
+        }
+
+        @Override
+        public boolean isDirty(String element) {
+            return false;
+        }
+    };
 
     private FontFactory() {
         loadFonts();
@@ -64,9 +77,12 @@ public final class FontFactory {
     }
 
     public static String encodeFontToBase64(String fontName) throws IOException {
-        final File file = FileReader.getResource(FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
-        SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", file.getAbsolutePath());
-        final byte[] fileContent = FileUtils.readFileToByteArray(file);
-        return Base64.getEncoder().encodeToString(fileContent);
+        if (encodedFontsPool.getElement(fontName) == null) {
+            final File file = FileReader.getResource(FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
+            SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", file.getAbsolutePath());
+            final byte[] fileContent = FileUtils.readFileToByteArray(file);
+            encodedFontsPool.addElement(Base64.getEncoder().encodeToString(fileContent), fontName);
+        }
+        return encodedFontsPool.getElement(fontName);
     }
 }
