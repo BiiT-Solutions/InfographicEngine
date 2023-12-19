@@ -1,9 +1,8 @@
 package com.biit.infographic.core.models.svg.components.text;
 
+import com.biit.infographic.core.files.FontSearcher;
 import com.biit.infographic.logger.SvgGeneratorLogger;
-import com.biit.utils.file.FileReader;
 import com.biit.utils.pool.BasePool;
-import org.apache.commons.io.FileUtils;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -42,7 +41,7 @@ public final class FontFactory {
         try {
             fonts = new HashMap<>();
             fontsFiles = new HashMap<>();
-            final List<String> availableFonts = FileReader.getResourceFiles(File.separator + FONTS_FOLDER);
+            final List<String> availableFonts = FontSearcher.getFilesOnFolder(FONTS_FOLDER);
             for (String file : availableFonts) {
                 loadFont(file);
             }
@@ -52,7 +51,7 @@ public final class FontFactory {
     }
 
     private static void loadFont(String fontFile) {
-        final InputStream is = FontFactory.class.getResourceAsStream(File.separator + FONTS_FOLDER + File.separator + fontFile);
+        final InputStream is = FontSearcher.getFileAsInputStream(FONTS_FOLDER + File.separator + fontFile);
         try {
             if (is != null) {
                 final Font font = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -76,11 +75,10 @@ public final class FontFactory {
         return fonts.get(fontName);
     }
 
-    public static String encodeFontToBase64(String fontName) throws IOException {
+    public static String encodeFontToBase64(String fontName) {
         if (ENCODED_FONTS_POOL.getElement(fontName) == null) {
-            final File file = FileReader.getResource(FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
-            SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", file.getAbsolutePath());
-            final byte[] fileContent = FileUtils.readFileToByteArray(file);
+            SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
+            final byte[] fileContent = FontSearcher.getFileAsBytes(FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
             ENCODED_FONTS_POOL.addElement(Base64.getEncoder().encodeToString(fileContent), fontName);
         }
         return ENCODED_FONTS_POOL.getElement(fontName);

@@ -1,30 +1,70 @@
 package com.biit.infographic.core.files;
 
+import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.logger.InfographicEngineLogger;
+import com.biit.infographic.logger.SvgGeneratorLogger;
+import com.biit.utils.file.FileReader;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class FileSearcher {
-
-    private static final String SYSTEM_VARIABLE_FILES_LOCATION = "FILES_FOLDER";
 
     private FileSearcher() {
 
     }
 
-    public static String getFileAsString(String filePath) {
-        final byte[] content = getFileAsBytes(filePath);
+    public static List<String> getFilesOnFolder(String folderName, String systemVariableFilesLocation) {
+        final List<String> files = new ArrayList<>();
+        try {
+            files.addAll(FileReader.getResourceFiles(File.separator + folderName));
+        } catch (Exception e) {
+            SvgGeneratorLogger.errorMessage(FontFactory.class, e);
+        }
+        final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation);
+        final File folder = new File(systemVariablesFilePath + File.separator + folderName);
+        if (folder.listFiles() != null) {
+            files.addAll(Arrays.stream(folder.listFiles()).map(File::getName).collect(Collectors.toSet()));
+        } else {
+            SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", systemVariablesFilePath + File.separator + folderName);
+        }
+
+        return files;
+    }
+
+    public static InputStream getFileAsInputStream(String filePath, String systemVariableFilesLocation) {
+        try {
+            return getInputStreamFromResources(filePath);
+        } catch (Exception e) {
+            InfographicEngineLogger.debug(FileSearcher.class.getName(),
+                    "File '{}' not found on resources folder.", filePath);
+        }
+        try {
+            return getInputStreamFromEnvironmentalVariable(filePath, systemVariableFilesLocation);
+        } catch (Exception e) {
+            InfographicEngineLogger.debug(FileSearcher.class.getName(),
+                    "File '{}' not found on resources folder.", filePath);
+        }
+        return null;
+    }
+
+    public static String getFileAsString(String filePath, String systemVariableFilesLocation) {
+        final byte[] content = getFileAsBytes(filePath, systemVariableFilesLocation);
         if (content != null && content.length > 0) {
             return new String(content, StandardCharsets.UTF_8);
         }
         return null;
     }
 
-    public static byte[] getFileAsBytes(String filePath) {
+    public static byte[] getFileAsBytes(String filePath, String systemVariableFilesLocation) {
         try {
             return getFileFromResources(filePath);
         } catch (Exception e) {
@@ -32,7 +72,7 @@ public final class FileSearcher {
                     "File '{}' not found on resources folder.", filePath);
         }
         try {
-            return getFileFromEnvironmentalVariable(filePath);
+            return getFileFromEnvironmentalVariable(filePath, systemVariableFilesLocation);
         } catch (Exception e) {
             InfographicEngineLogger.debug(FileSearcher.class.getName(),
                     "File '{}' not found on resources folder.", filePath);
@@ -51,13 +91,13 @@ public final class FileSearcher {
         }
     }
 
-    private static byte[] getFileFromEnvironmentalVariable(String filePath) throws FileNotFoundException {
-        if (readEnvironmentVariable() == null) {
+    private static byte[] getFileFromEnvironmentalVariable(String filePath, String systemVariableFilesLocation) throws FileNotFoundException {
+        if (readEnvironmentVariable(systemVariableFilesLocation) == null) {
             InfographicEngineLogger.info(FileSearcher.class.getName(),
-                    "No env variable '{}' defined.", SYSTEM_VARIABLE_FILES_LOCATION);
+                    "No env variable '{}' defined.", systemVariableFilesLocation);
             throw new FileNotFoundException(FileUtils.class, "No env variable '{}' defined.");
         }
-        final String systemVariablesFilePath = readEnvironmentVariable() + File.separator + filePath;
+        final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation) + File.separator + filePath;
         try {
             InfographicEngineLogger.debug(FileSearcher.class.getName(),
                     "File path '{}'", systemVariablesFilePath);
@@ -68,8 +108,35 @@ public final class FileSearcher {
         }
     }
 
-    public static String readEnvironmentVariable() {
+    private static InputStream getInputStreamFromResources(String filePath) throws FileNotFoundException {
+        try {
+            InfographicEngineLogger.debug(FileSearcher.class.getName(), "Searching for resource file at '{}'.", filePath);
+            return FileUtils.openInputStream(FileReader.getResource(filePath));
+        } catch (NullPointerException | IOException e) {
+            InfographicEngineLogger.warning(FileSearcher.class.getName(), "No file found at resources '{}'.", filePath);
+            throw new FileNotFoundException(FileUtils.class, "No file found at resources '" + filePath + "'.");
+        }
+    }
+
+    private static InputStream getInputStreamFromEnvironmentalVariable(String filePath, String systemVariableFilesLocation) throws FileNotFoundException {
+        if (readEnvironmentVariable(systemVariableFilesLocation) == null) {
+            InfographicEngineLogger.info(FileSearcher.class.getName(),
+                    "No env variable '{}' defined.", systemVariableFilesLocation);
+            throw new FileNotFoundException(FileUtils.class, "No env variable '{}' defined.");
+        }
+        final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation) + File.separator + filePath;
+        try {
+            InfographicEngineLogger.debug(FileSearcher.class.getName(),
+                    "File path '{}'", systemVariablesFilePath);
+            return FileUtils.openInputStream(new File(systemVariablesFilePath));
+        } catch (NullPointerException | IOException e) {
+            InfographicEngineLogger.debug(FileSearcher.class.getName(), "No file found at '{}'.", systemVariablesFilePath);
+            throw new FileNotFoundException(FileUtils.class, "No file found at '" + systemVariablesFilePath + "'.");
+        }
+    }
+
+    public static String readEnvironmentVariable(String systemVariableFilesLocation) {
         final Map<String, String> env = System.getenv();
-        return env.get(SYSTEM_VARIABLE_FILES_LOCATION);
+        return env.get(systemVariableFilesLocation);
     }
 }

@@ -1,6 +1,6 @@
 package com.biit.infographic.core.models.svg.components;
 
-import com.biit.infographic.core.files.FileSearcher;
+import com.biit.infographic.core.files.ImageSearcher;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
@@ -105,9 +105,9 @@ public class SvgImage extends SvgAreaElement {
     public String getFromPath(String resourcePath) {
         // load file from /src/test/resources
         if (resourceAlreadyInBase64) {
-            return FileSearcher.getFileAsString(resourcePath);
+            return ImageSearcher.getFileAsString(resourcePath);
         }
-        return codifyOnBase64(FileSearcher.getFileAsBytes(resourcePath));
+        return codifyOnBase64(ImageSearcher.getFileAsBytes(resourcePath));
     }
 
     public String getResource() {
