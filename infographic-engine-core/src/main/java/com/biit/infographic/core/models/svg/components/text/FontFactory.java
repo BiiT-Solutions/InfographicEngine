@@ -22,7 +22,7 @@ public final class FontFactory {
     private static Map<String, Font> fonts;
     private static Map<String, String> fontsFiles;
 
-    private static BasePool<String, String> encodedFontsPool = new BasePool<>() {
+    private static final BasePool<String, String> ENCODED_FONTS_POOL = new BasePool<>() {
         @Override
         public long getExpirationTime() {
             return FONTS_POOL_EXPIRATION_TIME;
@@ -77,12 +77,12 @@ public final class FontFactory {
     }
 
     public static String encodeFontToBase64(String fontName) throws IOException {
-        if (encodedFontsPool.getElement(fontName) == null) {
+        if (ENCODED_FONTS_POOL.getElement(fontName) == null) {
             final File file = FileReader.getResource(FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
             SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", file.getAbsolutePath());
             final byte[] fileContent = FileUtils.readFileToByteArray(file);
-            encodedFontsPool.addElement(Base64.getEncoder().encodeToString(fileContent), fontName);
+            ENCODED_FONTS_POOL.addElement(Base64.getEncoder().encodeToString(fileContent), fontName);
         }
-        return encodedFontsPool.getElement(fontName);
+        return ENCODED_FONTS_POOL.getElement(fontName);
     }
 }
