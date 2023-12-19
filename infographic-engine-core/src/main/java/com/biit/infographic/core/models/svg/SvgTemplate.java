@@ -8,6 +8,7 @@ import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserializer;
+import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -243,6 +244,7 @@ public class SvgTemplate extends SvgAreaElement {
                         if (fontScript != null) {
                             defs.appendChild(fontScript);
                             embeddedFonts.add(((SvgText) element).getFontFamily());
+                            SvgGeneratorLogger.info(this.getClass(), "Font '{}' embeded!", ((SvgText) element).getFontFamily());
                             idCounter++;
                         }
                     }

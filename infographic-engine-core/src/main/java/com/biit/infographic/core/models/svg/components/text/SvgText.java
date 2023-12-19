@@ -583,6 +583,11 @@ public class SvgText extends SvgAreaElement {
     }
 
     public boolean mustEmbedFont() {
+        if (FontFactory.getFont(getFontFamily()) != null) {
+            SvgGeneratorLogger.debug(this.getClass(), "Font '{}' must be embedded.", getFontFamily());
+        } else {
+            SvgGeneratorLogger.debug(this.getClass(), "Font '{}' is not embeddable.", getFontFamily());
+        }
         return FontFactory.getFont(getFontFamily()) != null;
     }
 
