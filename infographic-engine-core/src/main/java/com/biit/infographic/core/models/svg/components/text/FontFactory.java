@@ -45,6 +45,7 @@ public final class FontFactory {
             for (String file : availableFonts) {
                 loadFont(file);
             }
+            SvgGeneratorLogger.debug(FontFactory.class, "Fonts found are '{}'.", fontsFiles);
         } catch (Exception e) {
             SvgGeneratorLogger.errorMessage(FontFactory.class, e);
         }
