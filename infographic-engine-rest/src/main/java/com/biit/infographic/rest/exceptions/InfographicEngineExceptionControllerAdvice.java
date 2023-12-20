@@ -44,7 +44,7 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
 
     @ExceptionHandler(FormNotFoundException.class)
     public ResponseEntity<?> formNotFoundException(Exception ex) {
-        RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
+        RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
         return new ResponseEntity<>(new ErrorMessage("No data found"), HttpStatus.NOT_FOUND);
     }
 }
