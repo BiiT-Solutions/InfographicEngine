@@ -12,6 +12,7 @@ import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
@@ -576,6 +577,7 @@ public class CADTCustomerFromDroolsTest extends AbstractTestNGSpringContextTests
 
     @Test(dependsOnMethods = "generateCADT")
     public void executeCadt() throws IOException {
+        FontFactory.resetFonts();
         final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
         final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(cadtTemplate));
         Assert.assertEquals(svgResults.size(), 1);

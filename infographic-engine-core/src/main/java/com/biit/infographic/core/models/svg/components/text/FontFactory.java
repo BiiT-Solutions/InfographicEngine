@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,7 @@ public final class FontFactory {
         try {
             if (is != null) {
                 final Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-                //Regular fonts are named regular, but never indexed with regular.
+                //Regular fonts are named regular, but never indexed with regular. Other as Bolds are stored in the name.
                 fonts.put(font.getFontName().replaceAll(FONTS_REGULAR, "").trim(), font);
                 fontsFiles.put(font.getFontName().replaceAll(FONTS_REGULAR, "").trim(), fontFile);
                 SvgGeneratorLogger.debug(FontFactory.class, "Font '{}' found.", font.getFontName());
@@ -73,19 +74,47 @@ public final class FontFactory {
     }
 
 
-    public static Font getFont(String fontName) {
+    public static Font getFont(String fontName, FontWeight fontWeight) {
         if (fonts == null) {
             loadFonts();
         }
-        return fonts.get(fontName);
+        if (fontWeight == null) {
+            return fonts.get(fontName);
+        }
+        for (Map.Entry<String, Font> fontEntry : fonts.entrySet()) {
+            if (fontEntry.getKey().startsWith(fontName) && fontEntry.getKey().toUpperCase().endsWith(fontWeight.name())) {
+                return fontEntry.getValue();
+            }
+        }
+        return null;
     }
 
-    public static String encodeFontToBase64(String fontName) {
+    public static String getFontFiles(String fontName, FontWeight fontWeight) {
+        if (fontsFiles == null) {
+            loadFonts();
+        }
+        if (fontWeight == null) {
+            return fontsFiles.get(fontName);
+        }
+        for (Map.Entry<String, String> fontEntry : fontsFiles.entrySet()) {
+            if (fontEntry.getKey().startsWith(fontName) && fontEntry.getKey().toUpperCase().endsWith(fontWeight.name())) {
+                return fontEntry.getValue();
+            }
+        }
+        return null;
+    }
+
+    public static String encodeFontToBase64(String fontName, FontWeight fontWeight) {
         if (ENCODED_FONTS_POOL.getElement(fontName) == null) {
-            SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
-            final byte[] fileContent = FontSearcher.getFileAsBytes(FONTS_FOLDER + File.separator + fontsFiles.get(fontName));
+            final String fontFile = getFontFiles(fontName, fontWeight);
+            SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", FONTS_FOLDER + File.separator + fontFile);
+            final byte[] fileContent = FontSearcher.getFileAsBytes(FONTS_FOLDER + File.separator + fontFile);
             ENCODED_FONTS_POOL.addElement(Base64.getEncoder().encodeToString(fileContent), fontName);
         }
         return ENCODED_FONTS_POOL.getElement(fontName);
+    }
+
+    public static Map<String, String> getFontsFiles() {
+        return Collections.unmodifiableMap(fontsFiles);
     }
 }

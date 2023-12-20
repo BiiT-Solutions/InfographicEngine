@@ -460,8 +460,8 @@ public class SvgText extends SvgAreaElement {
         final FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
         final Font font;
         //Load the required font.
-        if (FontFactory.getFont(getFontFamily()) != null) {
-            font = FontFactory.getFont(getFontFamily()).deriveFont((float) getRealFontSize());
+        if (FontFactory.getFont(getFontFamily(), getFontWeight()) != null) {
+            font = FontFactory.getFont(getFontFamily(), getFontWeight()).deriveFont((float) getRealFontSize());
         } else {
             font = new Font(getFontFamily().split(",")[0].trim(), Font.PLAIN, getRealFontSize());
         }
@@ -583,12 +583,12 @@ public class SvgText extends SvgAreaElement {
     }
 
     public boolean mustEmbedFont() {
-        if (FontFactory.getFont(getFontFamily()) != null) {
-            SvgGeneratorLogger.debug(this.getClass(), "Font '{}' must be embedded.", getFontFamily());
+        if (FontFactory.getFont(getFontFamily(), getFontWeight()) != null) {
+            SvgGeneratorLogger.debug(this.getClass(), "Font '{}' will be embedded.", getFontFamily());
         } else {
             SvgGeneratorLogger.debug(this.getClass(), "Font '{}' is not embeddable.", getFontFamily());
         }
-        return FontFactory.getFont(getFontFamily()) != null;
+        return FontFactory.getFont(getFontFamily(), getFontWeight()) != null;
     }
 
     public Element embeddedFont(Document doc) {
@@ -611,7 +611,7 @@ public class SvgText extends SvgAreaElement {
         script.append("\n\t\t@font-face {\n");
         script.append("\t\t\tfont-family: '").append(getFontFamily()).append("';\n");
         script.append("\t\t\tsrc: url('data:application/font-truetype;charset=utf-8;base64,")
-                .append(FontFactory.encodeFontToBase64(getFontFamily())).append("');\n");
+                .append(FontFactory.encodeFontToBase64(getFontFamily(), getFontWeight())).append("');\n");
         script.append("\t\t}\n\t");
 //        script.append("]]>\n");
         return script.toString();
