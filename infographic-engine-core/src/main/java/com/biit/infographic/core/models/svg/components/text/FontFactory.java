@@ -68,6 +68,10 @@ public final class FontFactory {
         }
     }
 
+    public static void resetFonts() {
+        fonts = null;
+    }
+
 
     public static Font getFont(String fontName) {
         if (fonts == null) {

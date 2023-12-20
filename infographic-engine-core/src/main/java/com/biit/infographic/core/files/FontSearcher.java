@@ -5,7 +5,7 @@ import java.util.List;
 
 public final class FontSearcher {
 
-    private static final String SYSTEM_VARIABLE_FILES_LOCATION = "FONTS_FOLDER";
+    public static final String SYSTEM_VARIABLE_FILES_LOCATION = "FONTS_FOLDER";
 
     private FontSearcher() {
         super();

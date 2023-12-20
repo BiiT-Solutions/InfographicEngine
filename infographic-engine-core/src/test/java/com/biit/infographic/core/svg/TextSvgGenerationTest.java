@@ -1,15 +1,23 @@
 package com.biit.infographic.core.svg;
 
+import com.biit.infographic.core.files.FontSearcher;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import com.biit.utils.file.FileReader;
+import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.testng.SystemStub;
+import uk.org.webcompere.systemstubs.testng.SystemStubsListener;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,9 +28,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Test(groups = {"svgText"})
+@Listeners(SystemStubsListener.class)
 public class TextSvgGenerationTest extends SvgGeneration {
     private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
     private static final String LONG_TEXT_WITH_NEW_LINES = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor." + SvgText.NEW_LINE_SYMBOL + " Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu." + SvgText.NEW_LINE_SYMBOL + SvgText.NEW_LINE_SYMBOL + " In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
+
+    @SystemStub
+    private EnvironmentVariables setEnvironment;
 
     @BeforeClass
     public void prepareFolder() throws IOException {
@@ -286,6 +298,39 @@ public class TextSvgGenerationTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentMondayDonutsFont.svg");
+    }
+
+    @Test
+    public void fontFromEnvVariable() throws IOException {
+        FontFactory.resetFonts();
+        //Copy font to an external Folder
+        File fontToCopy = FileReader.getResource("fonts/others/Milk Mango.ttf");
+        File outputDirectory = Files.createTempDirectory("fonts").toFile();
+        outputDirectory.deleteOnExit();
+        Files.createDirectories(Paths.get(outputDirectory + File.separator + "fonts"));
+        File fontCopied = Files.createTempFile(new File(outputDirectory.toPath() + File.separator + "fonts").toPath(), "Milk Mango", ".ttf").toFile();
+        fontCopied.deleteOnExit();
+        FileUtils.copyFile(fontToCopy, fontCopied);
+
+        //Set the external folder as an ENV variable.
+        setEnvironment.set(FontSearcher.SYSTEM_VARIABLE_FILES_LOCATION, outputDirectory.toString());
+
+        //Create SVG and check the embedded font.
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        SvgText text = new SvgText("Milk Mango", LONG_TEXT, 8, 0L, 0L);
+        text.setFontVariant(FontVariantType.NORMAL);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineWidth(200);
+        text.setMaxParagraphHeight(90);
+        svgTemplate.addElement(text);
+
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentMilkMangoEnvFont.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentMilkMangoEnvFont.svg");
     }
 
     @AfterClass
