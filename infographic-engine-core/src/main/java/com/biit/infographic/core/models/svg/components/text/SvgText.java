@@ -47,6 +47,7 @@ public class SvgText extends SvgAreaElement {
     @JsonProperty("fontSize")
     private int fontSize = DEFAULT_FONT_SIZE;
 
+    //Font calculated to fit the text on a fixed Height
     @JsonIgnore
     private int realFontSize = DEFAULT_FONT_SIZE;
 
