@@ -663,13 +663,15 @@ Steps of how to generate a form and shown an infographic from it.
 3. Link the ABCD form on Webforms.
 4. Export ABCD rules and deploy them into the Base Form Drools docker container.
 5. Export Webforms Metadata and deploy them into the Base Form Drools docker container.
-6. Generate a Form Result from Webforms. Using XFormsRunner or any other application where you can submit forms.
+6. Generate a Form Result from Webforms. Using XFormsRunner or any other application where you can submit forms. You
+   have a CADT example on the test resources, inside the `submittedForms` folder.
 7. Send the FormResult
    to: `https://testing.biit-solutions.com/base-form-drools-engine-backend/drools/element/forms/results` and get the
    Drools Results `DroolsSubmittedForm`. Store it as a JSON. Beware that the endpoint return an array and you only need
    one item.
 8. Generate a `SVGTemplate` on a test with the desired structure. Populate all fields with the ABCD variables.
-9. Execute the Drools Results from step `7` inside the created test. Use the `droolsResultController` bean for this purpose.
+9. Execute the Drools Results from step `7` inside the created test. Use the `droolsResultController` bean for this
+   purpose.
 10. When debugging the test, get the `SvgTemplate` and convert it to JSON with its already existing method `.toJson()`.
 11. Put the JSON into the infographic docker. Remember to create a folder with the same name of the ABCD form, and
     an `index.json` file that points to the JSON generated.
