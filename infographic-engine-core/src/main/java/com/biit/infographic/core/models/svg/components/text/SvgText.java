@@ -111,10 +111,18 @@ public class SvgText extends SvgAreaElement {
         setText("");
     }
 
+    public SvgText(String text, int fontSize, Integer x, Integer y) {
+        this(text, fontSize, Long.valueOf(x), Long.valueOf(y));
+    }
+
     public SvgText(String text, int fontSize, Long x, Long y) {
         this(new ElementAttributes(x, y, null, null, null));
         setText(text);
         setFontSize(fontSize);
+    }
+
+    public SvgText(String fontFamily, String text, int fontSize, Integer x, Integer y) {
+        this(fontFamily, text, fontSize, Long.valueOf(x), Long.valueOf(y));
     }
 
     public SvgText(String fontFamily, String text, int fontSize, Long x, Long y) {
@@ -122,11 +130,19 @@ public class SvgText extends SvgAreaElement {
         setFontFamily(fontFamily);
     }
 
+    public SvgText(String text, int fontSize, String color, Integer x, Integer y) {
+        this(text, fontSize, color, Long.valueOf(x), Long.valueOf(y));
+    }
+
     public SvgText(String text, int fontSize, String color, Long x, Long y) {
         this(new ElementAttributes(x, y, null, null, null));
         setText(text);
         setFontSize(fontSize);
         getElementAttributes().setFill(color);
+    }
+
+    public SvgText(String text, int fontSize, FontWeight weight, String color, Integer x, Integer y) {
+        this(text, fontSize, weight, color, Long.valueOf(x), Long.valueOf(y));
     }
 
     public SvgText(String text, int fontSize, FontWeight weight, String color, Long x, Long y) {

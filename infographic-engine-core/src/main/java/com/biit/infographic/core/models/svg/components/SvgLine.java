@@ -31,10 +31,18 @@ public class SvgLine extends SvgAreaElement {
         this(new ElementAttributes());
     }
 
+    public SvgLine(Integer x1Coordinate, Integer y1Coordinate, Integer x2Coordinate, Integer y2Coordinate) {
+        this(Long.valueOf(x1Coordinate), Long.valueOf(y1Coordinate), Long.valueOf(x1Coordinate), Long.valueOf(y2Coordinate));
+    }
+
     public SvgLine(Long x1Coordinate, Long y1Coordinate, Long x2Coordinate, Long y2Coordinate) {
         this(new ElementAttributes(x1Coordinate, y1Coordinate, null, null));
         setX2Coordinate(x2Coordinate);
         setY2Coordinate(y2Coordinate);
+    }
+
+    public SvgLine(String strokeColor, Double strokeWidth, Integer x1Coordinate, Integer y1Coordinate, Integer x2Coordinate, Integer y2Coordinate) {
+        this(strokeColor, strokeWidth, Long.valueOf(x1Coordinate), Long.valueOf(y1Coordinate), Long.valueOf(x1Coordinate), Long.valueOf(y2Coordinate));
     }
 
     public SvgLine(String strokeColor, Double strokeWidth, Long x1Coordinate, Long y1Coordinate, Long x2Coordinate, Long y2Coordinate) {
