@@ -109,6 +109,8 @@ public class SvgGradient extends SvgElement {
         if (getY2Coordinate() != null) {
             gradient.setAttributeNS(null, "y2", String.valueOf(getY2Coordinate()));
         }
+        // Needed to be shown correctly on browsers: gradientUnits="userSpaceOnUse"
+        gradient.setAttributeNS(null, "gradientUnits", "userSpaceOnUse");
         stops.forEach(stop -> gradient.appendChild(stop.generateSvg(doc)));
         return gradient;
     }
