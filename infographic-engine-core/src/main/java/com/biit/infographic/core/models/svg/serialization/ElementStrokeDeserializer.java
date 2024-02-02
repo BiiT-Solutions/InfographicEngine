@@ -26,6 +26,9 @@ public class ElementStrokeDeserializer extends StdDeserializer<ElementStroke> {
         if (jsonObject.get("strokeDash") != null) {
             elementStroke.setStrokeDash(DeserializerParser.parseList("strokeDash", jsonObject));
         }
+        if (jsonObject.get("strokeOpacity") != null) {
+            elementStroke.setStrokeOpacity(DeserializerParser.parseDouble("strokeOpacity", jsonObject));
+        }
 
         return elementStroke;
     }
