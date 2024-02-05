@@ -87,8 +87,8 @@ public class SvgPath extends SvgAreaElement {
 
     public String generateCoordinates() {
         final StringBuilder path = new StringBuilder();
-        Long previousX = null;
-        Long previousY = null;
+        Long previousX;
+        Long previousY;
         //If x, y on attributes are defined, we assume that are the first point.
         path.append(generateCoordinate(null, null, getElementAttributes().getXCoordinate(), getElementAttributes().getYCoordinate()));
         previousX = getElementAttributes().getXCoordinate();

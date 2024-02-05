@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class SvgUtils {
-    private static final List<String> CHILDREN_ALLOWED = Arrays.asList("defs", "path");
+    private static final List<String> CHILDREN_ALLOWED = Arrays.asList("defs", "path", "g");
 
     private SvgUtils() {
 
@@ -30,10 +30,14 @@ public final class SvgUtils {
     }
 
     public static List<Element> getContent(String svgCode) throws ParserConfigurationException, IOException, SAXException {
+        return getContent(svgCode, CHILDREN_ALLOWED);
+    }
+
+    public static List<Element> getContent(String svgCode, List<String> filter) throws ParserConfigurationException, IOException, SAXException {
         final NodeList children = stringToSvg(svgCode).getDocumentElement().getChildNodes();
         final List<Element> selectedOnes = new ArrayList<>();
         for (int i = 0; i < children.getLength(); i++) {
-            if (children.item(i) != null && CHILDREN_ALLOWED.contains(children.item(i).getNodeName())) {
+            if (children.item(i) != null && (filter == null || filter.isEmpty() || filter.contains(children.item(i).getNodeName()))) {
                 selectedOnes.add((Element) children.item(i));
             }
         }

@@ -96,6 +96,10 @@ public class ElementAttributes {
         return width;
     }
 
+    public void setWidth(Integer width) {
+        setWidth(Long.valueOf(width));
+    }
+
     public void setWidth(Long width) {
         this.width = width;
     }
@@ -108,6 +112,10 @@ public class ElementAttributes {
 
     public Long getHeight() {
         return height;
+    }
+
+    public void setHeight(Integer height) {
+        setHeight(Long.valueOf(height));
     }
 
     public void setHeight(Long height) {

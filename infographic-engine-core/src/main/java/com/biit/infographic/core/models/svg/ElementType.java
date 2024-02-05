@@ -15,6 +15,7 @@ import com.biit.infographic.core.models.svg.components.text.SvgText;
 public enum ElementType {
     SVG(SvgTemplate.class),
     NESTED_SVG(SvgTemplate.class),
+    IMPORTED_SVG(ImportedSvg.class),
     IMAGE(SvgImage.class),
     RECTANGLE(SvgRectangle.class),
     CIRCLE(SvgCircle.class),
