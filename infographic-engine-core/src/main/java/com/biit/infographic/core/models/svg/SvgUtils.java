@@ -38,7 +38,11 @@ public final class SvgUtils {
         final List<Element> selectedOnes = new ArrayList<>();
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) != null && (filter == null || filter.isEmpty() || filter.contains(children.item(i).getNodeName()))) {
-                selectedOnes.add((Element) children.item(i));
+                try {
+                    selectedOnes.add((Element) children.item(i));
+                } catch (Exception ignored) {
+                    //Not a node
+                }
             }
         }
         return selectedOnes;

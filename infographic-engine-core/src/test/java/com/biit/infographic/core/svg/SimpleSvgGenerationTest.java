@@ -2,7 +2,7 @@ package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.ElementAttributes;
-import com.biit.infographic.core.models.svg.ImportedSvg;
+import com.biit.infographic.core.models.svg.SvgEmbedded;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.Point;
@@ -366,12 +366,12 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     public void importExternalSvg() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
 
-        ImportedSvg importedSvg = new ImportedSvg("images/CADT/Action.svg");
-        importedSvg.getElementAttributes().setXCoordinate(50L);
-        importedSvg.getElementAttributes().setYCoordinate(50L);
-        importedSvg.getElementAttributes().setWidth(55L);
-        importedSvg.getElementAttributes().setHeight(35L);
-        svgTemplate.addElement(importedSvg);
+        SvgEmbedded svgEmbedded = new SvgEmbedded("images/CADT/Action.svg");
+        svgEmbedded.getElementAttributes().setXCoordinate(50L);
+        svgEmbedded.getElementAttributes().setYCoordinate(50L);
+        svgEmbedded.getElementAttributes().setWidth(55L);
+        svgEmbedded.getElementAttributes().setHeight(35L);
+        svgTemplate.addElement(svgEmbedded);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentExternalSvg.svg")), true)) {

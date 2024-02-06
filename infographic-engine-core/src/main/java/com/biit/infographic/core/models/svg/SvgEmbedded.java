@@ -15,18 +15,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
-public class ImportedSvg extends SvgAreaElement {
+public class SvgEmbedded extends SvgAreaElement {
 
     private String resourceName;
 
     private String svgCode;
 
-    public ImportedSvg(String resourceName) throws FileNotFoundException {
+    public SvgEmbedded(String resourceName) throws FileNotFoundException {
         readSvg(resourceName);
         setElementType(ElementType.IMPORTED_SVG);
     }
 
-    public ImportedSvg(String resourceName, Long xCoordinate, Long yCoordinate) throws FileNotFoundException {
+    public SvgEmbedded(String resourceName, Long xCoordinate, Long yCoordinate) throws FileNotFoundException {
         super(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
         readSvg(resourceName);
         setElementType(ElementType.IMPORTED_SVG);
@@ -63,7 +63,11 @@ public class ImportedSvg extends SvgAreaElement {
                     + " scale(" + getScale() + ")");
 
             //Search for inner 'g' that contains the elements of the svg.
-            final List<Element> children = SvgUtils.getContent(this.svgCode, Collections.singletonList("g"));
+            List<Element> children = SvgUtils.getContent(this.svgCode, Collections.singletonList("g"));
+            if (children.isEmpty()) {
+                //Not in group? takes all children.
+                children = SvgUtils.getContent(this.svgCode, null);
+            }
             for (Element child : children) {
                 //Move children from one document to others.
                 final Node node = doc.importNode(child, true);
