@@ -15,6 +15,7 @@ import java.util.List;
 
 public final class SvgUtils {
     private static final List<String> CHILDREN_ALLOWED = Arrays.asList("defs", "path", "g");
+    private static final List<String> INKSCAPE_NOT_ALLOWED = Arrays.asList("sodipodi", "inkscape");
 
     private SvgUtils() {
 
@@ -39,7 +40,10 @@ public final class SvgUtils {
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) != null && (filter == null || filter.isEmpty() || filter.contains(children.item(i).getNodeName()))) {
                 try {
-                    selectedOnes.add((Element) children.item(i));
+                    final Element child = (Element) children.item(i);
+                    if (INKSCAPE_NOT_ALLOWED.stream().noneMatch(s -> child.getNodeName().startsWith(s))) {
+                        selectedOnes.add(child);
+                    }
                 } catch (Exception ignored) {
                     //Not a node
                 }

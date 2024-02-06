@@ -43,6 +43,8 @@ public final class SvgGenerator {
             final Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            //java.lang.RuntimeException: Namespace for prefix 'inkscape' has not been declared.
+            //Please, store as plain SVG.
             transformer.transform(domSource, result);
             return writer.toString();
         } catch (TransformerException ex) {

@@ -1,8 +1,12 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.serialization.SvgEmbeddedDeserializer;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.biit.utils.file.FileReader;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,21 +19,34 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
+@JsonDeserialize(using = SvgEmbeddedDeserializer.class)
 public class SvgEmbedded extends SvgAreaElement {
 
+    @JsonProperty("resourceName")
     private String resourceName;
 
+    @JsonProperty("svgCode")
     private String svgCode;
 
+    public SvgEmbedded(ElementAttributes elementAttributes) {
+        super(elementAttributes);
+        setElementType(ElementType.EMBEDDED_SVG);
+    }
+
+    public SvgEmbedded() {
+        this(new ElementAttributes());
+        setElementStroke(new ElementStroke());
+        setElementType(ElementType.EMBEDDED_SVG);
+    }
+
     public SvgEmbedded(String resourceName) throws FileNotFoundException {
+        this();
         readSvg(resourceName);
-        setElementType(ElementType.IMPORTED_SVG);
     }
 
     public SvgEmbedded(String resourceName, Long xCoordinate, Long yCoordinate) throws FileNotFoundException {
-        super(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
+        this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
         readSvg(resourceName);
-        setElementType(ElementType.IMPORTED_SVG);
     }
 
     public String getSvgCode() {
