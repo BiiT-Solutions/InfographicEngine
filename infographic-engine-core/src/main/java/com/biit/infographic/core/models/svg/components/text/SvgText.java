@@ -474,6 +474,9 @@ public class SvgText extends SvgAreaElement {
     }
 
     private int getLineWidthPixels(String text) {
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
         final AffineTransform affinetransform = new AffineTransform();
         final FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
         final Font font;
@@ -558,7 +561,9 @@ public class SvgText extends SvgAreaElement {
                 lines.add(words.pop());
                 return lines;
             }
-            while (!words.isEmpty()) {
+            int iterator = 0;
+            while (!words.isEmpty() && iterator < lineWidth) {
+                iterator++;
                 final StringBuilder lineToCheck = new StringBuilder();
                 String line = "";
                 long extraLines = 0;
@@ -574,7 +579,7 @@ public class SvgText extends SvgAreaElement {
                     if (getLineWidthPixels(lineToCheck.toString()) < lineWidth) {
                         final String word = words.peek();
                         //New Line forced by user.
-                        if (word.endsWith(NEW_LINE_SYMBOL)) {
+                        if (word != null && word.endsWith(NEW_LINE_SYMBOL)) {
                             line = lineToCheck.toString();
                             words.pop();
                             //Add extra lines if multiple line symbols appear.
@@ -588,19 +593,18 @@ public class SvgText extends SvgAreaElement {
                         break;
                     }
                 }
-                // if (!line.isEmpty()) {
-                try {
-                    lines.add(line);
-                } catch (OutOfMemoryError r) {
-                    lines.clear();
-                    InfographicEngineLogger.severe(this.getClass(), "Cannot add line '" + line
-                            + "'.");
-                    InfographicEngineLogger.errorMessage(this.getClass(), r);
+                if (!line.isEmpty()) {
+                    try {
+                        lines.add(line);
+                    } catch (OutOfMemoryError r) {
+                        InfographicEngineLogger.severe(this.getClass(), "Cannot add line '" + line
+                                + "'.");
+                        InfographicEngineLogger.errorMessage(this.getClass(), r);
+                    }
                 }
                 for (int i = 0; i < extraLines; i++) {
                     lines.add(" ");
                 }
-                //}
             }
 
         }
