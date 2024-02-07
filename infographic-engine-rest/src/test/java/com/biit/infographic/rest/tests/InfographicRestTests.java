@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -434,6 +435,8 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         System.out.println("\n\n\n  FORM:");
         System.out.println(results[0]);
         System.out.println("\n\n\n  END FORM:");
+        Path tempFile = Files.createTempFile("SVG_", null);
+        Files.write(tempFile, results[0].getBytes(StandardCharsets.UTF_8));
         checkContent(results[0], "cadtCustomer4FromDrools.svg");
     }
 }
