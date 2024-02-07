@@ -531,6 +531,42 @@ Example:
 }
 ```
 
+### SvgEmbedded
+
+This component allow to include an external SVG code inside the current SVG Template. You can set a complete SVG code
+and the engine will search for the paths and elements to be included on the current template.
+
+**resourceName** Name of the file.
+
+**svgCode** SVG code of the file.
+
+**commonAttributes.x** Starting point of the image on the x-axis in pixels.
+
+**commonAttributes.y** Starting point of the image on the y-axis in pixels.
+
+**commonAttributes.width** The width of the image. In PIXELS.
+
+**commonAttributes.height** The height of the image. In PIXELS.
+
+Note that the SVG will be escalated and the width/height proportions will be kept.
+
+Example:
+
+```
+{
+    "elementType" : "EMBEDDED_SVG",
+    "id" : "embedded_svg24",
+    "commonAttributes" : {
+      "width" : 55,
+      "height" : 55,
+      "x" : 531,
+      "y" : 1138
+    },
+    "resourceName" : "images/CADT/Universal.svg",
+    "svgCode" : "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg>...</svg>"
+  }
+```
+
 # Custom Components
 
 ### Gauge

@@ -4,6 +4,7 @@ import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.models.GeneratedInfographicDTO;
 import com.biit.server.security.AuthenticatedUserProvider;
 import com.biit.server.security.model.AuthRequest;
+import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +28,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +52,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
     private final static String USER_PASSWORD = "password";
 
     private final static String JWT_SALT = "4567";
-    private final static String FORM_NAME = "CADT";
+    private final static String FORM_NAME = "images/CADT";
     private final static int FORM_VERSION = 1;
 
     @Autowired
@@ -74,6 +80,15 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
     private <T> T fromJson(String payload, Class<T> clazz) throws IOException {
         return objectMapper.readValue(payload, clazz);
+    }
+
+    private void checkContent(String content, String resourceFile) {
+        try {
+            Assert.assertEquals(content.trim(), new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
+                    .getResource("svg" + File.separator + resourceFile).toURI()))).trim());
+        } catch (IOException | URISyntaxException e) {
+            Assert.fail();
+        }
     }
 
     @BeforeClass
@@ -398,5 +413,24 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
         final GeneratedInfographicDTO results = objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO.class);
         Assert.assertEquals(results.getFormVersion(), 2);
+    }
+
+    @Test(dependsOnMethods = "populateDatabase")
+    public void generateInfographicFromDrools() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("createdBy", USER_NAME);
+
+        MvcResult createResult = mockMvc.perform(post("/svg/create/drools/plain")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + jwtToken)
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .content(FileReader.getResource("drools/DroolsSubmittedCadtCustomer_4.json", StandardCharsets.UTF_8))
+                        .params(requestParams)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        final String[] results = objectMapper.readValue(createResult.getResponse().getContentAsString(), String[].class);
+        checkContent(results[0], "cadtCustomer4FromDrools.svg");
     }
 }
