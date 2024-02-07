@@ -1,6 +1,5 @@
 package com.biit.infographic.core.models.svg;
 
-import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgEmbeddedDeserializer;
 import com.biit.infographic.logger.SvgGeneratorLogger;

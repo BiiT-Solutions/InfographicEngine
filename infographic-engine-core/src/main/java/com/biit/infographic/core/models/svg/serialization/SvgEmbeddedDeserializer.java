@@ -1,8 +1,6 @@
 package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.infographic.core.models.svg.SvgEmbedded;
-import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
-import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 
