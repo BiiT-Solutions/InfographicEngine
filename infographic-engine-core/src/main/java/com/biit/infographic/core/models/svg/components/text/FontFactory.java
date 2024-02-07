@@ -18,6 +18,7 @@ import java.util.Map;
 public final class FontFactory {
     private static final String FONTS_FOLDER = "fonts";
     private static final String FONTS_REGULAR = "Regular";
+    private static final String FONTS_MEDIUM = "Medium";
     private static final long FONTS_POOL_EXPIRATION_TIME = 60 * 60 * 1000;
     private static Map<String, Font> fonts;
     private static Map<String, String> fontsFiles;
@@ -58,15 +59,19 @@ public final class FontFactory {
             if (is != null) {
                 final Font font = Font.createFont(Font.TRUETYPE_FONT, is);
                 //Regular fonts are named regular, but never indexed with regular. Other as Bolds are stored in the name.
-                fonts.put(font.getFontName().replaceAll(FONTS_REGULAR, "").trim(), font);
-                fontsFiles.put(font.getFontName().replaceAll(FONTS_REGULAR, "").trim(), fontFile);
-                SvgGeneratorLogger.debug(FontFactory.class, "Font '{}' found.", font.getFontName());
+                fonts.put(normalizeFonts(font.getFontName()), font);
+                fontsFiles.put(normalizeFonts(font.getFontName()), fontFile);
+                SvgGeneratorLogger.debug(FontFactory.class, "Font '{}' found and defined as '{}'.", font.getFontName(), normalizeFonts(font.getFontName()));
             } else {
                 SvgGeneratorLogger.severe(FontFactory.class, "Font '{}' has some issues and cannot be loaded!", fontFile);
             }
         } catch (FontFormatException | IOException e) {
             SvgGeneratorLogger.errorMessage(FontFactory.class, e);
         }
+    }
+
+    private static String normalizeFonts(String fontName) {
+        return fontName.replaceAll(FONTS_REGULAR, "").replaceAll(FONTS_MEDIUM, "").trim();
     }
 
     public static void resetFonts() {
