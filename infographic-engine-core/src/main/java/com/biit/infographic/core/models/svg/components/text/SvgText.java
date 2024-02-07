@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgTextDeserializer;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -588,7 +589,13 @@ public class SvgText extends SvgAreaElement {
                     }
                 }
                 // if (!line.isEmpty()) {
-                lines.add(line);
+                try {
+                    lines.add(line);
+                } catch (OutOfMemoryError r) {
+                    InfographicEngineLogger.severe(this.getClass(), "Cannot add line '" + line
+                            + "' to lines '" + lines + "'.");
+                    InfographicEngineLogger.errorMessage(this.getClass(), r);
+                }
                 for (int i = 0; i < extraLines; i++) {
                     lines.add(" ");
                 }
