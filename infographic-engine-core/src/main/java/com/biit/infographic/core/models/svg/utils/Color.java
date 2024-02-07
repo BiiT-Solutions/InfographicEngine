@@ -66,4 +66,8 @@ public final class Color {
         return ((double) Integer.parseInt(color.substring(color.length() - 2), HEX_VALUES))
                 / RGB_VALUES;
     }
+
+    public static boolean isDroolsVariable(String color) {
+        return color != null && color.startsWith("#") && color.endsWith("#") && color.contains("%");
+    }
 }

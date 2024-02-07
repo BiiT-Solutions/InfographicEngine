@@ -45,7 +45,7 @@ public class ElementAttributes {
     private SvgGradient gradient;
 
     @JsonProperty("fillOpacity")
-    private Double fillOpacity;
+    private String fillOpacity;
 
     @JsonProperty("class")
     private String cssClass;
@@ -210,14 +210,16 @@ public class ElementAttributes {
 
     public void setFill(String fill) {
         fill = Color.checkColor(fill);
-        if (Color.isValidWithoutTransparency(fill)) {
+        if (Color.isDroolsVariable(fill)) {
+            this.fill = fill;
+        } else if (Color.isValidWithoutTransparency(fill)) {
             this.fill = fill;
         } else if (Color.isValidWithTransparency(fill)) {
             this.fill = fill.substring(0, Color.COLOR_WITH_TRANSPARENCY_LENGTH - 1);
-            setFillOpacity(Color.getOpacity(fill));
+            setFillOpacity(String.valueOf(Color.getOpacity(fill)));
         } else if (Color.isValidName(fill)) {
             this.fill = fill;
-            setFillOpacity(null);
+            setFillOpacity((String) null);
         } else {
             //Some predefined tags.
             if (Objects.equals("none", fill)) {
@@ -238,12 +240,20 @@ public class ElementAttributes {
         this.gradient = gradient;
     }
 
-    public Double getFillOpacity() {
+    public String getFillOpacity() {
         return fillOpacity;
     }
 
     public void setFillOpacity(Double fillOpacity) {
-        if (fillOpacity != null && (fillOpacity < 0 || fillOpacity > 1)) {
+        setFillOpacity(String.valueOf(fillOpacity));
+    }
+
+    public void setFillOpacity(String fillOpacity) {
+        if (fillOpacity == null || "null".equals(fillOpacity)) {
+            this.fillOpacity = null;
+        } else if (Color.isDroolsVariable(fillOpacity)) {
+            this.fillOpacity = fillOpacity;
+        } else if (Double.parseDouble(fillOpacity) < 0 || Double.parseDouble(fillOpacity) > 1) {
             SvgGeneratorLogger.warning(this.getClass(), "Opacity value '" + fillOpacity + "' is invalid and therefore ignored.");
         } else {
             this.fillOpacity = fillOpacity;
