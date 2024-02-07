@@ -592,8 +592,9 @@ public class SvgText extends SvgAreaElement {
                 try {
                     lines.add(line);
                 } catch (OutOfMemoryError r) {
+                    lines.clear();
                     InfographicEngineLogger.severe(this.getClass(), "Cannot add line '" + line
-                            + "' to lines '" + lines + "'.");
+                            + "'.");
                     InfographicEngineLogger.errorMessage(this.getClass(), r);
                 }
                 for (int i = 0; i < extraLines; i++) {
