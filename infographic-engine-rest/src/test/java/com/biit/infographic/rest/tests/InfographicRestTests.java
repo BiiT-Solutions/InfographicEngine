@@ -431,6 +431,8 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                 .andReturn();
 
         final String[] results = objectMapper.readValue(createResult.getResponse().getContentAsString(), String[].class);
+        System.out.println("\n\n\n  FORM:");
+        System.out.println(results[0]);
         checkContent(results[0], "cadtCustomer4FromDrools.svg");
     }
 }
