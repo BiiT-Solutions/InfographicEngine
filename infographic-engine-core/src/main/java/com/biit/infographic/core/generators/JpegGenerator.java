@@ -52,5 +52,20 @@ public final class JpegGenerator {
         }
     }
 
+    public static byte[] generate(String svgCode) {
+        final JPEGTranscoder jpegTranscoder = new JPEGTranscoder();
+        // Set the transcoding hints.
+        jpegTranscoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, JPG_QUALITY);
+
+        final TranscoderInput input = new TranscoderInput(svgCode);
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+            final TranscoderOutput output = new TranscoderOutput(stream);
+            jpegTranscoder.transcode(input, output);
+            return stream.toByteArray();
+        } catch (IOException | TranscoderException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

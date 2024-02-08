@@ -54,5 +54,16 @@ public final class PngGenerator {
         }
     }
 
+    public static byte[] generate(String svgCode) {
+        final PNGTranscoder pngTranscoder = new PNGTranscoder();
+        final TranscoderInput input = new TranscoderInput(svgCode);
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+            final TranscoderOutput output = new TranscoderOutput(stream);
+            pngTranscoder.transcode(input, output);
+            return stream.toByteArray();
+        } catch (IOException | TranscoderException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

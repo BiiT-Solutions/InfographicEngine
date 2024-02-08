@@ -756,7 +756,7 @@ public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTest
         scoreCircle4.getElementStroke().setStrokeWidth(DEFAULT_STROKE_WIDTH);
         elements.add(scoreCircle4);
 
-        SvgEmbedded scoreCircleIcon4 = new SvgEmbedded(INSPIRATION_ICON, 959L, 2097L);
+        SvgEmbedded scoreCircleIcon4 = new SvgEmbedded(INSPIRATION_ICON, 959L, 2092L);
         scoreCircleIcon4.getElementAttributes().setWidth(55);
         scoreCircleIcon4.getElementAttributes().setHeight(55);
         elements.add(scoreCircleIcon4);
