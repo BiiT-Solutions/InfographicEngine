@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
+import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
 import com.biit.utils.file.FileReader;
@@ -158,6 +159,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineLength(80);
         text.setFontFamily("Arial");
+        text.setFontWeight(FontWeight.BOLD);
         svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER

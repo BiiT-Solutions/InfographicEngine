@@ -304,7 +304,7 @@ public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTest
         emptyCircle5.getElementStroke().setStrokeColor(DISABLED_BULLET_COLOR);
         elements.add(emptyCircle5);
 
-        final SvgText skippingText = new SvgText("Arial", "You have room for improvement", 32, 1808L, 840L);
+        final SvgText skippingText = new SvgText("Arial", "You are skipping pitfalls", 32, 1808L, 840L);
         elements.add(skippingText);
 
         return elements;

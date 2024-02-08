@@ -154,10 +154,6 @@ public class SvgText extends SvgAreaElement {
         getElementAttributes().setFill(color);
     }
 
-    public String getCustomFontTag() {
-        return getMainFontFamily();
-    }
-
     public String getMainFontFamily() {
         if (fontFamily != null) {
             final String[] fonts = fontFamily.split(",");
@@ -425,7 +421,7 @@ public class SvgText extends SvgAreaElement {
             text.setAttributeNS(null, "font-size", String.valueOf(getRealFontSize()));
         }
         if (getFontFamily() != null) {
-            text.setAttributeNS(null, "font-family", getCustomFontTag());
+            text.setAttributeNS(null, "font-family", getMainFontFamily());
         }
         if (getRotate() != 0) {
             text.setAttributeNS(null, "transform", "rotate(" + getRotate() + ")");
@@ -459,7 +455,7 @@ public class SvgText extends SvgAreaElement {
         }
         if (getFontFamily() != null) {
             style.append("font-family:");
-            style.append(getCustomFontTag());
+            style.append(getMainFontFamily());
             style.append(";");
         }
 
@@ -647,7 +643,7 @@ public class SvgText extends SvgAreaElement {
         final Element style = doc.createElementNS(NAMESPACE, "style");
         style.setAttributeNS(null, "type", "text/css");
         try {
-            style.setTextContent(embeddedFontScript());
+            style.setTextContent(embeddedFontScript(mainFont));
         } catch (IOException e) {
             SvgGeneratorLogger.severe(this.getClass(), "Cannot embed font '{}'.", mainFont);
             SvgGeneratorLogger.errorMessage(this.getClass(), e);
@@ -656,16 +652,16 @@ public class SvgText extends SvgAreaElement {
         return style;
     }
 
-    private String embeddedFontScript() throws IOException {
+    private String embeddedFontScript(String fontFamily) throws IOException {
         final StringBuilder script = new StringBuilder();
 //        script.append("<![CDATA[\n");
         script.append("\n\t\t@font-face {\n");
-        script.append("\t\t\tfont-family: '").append(getCustomFontTag()).append("';\n");
+        script.append("\t\t\tfont-family: '").append(fontFamily).append("';\n");
 //        if (getFontWeight() != null && getFontWeight() != FontWeight.NORMAL) {
         script.append("\t\t\t").append(getFontWeight().getStyle()).append("\n");
 //        }
         script.append("\t\t\tsrc: url('data:application/font-truetype;charset=utf-8;base64,")
-                .append(FontFactory.encodeFontToBase64(getMainFontFamily(), getFontWeight())).append("');\n");
+                .append(FontFactory.encodeFontToBase64(fontFamily, getFontWeight())).append("');\n");
         script.append("\t\t}\n");
 //        script.append("]]>\n");
         return script.toString();
