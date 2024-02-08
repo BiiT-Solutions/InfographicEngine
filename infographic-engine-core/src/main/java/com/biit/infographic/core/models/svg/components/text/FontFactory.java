@@ -135,13 +135,13 @@ public final class FontFactory {
     }
 
     public static String encodeFontToBase64(String fontName, FontWeight fontWeight) {
-        if (ENCODED_FONTS_POOL.getElement(fontName) == null) {
+        if (ENCODED_FONTS_POOL.getElement(fontName + fontWeight) == null) {
             final String fontFile = getFontFiles(fontName, fontWeight);
             SvgGeneratorLogger.debug(FontFactory.class, "Encoding font '{}'", FONTS_FOLDER + File.separator + fontFile);
             final byte[] fileContent = FontSearcher.getFileAsBytes(FONTS_FOLDER + File.separator + fontFile);
-            ENCODED_FONTS_POOL.addElement(Base64.getEncoder().encodeToString(fileContent), fontName);
+            ENCODED_FONTS_POOL.addElement(Base64.getEncoder().encodeToString(fileContent), fontName + fontWeight);
         }
-        return ENCODED_FONTS_POOL.getElement(fontName);
+        return ENCODED_FONTS_POOL.getElement(fontName + fontWeight);
     }
 
     public static Map<String, Map<FontWeight, Font>> getFonts() {
