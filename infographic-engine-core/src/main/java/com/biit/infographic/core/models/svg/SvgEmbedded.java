@@ -1,9 +1,9 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.files.SvgSearcher;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgEmbeddedDeserializer;
 import com.biit.infographic.logger.SvgGeneratorLogger;
-import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
@@ -14,7 +14,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,9 +55,9 @@ public class SvgEmbedded extends SvgAreaElement {
         this.svgCode = svgCode;
     }
 
-    public void readSvg(String resourceName) throws FileNotFoundException {
+    public void readSvg(String resourceName) {
         this.resourceName = resourceName;
-        this.svgCode = FileReader.getResource(resourceName, StandardCharsets.UTF_8).trim();
+        this.svgCode = SvgSearcher.getFileAsString(resourceName);
     }
 
     public String getResourceName() {
