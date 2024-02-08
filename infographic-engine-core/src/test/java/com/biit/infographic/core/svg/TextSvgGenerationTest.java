@@ -152,6 +152,23 @@ public class TextSvgGenerationTest extends SvgGeneration {
     }
 
     @Test
+    public void documentLongTextJustifyWithNewLineCustomFontTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH * 3, SvgTemplate.DEFAULT_HEIGHT * 3);
+        final SvgText text = new SvgText(LONG_TEXT_WITH_NEW_LINES, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineLength(80);
+        text.setFontFamily("Arial");
+        svgTemplate.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentLongTextJustifyWithNewLineCustomFont.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentLongTextJustifyWithNewLineCustomFont.svg");
+    }
+
+    @Test
     public void documentLongTextJustifyByWidthTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);

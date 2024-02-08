@@ -16,10 +16,10 @@
                 <include name="jsonGeneration"/>
                 <include name="templateFromDrools"/>
                 <include name="cadt"/>
-                <include name="cadtCustomer1"/>
-                <include name="cadtCustomer2"/>
-                <include name="cadtCustomer3"/>
-                <include name="cadtCustomer4"/>
+                <exclude name="cadtCustomer1"/>
+                <exclude name="cadtCustomer2"/>
+                <exclude name="cadtCustomer3"/>
+                <exclude name="cadtCustomer4"/>
                 <include name="eventParser"/>
                 <include name="eventController"/>
             </run>

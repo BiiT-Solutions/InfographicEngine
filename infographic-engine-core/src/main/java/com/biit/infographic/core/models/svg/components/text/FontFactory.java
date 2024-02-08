@@ -10,18 +10,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public final class FontFactory {
     private static final String FONTS_FOLDER = "fonts";
     private static final String FONTS_REGULAR = "Regular";
-    private static final String FONTS_MEDIUM = "Medium";
     private static final long FONTS_POOL_EXPIRATION_TIME = 60 * 60 * 1000;
-    private static Map<String, Font> fonts;
-    private static Map<String, String> fontsFiles;
+    //Font Family --> Font Weight --> Font
+    private static Map<String, Map<FontWeight, Font>> fonts;
+    //Font Family --> Font Weight --> Font File
+    private static Map<String, Map<FontWeight, String>> fontsFiles;
 
     private static final BasePool<String, String> ENCODED_FONTS_POOL = new BasePool<>() {
         @Override
@@ -59,9 +60,16 @@ public final class FontFactory {
             if (is != null) {
                 final Font font = Font.createFont(Font.TRUETYPE_FONT, is);
                 //Regular fonts are named regular, but never indexed with regular. Other as Bolds are stored in the name.
-                fonts.put(normalizeFonts(font.getFontName()), font);
-                fontsFiles.put(normalizeFonts(font.getFontName()), fontFile);
-                SvgGeneratorLogger.debug(FontFactory.class, "Font '{}' found and defined as '{}'.", font.getFontName(), normalizeFonts(font.getFontName()));
+
+                final String fontName = normalizeFonts(font.getFamily(Locale.ENGLISH));
+                final FontWeight fontWeight = getFontWeight(fontFile);
+
+                fonts.computeIfAbsent(fontName, k -> new HashMap<>());
+                fontsFiles.computeIfAbsent(fontName, k -> new HashMap<>());
+
+                fonts.get(fontName).put(fontWeight, font);
+                fontsFiles.get(fontName).put(fontWeight, fontFile);
+                SvgGeneratorLogger.debug(FontFactory.class, "Font '{}' found and with weight '{}' included.", fontName, fontWeight);
             } else {
                 SvgGeneratorLogger.severe(FontFactory.class, "Font '{}' has some issues and cannot be loaded!", fontFile);
             }
@@ -70,8 +78,15 @@ public final class FontFactory {
         }
     }
 
+    private static FontWeight getFontWeight(String fileName) {
+        if (fileName.toUpperCase().contains("BOLD")) {
+            return FontWeight.BOLD;
+        }
+        return FontWeight.NORMAL;
+    }
+
     private static String normalizeFonts(String fontName) {
-        return fontName.replaceAll(FONTS_REGULAR, "").replaceAll(FONTS_MEDIUM, "").trim();
+        return fontName.replaceAll(FONTS_REGULAR, "").trim();
     }
 
     public static void resetFonts() {
@@ -79,31 +94,41 @@ public final class FontFactory {
     }
 
 
-    public static Font getFont(String fontName, FontWeight fontWeight) {
+    public static Font getFont(String fontsName, FontWeight fontWeight) {
         if (fonts == null) {
             loadFonts();
         }
-        if (fontWeight == null) {
-            return fonts.get(fontName);
-        }
-        for (Map.Entry<String, Font> fontEntry : fonts.entrySet()) {
-            if (fontEntry.getKey().startsWith(fontName) && fontEntry.getKey().toUpperCase().endsWith(fontWeight.name())) {
-                return fontEntry.getValue();
+        final String[] fontsArray = fontsName.split(",");
+        for (String fontName : fontsArray) {
+            if (fontWeight == null) {
+                if (fonts.get(fontName) != null) {
+                    return fonts.get(fontName).get(FontWeight.NORMAL);
+                }
+            }
+            for (Map.Entry<String, Map<FontWeight, Font>> fontEntry : fonts.entrySet()) {
+                if (fontEntry.getKey().startsWith(normalizeFonts(fontName))) {
+                    return fontEntry.getValue().get(fontWeight);
+                }
             }
         }
         return null;
     }
 
-    public static String getFontFiles(String fontName, FontWeight fontWeight) {
+    public static String getFontFiles(String fontsName, FontWeight fontWeight) {
         if (fontsFiles == null) {
             loadFonts();
         }
-        if (fontWeight == null) {
-            return fontsFiles.get(fontName);
-        }
-        for (Map.Entry<String, String> fontEntry : fontsFiles.entrySet()) {
-            if (fontEntry.getKey().startsWith(fontName) && fontEntry.getKey().toUpperCase().endsWith(fontWeight.name())) {
-                return fontEntry.getValue();
+        final String[] fontsArray = fontsName.split(",");
+        for (String fontName : fontsArray) {
+            if (fontWeight == null) {
+                if (fonts.get(fontName) != null) {
+                    return fontsFiles.get(fontName).get(FontWeight.NORMAL);
+                }
+            }
+            for (Map.Entry<String, Map<FontWeight, String>> fontEntry : fontsFiles.entrySet()) {
+                if (fontEntry.getKey().startsWith(normalizeFonts(fontName))) {
+                    return fontEntry.getValue().get(fontWeight);
+                }
             }
         }
         return null;
@@ -119,7 +144,7 @@ public final class FontFactory {
         return ENCODED_FONTS_POOL.getElement(fontName);
     }
 
-    public static Map<String, String> getFontsFiles() {
-        return Collections.unmodifiableMap(fontsFiles);
+    public static Map<String, Map<FontWeight, Font>> getFonts() {
+        return fonts;
     }
 }

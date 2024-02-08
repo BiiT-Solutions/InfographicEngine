@@ -4,6 +4,7 @@ import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
+import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
@@ -18,10 +19,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Root class for generating an SVG document.
@@ -225,7 +226,7 @@ public class SvgTemplate extends SvgAreaElement {
         final Element defs = doc.createElementNS(NAMESPACE, "defs");
         if (elements != null && !elements.isEmpty()) {
             int idCounter = 0;
-            final Set<String> embeddedFonts = new HashSet<>();
+            final HashMap<String, HashSet<FontWeight>> embeddedFonts = new HashMap<>();
             for (SvgAreaElement element : elements) {
                 if (element.getElementAttributes() != null && element.getElementAttributes().getGradient() != null) {
                     final SvgGradient gradient = element.getElementAttributes().getGradient();
@@ -239,11 +240,14 @@ public class SvgTemplate extends SvgAreaElement {
                     defs.appendChild(gradient.generateSvg(doc));
                 }
                 if (element instanceof SvgText && isEmbedFonts()) {
-                    if (((SvgText) element).mustEmbedFont() && !embeddedFonts.contains(((SvgText) element).getFontFamily())) {
+                    if (((SvgText) element).mustEmbedFont()
+                            && (embeddedFonts.get(((SvgText) element).getMainFontFamily()) == null
+                            || !embeddedFonts.get(((SvgText) element).getMainFontFamily()).contains(((SvgText) element).getFontWeight()))) {
                         final Element fontScript = ((SvgText) element).embeddedFont(doc);
                         if (fontScript != null) {
                             defs.appendChild(fontScript);
-                            embeddedFonts.add(((SvgText) element).getFontFamily());
+                            embeddedFonts.computeIfAbsent(((SvgText) element).getMainFontFamily(), k -> new HashSet<>());
+                            embeddedFonts.get(((SvgText) element).getMainFontFamily()).add(((SvgText) element).getFontWeight());
                             SvgGeneratorLogger.info(this.getClass(), "Font '{}' embedded!", ((SvgText) element).getFontFamily());
                             idCounter++;
                         }

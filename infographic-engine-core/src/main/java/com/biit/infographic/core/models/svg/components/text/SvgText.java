@@ -154,6 +154,17 @@ public class SvgText extends SvgAreaElement {
         getElementAttributes().setFill(color);
     }
 
+    public String getMainFontFamily() {
+        if (fontFamily != null) {
+            final String[] fonts = fontFamily.split(",");
+            if (fonts.length > 0) {
+                return fonts[0].trim();
+            }
+        }
+        return DEFAULT_FONT;
+    }
+
+
     public String getFontFamily() {
         if (fontFamily != null) {
             return fontFamily;
@@ -205,7 +216,10 @@ public class SvgText extends SvgAreaElement {
     }
 
     public FontWeight getFontWeight() {
-        return fontWeight;
+        if (fontWeight != null) {
+            return fontWeight;
+        }
+        return FontWeight.NORMAL;
     }
 
     public void setFontWeight(FontWeight fontWeight) {
@@ -436,7 +450,7 @@ public class SvgText extends SvgAreaElement {
         if (getTextAlign() != null && !getTextAlign().getStyle().isBlank()) {
             style.append(getTextAlign().getStyle());
         }
-        if (getFontWeight() != null) {
+        if (getFontWeight() != null && getFontWeight() != FontWeight.NORMAL) {
             style.append(getFontWeight().getStyle());
         }
         if (getFontFamily() != null) {
@@ -484,7 +498,7 @@ public class SvgText extends SvgAreaElement {
         if (FontFactory.getFont(getFontFamily(), getFontWeight()) != null) {
             font = FontFactory.getFont(getFontFamily(), getFontWeight()).deriveFont((float) getRealFontSize());
         } else {
-            font = new Font(getFontFamily().split(",")[0].trim(), Font.PLAIN, getRealFontSize());
+            font = new Font(getMainFontFamily(), Font.PLAIN, getRealFontSize());
         }
         return (int) (font.getStringBounds(text, frc).getWidth());
     }
@@ -593,54 +607,61 @@ public class SvgText extends SvgAreaElement {
                         break;
                     }
                 }
-                if (!line.isEmpty()) {
-                    try {
-                        lines.add(line);
-                    } catch (OutOfMemoryError r) {
-                        InfographicEngineLogger.severe(this.getClass(), "Cannot add line '" + line
-                                + "'.");
-                        InfographicEngineLogger.errorMessage(this.getClass(), r);
-                    }
+//                if (!line.isEmpty()) {
+                try {
+                    lines.add(line);
+                } catch (OutOfMemoryError r) {
+                    InfographicEngineLogger.severe(this.getClass(), "Cannot add line '" + line
+                            + "'.");
+                    InfographicEngineLogger.errorMessage(this.getClass(), r);
                 }
+//                }
                 for (int i = 0; i < extraLines; i++) {
                     lines.add(" ");
                 }
             }
-
+            if (iterator >= lineWidth) {
+                InfographicEngineLogger.warning(this.getClass(), "Text '{}' length not calculated properly!", content);
+            }
         }
         return lines;
     }
 
     public boolean mustEmbedFont() {
-        if (FontFactory.getFont(getFontFamily(), getFontWeight()) != null) {
-            SvgGeneratorLogger.debug(this.getClass(), "Font '{}' will be embedded.", getFontFamily());
-        } else {
-            SvgGeneratorLogger.debug(this.getClass(), "Font '{}' is not embeddable.", getFontFamily());
+        final String mainFont = getMainFontFamily();
+        //We only embed the first font choice.
+        if (FontFactory.getFont(mainFont, getFontWeight()) == null) {
+            SvgGeneratorLogger.warning(this.getClass(), "Font '{}' '{}' is not embeddable.", mainFont, getFontWeight());
         }
-        return FontFactory.getFont(getFontFamily(), getFontWeight()) != null;
+        return FontFactory.getFont(mainFont, getFontWeight()) != null;
     }
 
     public Element embeddedFont(Document doc) {
-        SvgGeneratorLogger.debug(this.getClass(), "Embedding font '{}'.", getFontFamily());
+        //We only embed the first font choice.
+        final String mainFont = getMainFontFamily();
+        SvgGeneratorLogger.debug(this.getClass(), "Embedding font '{}'.", mainFont);
         final Element style = doc.createElementNS(NAMESPACE, "style");
         style.setAttributeNS(null, "type", "text/css");
         try {
-            style.setTextContent(embeddedFontScript());
+            style.setTextContent(embeddedFontScript(mainFont));
         } catch (IOException e) {
-            SvgGeneratorLogger.severe(this.getClass(), "Cannot embed font '{}'.", getFontFamily());
+            SvgGeneratorLogger.severe(this.getClass(), "Cannot embed font '{}'.", mainFont);
             SvgGeneratorLogger.errorMessage(this.getClass(), e);
             return null;
         }
         return style;
     }
 
-    private String embeddedFontScript() throws IOException {
+    private String embeddedFontScript(String font) throws IOException {
         final StringBuilder script = new StringBuilder();
 //        script.append("<![CDATA[\n");
         script.append("\n\t\t@font-face {\n");
-        script.append("\t\t\tfont-family: '").append(getFontFamily()).append("';\n");
+        script.append("\t\t\tfont-family: '").append(font).append("';\n");
+        if (getFontWeight() != null && getFontWeight() != FontWeight.NORMAL) {
+            script.append("\t\t\t").append(getFontWeight().getStyle()).append("\n");
+        }
         script.append("\t\t\tsrc: url('data:application/font-truetype;charset=utf-8;base64,")
-                .append(FontFactory.encodeFontToBase64(getFontFamily(), getFontWeight())).append("');\n");
+                .append(FontFactory.encodeFontToBase64(font, getFontWeight())).append("');\n");
         script.append("\t\t}\n\t");
 //        script.append("]]>\n");
         return script.toString();
