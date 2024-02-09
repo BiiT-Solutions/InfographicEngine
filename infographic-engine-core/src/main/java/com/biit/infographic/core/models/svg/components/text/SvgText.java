@@ -658,7 +658,7 @@ public class SvgText extends SvgAreaElement {
         script.append("\n\t\t@font-face {\n");
         script.append("\t\t\tfont-family: '").append(fontFamily).append("';\n");
 //        if (getFontWeight() != null && getFontWeight() != FontWeight.NORMAL) {
-        script.append("\t\t\t").append(getFontWeight().getStyle()).append("\n");
+        script.append("\t\t\t").append(getFontWeight().getFontDefinition()).append("\n");
 //        }
         script.append("\t\t\tsrc: url('data:application/font-truetype;charset=utf-8;base64,")
                 .append(FontFactory.encodeFontToBase64(fontFamily, getFontWeight())).append("');\n");

@@ -114,7 +114,7 @@ public final class FontFactory {
         return null;
     }
 
-    public static String getFontFiles(String fontsName, FontWeight fontWeight) {
+    private static String getFontFiles(String fontsName, FontWeight fontWeight) {
         if (fontsFiles == null) {
             loadFonts();
         }
