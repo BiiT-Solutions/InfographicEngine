@@ -32,6 +32,7 @@ import java.util.Objects;
 @JsonRootName(value = "text")
 public class SvgText extends SvgAreaElement {
     public static final String NEW_LINE_SYMBOL = "\n";
+    public static final int MAX_ITERATIONS = 100;
     private static final int LINE_SEPARATION = 5;
     private static final int MIN_LINE_SEPARATION = 2;
     private static final int DEFAULT_FONT_SIZE = 10;
@@ -528,7 +529,12 @@ public class SvgText extends SvgAreaElement {
     private List<String> getLines(String content, int maxLineLength) {
         final List<String> lines = new ArrayList<>();
         if (content != null) {
-            while (!content.isBlank()) {
+            int iterations = 0;
+            while (!content.isBlank() && iterations < MAX_ITERATIONS) {
+                iterations++;
+                if (!content.contains(NEW_LINE_SYMBOL)) {
+                    break;
+                }
                 if (content.startsWith(NEW_LINE_SYMBOL)) {
                     lines.add("");
                     content = content.substring(NEW_LINE_SYMBOL.length() + 1);
