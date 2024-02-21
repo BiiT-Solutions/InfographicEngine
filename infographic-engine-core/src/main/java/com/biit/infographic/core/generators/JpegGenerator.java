@@ -12,8 +12,10 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 import java.awt.Color;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public final class JpegGenerator {
     private static final float JPG_QUALITY = 0.8F;
@@ -57,7 +59,7 @@ public final class JpegGenerator {
         // Set the transcoding hints.
         jpegTranscoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, JPG_QUALITY);
 
-        final TranscoderInput input = new TranscoderInput(svgCode);
+        final TranscoderInput input = new TranscoderInput(new ByteArrayInputStream(svgCode.getBytes(StandardCharsets.UTF_8)));
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
             final TranscoderOutput output = new TranscoderOutput(stream);
             jpegTranscoder.transcode(input, output);

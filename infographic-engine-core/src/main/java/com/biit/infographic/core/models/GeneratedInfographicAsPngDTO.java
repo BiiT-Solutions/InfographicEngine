@@ -73,6 +73,9 @@ public class GeneratedInfographicAsPngDTO extends ElementDTO<Long> {
     }
 
     public static GeneratedInfographicAsPngDTO from(GeneratedInfographicDTO generatedInfographicDTO) {
+        if (generatedInfographicDTO == null) {
+            return null;
+        }
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = new GeneratedInfographicAsPngDTO();
         generatedInfographicAsPngDTO.setId(generatedInfographicDTO.getId());
         generatedInfographicAsPngDTO.setFormName(generatedInfographicDTO.getFormName());

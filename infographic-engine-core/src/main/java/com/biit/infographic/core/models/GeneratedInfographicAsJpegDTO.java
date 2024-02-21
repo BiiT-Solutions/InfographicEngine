@@ -18,7 +18,7 @@ public class GeneratedInfographicAsJpegDTO extends ElementDTO<Long> {
 
     private String createdBy;
 
-    private List<byte[]> pngContents;
+    private List<byte[]> jpegContents;
 
     @Override
     public Long getId() {
@@ -64,25 +64,28 @@ public class GeneratedInfographicAsJpegDTO extends ElementDTO<Long> {
         this.createdBy = createdBy;
     }
 
-    public List<byte[]> getPngContents() {
-        return pngContents;
+    public List<byte[]> getJpegContents() {
+        return jpegContents;
     }
 
-    public void setPngContents(List<byte[]> pngContents) {
-        this.pngContents = pngContents;
+    public void setJpegContents(List<byte[]> jpegContents) {
+        this.jpegContents = jpegContents;
     }
 
     public static GeneratedInfographicAsJpegDTO from(GeneratedInfographicDTO generatedInfographicDTO) {
-        final GeneratedInfographicAsJpegDTO generatedInfographicAsPngDTO = new GeneratedInfographicAsJpegDTO();
-        generatedInfographicAsPngDTO.setId(generatedInfographicDTO.getId());
-        generatedInfographicAsPngDTO.setFormName(generatedInfographicDTO.getFormName());
-        generatedInfographicAsPngDTO.setFormVersion(generatedInfographicDTO.getFormVersion());
-        generatedInfographicAsPngDTO.setOrganizationId(generatedInfographicDTO.getOrganizationId());
-        generatedInfographicAsPngDTO.setCreatedBy(generatedInfographicDTO.getCreatedBy());
-        generatedInfographicAsPngDTO.pngContents = new ArrayList<>();
-        for (String svg : generatedInfographicDTO.getSvgContents()) {
-            generatedInfographicAsPngDTO.pngContents.add(JpegGenerator.generate(svg));
+        if (generatedInfographicDTO == null) {
+            return null;
         }
-        return generatedInfographicAsPngDTO;
+        final GeneratedInfographicAsJpegDTO generatedInfographicAsJpegDTO = new GeneratedInfographicAsJpegDTO();
+        generatedInfographicAsJpegDTO.setId(generatedInfographicDTO.getId());
+        generatedInfographicAsJpegDTO.setFormName(generatedInfographicDTO.getFormName());
+        generatedInfographicAsJpegDTO.setFormVersion(generatedInfographicDTO.getFormVersion());
+        generatedInfographicAsJpegDTO.setOrganizationId(generatedInfographicDTO.getOrganizationId());
+        generatedInfographicAsJpegDTO.setCreatedBy(generatedInfographicDTO.getCreatedBy());
+        generatedInfographicAsJpegDTO.jpegContents = new ArrayList<>();
+        for (String svg : generatedInfographicDTO.getSvgContents()) {
+            generatedInfographicAsJpegDTO.jpegContents.add(JpegGenerator.generate(svg));
+        }
+        return generatedInfographicAsJpegDTO;
     }
 }

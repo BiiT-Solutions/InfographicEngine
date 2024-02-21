@@ -4,6 +4,9 @@ import com.biit.drools.form.DroolsSubmittedCategory;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.drools.form.DroolsSubmittedQuestion;
 import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.controllers.GeneratedInfographicController;
+import com.biit.infographic.core.models.GeneratedInfographicAsJpegDTO;
+import com.biit.infographic.core.models.GeneratedInfographicAsPngDTO;
 import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,6 +40,9 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private GeneratedInfographicProvider generatedInfographicProvider;
+
+    @Autowired
+    private GeneratedInfographicController generatedInfographicController;
 
     private DroolsSubmittedForm droolsSubmittedForm;
 
@@ -90,6 +96,18 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(generatedInfographic.getSvgContents().size(), 2);
         checkContent(generatedInfographic.getSvgContents().get(0), "title.svg");
         checkContent(generatedInfographic.getSvgContents().get(1), "scoringTest.svg");
+    }
+
+    @Test(dependsOnMethods = "checkDroolsSubmittedForm")
+    public void generatedInfographicAsPngDTO() {
+        final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, USER));
+        Assert.assertNotNull(generatedInfographicAsPngDTO.getPngContents());
+    }
+
+    @Test(dependsOnMethods = "checkDroolsSubmittedForm")
+    public void generatedInfographicAJpgDTO() {
+        final GeneratedInfographicAsJpegDTO generatedInfographicAsPngDTO = GeneratedInfographicAsJpegDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, USER));
+        Assert.assertNotNull(generatedInfographicAsPngDTO.getJpegContents());
     }
 
 }
