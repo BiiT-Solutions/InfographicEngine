@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public final class FontFactory {
-    private static final String FONTS_FOLDER = "fonts";
+    public static final String FONTS_FOLDER = "fonts";
     private static final String FONTS_REGULAR = "Regular";
     private static final long FONTS_POOL_EXPIRATION_TIME = 60 * 60 * 1000;
     //Font Family --> Font Weight --> Font
@@ -38,6 +38,10 @@ public final class FontFactory {
 
     private FontFactory() {
         loadFonts();
+    }
+
+    public static List<String> getFontsPaths() {
+        return FontSearcher.getFilesOnFolder(FONTS_FOLDER);
     }
 
     private static void loadFonts() {

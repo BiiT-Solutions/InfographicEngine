@@ -11,6 +11,10 @@ public final class FontSearcher {
         super();
     }
 
+    public static List<String> getFilesOnFolderPath(String folder) {
+        return FileSearcher.getFilesOnFolderPath(folder, SYSTEM_VARIABLE_FILES_LOCATION);
+    }
+
     public static List<String> getFilesOnFolder(String folder) {
         return FileSearcher.getFilesOnFolder(folder, SYSTEM_VARIABLE_FILES_LOCATION);
     }

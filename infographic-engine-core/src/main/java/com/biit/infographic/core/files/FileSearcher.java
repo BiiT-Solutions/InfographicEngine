@@ -5,6 +5,7 @@ import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.biit.utils.file.FileReader;
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,33 @@ public final class FileSearcher {
 
     private FileSearcher() {
 
+    }
+
+    public static List<String> getFilesOnFolderPath(String folderName, String systemVariableFilesLocation) {
+        final List<String> files = new ArrayList<>();
+
+        final String resourceFolderPath;
+        try {
+            resourceFolderPath = new ClassPathResource(File.separator + folderName).getFile().getPath();
+            final File resourceFolder = new File(resourceFolderPath);
+            if (resourceFolder.listFiles() != null) {
+                files.addAll(Arrays.stream(resourceFolder.listFiles()).map(File::getAbsolutePath).collect(Collectors.toSet()));
+            } else {
+                SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", resourceFolderPath + File.separator + folderName);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation);
+        final File folder = new File(systemVariablesFilePath + File.separator + folderName);
+        if (folder.listFiles() != null) {
+            files.addAll(Arrays.stream(folder.listFiles()).map(File::getAbsolutePath).collect(Collectors.toSet()));
+        } else {
+            SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", systemVariablesFilePath + File.separator + folderName);
+        }
+
+        return files;
     }
 
     public static List<String> getFilesOnFolder(String folderName, String systemVariableFilesLocation) {
