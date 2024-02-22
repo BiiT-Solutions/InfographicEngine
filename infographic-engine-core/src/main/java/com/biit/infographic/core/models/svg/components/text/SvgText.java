@@ -32,7 +32,7 @@ import java.util.Objects;
 @JsonRootName(value = "text")
 public class SvgText extends SvgAreaElement {
     public static final String NEW_LINE_SYMBOL = "\n";
-    public static final int MAX_ITERATIONS = 100;
+    public static final int MAX_ITERATIONS = 1000;
     private static final int LINE_SEPARATION = 5;
     private static final int MIN_LINE_SEPARATION = 2;
     private static final int DEFAULT_FONT_SIZE = 10;
@@ -567,6 +567,9 @@ public class SvgText extends SvgAreaElement {
                         break;
                     }
                 }
+            }
+            if (iterations >= MAX_ITERATIONS) {
+                InfographicEngineLogger.warning(this.getClass(), "Text '{}' lines not calculated properly!", content);
             }
         }
         return lines;
