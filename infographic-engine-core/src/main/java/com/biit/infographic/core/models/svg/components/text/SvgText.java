@@ -532,9 +532,6 @@ public class SvgText extends SvgAreaElement {
             int iterations = 0;
             while (!content.isBlank() && iterations < MAX_ITERATIONS) {
                 iterations++;
-                if (!content.contains(NEW_LINE_SYMBOL)) {
-                    break;
-                }
                 if (content.startsWith(NEW_LINE_SYMBOL)) {
                     lines.add("");
                     content = content.substring(NEW_LINE_SYMBOL.length() + 1);
