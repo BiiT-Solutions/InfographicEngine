@@ -1,10 +1,11 @@
 package com.biit.infographic.core.pdf;
 
-import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.SvgImage;
+import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.infographic.core.models.svg.components.text.TextAlign;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.server.utils.exceptions.InvalidXmlElementException;
 import org.apache.commons.io.FileUtils;
@@ -16,12 +17,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -30,6 +28,8 @@ import java.util.Arrays;
 @SpringBootTest
 @Test(groups = "pdfFromSvg")
 public class PdfFromSVGTest extends AbstractTestNGSpringContextTests {
+
+    private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
 
     private static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
 
@@ -82,7 +82,7 @@ public class PdfFromSVGTest extends AbstractTestNGSpringContextTests {
         final File destFile = new File(filePath);
         destFile.createNewFile();
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(pdfController.generatePdfFromSVG(svgTemplate));
+            fos.write(pdfController.generatePdfFromSvg(svgTemplate));
         }
     }
 
@@ -93,16 +93,30 @@ public class PdfFromSVGTest extends AbstractTestNGSpringContextTests {
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2)), "EliseNess",
                 readBase64Image("EliseNess.txt")));
 
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "documentImage.svg")), true)) {
-            out.println(SvgGenerator.generate(svgTemplate));
-        }
-
         final String filePath = OUTPUT_FOLDER + File.separator + "documentImage.pdf";
         final File destFile = new File(filePath);
         destFile.createNewFile();
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(pdfController.generatePdfFromSVG(svgTemplate));
+            fos.write(pdfController.generatePdfFromSvg(svgTemplate));
+        }
+    }
+
+    //Not working yet!
+    @Test(enabled = false)
+    public void documentMondayDonuts() throws IOException, InvalidXmlElementException, EmptyPdfBodyException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        SvgText text = new SvgText("Monday Donuts", LONG_TEXT, 8, 0L, 0L);
+        text.setFontVariant(FontVariantType.NORMAL);
+        text.setTextAlign(TextAlign.JUSTIFY);
+        text.setMaxLineWidth(200);
+        text.setMaxParagraphHeight(90);
+        svgTemplate.addElement(text);
+
+        final String filePath = OUTPUT_FOLDER + File.separator + "documentMondayDonutsFont.pdf";
+        final File destFile = new File(filePath);
+        destFile.createNewFile();
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(pdfController.generatePdfFromSvg(svgTemplate));
         }
     }
 

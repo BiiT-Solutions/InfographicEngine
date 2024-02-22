@@ -1,7 +1,5 @@
 package com.biit.infographic.core.pdf;
 
-import com.biit.infographic.core.files.FontSearcher;
-import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.FontFactory;
@@ -16,15 +14,19 @@ import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.bridge.GVTBuilder;
 import org.apache.batik.bridge.UserAgent;
 import org.apache.batik.bridge.UserAgentAdapter;
+import org.apache.batik.bridge.svg12.SVG12BridgeContext;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.svg.SVGDocument;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 
 public class InfographicFromSvg extends InfographicPdf {
 
@@ -47,8 +49,22 @@ public class InfographicFromSvg extends InfographicPdf {
         final DocumentLoader loader = new DocumentLoader(userAgent);
 
         // Notice, that you should use org.apache.batik.bridge.svg12.SVG12BridgeContext.SVG12BridgeContext for the svg version 1.2
-        final BridgeContext context = new BridgeContext(userAgent, loader);
+        final BridgeContext context = new SVG12BridgeContext(userAgent, loader);
         context.setDynamicState(BridgeContext.DYNAMIC);
+
+        //Register fonts
+        final GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final Set<Font> loadedFonts = com.biit.infographic.core.models.svg.components.text.FontFactory.getLoadedFonts();
+        for (Font font : loadedFonts) {
+            graphicsEnvironment.registerFont(font);
+//            try {
+//                graphicsEnvironment.registerFont(Font.createFont(Font.TRUETYPE_FONT,
+//                        new File(com.biit.infographic.core.models.svg.components.text.FontFactory.getFontPath(font.getFamily(), FontWeight.NORMAL))));
+//            } catch (FontFormatException e) {
+//                throw new RuntimeException(e);
+//            }
+        }
+        loadedFonts.forEach(graphicsEnvironment::registerFont);
 
         final GVTBuilder builder = new GVTBuilder();
         return builder.build(context, svgDocument);
@@ -80,16 +96,32 @@ public class InfographicFromSvg extends InfographicPdf {
     }
 
     private FontMapper createFontMapper() {
-        FontFactory.registerDirectories();
-        final List<String> fonts = FontSearcher.getFilesOnFolderPath(com.biit.infographic.core.models.svg.components.text.FontFactory.FONTS_FOLDER);
-        for (String font : fonts) {
-            try {
-                FontFactory.register(font);
-                SvgGeneratorLogger.debug(this.getClass(), "Registered font '{}' on PDF.", font);
-            } catch (Exception e) {
-                SvgGeneratorLogger.errorMessage(this.getClass(), e);
-            }
-        }
-        return new DefaultFontMapper();
+        final DefaultFontMapper fontMapper = new DefaultFontMapper();
+        //fontMapper.registerDirectories();
+        com.biit.infographic.core.models.svg.components.text.FontFactory.getDefaultFoldersToSearch()
+                .forEach(folder -> {
+                    fontMapper.insertDirectory(folder);
+                    FontFactory.registerDirectory(folder);
+                });
+
+//        final Map<String, Map<FontWeight, String>> fonts = com.biit.infographic.core.models.svg.components.text.FontFactory.getFontsPaths();
+
+//        for (Map.Entry<String, Map<FontWeight, String>> fontEntry : fonts.entrySet()) {
+//            for (Map.Entry<FontWeight, String> weights : fontEntry.getValue().entrySet()) {
+//                FontFactory.register(weights.getValue(), fontEntry.getKey());
+//                SvgGeneratorLogger.debug(this.getClass(), "Registered font '{}' on PDF.", fontEntry.getKey());
+//            }
+//        }
+
+//        final List<String> fonts = FontSearcher.getFilesOnFolderPath(com.biit.infographic.core.models.svg.components.text.FontFactory.FONTS_FOLDER);
+//        for (String font : fonts) {
+//            try {
+//                FontFactory.register(font);
+//                SvgGeneratorLogger.debug(this.getClass(), "Registered font '{}' on PDF.", font);
+//            } catch (Exception e) {
+//                SvgGeneratorLogger.errorMessage(this.getClass(), e);
+//            }
+//        }
+        return fontMapper;
     }
 }

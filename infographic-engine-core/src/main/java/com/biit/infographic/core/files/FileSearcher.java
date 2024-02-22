@@ -15,12 +15,47 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class FileSearcher {
 
     private FileSearcher() {
 
+    }
+
+
+    public static String getFilePath(String file, String folderName, String systemVariableFilesLocation) {
+        final String resourceFolderPath;
+        try {
+            resourceFolderPath = new ClassPathResource(File.separator + folderName).getFile().getPath();
+            final File resourceFolder = new File(resourceFolderPath);
+            if (resourceFolder.listFiles() != null) {
+                for (File fileListed : resourceFolder.listFiles()) {
+                    if (Objects.equals(fileListed.getName(), file)) {
+                        return fileListed.getAbsolutePath();
+                    }
+                }
+            } else {
+                SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", resourceFolderPath + File.separator + folderName);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation);
+        final File folder = new File(systemVariablesFilePath + File.separator + folderName);
+        if (folder.listFiles() != null) {
+            for (File fileListed : folder.listFiles()) {
+                if (Objects.equals(fileListed.getName(), file)) {
+                    return fileListed.getAbsolutePath();
+                }
+            }
+        } else {
+            SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", systemVariablesFilePath + File.separator + folderName);
+        }
+
+        return null;
     }
 
     public static List<String> getFilesOnFolderPath(String folderName, String systemVariableFilesLocation) {

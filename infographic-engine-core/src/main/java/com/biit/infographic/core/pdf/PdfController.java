@@ -27,24 +27,30 @@ public class PdfController {
     /**
      * Infographics without background can be cutt by the PDF generator!
      */
-    public byte[] generatePdfFromSVG(GeneratedInfographic generatedInfographic) throws InvalidXmlElementException, EmptyPdfBodyException {
-        return generatePdfFromSVG(generatedInfographic.getSvgContents());
+    public byte[] generatePdfFromSvg(GeneratedInfographic generatedInfographic) throws InvalidXmlElementException, EmptyPdfBodyException {
+        return generatePdfFromSvg(generatedInfographic.getSvgContents());
     }
 
-    public byte[] generatePdfFromSVG(SvgTemplate svgTemplate) throws InvalidXmlElementException, EmptyPdfBodyException {
+    public byte[] generatePdfFromSvg(SvgTemplate svgTemplate) throws InvalidXmlElementException, EmptyPdfBodyException {
         //Without a background the size of the image later is calculated incorrectly.
         if (svgTemplate.getSvgBackground() == null) {
             svgTemplate.setSvgBackground(new SvgBackground().backgroundColor("#ffffff00"));
         }
-        return generatePdfFromSVG(Collections.singletonList(SvgGenerator.generate(svgTemplate)));
+        return generatePdfFromSvg(Collections.singletonList(SvgGenerator.generate(svgTemplate)));
     }
 
     /**
      * Infographics without background can be cutt by the PDF generator!
      */
-    public byte[] generatePdfFromSVG(List<String> svgs) throws InvalidXmlElementException, EmptyPdfBodyException {
+    public byte[] generatePdfFromSvg(List<String> svgs) throws InvalidXmlElementException, EmptyPdfBodyException {
         FooterEvent.setFooterText(FOOTER_TEXT);
         final InfographicFromSvg infographicFromSvg = new InfographicFromSvg(svgs);
         return infographicFromSvg.generate();
+    }
+
+    public byte[] generatePdfFromImage(List<byte[]> rawData) throws InvalidXmlElementException, EmptyPdfBodyException {
+        FooterEvent.setFooterText(FOOTER_TEXT);
+        final InfographicFromImage infographicFromImage = new InfographicFromImage(rawData);
+        return infographicFromImage.generate();
     }
 }
