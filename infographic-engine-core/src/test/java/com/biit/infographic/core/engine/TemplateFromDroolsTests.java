@@ -101,13 +101,13 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
     @Test(dependsOnMethods = "checkDroolsSubmittedForm")
     public void generatedInfographicAsPngDTO() {
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, USER));
-        Assert.assertNotNull(generatedInfographicAsPngDTO.getPngContents());
+        Assert.assertNotNull(generatedInfographicAsPngDTO.getContents());
     }
 
     @Test(dependsOnMethods = "checkDroolsSubmittedForm")
     public void generatedInfographicAJpgDTO() {
         final GeneratedInfographicAsJpegDTO generatedInfographicAsPngDTO = GeneratedInfographicAsJpegDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, USER));
-        Assert.assertNotNull(generatedInfographicAsPngDTO.getJpegContents());
+        Assert.assertNotNull(generatedInfographicAsPngDTO.getContents());
     }
 
 }

@@ -45,13 +45,13 @@ public class GeneratedInfographic extends Element<Long> {
     @Column(name = "organization_id")
     private Long organizationId;
 
-    @Column(name = "created_by")
-    private String createdBy;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "svg_contents", joinColumns = @JoinColumn(name = "generated_infographic_id"))
     @Column(name = "svg_content", columnDefinition = "TEXT", nullable = false)
     private List<String> svgContents;
+
+    @Column(name = "drools_submitted_form", columnDefinition = "TEXT")
+    private String droolsSubmittedForm;
 
     @Override
     public Long getId() {
@@ -87,20 +87,20 @@ public class GeneratedInfographic extends Element<Long> {
         this.organizationId = organizationId;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public List<String> getSvgContents() {
         return svgContents;
     }
 
     public void setSvgContents(List<String> svgContents) {
         this.svgContents = svgContents;
+    }
+
+    public String getDroolsSubmittedForm() {
+        return droolsSubmittedForm;
+    }
+
+    public void setDroolsSubmittedForm(String droolsSubmittedForm) {
+        this.droolsSubmittedForm = droolsSubmittedForm;
     }
 
     @Override

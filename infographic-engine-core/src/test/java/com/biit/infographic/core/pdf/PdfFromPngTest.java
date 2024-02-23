@@ -26,8 +26,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 @SpringBootTest
-@Test(groups = "pdfFromSvg")
-public class PdfFromSVGTest extends AbstractTestNGSpringContextTests {
+@Test(groups = "pdfFromPng")
+public class PdfFromPngTest extends AbstractTestNGSpringContextTests {
 
     private static final String LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat, rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum, molestie nibh at, facilisis arcu. Aliquam ullamcorper varius orci quis tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam imperdiet magna eget turpis maximus tempor. Suspendisse tincidunt vel elit eu iaculis. Etiam sem risus, sodales in lorem eget, suscipit ultricies arcu. In pellentesque interdum rutrum. Nullam pharetra purus et interdum lacinia. Curabitur malesuada tortor ac tortor laoreet, quis placerat magna hendrerit.";
 
@@ -78,11 +78,11 @@ public class PdfFromSVGTest extends AbstractTestNGSpringContextTests {
         text.getElementStroke().setStrokeDash(Arrays.asList(5, 5, 10, 10, 1));
         svgTemplate.addElement(text);
 
-        final String filePath = OUTPUT_FOLDER + File.separator + "documentColoredText.pdf";
+        final String filePath = OUTPUT_FOLDER + File.separator + "documentColoredTextPng.pdf";
         final File destFile = new File(filePath);
         destFile.createNewFile();
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(pdfController.generatePdfFromSvg(svgTemplate));
+            fos.write(pdfController.generatePdfAsPngImage(svgTemplate));
         }
     }
 
@@ -93,15 +93,14 @@ public class PdfFromSVGTest extends AbstractTestNGSpringContextTests {
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2)), "EliseNess",
                 readBase64Image("EliseNess.txt")));
 
-        final String filePath = OUTPUT_FOLDER + File.separator + "documentImage.pdf";
+        final String filePath = OUTPUT_FOLDER + File.separator + "documentImagePng.pdf";
         final File destFile = new File(filePath);
         destFile.createNewFile();
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(pdfController.generatePdfFromSvg(svgTemplate));
+            fos.write(pdfController.generatePdfAsPngImage(svgTemplate));
         }
     }
 
-    //Not working yet!
     @Test
     public void documentMondayDonuts() throws IOException, InvalidXmlElementException, EmptyPdfBodyException {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
@@ -112,11 +111,11 @@ public class PdfFromSVGTest extends AbstractTestNGSpringContextTests {
         text.setMaxParagraphHeight(90);
         svgTemplate.addElement(text);
 
-        final String filePath = OUTPUT_FOLDER + File.separator + "documentMondayDonutsFont.pdf";
+        final String filePath = OUTPUT_FOLDER + File.separator + "documentMondayDonutsFontPng.pdf";
         final File destFile = new File(filePath);
         destFile.createNewFile();
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(pdfController.generatePdfFromSvg(svgTemplate));
+            fos.write(pdfController.generatePdfAsPngImage(svgTemplate));
         }
     }
 

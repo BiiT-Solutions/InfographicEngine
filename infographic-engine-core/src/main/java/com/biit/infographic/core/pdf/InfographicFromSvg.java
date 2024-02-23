@@ -14,7 +14,6 @@ import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.bridge.GVTBuilder;
 import org.apache.batik.bridge.UserAgent;
 import org.apache.batik.bridge.UserAgentAdapter;
-import org.apache.batik.bridge.svg12.SVG12BridgeContext;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.svg.SVGDocument;
@@ -49,21 +48,12 @@ public class InfographicFromSvg extends InfographicPdf {
         final DocumentLoader loader = new DocumentLoader(userAgent);
 
         // Notice, that you should use org.apache.batik.bridge.svg12.SVG12BridgeContext.SVG12BridgeContext for the svg version 1.2
-        final BridgeContext context = new SVG12BridgeContext(userAgent, loader);
+        final BridgeContext context = new BridgeContext(userAgent, loader);
         context.setDynamicState(BridgeContext.DYNAMIC);
 
         //Register fonts
         final GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         final Set<Font> loadedFonts = com.biit.infographic.core.models.svg.components.text.FontFactory.getLoadedFonts();
-        for (Font font : loadedFonts) {
-            graphicsEnvironment.registerFont(font);
-//            try {
-//                graphicsEnvironment.registerFont(Font.createFont(Font.TRUETYPE_FONT,
-//                        new File(com.biit.infographic.core.models.svg.components.text.FontFactory.getFontPath(font.getFamily(), FontWeight.NORMAL))));
-//            } catch (FontFormatException e) {
-//                throw new RuntimeException(e);
-//            }
-        }
         loadedFonts.forEach(graphicsEnvironment::registerFont);
 
         final GVTBuilder builder = new GVTBuilder();

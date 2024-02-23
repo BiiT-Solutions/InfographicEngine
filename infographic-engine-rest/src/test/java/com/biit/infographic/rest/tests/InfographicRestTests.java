@@ -33,9 +33,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -54,6 +54,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
     private final static String JWT_SALT = "4567";
     private final static String FORM_NAME = "images/CADT";
+    private final static String FORM_NAME_WITH_DATA = "IHaveData";
     private final static int FORM_VERSION = 1;
 
     @Autowired
@@ -164,7 +165,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
 
     @Test(dependsOnMethods = "getLatestInfographicWithoutData")
-    public void populateDatabase() {
+    public void populateDatabase() throws URISyntaxException, IOException {
         final GeneratedInfographicDTO generatedInfographic = new GeneratedInfographicDTO();
         generatedInfographic.setFormName(FORM_NAME);
         generatedInfographic.setFormVersion(FORM_VERSION);
@@ -181,6 +182,13 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         generatedInfographic3.setFormVersion(FORM_VERSION);
         generatedInfographicController.create(generatedInfographic3, USER_NAME + "_bad");
 
+        final GeneratedInfographicDTO generatedInfographicWithData = new GeneratedInfographicDTO();
+        generatedInfographicWithData.setFormName(FORM_NAME_WITH_DATA);
+        generatedInfographicWithData.setFormVersion(FORM_VERSION);
+        generatedInfographicWithData.setSvgContents(Collections.singletonList(new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
+                .getResource("svg" + File.separator + "cadtCustomer4FromDrools.svg").toURI()))).trim()));
+        generatedInfographicController.create(generatedInfographicWithData, USER_NAME);
+
         final GeneratedInfographicDTO generatedInfographic4 = new GeneratedInfographicDTO();
         generatedInfographic4.setFormName(FORM_NAME);
         generatedInfographic4.setFormVersion(FORM_VERSION + 1);
@@ -196,6 +204,57 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("createdBy", USER_NAME);
 
         mockMvc.perform(get("/infographic/find/latest")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .params(requestParams)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test(dependsOnMethods = "populateDatabase")
+    public void getLatestInfographicPdfWithDataAsPng() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("form", FORM_NAME_WITH_DATA);
+        requestParams.add("version", String.valueOf(FORM_VERSION));
+        requestParams.add("createdBy", USER_NAME);
+
+        MvcResult createResult = mockMvc.perform(get("/png/find/latest/pdf")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .params(requestParams)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test(dependsOnMethods = "populateDatabase")
+    public void getLatestInfographicPdfWithDataAsJpeg() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("form", FORM_NAME_WITH_DATA);
+        requestParams.add("version", String.valueOf(FORM_VERSION));
+        requestParams.add("createdBy", USER_NAME);
+
+        MvcResult createResult = mockMvc.perform(get("/jpeg/find/latest/pdf")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .params(requestParams)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test(dependsOnMethods = "populateDatabase")
+    public void getLatestInfographicPdfWithDataAsSvg() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("form", FORM_NAME_WITH_DATA);
+        requestParams.add("version", String.valueOf(FORM_VERSION));
+        requestParams.add("createdBy", USER_NAME);
+
+        MvcResult createResult = mockMvc.perform(get("/svg/find/latest/pdf")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -294,7 +353,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                 .andReturn();
 
         final List<GeneratedInfographicDTO> results = Arrays.asList(objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO[].class));
-        Assert.assertEquals(results.size(), 3);
+        Assert.assertEquals(results.size(), 4);
     }
 
 
@@ -334,7 +393,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
         final List<GeneratedInfographicDTO> results = Arrays.asList(objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO[].class));
         //2 to current logged user.
-        Assert.assertEquals(results.size(), 2);
+        Assert.assertEquals(results.size(), 3);
     }
 
 
@@ -374,7 +433,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
         final List<GeneratedInfographicDTO> results = Arrays.asList(objectMapper.readValue(createResult.getResponse().getContentAsString(), GeneratedInfographicDTO[].class));
         //3 to current logged user.
-        Assert.assertEquals(results.size(), 3);
+        Assert.assertEquals(results.size(), 4);
     }
 
     @Test(dependsOnMethods = "populateDatabase")

@@ -21,6 +21,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
                                                            String formName, String executedBy) {
         final GeneratedInfographic generatedInfographic = new GeneratedInfographic();
         generatedInfographic.setSvgContents(svgContents);
+        generatedInfographic.setDroolsSubmittedForm(droolsSubmittedForm.toJson());
         generatedInfographic.setOrganizationId(droolsSubmittedForm.getOrganizationId());
         generatedInfographic.setCreatedBy(executedBy);
         //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.

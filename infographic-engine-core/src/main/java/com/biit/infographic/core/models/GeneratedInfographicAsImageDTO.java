@@ -4,7 +4,7 @@ import com.biit.server.controllers.models.ElementDTO;
 
 import java.util.List;
 
-public class GeneratedInfographicDTO extends ElementDTO<Long> {
+public class GeneratedInfographicAsImageDTO extends ElementDTO<Long> {
 
     private Long id;
 
@@ -14,9 +14,9 @@ public class GeneratedInfographicDTO extends ElementDTO<Long> {
 
     private Long organizationId;
 
-    private List<String> svgContents;
+    private String createdBy;
 
-    private List<String> jsonContents;
+    private List<byte[]> contents;
 
     @Override
     public Long getId() {
@@ -52,19 +52,22 @@ public class GeneratedInfographicDTO extends ElementDTO<Long> {
         this.organizationId = organizationId;
     }
 
-    public List<String> getSvgContents() {
-        return svgContents;
+    @Override
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setSvgContents(List<String> svgContents) {
-        this.svgContents = svgContents;
+    @Override
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public List<String> getJsonContents() {
-        return jsonContents;
+    public List<byte[]> getContents() {
+        return contents;
     }
 
-    public void setJsonContents(List<String> jsonContents) {
-        this.jsonContents = jsonContents;
+    public void setContents(List<byte[]> contents) {
+        this.contents = contents;
     }
+
 }
