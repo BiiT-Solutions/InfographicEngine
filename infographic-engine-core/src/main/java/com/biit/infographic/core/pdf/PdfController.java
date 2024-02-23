@@ -32,7 +32,7 @@ public class PdfController {
      * Infographics without background can be cutt by the PDF generator!
      */
     public byte[] generatePdfFromSvg(GeneratedInfographic generatedInfographic) throws InvalidXmlElementException, EmptyPdfBodyException {
-        return generatePdfFromSvg(generatedInfographic.getSvgContents());
+        return generatePdfFromSvgs(generatedInfographic.getSvgContents());
     }
 
     public byte[] generatePdfFromSvg(SvgTemplate svgTemplate) throws InvalidXmlElementException, EmptyPdfBodyException {
@@ -41,13 +41,13 @@ public class PdfController {
             svgTemplate.setSvgBackground(new SvgBackground().backgroundColor("#ffffff00"));
         }
         svgTemplate.setEmbedFonts(false);
-        return generatePdfFromSvg(Collections.singletonList(SvgGenerator.generate(svgTemplate)));
+        return generatePdfFromSvgs(Collections.singletonList(SvgGenerator.generate(svgTemplate)));
     }
 
     /**
      * Infographics without background can be cutt by the PDF generator!
      */
-    public byte[] generatePdfFromSvg(List<String> svgs) throws InvalidXmlElementException, EmptyPdfBodyException {
+    public byte[] generatePdfFromSvgs(List<String> svgs) throws InvalidXmlElementException, EmptyPdfBodyException {
         FooterEvent.setFooterText(FOOTER_TEXT);
         //Filter embedded fonts.
         final List<String> filteredSvgs = new ArrayList<>();

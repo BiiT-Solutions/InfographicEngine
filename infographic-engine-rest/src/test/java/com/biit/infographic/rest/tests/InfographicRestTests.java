@@ -2,6 +2,7 @@ package com.biit.infographic.rest.tests;
 
 import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.models.GeneratedInfographicDTO;
+import com.biit.infographic.rest.api.model.InfographicSearch;
 import com.biit.server.security.AuthenticatedUserProvider;
 import com.biit.server.security.model.AuthRequest;
 import com.biit.utils.file.FileReader;
@@ -25,6 +26,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -49,6 +51,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @Test(groups = "infographicRest")
 public class InfographicRestTests extends AbstractTestNGSpringContextTests {
+
+    private static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
+
     private final static String USER_NAME = "user";
     private final static String USER_PASSWORD = "password";
 
@@ -91,6 +96,21 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         } catch (IOException | URISyntaxException e) {
             Assert.fail();
         }
+    }
+
+    protected boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
+    @BeforeClass
+    public void prepareFolder() throws IOException {
+        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
     }
 
     @BeforeClass
@@ -228,6 +248,10 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                         .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
+
+        //Store the file for comparison.
+        final File pdfFile = new File(OUTPUT_FOLDER + File.separator + "onePngInPdf.pdf");
+        Files.write(pdfFile.toPath(), createResult.getResponse().getContentAsByteArray());
     }
 
     @Test(dependsOnMethods = "populateDatabase")
@@ -245,6 +269,10 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                         .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
+
+        //Store the file for comparison.
+        final File pdfFile = new File(OUTPUT_FOLDER + File.separator + "oneJpegInPdf.pdf");
+        Files.write(pdfFile.toPath(), createResult.getResponse().getContentAsByteArray());
     }
 
     @Test(dependsOnMethods = "populateDatabase")
@@ -262,6 +290,29 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                         .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
+
+        //Store the file for comparison.
+        final File pdfFile = new File(OUTPUT_FOLDER + File.separator + "oneSvgInPdf.pdf");
+        Files.write(pdfFile.toPath(), createResult.getResponse().getContentAsByteArray());
+    }
+
+
+    @Test(dependsOnMethods = "populateDatabase")
+    public void getMultipleInfographicPdfWithDataAsSvg() throws Exception {
+
+        MvcResult createResult = mockMvc.perform(post("/svg/find/latest/pdf")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + jwtToken)
+                        .content(toJson(Collections.singletonList(new InfographicSearch(FORM_NAME_WITH_DATA,
+                                FORM_VERSION, USER_NAME, null))))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        //Store the file for comparison.
+        final File pdfFile = new File(OUTPUT_FOLDER + File.separator + "multiplesSvgInPdf.pdf");
+        Files.write(pdfFile.toPath(), createResult.getResponse().getContentAsByteArray());
     }
 
 
@@ -492,5 +543,10 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
         final String[] results = objectMapper.readValue(createResult.getResponse().getContentAsString(), String[].class);
         checkContent(results[0], "cadtCustomer4FromDrools.svg");
+    }
+
+    @AfterClass
+    public void removeFolder() {
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }
