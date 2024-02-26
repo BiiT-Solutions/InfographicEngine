@@ -34,6 +34,7 @@ public class InfographicFromSvg extends InfographicPdf {
     private final FontMapper fontMapper;
 
     public InfographicFromSvg(List<String> svgs) {
+        super();
         this.svgs = svgs;
         this.fontMapper = createFontMapper();
     }
@@ -78,6 +79,9 @@ public class InfographicFromSvg extends InfographicPdf {
                 }
 
                 final ImgTemplate image = new ImgTemplate(template);
+                if (image.getHeight() > getPageSize().getHeight() || image.getWidth() > getPageSize().getWidth()) {
+                    image.scaleToFit(getPageSize().getWidth(), getPageSize().getHeight());
+                }
                 document.add(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);

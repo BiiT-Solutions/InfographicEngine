@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 public class PdfController {
 
-    private static final String FOOTER_TEXT = "Infographic Engine v2";
+    private static final String FOOTER_TEXT = "";
 
     private final GeneratedInfographicProvider generatedInfographicProvider;
 

@@ -13,6 +13,7 @@ public class InfographicFromImage extends InfographicPdf {
     private final List<byte[]> pngs;
 
     public InfographicFromImage(List<byte[]> pngs) {
+        super();
         this.pngs = pngs;
     }
 
@@ -22,6 +23,9 @@ public class InfographicFromImage extends InfographicPdf {
             try {
 
                 final Image image = Image.getInstance(png);
+                if (image.getHeight() > getPageSize().getHeight() || image.getWidth() > getPageSize().getWidth()) {
+                    image.scaleToFit(getPageSize().getWidth(), getPageSize().getHeight());
+                }
                 document.add(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);
