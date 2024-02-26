@@ -183,7 +183,7 @@ public class JpegServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsJpegDTO generatedInfographicAsJpegDTO = GeneratedInfographicAsJpegDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, createdBy), false);
+                .from(generatedInfographicController.findLatest(form, version, organization, createdBy));
 
         if (generatedInfographicAsJpegDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");

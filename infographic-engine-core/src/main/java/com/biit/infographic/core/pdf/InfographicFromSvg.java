@@ -21,6 +21,7 @@ import org.w3c.dom.svg.SVGDocument;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -31,12 +32,16 @@ public class InfographicFromSvg extends InfographicPdf {
 
     private final List<String> svgs;
 
-    private final FontMapper fontMapper;
+    private static final FontMapper FONT_MAPPER;
+
+    static {
+        FONT_MAPPER = createFontMapper();
+        final Graphics2D dg2 = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB).createGraphics();
+    }
 
     public InfographicFromSvg(List<String> svgs) {
         super();
         this.svgs = svgs;
-        this.fontMapper = createFontMapper();
     }
 
     private GraphicsNode convert(String svgCode) throws IOException {
@@ -71,7 +76,7 @@ public class InfographicFromSvg extends InfographicPdf {
 
                 final PdfTemplate template = PdfTemplate.createTemplate(writer, svgImageWidth, svgImageHeight);
 
-                final Graphics2D g2d = template.createGraphics(template.getWidth(), template.getHeight(), fontMapper);
+                final Graphics2D g2d = template.createGraphics(template.getWidth(), template.getHeight(), FONT_MAPPER);
                 try {
                     graphicsNode.paint(g2d);
                 } finally {
@@ -89,33 +94,13 @@ public class InfographicFromSvg extends InfographicPdf {
         });
     }
 
-    private FontMapper createFontMapper() {
+    public static FontMapper createFontMapper() {
         final DefaultFontMapper fontMapper = new DefaultFontMapper();
-        //fontMapper.registerDirectories();
         com.biit.infographic.core.models.svg.components.text.FontFactory.getDefaultFoldersToSearch()
                 .forEach(folder -> {
                     fontMapper.insertDirectory(folder);
                     FontFactory.registerDirectory(folder);
                 });
-
-//        final Map<String, Map<FontWeight, String>> fonts = com.biit.infographic.core.models.svg.components.text.FontFactory.getFontsPaths();
-
-//        for (Map.Entry<String, Map<FontWeight, String>> fontEntry : fonts.entrySet()) {
-//            for (Map.Entry<FontWeight, String> weights : fontEntry.getValue().entrySet()) {
-//                FontFactory.register(weights.getValue(), fontEntry.getKey());
-//                SvgGeneratorLogger.debug(this.getClass(), "Registered font '{}' on PDF.", fontEntry.getKey());
-//            }
-//        }
-
-//        final List<String> fonts = FontSearcher.getFilesOnFolderPath(com.biit.infographic.core.models.svg.components.text.FontFactory.FONTS_FOLDER);
-//        for (String font : fonts) {
-//            try {
-//                FontFactory.register(font);
-//                SvgGeneratorLogger.debug(this.getClass(), "Registered font '{}' on PDF.", font);
-//            } catch (Exception e) {
-//                SvgGeneratorLogger.errorMessage(this.getClass(), e);
-//            }
-//        }
         return fontMapper;
     }
 }

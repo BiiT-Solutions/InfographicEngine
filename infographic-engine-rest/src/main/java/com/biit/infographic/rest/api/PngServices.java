@@ -187,7 +187,7 @@ public class PngServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, createdBy), false);
+                .from(generatedInfographicController.findLatest(form, version, organization, createdBy));
 
         if (generatedInfographicAsPngDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");

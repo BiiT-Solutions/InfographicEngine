@@ -8,10 +8,6 @@ import java.util.ArrayList;
 public class GeneratedInfographicAsJpegDTO extends GeneratedInfographicAsImageDTO {
 
     public static GeneratedInfographicAsJpegDTO from(GeneratedInfographicDTO generatedInfographicDTO) {
-        return from(generatedInfographicDTO, true);
-    }
-
-    public static GeneratedInfographicAsJpegDTO from(GeneratedInfographicDTO generatedInfographicDTO, boolean embedFonts) {
         if (generatedInfographicDTO == null) {
             return null;
         }
@@ -23,9 +19,7 @@ public class GeneratedInfographicAsJpegDTO extends GeneratedInfographicAsImageDT
         generatedInfographicAsJpegDTO.setCreatedBy(generatedInfographicDTO.getCreatedBy());
         generatedInfographicAsJpegDTO.setContents(new ArrayList<>());
         for (String svg : generatedInfographicDTO.getSvgContents()) {
-            if (!embedFonts) {
-                svg = SvgFiltering.filterEmbeddedFonts(svg);
-            }
+            svg = SvgFiltering.filterEmbeddedFonts(svg);
             generatedInfographicAsJpegDTO.getContents().add(JpegGenerator.generate(svg));
         }
         return generatedInfographicAsJpegDTO;

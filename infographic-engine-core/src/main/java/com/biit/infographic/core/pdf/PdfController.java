@@ -6,7 +6,6 @@ import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.utils.SvgFiltering;
-import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.server.utils.exceptions.InvalidXmlElementException;
@@ -22,14 +21,11 @@ public class PdfController {
 
     private static final String FOOTER_TEXT = "";
 
-    private final GeneratedInfographicProvider generatedInfographicProvider;
-
-    public PdfController(GeneratedInfographicProvider generatedInfographicProvider) {
-        this.generatedInfographicProvider = generatedInfographicProvider;
+    public PdfController() {
     }
 
     /**
-     * Infographics without background can be cutt by the PDF generator!
+     * Infographics without background can be cut by the PDF generator!
      */
     public byte[] generatePdfFromSvg(GeneratedInfographic generatedInfographic) throws InvalidXmlElementException, EmptyPdfBodyException {
         return generatePdfFromSvgs(generatedInfographic.getSvgContents());

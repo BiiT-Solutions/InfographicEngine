@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +44,8 @@ public final class FontFactory {
         }
     };
 
+    private static boolean fontsLoaded = false;
+
     private FontFactory() {
         loadFonts();
     }
@@ -57,6 +60,7 @@ public final class FontFactory {
                 loadFont(file);
             }
             SvgGeneratorLogger.debug(FontFactory.class, "Fonts found are '{}'.", fontsFiles);
+            registerFonts();
         } catch (Exception e) {
             SvgGeneratorLogger.errorMessage(FontFactory.class, e);
         }
@@ -204,5 +208,17 @@ public final class FontFactory {
             throw new RuntimeException(e);
         }
         return fontsFolders;
+    }
+
+    /**
+     * PNGTranscoder and PdfTemplate needs that these fonts are registered directly on Java VM.
+     */
+    private static void registerFonts() {
+        if (!fontsLoaded) {
+            //Register fonts
+            final GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            getLoadedFonts().forEach(graphicsEnvironment::registerFont);
+            fontsLoaded = true;
+        }
     }
 }

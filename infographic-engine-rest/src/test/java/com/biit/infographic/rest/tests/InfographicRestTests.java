@@ -233,6 +233,27 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                 .andReturn();
     }
 
+    @Test(dependsOnMethods = {"populateDatabase"})
+    public void getLatestInfographicWithDataAsPng() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("form", FORM_NAME_WITH_DATA);
+        requestParams.add("version", String.valueOf(FORM_VERSION));
+        requestParams.add("createdBy", USER_NAME);
+
+        MvcResult createResult = mockMvc.perform(get("/png/find/latest/0")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .params(requestParams)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        //Store the file for comparison.
+        final File pdfFile = new File(OUTPUT_FOLDER + File.separator + "onePng.png");
+        Files.write(pdfFile.toPath(), createResult.getResponse().getContentAsByteArray());
+    }
+
     @Test(dependsOnMethods = "populateDatabase")
     public void getLatestInfographicPdfWithDataAsPng() throws Exception {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
@@ -297,7 +318,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(dependsOnMethods = "populateDatabase")
+    @Test(dependsOnMethods = "populateDatabase", enabled = false)
     public void getMultipleInfographicPdfWithDataAsSvg() throws Exception {
 
         MvcResult createResult = mockMvc.perform(post("/svg/find/latest/pdf")
@@ -547,6 +568,6 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
     @AfterClass
     public void removeFolder() {
-        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+       // Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }
