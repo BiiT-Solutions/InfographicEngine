@@ -568,6 +568,6 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
     @AfterClass
     public void removeFolder() {
-       // Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 }
