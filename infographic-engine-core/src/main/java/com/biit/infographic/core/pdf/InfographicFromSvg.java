@@ -18,15 +18,12 @@ import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.svg.SVGDocument;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Set;
 
 public class InfographicFromSvg extends InfographicPdf {
 
@@ -56,11 +53,6 @@ public class InfographicFromSvg extends InfographicPdf {
         // Notice, that you should use org.apache.batik.bridge.svg12.SVG12BridgeContext.SVG12BridgeContext for the svg version 1.2
         final BridgeContext context = new BridgeContext(userAgent, loader);
         context.setDynamicState(BridgeContext.DYNAMIC);
-
-        //Register fonts
-        final GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        final Set<Font> loadedFonts = com.biit.infographic.core.models.svg.components.text.FontFactory.getLoadedFonts();
-        loadedFonts.forEach(graphicsEnvironment::registerFont);
 
         final GVTBuilder builder = new GVTBuilder();
         return builder.build(context, svgDocument);
