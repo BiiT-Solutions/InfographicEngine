@@ -103,6 +103,9 @@ public class SvgText extends SvgAreaElement {
     @JsonProperty("fontWeight")
     private FontWeight fontWeight;
 
+    @JsonProperty("fontStyle")
+    private FontStyle fontStyle;
+
     public SvgText(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.TEXT);
@@ -225,6 +228,14 @@ public class SvgText extends SvgAreaElement {
 
     public void setFontWeight(FontWeight fontWeight) {
         this.fontWeight = fontWeight;
+    }
+
+    public FontStyle getFontStyle() {
+        return fontStyle;
+    }
+
+    public void setFontStyle(FontStyle fontStyle) {
+        this.fontStyle = fontStyle;
     }
 
     public long getRotate() {
@@ -424,6 +435,9 @@ public class SvgText extends SvgAreaElement {
         if (getFontFamily() != null) {
             text.setAttributeNS(null, "font-family", getMainFontFamily());
         }
+        if (getFontStyle() != null) {
+            text.setAttributeNS(null, "font-style", getFontStyle().getName());
+        }
         if (getRotate() != 0) {
             text.setAttributeNS(null, "transform", "rotate(" + getRotate() + ")");
         }
@@ -453,6 +467,9 @@ public class SvgText extends SvgAreaElement {
         }
         if (getFontWeight() != null && getFontWeight() != FontWeight.NORMAL) {
             style.append(getFontWeight().getStyle());
+        }
+        if (getFontStyle() != null && getFontStyle() != FontStyle.NORMAL) {
+            style.append(getFontStyle().getStyle());
         }
         if (getFontFamily() != null) {
             style.append("font-family:");

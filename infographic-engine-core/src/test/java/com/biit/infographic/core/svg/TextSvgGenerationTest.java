@@ -5,6 +5,7 @@ import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
+import com.biit.infographic.core.models.svg.components.text.FontStyle;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
@@ -69,6 +70,21 @@ public class TextSvgGenerationTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentSimpleTextWithNewLine.svg");
+    }
+
+    @Test
+    public void documentSimpleTextTestWithNewLineItalic() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        final SvgText text = new SvgText("This is the first text\n with a new line\n\n and a paragraph.", 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
+        text.setFontStyle(FontStyle.ITALIC);
+        svgTemplate.addElement(text);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentSimpleTextWithNewLineItalic.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentSimpleTextWithNewLineItalic.svg");
     }
 
     @Test

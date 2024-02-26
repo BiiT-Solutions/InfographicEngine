@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
+import com.biit.infographic.core.models.svg.components.text.FontStyle;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
@@ -42,6 +43,9 @@ public class SvgTextDeserializer extends SvgAreaElementDeserializer<SvgText> {
         element.setTextAlign(TextAlign.getAlignment(DeserializerParser.parseString("textAlign", jsonObject)));
         if (DeserializerParser.parseString("fontWeight", jsonObject) != null) {
             element.setFontWeight(FontWeight.getWeight(DeserializerParser.parseString("fontWeight", jsonObject)));
+        }
+        if (DeserializerParser.parseString("fontStyle", jsonObject) != null) {
+            element.setFontStyle(FontStyle.getStyle(DeserializerParser.parseString("fontStyle", jsonObject)));
         }
     }
 }
