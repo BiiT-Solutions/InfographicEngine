@@ -5,11 +5,8 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfWriter;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 public class InfographicFromImage extends InfographicPdf {
 
