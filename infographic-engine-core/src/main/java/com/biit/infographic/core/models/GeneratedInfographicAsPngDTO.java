@@ -20,7 +20,7 @@ public class GeneratedInfographicAsPngDTO extends GeneratedInfographicAsImageDTO
         generatedInfographicAsPngDTO.setCreatedBy(generatedInfographicDTO.getCreatedBy());
         generatedInfographicAsPngDTO.setContents(new ArrayList<>());
         for (String svg : generatedInfographicDTO.getSvgContents()) {
-            svg = SvgFiltering.filterEmbeddedFonts(svg);
+            svg = SvgFiltering.cleanUpCode(svg);
             generatedInfographicAsPngDTO.getContents().add(PngGenerator.generate(svg));
         }
         return generatedInfographicAsPngDTO;

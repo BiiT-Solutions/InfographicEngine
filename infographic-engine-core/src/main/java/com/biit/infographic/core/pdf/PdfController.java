@@ -47,7 +47,7 @@ public class PdfController {
         FooterEvent.setFooterText(FOOTER_TEXT);
         //Filter embedded fonts.
         final List<String> filteredSvgs = new ArrayList<>();
-        svgs.forEach(svgCode -> filteredSvgs.add(SvgFiltering.filterEmbeddedFonts(svgCode)));
+        svgs.forEach(svgCode -> filteredSvgs.add(SvgFiltering.cleanUpCode(svgCode)));
         final InfographicFromSvg infographicFromSvg = new InfographicFromSvg(filteredSvgs);
         return infographicFromSvg.generate();
     }

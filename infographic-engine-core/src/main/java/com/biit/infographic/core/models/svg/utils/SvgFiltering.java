@@ -23,6 +23,10 @@ public final class SvgFiltering {
 
     }
 
+    public static String cleanUpCode(String svgCode) {
+        return filterEmptyImages(filterEmbeddedFonts(svgCode));
+    }
+
     /**
      * Embedded fonts cannot be used on PDFs, PNGs or JPEG.
      */
@@ -31,18 +35,52 @@ public final class SvgFiltering {
             final SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
             final SVGDocument svgDocument = factory.createSVGDocument("", new ByteArrayInputStream(svgCode.getBytes(StandardCharsets.UTF_8)));
             final NodeList styleList = svgDocument.getElementsByTagName("style");
-            final List<Node> stylingNodes = new ArrayList<>();
+            final List<Node> stylingToRemove = new ArrayList<>();
             for (int i = 0; i < styleList.getLength(); i++) {
                 // To search only "style" desired children
                 final Node defsChild = styleList.item(i);
                 if (defsChild.getNodeType() == Node.ELEMENT_NODE
                         && defsChild.getNodeName().equalsIgnoreCase("style")
                         && defsChild.getTextContent().matches(FONT_FACE_NODE)) {
-                    stylingNodes.add(defsChild);
+                    stylingToRemove.add(defsChild);
+                    InfographicEngineLogger.warning(SvgFiltering.class, "Font '{}' is removed from svg document.",
+                            (defsChild.getAttributes().getNamedItem("id") != null ? defsChild.getAttributes().getNamedItem("id").getNodeValue() : null));
                 }
             }
             //Remove font-face nodes
-            stylingNodes.forEach(node -> node.getParentNode().removeChild(node));
+            stylingToRemove.forEach(node -> node.getParentNode().removeChild(node));
+            return SvgGenerator.convertToString(svgDocument);
+        } catch (IOException e) {
+            InfographicEngineLogger.severe(GeneratedInfographicAsImageDTO.class, "Cannot remove embedded fonts!");
+            return svgCode;
+        }
+    }
+
+    /**
+     * Images not well-formed, causes the PDF to crash.
+     *
+     * @param svgCode
+     * @return
+     */
+    public static String filterEmptyImages(String svgCode) {
+        try {
+            final SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
+            final SVGDocument svgDocument = factory.createSVGDocument("", new ByteArrayInputStream(svgCode.getBytes(StandardCharsets.UTF_8)));
+            final NodeList imageList = svgDocument.getElementsByTagName("image");
+            //Image content is on "ns0:href" property
+            final List<Node> imageToDelete = new ArrayList<>();
+            for (int i = 0; i < imageList.getLength(); i++) {
+                // To search only "style" desired children
+                final Node defsChild = imageList.item(i);
+                if (defsChild.getAttributes().getNamedItemNS("http://www.w3.org/1999/xlink", "href") == null
+                        || defsChild.getAttributes().getNamedItemNS("http://www.w3.org/1999/xlink", "href").getNodeValue().isEmpty()) {
+                    imageToDelete.add(defsChild);
+                    InfographicEngineLogger.warning(SvgFiltering.class, "Image '{}' is removed as is blank.",
+                            (defsChild.getAttributes().getNamedItem("id") != null ? defsChild.getAttributes().getNamedItem("id").getNodeValue() : null));
+                }
+            }
+            //Remove images
+            imageToDelete.forEach(node -> node.getParentNode().removeChild(node));
             return SvgGenerator.convertToString(svgDocument);
         } catch (IOException e) {
             InfographicEngineLogger.severe(GeneratedInfographicAsImageDTO.class, "Cannot remove embedded fonts!");
