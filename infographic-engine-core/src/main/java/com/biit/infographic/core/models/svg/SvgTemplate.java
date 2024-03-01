@@ -9,6 +9,7 @@ import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserializer;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -155,7 +156,13 @@ public class SvgTemplate extends SvgAreaElement {
         if (getElements() != null && !getElements().isEmpty()) {
             elements.forEach(svgElement -> {
                 svgElement.validateAttributes();
-                svgRoot.appendChild(svgElement.generateSvg(doc));
+                final Element element = svgElement.generateSvg(doc);
+                if (element != null) {
+                    svgRoot.appendChild(element);
+                } else {
+                    InfographicEngineLogger.warning(this.getClass(), "Element '"
+                            + svgElement.getId() + "' cannot be converted to SVG.");
+                }
             });
         }
 

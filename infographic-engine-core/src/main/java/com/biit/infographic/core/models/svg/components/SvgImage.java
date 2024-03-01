@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgImageDeserializer;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -136,20 +137,25 @@ public class SvgImage extends SvgAreaElement {
 
     @Override
     public Element generateSvg(Document doc) {
-        final Element image = doc.createElementNS(NAMESPACE, "image");
-        image.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
-        image.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
-
         String finalContent = content;
         if (resource != null && content == null) {
             finalContent = getFromPath(resource);
         }
-        if (finalContent != null && !finalContent.startsWith(BASE_64_PREFIX)) {
+        if (finalContent == null || finalContent.isEmpty()) {
+            InfographicEngineLogger.warning(this.getClass(), "Image with id '" + getId() + "' is empty!");
+            return null;
+        }
+
+        final Element image = doc.createElementNS(NAMESPACE, "image");
+        image.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
+        image.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
+
+        if (!finalContent.startsWith(BASE_64_PREFIX)) {
             image.setAttributeNS("http://www.w3.org/1999/xlink", "href", BASE_64_PREFIX + finalContent);
         } else {
             image.setAttributeNS("http://www.w3.org/1999/xlink", "href", finalContent);
-            //image.setAttributeNS("xlink:href", content);
         }
+
         if (href != null) {
             image.setAttribute("onclick", "window.location='" + href + "'");
         }

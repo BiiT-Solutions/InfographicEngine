@@ -175,13 +175,13 @@ public class SvgServices extends ImageServices {
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_JSON_VALUE)
     public byte[] getAsPdf(
-            @RequestBody List<InfographicSearch> infographicSearchs,
+            @RequestBody List<InfographicSearch> infographicSearches,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response)
             throws InvalidXmlElementException, EmptyPdfBodyException {
 
         final ArrayList<String> svgCodes = new ArrayList<>();
 
-        for (InfographicSearch infographicSearch : infographicSearchs) {
+        for (InfographicSearch infographicSearch : infographicSearches) {
             canBeDoneForDifferentUsers(infographicSearch.getCreatedBy(), authentication);
             final Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider
                     .findLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
