@@ -43,8 +43,7 @@ public final class SvgFiltering {
                         && defsChild.getNodeName().equalsIgnoreCase("style")
                         && defsChild.getTextContent().matches(FONT_FACE_NODE)) {
                     stylingToRemove.add(defsChild);
-                    InfographicEngineLogger.warning(SvgFiltering.class, "Font '{}' is removed from svg document.",
-                            (defsChild.getAttributes().getNamedItem("id") != null ? defsChild.getAttributes().getNamedItem("id").getNodeValue() : null));
+                    InfographicEngineLogger.warning(SvgFiltering.class, "Font is removed from svg document!");
                 }
             }
             //Remove font-face nodes

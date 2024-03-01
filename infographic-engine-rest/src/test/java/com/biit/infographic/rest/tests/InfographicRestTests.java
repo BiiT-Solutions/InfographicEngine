@@ -250,8 +250,8 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                 .andReturn();
 
         //Store the file for comparison.
-        final File pdfFile = new File(OUTPUT_FOLDER + File.separator + "onePng.png");
-        Files.write(pdfFile.toPath(), createResult.getResponse().getContentAsByteArray());
+        final File pngFile = new File(OUTPUT_FOLDER + File.separator + "onePng.png");
+        Files.write(pngFile.toPath(), createResult.getResponse().getContentAsByteArray());
     }
 
     @Test(dependsOnMethods = "populateDatabase")
