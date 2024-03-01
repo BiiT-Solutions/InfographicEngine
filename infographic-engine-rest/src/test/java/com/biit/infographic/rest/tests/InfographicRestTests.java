@@ -318,7 +318,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(dependsOnMethods = "populateDatabase", enabled = false)
+    @Test(dependsOnMethods = "populateDatabase")
     public void getMultipleInfographicPdfWithDataAsSvg() throws Exception {
 
         MvcResult createResult = mockMvc.perform(post("/svg/find/latest/pdf")
