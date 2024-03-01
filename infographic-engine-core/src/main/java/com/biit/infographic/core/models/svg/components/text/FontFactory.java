@@ -207,7 +207,7 @@ public final class FontFactory {
         try {
             fontsFolders.add(new ClassPathResource(File.separator + FONTS_FOLDER).getFile().getPath());
         } catch (IOException e) {
-            InfographicEngineLogger.severe(FontFactory.class, "Folder '{}' not found!", (systemVariablesFilePath + File.separator + FONTS_FOLDER);
+            InfographicEngineLogger.severe(FontFactory.class, "Folder '{}' not found!", systemVariablesFilePath + File.separator + FONTS_FOLDER);
         }
         return fontsFolders;
     }
