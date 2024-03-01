@@ -192,7 +192,7 @@ public final class FileSearcher {
                     "File path '{}'", systemVariablesFilePath);
             return FileUtils.openInputStream(new File(systemVariablesFilePath));
         } catch (NullPointerException | IOException e) {
-            InfographicEngineLogger.debug(FileSearcher.class.getName(), "No file found at '{}'.", systemVariablesFilePath);
+            InfographicEngineLogger.warning(FileSearcher.class.getName(), "No file found at '{}'.", systemVariablesFilePath);
             throw new FileNotFoundException(FileUtils.class, "No file found at '" + systemVariablesFilePath + "'.");
         }
     }
