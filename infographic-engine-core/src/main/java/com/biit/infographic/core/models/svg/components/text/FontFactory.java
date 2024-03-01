@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg.components.text;
 
 import com.biit.infographic.core.files.FileSearcher;
 import com.biit.infographic.core.files.FontSearcher;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.biit.utils.pool.BasePool;
 import org.springframework.core.io.ClassPathResource;
@@ -205,7 +206,7 @@ public final class FontFactory {
         try {
             fontsFolders.add(new ClassPathResource(File.separator + FONTS_FOLDER).getFile().getPath());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            InfographicEngineLogger.severe(FontFactory.class, "Folder '{}' not found!", File.separator + FONTS_FOLDER);
         }
         return fontsFolders;
     }
