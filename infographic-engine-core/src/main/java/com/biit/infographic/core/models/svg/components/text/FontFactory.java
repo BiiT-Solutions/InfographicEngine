@@ -202,11 +202,12 @@ public final class FontFactory {
     public static List<String> getDefaultFoldersToSearch() {
         final List<String> fontsFolders = new ArrayList<>();
         final String systemVariablesFilePath = FileSearcher.readEnvironmentVariable(FontSearcher.SYSTEM_VARIABLE_FILES_LOCATION);
+        InfographicEngineLogger.debug(FontFactory.class, "Environment variable set as '{}.'", systemVariablesFilePath);
         fontsFolders.add(systemVariablesFilePath + File.separator + FONTS_FOLDER);
         try {
             fontsFolders.add(new ClassPathResource(File.separator + FONTS_FOLDER).getFile().getPath());
         } catch (IOException e) {
-            InfographicEngineLogger.severe(FontFactory.class, "Folder '{}' not found!", File.separator + FONTS_FOLDER);
+            InfographicEngineLogger.severe(FontFactory.class, "Folder '{}' not found!", (systemVariablesFilePath + File.separator + FONTS_FOLDER);
         }
         return fontsFolders;
     }
