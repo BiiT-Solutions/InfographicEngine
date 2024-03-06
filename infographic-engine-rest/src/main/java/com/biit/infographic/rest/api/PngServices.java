@@ -173,7 +173,7 @@ public class PngServices extends ImageServices {
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getLatestAsPdf(
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
@@ -207,7 +207,7 @@ public class PngServices extends ImageServices {
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getAsPdf(
             @RequestBody List<InfographicSearch> infographicSearchs,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response)

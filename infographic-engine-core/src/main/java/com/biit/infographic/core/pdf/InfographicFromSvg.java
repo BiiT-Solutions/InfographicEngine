@@ -33,7 +33,6 @@ public class InfographicFromSvg extends InfographicPdf {
 
     static {
         FONT_MAPPER = createFontMapper();
-        final Graphics2D dg2 = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB).createGraphics();
     }
 
     public InfographicFromSvg(List<String> svgs) {

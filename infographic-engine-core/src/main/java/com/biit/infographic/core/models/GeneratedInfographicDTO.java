@@ -67,4 +67,14 @@ public class GeneratedInfographicDTO extends ElementDTO<Long> {
     public void setJsonContents(List<String> jsonContents) {
         this.jsonContents = jsonContents;
     }
+
+    @Override
+    public String toString() {
+        return "GeneratedInfographicDTO{"
+                + "id=" + id
+                + ", formName='" + formName + '\''
+                + ", formVersion=" + formVersion
+                +
+                '}';
+    }
 }

@@ -168,7 +168,7 @@ public class JpegServices extends ImageServices {
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getLatestAsPdf(
             HttpServletRequest httpRequest,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
@@ -204,7 +204,7 @@ public class JpegServices extends ImageServices {
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getAsPdf(
             @RequestBody List<InfographicSearch> infographicSearchs,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response)
