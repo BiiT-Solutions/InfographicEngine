@@ -203,11 +203,17 @@ public final class FontFactory {
         final List<String> fontsFolders = new ArrayList<>();
         final String systemVariablesFilePath = FileSearcher.readEnvironmentVariable(FontSearcher.SYSTEM_VARIABLE_FILES_LOCATION);
         InfographicEngineLogger.debug(FontFactory.class, "Environment variable set as '{}.'", systemVariablesFilePath);
-        fontsFolders.add(systemVariablesFilePath + File.separator + FONTS_FOLDER);
+        if (new File(systemVariablesFilePath + File.separator + FONTS_FOLDER).exists()) {
+            fontsFolders.add(systemVariablesFilePath + File.separator + FONTS_FOLDER);
+            InfographicEngineLogger.debug(FontFactory.class, "Fonts Folder '{}' loaded.", systemVariablesFilePath + File.separator + FONTS_FOLDER);
+        } else {
+            InfographicEngineLogger.warning(FontFactory.class, "Fonts Folder '{}' not found!", systemVariablesFilePath + File.separator + FONTS_FOLDER);
+        }
         try {
             fontsFolders.add(new ClassPathResource(File.separator + FONTS_FOLDER).getFile().getPath());
+            InfographicEngineLogger.debug(FontFactory.class, "Resource Folder '{}' loaded.", systemVariablesFilePath + File.separator + FONTS_FOLDER);
         } catch (IOException e) {
-            InfographicEngineLogger.severe(FontFactory.class, "Folder '{}' not found!", systemVariablesFilePath + File.separator + FONTS_FOLDER);
+            InfographicEngineLogger.warning(FontFactory.class, "Resource Folder '{}' not found!", File.separator + FONTS_FOLDER);
         }
         return fontsFolders;
     }
