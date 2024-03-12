@@ -31,7 +31,7 @@ public final class FileSearcher {
             resourceFolderPath = new ClassPathResource(File.separator + folderName).getFile().getPath();
             final File resourceFolder = new File(resourceFolderPath);
             if (resourceFolder.listFiles() != null) {
-                for (File fileListed : resourceFolder.listFiles()) {
+                for (File fileListed : Objects.requireNonNull(resourceFolder.listFiles())) {
                     if (Objects.equals(fileListed.getName(), file)) {
                         return fileListed.getAbsolutePath();
                     }
@@ -48,7 +48,7 @@ public final class FileSearcher {
         final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation);
         final File folder = new File(systemVariablesFilePath + File.separator + folderName);
         if (folder.listFiles() != null) {
-            for (File fileListed : folder.listFiles()) {
+            for (File fileListed : Objects.requireNonNull(folder.listFiles())) {
                 if (Objects.equals(fileListed.getName(), file)) {
                     return fileListed.getAbsolutePath();
                 }
@@ -68,7 +68,7 @@ public final class FileSearcher {
             resourceFolderPath = new ClassPathResource(File.separator + folderName).getFile().getPath();
             final File resourceFolder = new File(resourceFolderPath);
             if (resourceFolder.listFiles() != null) {
-                files.addAll(Arrays.stream(resourceFolder.listFiles()).map(File::getAbsolutePath).collect(Collectors.toSet()));
+                files.addAll(Arrays.stream(Objects.requireNonNull(resourceFolder.listFiles())).map(File::getAbsolutePath).collect(Collectors.toSet()));
             } else {
                 SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", resourceFolderPath + File.separator + folderName);
             }
@@ -79,7 +79,7 @@ public final class FileSearcher {
         final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation);
         final File folder = new File(systemVariablesFilePath + File.separator + folderName);
         if (folder.listFiles() != null) {
-            files.addAll(Arrays.stream(folder.listFiles()).map(File::getAbsolutePath).collect(Collectors.toSet()));
+            files.addAll(Arrays.stream(Objects.requireNonNull(folder.listFiles())).map(File::getAbsolutePath).collect(Collectors.toSet()));
         } else {
             SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", systemVariablesFilePath + File.separator + folderName);
         }
@@ -98,7 +98,7 @@ public final class FileSearcher {
         final File folder = new File(systemVariablesFilePath + File.separator + folderName);
         SvgGeneratorLogger.info(FileSearcher.class, "Searching fonts on '{}'.", folder.getAbsolutePath());
         if (folder.listFiles() != null) {
-            files.addAll(Arrays.stream(folder.listFiles()).map(File::getName).collect(Collectors.toSet()));
+            files.addAll(Arrays.stream(Objects.requireNonNull(folder.listFiles())).map(File::getName).collect(Collectors.toSet()));
         } else {
             SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", systemVariablesFilePath + File.separator + folderName);
         }
