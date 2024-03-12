@@ -40,7 +40,7 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
     @ExceptionHandler(MalformedTemplateException.class)
     public ResponseEntity<?> malformedTemplateException(Exception ex) {
         RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
-        return new ResponseEntity<>(new ErrorMessage("Template is malformed"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ErrorMessage("Template not found"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FormNotFoundException.class)

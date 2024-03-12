@@ -39,6 +39,8 @@ public final class FileSearcher {
             } else {
                 SvgGeneratorLogger.warning(FileSearcher.class, "No files found on '{}'.", resourceFolderPath + File.separator + folderName);
             }
+        } catch (java.io.FileNotFoundException e) {
+            SvgGeneratorLogger.debug(FileSearcher.class, "Font is not on resource path '{}'.", File.separator + folderName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -94,6 +96,7 @@ public final class FileSearcher {
         }
         final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation);
         final File folder = new File(systemVariablesFilePath + File.separator + folderName);
+        SvgGeneratorLogger.info(FileSearcher.class, "Searching fonts on '{}'.", folder.getAbsolutePath());
         if (folder.listFiles() != null) {
             files.addAll(Arrays.stream(folder.listFiles()).map(File::getName).collect(Collectors.toSet()));
         } else {

@@ -115,7 +115,7 @@ public class DroolsContent {
                 DECIMAL_FORMAT_VALUES.setRoundingMode(RoundingMode.DOWN);
                 value = DECIMAL_FORMAT_VALUES.format(Double.parseDouble(value));
             } catch (IllegalArgumentException e) {
-                InfographicEngineLogger.debug(getClass().getName(), "Value '" + value + "' is not a number.");
+                //It is not a number.
             }
             return value;
         }
