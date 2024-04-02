@@ -38,6 +38,10 @@ public class SvgRectangle extends SvgAreaElement {
         this(new ElementAttributes(xCoordinate, yCoordinate, width, height, fill));
     }
 
+    public SvgRectangle(Long xCoordinate, Long yCoordinate, Long width, Long height) {
+        this(new ElementAttributes(xCoordinate, yCoordinate, String.valueOf(width), String.valueOf(height)));
+    }
+
     public SvgRectangle(Long xCoordinate, Long yCoordinate, Long width, Long height, String fill) {
         this(new ElementAttributes(xCoordinate, yCoordinate, String.valueOf(width), String.valueOf(height), fill));
     }
