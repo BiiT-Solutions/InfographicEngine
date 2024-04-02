@@ -249,14 +249,18 @@ public class ElementAttributes {
     }
 
     public void setFillOpacity(String fillOpacity) {
-        if (fillOpacity == null || "null".equals(fillOpacity)) {
-            this.fillOpacity = null;
-        } else if (Color.isDroolsVariable(fillOpacity)) {
-            this.fillOpacity = fillOpacity;
-        } else if (Double.parseDouble(fillOpacity) < 0 || Double.parseDouble(fillOpacity) > 1) {
-            SvgGeneratorLogger.warning(this.getClass(), "Opacity value '" + fillOpacity + "' is invalid and therefore ignored.");
-        } else {
-            this.fillOpacity = fillOpacity;
+        try {
+            if (fillOpacity == null || "null".equals(fillOpacity)) {
+                this.fillOpacity = null;
+            } else if (Color.isDroolsVariable(fillOpacity)) {
+                this.fillOpacity = fillOpacity;
+            } else if (Double.parseDouble(fillOpacity) < 0 || Double.parseDouble(fillOpacity) > 1) {
+                SvgGeneratorLogger.warning(this.getClass(), "Opacity value '" + fillOpacity + "' is invalid and therefore ignored.");
+            } else {
+                this.fillOpacity = fillOpacity;
+            }
+        } catch (NumberFormatException e) {
+            SvgGeneratorLogger.severe(this.getClass(), "Opacity value '" + fillOpacity + "' is invalid!.");
         }
     }
 
