@@ -12,6 +12,8 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @JsonDeserialize(using = SvgGradientDeserializer.class)
@@ -92,7 +94,7 @@ public class SvgGradient extends SvgElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         final Element gradient = doc.createElementNS(NAMESPACE, "linearGradient");
         if (getId() != null) {
             gradient.setAttributeNS(null, "id", getId());
@@ -111,8 +113,11 @@ public class SvgGradient extends SvgElement {
         }
         // Needed to be shown correctly on browsers: gradientUnits="userSpaceOnUse"
         gradient.setAttributeNS(null, "gradientUnits", "userSpaceOnUse");
-        stops.forEach(stop -> gradient.appendChild(stop.generateSvg(doc)));
-        return gradient;
+        stops.forEach(stop -> {
+            final Collection<Element> elements = stop.generateSvg(doc);
+            elements.forEach(gradient::appendChild);
+        });
+        return Collections.singletonList(gradient);
     }
 
     @Override

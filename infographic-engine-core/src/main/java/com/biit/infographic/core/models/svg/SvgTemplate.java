@@ -20,6 +20,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -132,7 +134,7 @@ public class SvgTemplate extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         // Get the root element (the 'svg' element).
         final Element svgRoot;
         if (getElementType() == ElementType.NESTED_SVG) {
@@ -156,9 +158,9 @@ public class SvgTemplate extends SvgAreaElement {
         if (getElements() != null && !getElements().isEmpty()) {
             elements.forEach(svgElement -> {
                 svgElement.validateAttributes();
-                final Element element = svgElement.generateSvg(doc);
-                if (element != null) {
-                    svgRoot.appendChild(element);
+                final Collection<Element> elements = svgElement.generateSvg(doc);
+                if (elements != null && !elements.isEmpty()) {
+                    elements.forEach(svgRoot::appendChild);
                 } else {
                     InfographicEngineLogger.warning(this.getClass(), "Element '"
                             + svgElement.getId() + "' cannot be converted to SVG.");
@@ -166,7 +168,7 @@ public class SvgTemplate extends SvgAreaElement {
             });
         }
 
-        return svgRoot;
+        return Collections.singletonList(svgRoot);
     }
 
     private void defineViewBox(Element svgRoot) {
@@ -244,7 +246,8 @@ public class SvgTemplate extends SvgAreaElement {
                         gradient.setX2Coordinate(((SvgLine) element).getX2Coordinate());
                         gradient.setY2Coordinate(((SvgLine) element).getY2Coordinate());
                     }
-                    defs.appendChild(gradient.generateSvg(doc));
+                    final Collection<Element> elements = gradient.generateSvg(doc);
+                    elements.forEach(defs::appendChild);
                 }
                 if (element instanceof SvgText && isEmbedFonts()) {
                     if (((SvgText) element).mustEmbedFont()
@@ -272,9 +275,9 @@ public class SvgTemplate extends SvgAreaElement {
     @JsonIgnore
     private void setSvgBackground(Document doc, Element svgRoot) {
         if (svgBackground != null) {
-            final Element background = svgBackground.generateSvg(doc);
-            if (background != null) {
-                svgRoot.appendChild(background);
+            final Collection<Element> background = svgBackground.generateSvg(doc);
+            if (background != null && !background.isEmpty()) {
+                background.forEach(svgRoot::appendChild);
             }
         }
     }

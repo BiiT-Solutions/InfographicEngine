@@ -5,10 +5,12 @@ import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Collection;
+
 public interface ISvgElement {
     String NAMESPACE = SVGDOMImplementation.SVG_NAMESPACE_URI;
 
-    Element generateSvg(Document doc);
+    Collection<Element> generateSvg(Document doc);
 
     void validateAttributes() throws InvalidAttributeException;
 }

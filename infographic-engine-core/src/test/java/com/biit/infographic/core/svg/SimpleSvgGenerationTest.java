@@ -2,9 +2,11 @@ package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.ElementAttributes;
-import com.biit.infographic.core.models.svg.SvgEmbedded;
+import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgBackground;
+import com.biit.infographic.core.models.svg.SvgEmbedded;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.Arc;
 import com.biit.infographic.core.models.svg.components.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
@@ -379,6 +381,64 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentExternalSvg.svg");
+    }
+
+    @Test
+    public void documentDrawPathMixingLinesAndArcs() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgPath line = new SvgPath(0L, 0L, new Arc(25L, 25L), new Point(50L, 50L), new Point(100L, 0L),
+                new Point(200L, 150L), new Arc(0L, 80L));
+        svgTemplate.addElement(line);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawPathMixingLinesAndArcs.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPathMixingLinesAndArcs.svg");
+    }
+
+    @Test
+    public void documentDrawPathCircle() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgPath line = new SvgPath(50L, 50L, new Arc(100L, 100L), new Arc(150L, 50L), new Arc(100L, 0L), new Arc(50L, 50L));
+        svgTemplate.addElement(line);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawPathCircle.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPathCircle.svg");
+    }
+
+    @Test
+    public void outerBorderTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 4);
+        svgCircle.getElementAttributes().setFill("00ff00");
+        svgCircle.getElementStroke().setStrokeColor("ff00ff");
+        svgCircle.getElementStroke().setStrokeWidth(4D);
+        svgCircle.getElementStroke().setStrokeOpacity(0.5);
+        svgCircle.getElementStroke().setStrokeAlign(StrokeAlign.OUTSET);
+        svgTemplate.addElement(svgCircle);
+
+        final SvgRectangle svgRectangle = new SvgRectangle(3 * SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_WIDTH / 4);
+        svgRectangle.getElementAttributes().setFill("00ff00");
+        svgRectangle.getElementStroke().setStrokeColor("ff00ff");
+        svgRectangle.getElementStroke().setStrokeWidth(4D);
+        svgRectangle.getElementStroke().setStrokeOpacity(0.5);
+        svgRectangle.getElementStroke().setStrokeAlign(StrokeAlign.OUTSET);
+        svgTemplate.addElement(svgRectangle);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "outerBorder.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "outerBorder.svg");
     }
 
     @AfterClass

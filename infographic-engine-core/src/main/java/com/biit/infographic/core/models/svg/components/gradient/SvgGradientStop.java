@@ -12,6 +12,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Collection;
+import java.util.Collections;
+
 @JsonDeserialize(using = SvgGradientStopDeserializer.class)
 @JsonRootName(value = "stop")
 public class SvgGradientStop extends SvgElement {
@@ -76,7 +79,7 @@ public class SvgGradientStop extends SvgElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
         final Element stop = doc.createElementNS(NAMESPACE, "stop");
         if (getId() != null) {
@@ -84,7 +87,7 @@ public class SvgGradientStop extends SvgElement {
         }
         stop.setAttributeNS(null, "style", generateStyle(new StringBuilder()).toString());
         stop.setAttributeNS(null, "offset", String.valueOf(getOffset()));
-        return stop;
+        return Collections.singletonList(stop);
     }
 
     protected StringBuilder generateStyle(StringBuilder style) {

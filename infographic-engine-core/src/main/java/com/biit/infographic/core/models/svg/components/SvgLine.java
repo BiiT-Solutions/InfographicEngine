@@ -11,6 +11,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Collection;
+import java.util.Collections;
+
 @JsonDeserialize(using = SvgLineDeserializer.class)
 @JsonRootName(value = "line")
 public class SvgLine extends SvgAreaElement {
@@ -70,7 +73,7 @@ public class SvgLine extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
         final Element line = doc.createElementNS(NAMESPACE, "line");
         line.setAttributeNS(null, "x1", String.valueOf(getElementAttributes().getXCoordinate()));
@@ -79,7 +82,7 @@ public class SvgLine extends SvgAreaElement {
         line.setAttributeNS(null, "y2", String.valueOf(getY2Coordinate()));
         elementStroke(line);
         elementAttributes(line);
-        return line;
+        return Collections.singletonList(line);
     }
 
     @Override

@@ -11,6 +11,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Collection;
+import java.util.Collections;
+
 @JsonDeserialize(using = SvgScriptDeserializer.class)
 @JsonRootName(value = "script")
 public class SvgScript extends SvgAreaElement {
@@ -41,11 +44,11 @@ public class SvgScript extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         final Element script = doc.createElementNS(NAMESPACE, "script");
         script.setTextContent(getScript());
         elementAttributes(script);
-        return script;
+        return Collections.singletonList(script);
     }
 
     @Override

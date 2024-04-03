@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @JsonDeserialize(using = SvgBackgroundDeserializer.class)
 @JsonRootName(value = "background")
 @JsonPropertyOrder(alphabetic = true)
@@ -75,7 +78,7 @@ public class SvgBackground implements ISvgElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
         if (getBackgroundColor() != null) {
             final SvgRectangle rectangle = new SvgRectangle("100%", "100%", backgroundColor);
@@ -86,7 +89,7 @@ public class SvgBackground implements ISvgElement {
             final SvgImage image = new SvgImage(new ElementAttributes("100%", "100%"), "background", getImage());
             return image.generateSvg(doc);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

@@ -13,14 +13,16 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @JsonDeserialize(using = SvgPathDeserializer.class)
 @JsonRootName(value = "path")
 public class SvgPath extends SvgAreaElement {
 
-    @JsonProperty("points")
-    private List<Point> points;
+    @JsonProperty("elements")
+    private List<PathElement> pathElements;
 
     public SvgPath() {
         this(new ElementAttributes());
@@ -33,56 +35,56 @@ public class SvgPath extends SvgAreaElement {
         elementAttributes.setFill("none");
     }
 
-    public SvgPath(Long xCoordinate, Long yCoordinate, Point... points) {
+    public SvgPath(Long xCoordinate, Long yCoordinate, PathElement... pathElements) {
         this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
-        if (points != null) {
-            setPoints(Arrays.asList(points));
+        if (pathElements != null) {
+            setPathElements(Arrays.asList(pathElements));
         } else {
-            setPoints(new ArrayList<>());
+            setPathElements(new ArrayList<>());
         }
     }
 
-    public SvgPath(String strokeColor, Double strokeWidth, Long xCoordinate, Long yCoordinate, Point... points) {
+    public SvgPath(String strokeColor, Double strokeWidth, Long xCoordinate, Long yCoordinate, PathElement... pathElements) {
         this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
         getElementStroke().setStrokeColor(strokeColor);
         getElementStroke().setStrokeWidth(strokeWidth);
-        if (points != null) {
-            setPoints(Arrays.asList(points));
+        if (pathElements != null) {
+            setPathElements(Arrays.asList(pathElements));
         } else {
-            setPoints(new ArrayList<>());
+            setPathElements(new ArrayList<>());
         }
     }
 
-    public List<Point> getPoints() {
-        if (points == null) {
+    public List<PathElement> getPathElements() {
+        if (pathElements == null) {
             return new ArrayList<>();
         }
-        return points;
+        return pathElements;
     }
 
-    public void setPoints(List<Point> points) {
-        this.points = points;
+    public void setPathElements(List<PathElement> pathElements) {
+        this.pathElements = pathElements;
     }
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
         super.validateAttributes();
         if (getElementAttributes().getHeight() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Point '" + getId() + "' must not have 'height' attribute");
+            throw new InvalidAttributeException(this.getClass(), "Path '" + getId() + "' must not have 'height' attribute");
         }
         if (getElementAttributes().getWidth() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Point '" + getId() + "' must not have 'width' attribute");
+            throw new InvalidAttributeException(this.getClass(), "Path '" + getId() + "' must not have 'width' attribute");
         }
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
         final Element path = doc.createElementNS(NAMESPACE, "path");
         path.setAttributeNS(null, "d", "m " + generateCoordinates());
         elementStroke(path);
         elementAttributes(path);
-        return path;
+        return Collections.singletonList(path);
     }
 
     public String generateCoordinates() {
@@ -90,32 +92,15 @@ public class SvgPath extends SvgAreaElement {
         Long previousX;
         Long previousY;
         //If x, y on attributes are defined, we assume that are the first point.
-        path.append(generateCoordinate(null, null, getElementAttributes().getXCoordinate(), getElementAttributes().getYCoordinate()));
+        path.append(getElementAttributes().getXCoordinate()).append(" ").append(getElementAttributes().getYCoordinate()).append(" ");
         previousX = getElementAttributes().getXCoordinate();
         previousY = getElementAttributes().getYCoordinate();
 
-        for (Point point : getPoints()) {
-            path.append(generateCoordinate(previousX, previousY, point.getX(), point.getY()));
-            previousX = point.getX();
-            previousY = point.getY();
+        for (PathElement pathElement : getPathElements()) {
+            path.append(pathElement.generateCoordinate(previousX, previousY));
+            previousX = pathElement.getX();
+            previousY = pathElement.getY();
         }
         return path.toString();
-    }
-
-    private String generateCoordinate(Long previousX, Long previousY, Long currentX, Long currentY) {
-        final StringBuilder coordinate = new StringBuilder();
-        if (previousX == null) {
-            coordinate.append(currentX);
-        } else {
-            coordinate.append(currentX - previousX);
-        }
-        coordinate.append(",");
-        if (previousY == null) {
-            coordinate.append(currentY);
-        } else {
-            coordinate.append(currentY - previousY);
-        }
-        coordinate.append(" ");
-        return coordinate.toString();
     }
 }

@@ -18,6 +18,8 @@ import org.w3c.dom.Node;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -179,7 +181,7 @@ public class SvgGauge extends SvgAreaElement {
 
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         final Element gauge = doc.createElementNS(NAMESPACE, "svg");
         gauge.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
         gauge.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()));
@@ -207,7 +209,7 @@ public class SvgGauge extends SvgAreaElement {
         gauge.appendChild(generateArrow(doc, min, max, value));
 
         elementAttributes(gauge);
-        return gauge;
+        return Collections.singletonList(gauge);
     }
 
     private void setGradientColors(Node child) {

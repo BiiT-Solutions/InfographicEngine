@@ -1,14 +1,15 @@
 package com.biit.infographic.core.models.svg.components;
 
-import com.biit.infographic.core.models.svg.serialization.PointDeserializer;
+import com.biit.infographic.core.models.svg.serialization.ArcDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = PointDeserializer.class)
-@JsonRootName(value = "point")
-public class Point implements PathElement {
-    public static final String ELEMENT_NAME = "POINT";
+@JsonDeserialize(using = ArcDeserializer.class)
+@JsonRootName(value = "arc")
+public class Arc implements PathElement {
+
+    public static final String ELEMENT_NAME = "ARC";
 
     @JsonProperty("element")
     private final String element = ELEMENT_NAME;
@@ -19,12 +20,11 @@ public class Point implements PathElement {
     @JsonProperty("y")
     private Long y;
 
-    public Point() {
+    public Arc() {
         super();
     }
 
-    public Point(Long x, Long y) {
-        this();
+    public Arc(Long x, Long y) {
         this.x = x;
         this.y = y;
     }
@@ -47,9 +47,25 @@ public class Point implements PathElement {
         this.y = y;
     }
 
+    /**
+     * <path
+     * d="
+     * M previousX, previousY
+     * a radius,radius 0 1,0 (radius * 2),0
+     * "
+     * />
+     *
+     * @param previousX
+     * @param previousY
+     * @return
+     */
     @Override
     public String generateCoordinate(Long previousX, Long previousY) {
-        return "L "
+        return "A "
+                + (previousX != null ? getX() - previousX : getX())
+                + " "
+                + (previousY != null ? getY() - previousY : getY())
+                + " 0 0 0 "
                 + getX()
                 + " "
                 + getY()

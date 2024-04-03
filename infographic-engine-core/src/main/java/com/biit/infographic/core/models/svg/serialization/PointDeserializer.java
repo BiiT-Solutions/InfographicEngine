@@ -16,7 +16,7 @@ public class PointDeserializer extends StdDeserializer<Point> {
     }
 
     @Override
-    public Point deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public Point deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final JsonNode jsonObject = jsonParser.getCodec().readTree(jsonParser);
 
         final Point svgPoint = new Point();

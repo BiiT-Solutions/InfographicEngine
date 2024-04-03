@@ -10,6 +10,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Collection;
+import java.util.Collections;
+
 @JsonDeserialize(using = SvgEllipseDeserializer.class)
 @JsonRootName(value = "ellipse")
 public class SvgEllipse extends SvgAreaElement {
@@ -28,7 +31,7 @@ public class SvgEllipse extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         final Element ellipse = doc.createElementNS(NAMESPACE, "ellipse");
         ellipse.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate()));
         ellipse.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate()));
@@ -40,7 +43,7 @@ public class SvgEllipse extends SvgAreaElement {
         }
         elementStroke(ellipse);
         elementAttributes(ellipse);
-        return ellipse;
+        return Collections.singletonList(ellipse);
     }
 
     @Override

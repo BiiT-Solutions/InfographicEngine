@@ -2,6 +2,7 @@ package com.biit.infographic.core.svg.serialization;
 
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.Arc;
 import com.biit.infographic.core.models.svg.components.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
@@ -438,6 +439,19 @@ public class JsonGenerationTest {
         gauge.setType(GaugeType.FIVE_VALUES);
         gauge.setFlip(true);
         svgTemplate.addElement(gauge);
+
+        String jsonText = generateJson(svgTemplate);
+
+        SvgTemplate svgTemplate1 = objectMapper.readValue(jsonText, SvgTemplate.class);
+        check(svgTemplate, svgTemplate1);
+    }
+
+    @Test
+    public void pathWithArcsAndLines() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgPath line = new SvgPath(0L, 0L, new Arc(25L, 25L), new Point(50L, 50L), new Point(100L, 0L),
+                new Point(200L, 150L), new Arc(0L, 80L));
+        svgTemplate.addElement(line);
 
         String jsonText = generateJson(svgTemplate);
 

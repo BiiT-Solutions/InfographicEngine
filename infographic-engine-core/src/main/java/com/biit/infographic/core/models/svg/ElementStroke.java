@@ -29,6 +29,10 @@ public class ElementStroke {
     @JsonProperty("strokeLinecap")
     private StrokeLineCap lineCap;
 
+    @JsonProperty("strokeAlign")
+    private StrokeAlign strokeAlign;
+
+
     public double getStrokeWidth() {
         if (strokeWidth == null) {
             return 0.0;
@@ -89,5 +93,13 @@ public class ElementStroke {
 
     public void setLineCap(StrokeLineCap lineCap) {
         this.lineCap = lineCap;
+    }
+
+    public StrokeAlign getStrokeAlign() {
+        return strokeAlign;
+    }
+
+    public void setStrokeAlign(StrokeAlign strokeAlign) {
+        this.strokeAlign = strokeAlign;
     }
 }

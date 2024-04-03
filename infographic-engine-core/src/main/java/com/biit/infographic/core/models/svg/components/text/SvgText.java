@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
@@ -374,7 +376,7 @@ public class SvgText extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         final Element text = doc.createElementNS(NAMESPACE, "text");
 
         List<String> lines;
@@ -456,7 +458,7 @@ public class SvgText extends SvgAreaElement {
 
         elementStroke(text);
         elementAttributes(text);
-        return text;
+        return Collections.singletonList(text);
     }
 
     @Override

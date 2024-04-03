@@ -16,6 +16,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
 
 @JsonDeserialize(using = SvgImageDeserializer.class)
 @JsonRootName(value = "image")
@@ -136,7 +138,7 @@ public class SvgImage extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         String finalContent = content;
         if (resource != null && content == null) {
             finalContent = getFromPath(resource);
@@ -160,7 +162,7 @@ public class SvgImage extends SvgAreaElement {
             image.setAttribute("onclick", "window.location='" + href + "'");
         }
         elementAttributes(image);
-        return image;
+        return Collections.singletonList(image);
     }
 
     @Override

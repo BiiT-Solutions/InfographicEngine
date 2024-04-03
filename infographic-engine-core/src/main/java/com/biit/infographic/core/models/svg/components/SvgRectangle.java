@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
+import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgRectangleDeserializer;
@@ -10,6 +11,9 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @JsonDeserialize(using = SvgRectangleDeserializer.class)
 @JsonRootName(value = "rectangle")
@@ -67,8 +71,11 @@ public class SvgRectangle extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
+        validateAttributes();
+        final ArrayList<Element> elements = new ArrayList<>();
         final Element rectangle = doc.createElementNS(NAMESPACE, "rect");
+        elements.add(rectangle);
         rectangle.setAttributeNS(null, "x", String.valueOf(generateRealXCoordinate()));
         rectangle.setAttributeNS(null, "y", String.valueOf(generateRealYCoordinate()));
         if (xRadius != null && xRadius != 0) {
@@ -77,9 +84,13 @@ public class SvgRectangle extends SvgAreaElement {
         if (yRadius != null && yRadius != 0) {
             rectangle.setAttributeNS(null, "ry", String.valueOf(getYRadius()));
         }
-        elementStroke(rectangle);
+        if (getElementStroke() != null && getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET) {
+            elements.addAll(createOuterStroke(doc));
+        } else {
+            elementStroke(rectangle);
+        }
         elementAttributes(rectangle);
-        return rectangle;
+        return elements;
     }
 
     @Override
@@ -91,5 +102,22 @@ public class SvgRectangle extends SvgAreaElement {
         if (getElementAttributes().getWidth() == null) {
             throw new InvalidAttributeException(this.getClass(), "Rectangle '" + getId() + "' does not have 'width' attribute");
         }
+    }
+
+    private Collection<Element> createOuterStroke(Document doc) {
+        final SvgPath border = new SvgPath(
+                (long) (generateRealXCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2),
+                (long) (generateRealYCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2),
+                new Point((long) (generateRealXCoordinate() - getElementStroke().getStrokeWidth() / 2),
+                        (long) (generateRealYCoordinate().longValue() + getElementAttributes().getHeight() - getElementStroke().getStrokeWidth() / 2)),
+                new Point((long) (generateRealXCoordinate().longValue() + getElementAttributes().getWidth() - getElementStroke().getStrokeWidth() / 2),
+                        (long) (generateRealYCoordinate().longValue() + getElementAttributes().getHeight() - getElementStroke().getStrokeWidth() / 2)),
+                new Point((long) (generateRealXCoordinate().longValue() + getElementAttributes().getWidth() - getElementStroke().getStrokeWidth() / 2),
+                        (long) (generateRealYCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2)),
+                new Point((long) (generateRealXCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2),
+                        (long) (generateRealYCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2)));
+        border.setElementStroke(getElementStroke());
+        border.getElementStroke().setLineCap(StrokeLineCap.SQUARE);
+        return border.generateSvg(doc);
     }
 }

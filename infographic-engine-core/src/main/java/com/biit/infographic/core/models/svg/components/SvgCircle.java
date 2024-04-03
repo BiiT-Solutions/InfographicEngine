@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
+import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgCircleDeserializer;
@@ -10,6 +11,9 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @JsonDeserialize(using = SvgCircleDeserializer.class)
 @JsonRootName(value = "circle")
@@ -49,15 +53,21 @@ public class SvgCircle extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
+        final ArrayList<Element> elements = new ArrayList<>();
         final Element circle = doc.createElementNS(NAMESPACE, "circle");
-        circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate() + getRadius()));
-        circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate() + getRadius()));
-        circle.setAttributeNS(null, "r", String.valueOf(radius));
-        elementStroke(circle);
+        elements.add(circle);
+        circle.setAttributeNS(null, "cx", String.valueOf(generateRealXCoordinate().longValue()));
+        circle.setAttributeNS(null, "cy", String.valueOf(generateRealYCoordinate().longValue()));
+        circle.setAttributeNS(null, "r", String.valueOf(getRadius()));
+        if (getElementStroke() != null && getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET) {
+            elements.addAll(createOuterStroke(doc));
+        } else {
+            elementStroke(circle);
+        }
         elementAttributes(circle);
-        return circle;
+        return elements;
     }
 
     @Override
@@ -72,5 +82,34 @@ public class SvgCircle extends SvgAreaElement {
         if (getElementAttributes().getWidth() != null) {
             throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'width' attribute");
         }
+    }
+
+    /**
+     * Stroke is included on the X and must be subtracted.
+     *
+     * @return the calculated coordinate
+     */
+    @Override
+    protected Double generateRealXCoordinate() {
+        return (double) (getElementAttributes().getXCoordinate() + getRadius());
+    }
+
+    /**
+     * Stroke is included on the y and must be subtracted.
+     *
+     * @return the calculated coordinate
+     */
+    @Override
+    protected Double generateRealYCoordinate() {
+        return (double) (getElementAttributes().getYCoordinate() + getRadius());
+    }
+
+    private Collection<Element> createOuterStroke(Document doc) {
+        final SvgPath border = new SvgPath(
+                generateRealXCoordinate().longValue(),
+                generateRealYCoordinate().longValue());
+        border.setElementStroke(getElementStroke());
+        border.getElementStroke().setLineCap(StrokeLineCap.SQUARE);
+        return border.generateSvg(doc);
     }
 }

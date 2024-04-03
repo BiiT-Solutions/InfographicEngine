@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.infographic.core.models.svg.ElementStroke;
+import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -28,6 +29,12 @@ public class ElementStrokeDeserializer extends StdDeserializer<ElementStroke> {
         }
         if (jsonObject.get("strokeOpacity") != null) {
             elementStroke.setStrokeOpacity(DeserializerParser.parseDouble("strokeOpacity", jsonObject));
+        }
+        if (jsonObject.get("strokeOpacity") != null) {
+            elementStroke.setStrokeOpacity(DeserializerParser.parseDouble("strokeOpacity", jsonObject));
+        }
+        if (jsonObject.get("strokeAlign") != null) {
+            elementStroke.setStrokeAlign(StrokeAlign.get(DeserializerParser.parseString("strokeAlign", jsonObject)));
         }
 
         return elementStroke;

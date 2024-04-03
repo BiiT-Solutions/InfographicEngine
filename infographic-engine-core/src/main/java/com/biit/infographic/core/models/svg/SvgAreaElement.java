@@ -103,6 +103,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         return (getElementAttributes().getYCoordinate() + getElementStroke().getStrokeWidth() / 2);
     }
 
+    @Override
     public void elementAttributes(Element element) throws InvalidAttributeException {
         super.elementAttributes(element);
         if (getElementAttributes().getFill() != null) {

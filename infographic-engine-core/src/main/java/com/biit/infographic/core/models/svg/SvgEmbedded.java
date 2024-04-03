@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,12 +38,12 @@ public class SvgEmbedded extends SvgAreaElement {
         setElementType(ElementType.EMBEDDED_SVG);
     }
 
-    public SvgEmbedded(String resourceName) throws FileNotFoundException {
+    public SvgEmbedded(String resourceName) {
         this();
         readSvg(resourceName);
     }
 
-    public SvgEmbedded(String resourceName, Long xCoordinate, Long yCoordinate) throws FileNotFoundException {
+    public SvgEmbedded(String resourceName, Long xCoordinate, Long yCoordinate) {
         this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
         readSvg(resourceName);
     }
@@ -69,7 +70,7 @@ public class SvgEmbedded extends SvgAreaElement {
     }
 
     @Override
-    public Element generateSvg(Document doc) {
+    public Collection<Element> generateSvg(Document doc) {
         //Wrap all inner elements in a group.
         final Element container = doc.createElementNS(NAMESPACE, "g");
         try {
@@ -86,12 +87,16 @@ public class SvgEmbedded extends SvgAreaElement {
             for (Element child : children) {
                 //Move children from one document to others.
                 final Node node = doc.importNode(child, true);
+                //Force fill if set.
+                if (node instanceof Element && getElementAttributes().getFill() != null) {
+                    ((Element) node).setAttributeNS(null, "fill", getElementAttributes().getFill());
+                }
                 container.appendChild(node);
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new RuntimeException(e);
         }
-        return container;
+        return Collections.singletonList(container);
     }
 
     private double getScale() throws ParserConfigurationException, IOException, SAXException {
