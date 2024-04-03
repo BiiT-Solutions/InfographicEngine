@@ -106,10 +106,18 @@ public class SvgCircle extends SvgAreaElement {
 
     private Collection<Element> createOuterStroke(Document doc) {
         final SvgPath border = new SvgPath(
-                generateRealXCoordinate().longValue(),
-                generateRealYCoordinate().longValue());
+                generateRealXCoordinate().longValue() - getRadius() - (long) (getElementStroke().getStrokeWidth() / 2),
+                generateRealYCoordinate().longValue(),
+                new Arc(generateRealXCoordinate().longValue(),
+                        generateRealYCoordinate().longValue() + getRadius() + (long) (getElementStroke().getStrokeWidth() / 2)),
+                new Arc(generateRealXCoordinate().longValue() + getRadius() + (long) (getElementStroke().getStrokeWidth() / 2),
+                        generateRealYCoordinate().longValue()),
+                new Arc(generateRealXCoordinate().longValue(),
+                        generateRealYCoordinate().longValue() - getRadius() - (long) (getElementStroke().getStrokeWidth() / 2)),
+                new Arc(generateRealXCoordinate().longValue() - getRadius() - (long) (getElementStroke().getStrokeWidth() / 2),
+                        generateRealYCoordinate().longValue()));
         border.setElementStroke(getElementStroke());
-        border.getElementStroke().setLineCap(StrokeLineCap.SQUARE);
+        border.getElementStroke().setLineCap(StrokeLineCap.BUTT);
         return border.generateSvg(doc);
     }
 }
