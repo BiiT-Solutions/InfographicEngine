@@ -1,7 +1,6 @@
 package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.infographic.core.models.svg.components.Point;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;

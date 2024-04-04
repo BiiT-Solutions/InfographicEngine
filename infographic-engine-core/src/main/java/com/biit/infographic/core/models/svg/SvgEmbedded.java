@@ -43,6 +43,10 @@ public class SvgEmbedded extends SvgAreaElement {
         readSvg(resourceName);
     }
 
+    public SvgEmbedded(String resourceName, Number xCoordinate, Number yCoordinate) {
+        this(resourceName, xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null);
+    }
+
     public SvgEmbedded(String resourceName, Long xCoordinate, Long yCoordinate) {
         this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
         readSvg(resourceName);

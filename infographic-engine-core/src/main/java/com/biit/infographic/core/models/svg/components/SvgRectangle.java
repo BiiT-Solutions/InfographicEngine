@@ -38,16 +38,35 @@ public class SvgRectangle extends SvgAreaElement {
         this(new ElementAttributes(width, height, fill));
     }
 
+    public SvgRectangle(Number xCoordinate, Number yCoordinate, String width, String height, String fill) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, width, height, fill);
+    }
+
     public SvgRectangle(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
         this(new ElementAttributes(xCoordinate, yCoordinate, width, height, fill));
+    }
+
+    public SvgRectangle(Number xCoordinate, Number yCoordinate, Number width, Number height) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null,
+                width != null ? width.longValue() : null, height != null ? height.longValue() : null);
     }
 
     public SvgRectangle(Long xCoordinate, Long yCoordinate, Long width, Long height) {
         this(new ElementAttributes(xCoordinate, yCoordinate, String.valueOf(width), String.valueOf(height)));
     }
 
+    public SvgRectangle(Number xCoordinate, Number yCoordinate, Number width, Number height, String fill) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null,
+                width != null ? width.longValue() : null, height != null ? height.longValue() : null, fill);
+    }
+
     public SvgRectangle(Long xCoordinate, Long yCoordinate, Long width, Long height, String fill) {
         this(new ElementAttributes(xCoordinate, yCoordinate, String.valueOf(width), String.valueOf(height), fill));
+    }
+
+    public SvgRectangle(Number xCoordinate, Number yCoordinate, Number width, Number height, String fill, Double fillOpacity) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null,
+                width != null ? width.longValue() : null, height != null ? height.longValue() : null, fill, fillOpacity);
     }
 
     public SvgRectangle(Long xCoordinate, Long yCoordinate, Long width, Long height, String fill, Double fillOpacity) {
@@ -58,12 +77,20 @@ public class SvgRectangle extends SvgAreaElement {
         return xRadius;
     }
 
+    public void setXRadius(Number xRadius) {
+        this.xRadius = xRadius != null ? xRadius.longValue() : null;
+    }
+
     public void setXRadius(Long xRadius) {
         this.xRadius = xRadius;
     }
 
     public Long getYRadius() {
         return yRadius;
+    }
+
+    public void setYRadius(Number yRadius) {
+        this.yRadius = yRadius != null ? yRadius.longValue() : null;
     }
 
     public void setYRadius(Long yRadius) {

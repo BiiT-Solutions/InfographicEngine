@@ -35,6 +35,10 @@ public class SvgPath extends SvgAreaElement {
         elementAttributes.setFill("none");
     }
 
+    public SvgPath(Number xCoordinate, Number yCoordinate, PathElement... pathElements) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, pathElements);
+    }
+
     public SvgPath(Long xCoordinate, Long yCoordinate, PathElement... pathElements) {
         this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
         if (pathElements != null) {
@@ -42,6 +46,10 @@ public class SvgPath extends SvgAreaElement {
         } else {
             setPathElements(new ArrayList<>());
         }
+    }
+
+    public SvgPath(String strokeColor, Double strokeWidth, Number xCoordinate, Number yCoordinate, PathElement... pathElements) {
+        this(strokeColor, strokeWidth, xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, pathElements);
     }
 
     public SvgPath(String strokeColor, Double strokeWidth, Long xCoordinate, Long yCoordinate, PathElement... pathElements) {

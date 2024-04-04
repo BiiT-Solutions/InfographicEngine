@@ -357,7 +357,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         svgTemplate.addElement(area);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "documentDrawPath.svg")), true)) {
+                + File.separator + "documentDrawPathAreaFilled.svg")), true)) {
             out.println(SvgGenerator.generate(svgTemplate));
         }
 

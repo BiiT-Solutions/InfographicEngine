@@ -52,12 +52,20 @@ public class SvgBackground implements ISvgElement {
         return xRadius;
     }
 
+    public void setXRadius(Number xRadius) {
+        this.xRadius = xRadius != null ? xRadius.longValue() : null;
+    }
+
     public void setXRadius(Long xRadius) {
         this.xRadius = xRadius;
     }
 
     public Long getYRadius() {
         return yRadius;
+    }
+
+    public void setYRadius(Number yRadius) {
+        this.yRadius = yRadius != null ? yRadius.longValue() : null;
     }
 
     public void setYRadius(Long yRadius) {

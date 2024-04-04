@@ -90,14 +90,14 @@ public class SvgText extends SvgAreaElement {
 
     //In Characters
     @JsonProperty("maxLineLength")
-    private Integer maxLineLength;
+    private Long maxLineLength;
 
     //In pixels
     @JsonProperty("maxLineWidth")
-    private Integer maxLineWidth;
+    private Long maxLineWidth;
 
     @JsonProperty("maxParagraphHeight")
-    private Integer maxParagraphHeight;
+    private Long maxParagraphHeight;
 
     @JsonProperty("textAlign")
     private TextAlign textAlign = TextAlign.LEFT;
@@ -118,8 +118,8 @@ public class SvgText extends SvgAreaElement {
         setText("");
     }
 
-    public SvgText(String text, int fontSize, Integer x, Integer y) {
-        this(text, fontSize, Long.valueOf(x), Long.valueOf(y));
+    public SvgText(String text, int fontSize, Number x, Number y) {
+        this(text, fontSize, x != null ? x.longValue() : null, y != null ? y.longValue() : null);
     }
 
     public SvgText(String text, int fontSize, Long x, Long y) {
@@ -128,8 +128,8 @@ public class SvgText extends SvgAreaElement {
         setFontSize(fontSize);
     }
 
-    public SvgText(String fontFamily, String text, int fontSize, Integer x, Integer y) {
-        this(fontFamily, text, fontSize, Long.valueOf(x), Long.valueOf(y));
+    public SvgText(String fontFamily, String text, int fontSize, Number x, Number y) {
+        this(fontFamily, text, fontSize, x != null ? x.longValue() : null, y != null ? y.longValue() : null);
     }
 
     public SvgText(String fontFamily, String text, int fontSize, Long x, Long y) {
@@ -137,8 +137,8 @@ public class SvgText extends SvgAreaElement {
         setFontFamily(fontFamily);
     }
 
-    public SvgText(String text, int fontSize, String color, Integer x, Integer y) {
-        this(text, fontSize, color, Long.valueOf(x), Long.valueOf(y));
+    public SvgText(String text, int fontSize, String color, Number x, Number y) {
+        this(text, fontSize, color, x != null ? x.longValue() : null, y != null ? y.longValue() : null);
     }
 
     public SvgText(String text, int fontSize, String color, Long x, Long y) {
@@ -148,8 +148,8 @@ public class SvgText extends SvgAreaElement {
         getElementAttributes().setFill(color);
     }
 
-    public SvgText(String text, int fontSize, FontWeight weight, String color, Integer x, Integer y) {
-        this(text, fontSize, weight, color, Long.valueOf(x), Long.valueOf(y));
+    public SvgText(String text, int fontSize, FontWeight weight, String color, Number x, Number y) {
+        this(text, fontSize, weight, color, x != null ? x.longValue() : null, y != null ? y.longValue() : null);
     }
 
     public SvgText(String text, int fontSize, FontWeight weight, String color, Long x, Long y) {
@@ -343,11 +343,19 @@ public class SvgText extends SvgAreaElement {
         return text.replaceAll("(\n)(?! )", "$1 ");
     }
 
-    public Integer getMaxLineLength() {
+    public Long getMaxLineLength() {
         return maxLineLength;
     }
 
-    public void setMaxLineLength(Integer maxLineLength) {
+    public void setMaxLineLength(Number maxLineLength) {
+        if (maxLineLength != null) {
+            this.maxLineLength = maxLineLength.longValue();
+        } else {
+            this.maxLineLength = null;
+        }
+    }
+
+    public void setMaxLineLength(Long maxLineLength) {
         this.maxLineLength = maxLineLength;
     }
 
@@ -359,19 +367,35 @@ public class SvgText extends SvgAreaElement {
         this.textAlign = textAlign;
     }
 
-    public Integer getMaxLineWidth() {
+    public Long getMaxLineWidth() {
         return maxLineWidth;
     }
 
-    public void setMaxLineWidth(Integer maxLineWidth) {
+    public void setMaxLineWidth(Number maxLineWidth) {
+        if (maxLineWidth != null) {
+            this.maxLineWidth = maxLineWidth.longValue();
+        } else {
+            this.maxLineWidth = null;
+        }
+    }
+
+    public void setMaxLineWidth(Long maxLineWidth) {
         this.maxLineWidth = maxLineWidth;
     }
 
-    public Integer getMaxParagraphHeight() {
+    public Long getMaxParagraphHeight() {
         return maxParagraphHeight;
     }
 
-    public void setMaxParagraphHeight(Integer maxParagraphHeight) {
+    public void setMaxParagraphHeight(Number maxParagraphHeight) {
+        if (maxParagraphHeight != null) {
+            this.maxParagraphHeight = maxParagraphHeight.longValue();
+        } else {
+            this.maxParagraphHeight = null;
+        }
+    }
+
+    public void setMaxParagraphHeight(Long maxParagraphHeight) {
         this.maxParagraphHeight = maxParagraphHeight;
     }
 
@@ -387,7 +411,7 @@ public class SvgText extends SvgAreaElement {
             decreaseHeight();
             if (getMaxLineWidth() != null) {
                 lines = getLinesByPixels(getText(), getMaxLineWidth());
-                longestLinePixels = getMaxLineWidth();
+                longestLinePixels = getMaxLineWidth().intValue();
             } else {
                 lines = getLines(getText(), getMaxLineLength() != null ? getMaxLineLength() : Integer.MAX_VALUE);
                 final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
@@ -545,7 +569,7 @@ public class SvgText extends SvgAreaElement {
         return (double) (maxLinePixels - currentPixels) / text.length();
     }
 
-    private List<String> getLines(String content, int maxLineLength) {
+    private List<String> getLines(String content, long maxLineLength) {
         final List<String> lines = new ArrayList<>();
         if (content != null) {
             int iterations = 0;
@@ -561,7 +585,7 @@ public class SvgText extends SvgAreaElement {
                 if (content.indexOf(NEW_LINE_SYMBOL) > 0 && content.indexOf(NEW_LINE_SYMBOL) < maxLineLength) {
                     endOfLine = content.indexOf(NEW_LINE_SYMBOL) + NEW_LINE_SYMBOL.length();
                 } else {
-                    endOfLine = maxLineLength;
+                    endOfLine = (int) maxLineLength;
                 }
                 if (content.length() < endOfLine) {
                     lines.add(content);
@@ -591,7 +615,7 @@ public class SvgText extends SvgAreaElement {
         return lines;
     }
 
-    private List<String> getLinesByPixels(String content, int lineWidth) {
+    private List<String> getLinesByPixels(String content, long lineWidth) {
         final List<String> lines = new ArrayList<>();
         if (content != null) {
             content = addSpacesToNewLines(content);

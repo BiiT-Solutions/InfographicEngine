@@ -50,12 +50,20 @@ public class SvgGradient extends SvgElement {
         return x1Coordinate;
     }
 
+    public void setX1Coordinate(Number x1Coordinate) {
+        this.x1Coordinate = x1Coordinate != null ? x1Coordinate.longValue() : null;
+    }
+
     public void setX1Coordinate(Long x1Coordinate) {
         this.x1Coordinate = x1Coordinate;
     }
 
     public Long getY1Coordinate() {
         return y1Coordinate;
+    }
+
+    public void setY1Coordinate(Number y1Coordinate) {
+        this.y1Coordinate = y1Coordinate != null ? y1Coordinate.longValue() : null;
     }
 
     public void setY1Coordinate(Long y1Coordinate) {
@@ -66,12 +74,20 @@ public class SvgGradient extends SvgElement {
         return x2Coordinate;
     }
 
+    public void setX2Coordinate(Number x2Coordinate) {
+        this.x2Coordinate = x2Coordinate != null ? x2Coordinate.longValue() : null;
+    }
+
     public void setX2Coordinate(Long x2Coordinate) {
         this.x2Coordinate = x2Coordinate;
     }
 
     public Long getY2Coordinate() {
         return y2Coordinate;
+    }
+
+    public void setY2Coordinate(Number y2Coordinate) {
+        this.y2Coordinate = y2Coordinate != null ? y2Coordinate.longValue() : null;
     }
 
     public void setY2Coordinate(Long y2Coordinate) {

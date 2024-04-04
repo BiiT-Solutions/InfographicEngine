@@ -23,6 +23,10 @@ public class Point implements PathElement {
         super();
     }
 
+    public Point(Number x, Number y) {
+        this(x != null ? x.longValue() : null, y != null ? y.longValue() : null);
+    }
+
     public Point(Long x, Long y) {
         this();
         this.x = x;

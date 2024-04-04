@@ -66,11 +66,20 @@ public class SvgGauge extends SvgAreaElement {
         setValue(value);
     }
 
+    public SvgGauge(Number xCoordinate, Number yCoordinate, Double min, Double max, Double value) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, min, max, value);
+    }
+
     public SvgGauge(Long xCoordinate, Long yCoordinate, Double min, Double max, Double value) {
         this(new ElementAttributes(xCoordinate, yCoordinate, null, null, null));
         setMin(min);
         setMax(max);
         setValue(value);
+    }
+
+    public SvgGauge(Number xCoordinate, Number yCoordinate, Double min, Double max, Double value, String width, String height) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null,
+                min, max, value, width, height);
     }
 
     public SvgGauge(Long xCoordinate, Long yCoordinate, Double min, Double max, Double value, String width, String height) {

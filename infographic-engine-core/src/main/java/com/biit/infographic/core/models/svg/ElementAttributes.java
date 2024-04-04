@@ -68,16 +68,28 @@ public class ElementAttributes {
         setFill(fill);
     }
 
+    public ElementAttributes(Number xCoordinate, Number yCoordinate, String width, String height) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, width, height);
+    }
+
     public ElementAttributes(Long xCoordinate, Long yCoordinate, String width, String height) {
         this(width, height, null);
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
     }
 
+    public ElementAttributes(Number xCoordinate, Number yCoordinate, String width, String height, String fill) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, width, height, fill);
+    }
+
     public ElementAttributes(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
         this(width, height, fill);
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
+    }
+
+    public ElementAttributes(Number xCoordinate, Number yCoordinate, String width, String height, String fill, Double fillOpacity) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, width, height, fill, fillOpacity);
     }
 
     public ElementAttributes(Long xCoordinate, Long yCoordinate, String width, String height, String fill, Double fillOpacity) {
@@ -157,6 +169,10 @@ public class ElementAttributes {
         return xCoordinate;
     }
 
+    public void setXCoordinate(Number xCoordinate) {
+        this.xCoordinate = xCoordinate != null ? xCoordinate.longValue() : null;
+    }
+
     @JsonSetter("x")
     public void setXCoordinate(Long xCoordinate) {
         this.xCoordinate = xCoordinate;
@@ -168,6 +184,10 @@ public class ElementAttributes {
             return 0;
         }
         return yCoordinate;
+    }
+
+    public void setYCoordinate(Number yCoordinate) {
+        this.yCoordinate = yCoordinate != null ? yCoordinate.longValue() : null;
     }
 
     @JsonSetter("y")

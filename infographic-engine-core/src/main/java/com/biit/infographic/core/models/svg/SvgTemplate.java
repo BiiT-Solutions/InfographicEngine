@@ -59,6 +59,10 @@ public class SvgTemplate extends SvgAreaElement {
         this(new ElementAttributes());
     }
 
+    public SvgTemplate(Number width, Number height) {
+        this(width != null ? width.longValue() : null, height != null ? height.longValue() : null);
+    }
+
     public SvgTemplate(Long width, Long height) {
         this(new ElementAttributes(String.valueOf(width), String.valueOf(height), null));
         getElementAttributes().setWidthUnit(Unit.PIXELS);
@@ -207,7 +211,7 @@ public class SvgTemplate extends SvgAreaElement {
                 }
                 if (element instanceof SvgText) {
                     height = Math.max(height, element.getElementAttributes().getYCoordinate() + ((SvgText) element).getFontSize());
-                    final Integer maxLineLength = ((SvgText) element).getMaxLineLength();
+                    final Long maxLineLength = ((SvgText) element).getMaxLineLength();
                     width = Math.max(width, element.getElementAttributes().getXCoordinate() + (maxLineLength != null ? maxLineLength : 0));
                 }
             }

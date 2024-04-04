@@ -32,6 +32,10 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         setElementStroke(new ElementStroke());
     }
 
+    public SvgAreaElement(Number xCoordinate, Number yCoordinate, String width, String height, String fill) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, width, height, fill);
+    }
+
     public SvgAreaElement(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
         setElementAttributes(new ElementAttributes(xCoordinate, yCoordinate, width, height, fill));
         setElementStroke(new ElementStroke());

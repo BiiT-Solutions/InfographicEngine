@@ -34,8 +34,9 @@ public class SvgLine extends SvgAreaElement {
         this(new ElementAttributes());
     }
 
-    public SvgLine(Integer x1Coordinate, Integer y1Coordinate, Integer x2Coordinate, Integer y2Coordinate) {
-        this(Long.valueOf(x1Coordinate), Long.valueOf(y1Coordinate), Long.valueOf(x1Coordinate), Long.valueOf(y2Coordinate));
+    public SvgLine(Number x1Coordinate, Number y1Coordinate, Number x2Coordinate, Number y2Coordinate) {
+        this(x1Coordinate != null ? x1Coordinate.longValue() : null, y1Coordinate != null ? y1Coordinate.longValue() : null,
+                x2Coordinate != null ? x2Coordinate.longValue() : null, y2Coordinate != null ? y2Coordinate.longValue() : null);
     }
 
     public SvgLine(Long x1Coordinate, Long y1Coordinate, Long x2Coordinate, Long y2Coordinate) {
@@ -44,8 +45,9 @@ public class SvgLine extends SvgAreaElement {
         setY2Coordinate(y2Coordinate);
     }
 
-    public SvgLine(String strokeColor, Double strokeWidth, Integer x1Coordinate, Integer y1Coordinate, Integer x2Coordinate, Integer y2Coordinate) {
-        this(strokeColor, strokeWidth, Long.valueOf(x1Coordinate), Long.valueOf(y1Coordinate), Long.valueOf(x1Coordinate), Long.valueOf(y2Coordinate));
+    public SvgLine(String strokeColor, Double strokeWidth, Number x1Coordinate, Number y1Coordinate, Number x2Coordinate, Number y2Coordinate) {
+        this(strokeColor, strokeWidth, x1Coordinate != null ? x1Coordinate.longValue() : null, y1Coordinate != null ? y1Coordinate.longValue() : null,
+                x2Coordinate != null ? x2Coordinate.longValue() : null, y2Coordinate != null ? y2Coordinate.longValue() : null);
     }
 
     public SvgLine(String strokeColor, Double strokeWidth, Long x1Coordinate, Long y1Coordinate, Long x2Coordinate, Long y2Coordinate) {

@@ -24,6 +24,11 @@ public class Arc implements PathElement {
         super();
     }
 
+    public Arc(Number x, Number y) {
+        this.x = x != null ? x.longValue() : null;
+        this.y = y != null ? y.longValue() : null;
+    }
+
     public Arc(Long x, Long y) {
         this.x = x;
         this.y = y;

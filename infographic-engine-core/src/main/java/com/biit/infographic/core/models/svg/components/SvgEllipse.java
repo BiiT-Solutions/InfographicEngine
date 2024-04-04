@@ -26,6 +26,10 @@ public class SvgEllipse extends SvgAreaElement {
         this(new ElementAttributes());
     }
 
+    public SvgEllipse(Number xCoordinate, Number yCoordinate, String width, String height, String fill) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, width, height, fill);
+    }
+
     public SvgEllipse(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
         this(new ElementAttributes(xCoordinate, yCoordinate, width, height, fill));
     }

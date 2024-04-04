@@ -35,8 +35,9 @@ public class SvgCircle extends SvgAreaElement {
         this(new ElementAttributes(width, height, fill));
     }
 
-    public SvgCircle(Integer xCoordinate, Integer yCoordinate, Integer radius) {
-        this(Long.valueOf(xCoordinate), Long.valueOf(yCoordinate), Long.valueOf(radius));
+    public SvgCircle(Number xCoordinate, Number yCoordinate, Number radius) {
+        this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null,
+                radius != null ? radius.longValue() : null);
     }
 
     public SvgCircle(Long xCoordinate, Long yCoordinate, Long radius) {
@@ -46,6 +47,10 @@ public class SvgCircle extends SvgAreaElement {
 
     public Long getRadius() {
         return radius;
+    }
+
+    public void setRadius(Number radius) {
+        this.radius = radius != null ? radius.longValue() : null;
     }
 
     public void setRadius(Long radius) {
