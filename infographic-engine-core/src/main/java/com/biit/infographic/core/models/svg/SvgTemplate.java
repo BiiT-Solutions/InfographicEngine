@@ -185,10 +185,10 @@ public class SvgTemplate extends SvgAreaElement {
         if (elements != null) {
             for (SvgAreaElement element : elements) {
                 if (element.getElementAttributes().getHeight() != null && element.getElementAttributes().getHeightUnit() == Unit.PIXELS) {
-                    height = Math.max(height, element.getElementAttributes().getXCoordinate() + element.getElementAttributes().getHeight());
+                    height = Math.max(height, element.getElementAttributes().getYCoordinate() + element.getElementAttributes().getHeight());
                 }
                 if (element.getElementAttributes().getWidth() != null && element.getElementAttributes().getWidthUnit() == Unit.PIXELS) {
-                    width = Math.max(width, element.getElementAttributes().getYCoordinate() + element.getElementAttributes().getWidth());
+                    width = Math.max(width, element.getElementAttributes().getXCoordinate() + element.getElementAttributes().getWidth());
                 }
                 x = Math.min(x, element.getElementAttributes().getXCoordinate());
                 y = Math.min(y, element.getElementAttributes().getYCoordinate());
