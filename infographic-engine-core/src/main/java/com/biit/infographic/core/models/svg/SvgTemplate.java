@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Root class for generating an SVG document.
@@ -237,15 +238,17 @@ public class SvgTemplate extends SvgAreaElement {
      */
     private void generateDefs(Document doc, Element svgRoot) {
         final Element defs = doc.createElementNS(NAMESPACE, "defs");
-        if (elements != null && !elements.isEmpty()) {
-            int idCounter = 0;
+        if (getElements() != null && !getElements().isEmpty()) {
+            final AtomicInteger idCounter = new AtomicInteger(0);
             final HashMap<String, HashSet<FontWeight>> embeddedFonts = new HashMap<>();
-            for (SvgAreaElement element : elements) {
-                if (element.getElementAttributes() != null && element.getGradient() != null) {
-                    final SvgGradient gradient = element.getGradient();
-                    gradient.setId(SvgGradient.ID_PREFIX + "_" + element.getElementType().name().toLowerCase() + "_" + ++idCounter);
-                    final Collection<Element> elements = gradient.generateSvg(doc);
-                    elements.forEach(defs::appendChild);
+            for (SvgAreaElement element : getElements()) {
+                //Gradient can be defined in the stroke
+                if (element.getGradient() != null) {
+                    createGradientDef(doc, element.getGradient(), defs, element.getElementType().name().toLowerCase(), idCounter);
+                }
+                if (element.getElementStroke() != null && element.getElementStroke().getGradient() != null) {
+                    createGradientDef(doc, element.getElementStroke().getGradient(), defs,
+                            element.getElementType().name().toLowerCase() + "_stroke", idCounter);
                 }
                 if (element instanceof SvgText && isEmbedFonts()) {
                     if (((SvgText) element).mustEmbedFont()
@@ -257,15 +260,26 @@ public class SvgTemplate extends SvgAreaElement {
                             embeddedFonts.computeIfAbsent(((SvgText) element).getMainFontFamily(), k -> new HashSet<>());
                             embeddedFonts.get(((SvgText) element).getMainFontFamily()).add(((SvgText) element).getFontWeight());
                             SvgGeneratorLogger.info(this.getClass(), "Font '{}' embedded!", ((SvgText) element).getFontFamily());
-                            idCounter++;
+                            idCounter.incrementAndGet();
                         }
                     }
                 }
             }
 
-            if (idCounter > 0) {
+            if (idCounter.get() > 0) {
                 svgRoot.appendChild(defs);
             }
+        }
+    }
+
+    private void createGradientDef(Document doc, SvgGradient gradient, Element defs, String id, AtomicInteger idCounter) {
+        if (gradient != null) {
+            gradient.setId(SvgGradient.ID_PREFIX + "_" + id + "_" + idCounter.incrementAndGet());
+            //Ensure gradient has coordinates.
+            gradient.setDefaultCoordinates(getElementAttributes().getXCoordinate(), getElementAttributes().getYCoordinate() / 2,
+                    getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(), getElementAttributes().getYCoordinate() / 2);
+            final Collection<Element> elements = gradient.generateSvg(doc);
+            elements.forEach(defs::appendChild);
         }
     }
 

@@ -112,7 +112,8 @@ public class SvgRectangle extends SvgAreaElement {
             rectangle.setAttributeNS(null, "ry", String.valueOf(getYRadius()));
         }
         if (getElementStroke() != null && getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET) {
-            elements.addAll(createOuterStroke(doc));
+            final Collection<Element> strokes = createOuterStroke(doc);
+            elements.addAll(strokes);
         } else {
             elementStroke(rectangle);
         }
@@ -145,6 +146,10 @@ public class SvgRectangle extends SvgAreaElement {
                         (long) (generateRealYCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2)));
         border.setElementStroke(getElementStroke());
         border.getElementStroke().setLineCap(StrokeLineCap.SQUARE);
+        if (getElementStroke() != null && getElementStroke().getGradient() != null) {
+            border.getElementAttributes().setFill(null);
+            border.setGradient(getElementStroke().getGradient());
+        }
         return border.generateSvg(doc);
     }
 }

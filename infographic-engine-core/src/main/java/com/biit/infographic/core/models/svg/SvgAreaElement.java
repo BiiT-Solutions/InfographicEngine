@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
+import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgAreaElementDeserializer;
@@ -123,7 +124,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         super.elementAttributes(element);
         if (getElementAttributes().getFill() != null) {
             element.setAttributeNS(null, "fill", getElementAttributes().getFill());
-        } else if (getGradient() != null) {
+        } else if (getGradient() != null && !(this instanceof SvgPath)) {
             element.setAttributeNS(null, "fill", "url(#" + getGradient().getId() + ")");
         }
         if (getElementAttributes().getFillOpacity() != null) {
@@ -172,6 +173,10 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
             style.append(elementStroke.getLineCap().value());
             style.append(";");
         }
+        //Paths puts gradient on style
+        if (this instanceof SvgPath && getElementStroke().getGradient() != null) {
+            style.append("stroke:url(#" + getGradient().getId() + ");fill:none");
+        }
         return style;
     }
 
@@ -187,20 +192,22 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
     }
 
     public void setGradient(SvgGradient gradient) {
-        getElementAttributes().setFill(null);
         this.gradient = gradient;
-        if (gradient.getX1Coordinate() == null) {
-            gradient.setX1Coordinate(getElementAttributes().getXCoordinate());
-        }
-        if (gradient.getY1Coordinate() == null) {
-            gradient.setY1Coordinate(getElementAttributes().getYCoordinate());
-        }
-        if (gradient.getX2Coordinate() == null && getElementAttributes().getWidth() != null) {
-            gradient.setX2Coordinate(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth());
-        }
-        //Horizontal gradient by default.
-        if (gradient.getY2Coordinate() == null) {
-            gradient.setY2Coordinate(getElementAttributes().getYCoordinate());
+        if (gradient != null) {
+            getElementAttributes().setFill(null);
+            if (gradient.getX1Coordinate() == null) {
+                gradient.setX1Coordinate(getElementAttributes().getXCoordinate());
+            }
+            if (gradient.getY1Coordinate() == null) {
+                gradient.setY1Coordinate(getElementAttributes().getYCoordinate());
+            }
+            if (gradient.getX2Coordinate() == null && getElementAttributes().getWidth() != null) {
+                gradient.setX2Coordinate(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth());
+            }
+            //Horizontal gradient by default.
+            if (gradient.getY2Coordinate() == null) {
+                gradient.setY2Coordinate(getElementAttributes().getYCoordinate());
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.serialization.ElementStrokeDeserializer;
 import com.biit.infographic.core.models.svg.utils.Color;
 import com.biit.infographic.logger.SvgGeneratorLogger;
@@ -31,6 +32,9 @@ public class ElementStroke {
 
     @JsonProperty("strokeAlign")
     private StrokeAlign strokeAlign;
+
+    @JsonProperty("gradient")
+    private SvgGradient gradient;
 
 
     public double getStrokeWidth() {
@@ -101,5 +105,13 @@ public class ElementStroke {
 
     public void setStrokeAlign(StrokeAlign strokeAlign) {
         this.strokeAlign = strokeAlign;
+    }
+
+    public SvgGradient getGradient() {
+        return gradient;
+    }
+
+    public void setGradient(SvgGradient gradient) {
+        this.gradient = gradient;
     }
 }

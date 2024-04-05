@@ -157,4 +157,19 @@ public class SvgGradient extends SvgElement {
     public void validateAttributes() throws InvalidAttributeException {
 
     }
+
+    public void setDefaultCoordinates(Number x1, Number y1, Number x2, Number y2) {
+        if (getX1Coordinate() == null) {
+            setX1Coordinate(x1);
+        }
+        if (getY1Coordinate() == null) {
+            setY1Coordinate(y1);
+        }
+        if (getX2Coordinate() == null) {
+            setX2Coordinate(x2);
+        }
+        if (getY2Coordinate() == null) {
+            setY2Coordinate(y2);
+        }
+    }
 }

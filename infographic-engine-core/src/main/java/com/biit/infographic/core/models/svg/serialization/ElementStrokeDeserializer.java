@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.serialization;
 import com.biit.infographic.core.models.svg.ElementStroke;
 import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,6 +36,9 @@ public class ElementStrokeDeserializer extends StdDeserializer<ElementStroke> {
         }
         if (jsonObject.get("strokeAlign") != null) {
             elementStroke.setStrokeAlign(StrokeAlign.get(DeserializerParser.parseString("strokeAlign", jsonObject)));
+        }
+        if (jsonObject.get("gradient") != null) {
+            elementStroke.setGradient(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("gradient").toPrettyString(), SvgGradient.class));
         }
 
         return elementStroke;

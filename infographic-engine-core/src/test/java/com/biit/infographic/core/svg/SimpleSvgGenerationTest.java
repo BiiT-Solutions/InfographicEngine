@@ -441,6 +441,40 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         checkContent(SvgGenerator.generate(svgTemplate), "outerBorder.svg");
     }
 
+    @Test
+    public void outerBorderWithGradientTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+
+        final SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 8, SvgTemplate.DEFAULT_HEIGHT / 8,
+                SvgTemplate.DEFAULT_WIDTH / 8);
+        svgCircle.getElementAttributes().setFill("00ff00");
+        svgCircle.getElementStroke().setStrokeWidth(4D);
+        svgCircle.getElementStroke().setGradient(new SvgGradient(svgCircle.getElementAttributes().getXCoordinate(),
+                svgCircle.getElementAttributes().getYCoordinate(), svgCircle.getElementAttributes().getXCoordinate() + svgCircle.getRadius() * 2,
+                svgCircle.getElementAttributes().getYCoordinate(), new SvgGradientStop("ff0000", 0.5, 0.0), new SvgGradientStop("0000ff", 0.5, 1.0)));
+        svgCircle.getElementStroke().setStrokeAlign(StrokeAlign.OUTSET);
+        svgTemplate.addElement(svgCircle);
+
+        final SvgRectangle svgRectangle = new SvgRectangle(3 * SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
+                SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_WIDTH / 4);
+        svgRectangle.getElementAttributes().setFill("00ff00");
+        svgRectangle.getElementStroke().setStrokeWidth(4D);
+        svgRectangle.getElementStroke().setGradient(
+                new SvgGradient(svgRectangle.getElementAttributes().getXCoordinate(),
+                        svgRectangle.getElementAttributes().getYCoordinate(), svgRectangle.getElementAttributes().getXCoordinate() + svgRectangle.getElementAttributes().getWidth(),
+                        svgRectangle.getElementAttributes().getYCoordinate(),
+                        new SvgGradientStop("ff0000", 0.5, 0.0), new SvgGradientStop("0000ff", 0.5, 1.0)));
+        svgRectangle.getElementStroke().setStrokeAlign(StrokeAlign.OUTSET);
+        svgTemplate.addElement(svgRectangle);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "outerBorderWithGradient.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "outerBorderWithGradient.svg");
+    }
+
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));

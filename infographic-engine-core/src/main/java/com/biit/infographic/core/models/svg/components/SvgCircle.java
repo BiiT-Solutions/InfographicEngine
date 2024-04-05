@@ -107,6 +107,10 @@ public class SvgCircle extends SvgAreaElement {
                         getElementAttributes().getYCoordinate() + getRadius()));
         border.setElementStroke(getElementStroke());
         border.getElementStroke().setLineCap(StrokeLineCap.BUTT);
+        if (getElementStroke() != null && getElementStroke().getGradient() != null) {
+            border.getElementAttributes().setFill(null);
+            border.setGradient(getElementStroke().getGradient());
+        }
         return border.generateSvg(doc);
     }
 }
