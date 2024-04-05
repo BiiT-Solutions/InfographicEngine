@@ -53,12 +53,6 @@ public class Arc implements PathElement {
     }
 
     /**
-     * <path
-     * d="
-     * M previousX, previousY
-     * a radius,radius 0 1,0 (radius * 2),0
-     * "
-     * />
      *
      * @param previousX
      * @param previousY
