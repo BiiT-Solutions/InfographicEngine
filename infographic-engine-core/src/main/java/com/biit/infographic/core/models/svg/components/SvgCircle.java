@@ -49,6 +49,11 @@ public class SvgCircle extends SvgAreaElement {
         return radius;
     }
 
+    public Long getRealRadius() {
+        return (long) (radius
+                - (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
+    }
+
     public void setRadius(Number radius) {
         this.radius = radius != null ? radius.longValue() : null;
     }
@@ -63,9 +68,9 @@ public class SvgCircle extends SvgAreaElement {
         final ArrayList<Element> elements = new ArrayList<>();
         final Element circle = doc.createElementNS(NAMESPACE, "circle");
         elements.add(circle);
-        circle.setAttributeNS(null, "cx", String.valueOf(generateRealXCoordinate().longValue()));
-        circle.setAttributeNS(null, "cy", String.valueOf(generateRealYCoordinate().longValue()));
-        circle.setAttributeNS(null, "r", String.valueOf(getRadius()));
+        circle.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate() + getRadius()));
+        circle.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate() + getRadius()));
+        circle.setAttributeNS(null, "r", String.valueOf(getRealRadius()));
         if (getElementStroke() != null && getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET) {
             elements.addAll(createOuterStroke(doc));
         } else {
@@ -89,38 +94,17 @@ public class SvgCircle extends SvgAreaElement {
         }
     }
 
-    /**
-     * Stroke is included on the X and must be subtracted.
-     *
-     * @return the calculated coordinate
-     */
-    @Override
-    protected Double generateRealXCoordinate() {
-        return (double) (getElementAttributes().getXCoordinate() + getRadius());
-    }
-
-    /**
-     * Stroke is included on the y and must be subtracted.
-     *
-     * @return the calculated coordinate
-     */
-    @Override
-    protected Double generateRealYCoordinate() {
-        return (double) (getElementAttributes().getYCoordinate() + getRadius());
-    }
-
     private Collection<Element> createOuterStroke(Document doc) {
-        final SvgPath border = new SvgPath(
-                generateRealXCoordinate().longValue() - getRadius() - (long) (getElementStroke().getStrokeWidth() / 2),
-                generateRealYCoordinate().longValue(),
-                new Arc(generateRealXCoordinate().longValue(),
-                        generateRealYCoordinate().longValue() + getRadius() + (long) (getElementStroke().getStrokeWidth() / 2)),
-                new Arc(generateRealXCoordinate().longValue() + getRadius() + (long) (getElementStroke().getStrokeWidth() / 2),
-                        generateRealYCoordinate().longValue()),
-                new Arc(generateRealXCoordinate().longValue(),
-                        generateRealYCoordinate().longValue() - getRadius() - (long) (getElementStroke().getStrokeWidth() / 2)),
-                new Arc(generateRealXCoordinate().longValue() - getRadius() - (long) (getElementStroke().getStrokeWidth() / 2),
-                        generateRealYCoordinate().longValue()));
+        final SvgPath border = new SvgPath(getElementAttributes().getXCoordinate() + (long) (getElementStroke().getStrokeWidth() / 2),
+                getElementAttributes().getYCoordinate() + getRadius(),
+                new Arc(getElementAttributes().getXCoordinate() + getRadius(),
+                        getElementAttributes().getXCoordinate() + (2 * getRadius()) - (long) (getElementStroke().getStrokeWidth() / 2)),
+                new Arc(getElementAttributes().getXCoordinate() + (2 * getRadius()) - (long) (getElementStroke().getStrokeWidth() / 2),
+                        getElementAttributes().getYCoordinate() + getRadius()),
+                new Arc(getElementAttributes().getXCoordinate() + getRadius(),
+                        getElementAttributes().getYCoordinate() + getElementStroke().getStrokeWidth() / 2),
+                new Arc(getElementAttributes().getXCoordinate() + (long) (getElementStroke().getStrokeWidth() / 2),
+                        getElementAttributes().getYCoordinate() + getRadius()));
         border.setElementStroke(getElementStroke());
         border.getElementStroke().setLineCap(StrokeLineCap.BUTT);
         return border.generateSvg(doc);

@@ -49,7 +49,8 @@ public class SvgPath extends SvgAreaElement {
     }
 
     public SvgPath(String strokeColor, Double strokeWidth, Number xCoordinate, Number yCoordinate, PathElement... pathElements) {
-        this(strokeColor, strokeWidth, xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, pathElements);
+        this(strokeColor, strokeWidth, xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null,
+                pathElements);
     }
 
     public SvgPath(String strokeColor, Double strokeWidth, Long xCoordinate, Long yCoordinate, PathElement... pathElements) {

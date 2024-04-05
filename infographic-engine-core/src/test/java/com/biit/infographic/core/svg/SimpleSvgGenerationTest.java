@@ -415,7 +415,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     @Test
     public void outerBorderTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
-        final SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
+        final SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 8, SvgTemplate.DEFAULT_HEIGHT / 8,
                 SvgTemplate.DEFAULT_WIDTH / 8);
         svgCircle.getElementAttributes().setFill("00ff00");
         svgCircle.getElementStroke().setStrokeColor("ff00ff");
@@ -424,7 +424,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         svgCircle.getElementStroke().setStrokeAlign(StrokeAlign.OUTSET);
         svgTemplate.addElement(svgCircle);
 
-        final SvgRectangle svgRectangle = new SvgRectangle(3 * SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 2,
+        final SvgRectangle svgRectangle = new SvgRectangle(3 * SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
                 SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_WIDTH / 4);
         svgRectangle.getElementAttributes().setFill("00ff00");
         svgRectangle.getElementStroke().setStrokeColor("ff00ff");

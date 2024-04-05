@@ -1,6 +1,5 @@
 package com.biit.infographic.core.models.svg;
 
-import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.serialization.ElementAttributesDeserializer;
 import com.biit.infographic.core.models.svg.utils.Color;
 import com.biit.infographic.logger.SvgGeneratorLogger;

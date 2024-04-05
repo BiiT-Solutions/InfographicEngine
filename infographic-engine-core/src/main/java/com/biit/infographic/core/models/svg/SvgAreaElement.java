@@ -104,7 +104,8 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
      * @return the calculated coordinate
      */
     protected Double generateRealXCoordinate() {
-        return (getElementAttributes().getXCoordinate() + getElementStroke().getStrokeWidth() / 2);
+        return (getElementAttributes().getXCoordinate()
+                + (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
     }
 
     /**
@@ -113,7 +114,8 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
      * @return the calculated coordinate
      */
     protected Double generateRealYCoordinate() {
-        return (getElementAttributes().getYCoordinate() + getElementStroke().getStrokeWidth() / 2);
+        return (getElementAttributes().getYCoordinate()
+                + (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
     }
 
     @Override
