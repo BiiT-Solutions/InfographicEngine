@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgAreaElementDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +11,6 @@ import org.w3c.dom.Element;
 import java.util.stream.Collectors;
 
 @JsonDeserialize(using = SvgAreaElementDeserializer.class)
-//@JsonSerialize(using = SvgElementSerializer.class)
 public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     @JsonProperty("commonAttributes")
@@ -18,6 +18,9 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     @JsonProperty("stroke")
     private ElementStroke elementStroke;
+
+    @JsonProperty("gradient")
+    private SvgGradient gradient;
 
     @JsonProperty("href")
     private String href;
@@ -77,7 +80,10 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
      * @return a string format including unit if needed.
      */
     protected String generateRealWidth() {
-        return (getElementAttributes().getWidth() - getElementStroke().getStrokeWidth()) + getElementAttributes().getWidthUnit().getValue();
+        return (getElementAttributes().getWidth()
+                //Reduce the border.
+                - (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() * 2 : getElementStroke().getStrokeWidth()))
+                + getElementAttributes().getWidthUnit().getValue();
     }
 
     /**
@@ -86,7 +92,10 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
      * @return a string format including unit if needed.
      */
     protected String generateRealHeight() {
-        return (getElementAttributes().getHeight() - getElementStroke().getStrokeWidth()) + getElementAttributes().getHeightUnit().getValue();
+        return (getElementAttributes().getHeight()
+                //Reduce the border.
+                - (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() * 2 : getElementStroke().getStrokeWidth()))
+                + getElementAttributes().getHeightUnit().getValue();
     }
 
     /**
@@ -112,8 +121,8 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         super.elementAttributes(element);
         if (getElementAttributes().getFill() != null) {
             element.setAttributeNS(null, "fill", getElementAttributes().getFill());
-        } else if (getElementAttributes().getGradient() != null) {
-            element.setAttributeNS(null, "fill", "url(#" + getElementAttributes().getGradient().getId() + ")");
+        } else if (getGradient() != null) {
+            element.setAttributeNS(null, "fill", "url(#" + getGradient().getId() + ")");
         }
         if (getElementAttributes().getFillOpacity() != null) {
             element.setAttributeNS(null, "fill-opacity", String.valueOf(getElementAttributes().getFillOpacity()));
@@ -166,8 +175,30 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-        if (elementAttributes.getFill() != null && elementAttributes.getGradient() != null) {
+        if (elementAttributes.getFill() != null && getGradient() != null) {
             throw new InvalidAttributeException(this.getClass(), "Cannot define fill color and gradient on '" + getId() + "'");
+        }
+    }
+
+    public SvgGradient getGradient() {
+        return gradient;
+    }
+
+    public void setGradient(SvgGradient gradient) {
+        getElementAttributes().setFill(null);
+        this.gradient = gradient;
+        if (gradient.getX1Coordinate() == null) {
+            gradient.setX1Coordinate(getElementAttributes().getXCoordinate());
+        }
+        if (gradient.getY1Coordinate() == null) {
+            gradient.setY1Coordinate(getElementAttributes().getYCoordinate());
+        }
+        if (gradient.getX2Coordinate() == null && getElementAttributes().getWidth() != null) {
+            gradient.setX2Coordinate(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth());
+        }
+        //Horizontal gradient by default.
+        if (gradient.getY2Coordinate() == null) {
+            gradient.setY2Coordinate(getElementAttributes().getYCoordinate());
         }
     }
 

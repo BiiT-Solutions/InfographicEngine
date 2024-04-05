@@ -4,6 +4,7 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.Unit;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgTextDeserializer;
 import com.biit.infographic.logger.InfographicEngineLogger;
@@ -148,16 +149,29 @@ public class SvgText extends SvgAreaElement {
         getElementAttributes().setFill(color);
     }
 
+    public SvgText(String fontFamily, String text, int fontSize, FontWeight weight, String color, Number x, Number y) {
+        this(text, fontSize, weight, color, x != null ? x.longValue() : null, y != null ? y.longValue() : null);
+        setFontFamily(fontFamily);
+    }
+
     public SvgText(String text, int fontSize, FontWeight weight, String color, Number x, Number y) {
         this(text, fontSize, weight, color, x != null ? x.longValue() : null, y != null ? y.longValue() : null);
     }
 
     public SvgText(String text, int fontSize, FontWeight weight, String color, Long x, Long y) {
+        this(text, fontSize, weight, x, y);
+        getElementAttributes().setFill(color);
+    }
+
+    public SvgText(String text, int fontSize, FontWeight weight, Number x, Number y) {
+        this(text, fontSize, weight, x != null ? x.longValue() : null, y != null ? y.longValue() : null);
+    }
+
+    public SvgText(String text, int fontSize, FontWeight weight, Long x, Long y) {
         this(new ElementAttributes(x, y, null, null, null));
         setText(text);
         setFontSize(fontSize);
         setFontWeight(weight);
-        getElementAttributes().setFill(color);
     }
 
     public String getMainFontFamily() {
@@ -714,6 +728,27 @@ public class SvgText extends SvgAreaElement {
         script.append("\t\t}\n");
 //        script.append("]]>\n");
         return script.toString();
+    }
+
+    @Override
+    public void setGradient(SvgGradient gradient) {
+        if (gradient.getX1Coordinate() == null) {
+            gradient.setX1Coordinate(getElementAttributes().getXCoordinate());
+        }
+        if (gradient.getY1Coordinate() == null) {
+            gradient.setY1Coordinate(getElementAttributes().getYCoordinate());
+        }
+        if (gradient.getX2Coordinate() == null) {
+            if (getMaxLineWidth() != null) {
+                gradient.setX2Coordinate(getMaxLineWidth());
+            } else if (getMaxLineLength() != null) {
+                gradient.setX2Coordinate(getMaxLineLength() * MAGIC_INKSCAPE_FONT_Y_CORRECTION * getFontSize());
+            }
+        }
+        if (gradient.getY2Coordinate() == null) {
+            gradient.setY2Coordinate(getElementAttributes().getYCoordinate());
+        }
+        super.setGradient(gradient);
     }
 
 }

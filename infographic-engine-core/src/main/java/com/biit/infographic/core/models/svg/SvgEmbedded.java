@@ -103,6 +103,14 @@ public class SvgEmbedded extends SvgAreaElement {
         return Collections.singletonList(container);
     }
 
+    /**
+     * Scale uses the complete SVG size, not the drawing. If you want something accurate, ensure that the document fits the content.
+     *
+     * @return the % for scaling.
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
     private double getScale() throws ParserConfigurationException, IOException, SAXException {
         final Document doc = SvgUtils.stringToSvg(svgCode);
         if (getElementAttributes().getWidth() == null && getElementAttributes().getHeight() == null) {

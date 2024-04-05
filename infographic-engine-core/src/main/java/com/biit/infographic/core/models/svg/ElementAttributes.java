@@ -41,9 +41,6 @@ public class ElementAttributes {
     @JsonProperty("fill")
     private String fill;
 
-    @JsonProperty("gradient")
-    private SvgGradient gradient;
-
     @JsonProperty("fillOpacity")
     private String fillOpacity;
 
@@ -249,15 +246,6 @@ public class ElementAttributes {
                 this.fill = fill;
             }
         }
-    }
-
-    public SvgGradient getGradient() {
-        return gradient;
-    }
-
-    public void setGradient(SvgGradient gradient) {
-        this.fill = null;
-        this.gradient = gradient;
     }
 
     public String getFillOpacity() {

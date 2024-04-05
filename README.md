@@ -67,6 +67,10 @@ Example:
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
 
+**stroke.strokeAlign** Defines where the border will be drawn. Values are `CENTER` that is the standard, where half of
+the border overlaps the figure, `OUTSET` emulated by a path, is drawn outside the figure (only available on
+rectangles and circles) and `INSET` that is not implemented yet.
+
 Example:
 
 ```
@@ -85,7 +89,8 @@ Example:
     "stroke" : {
       "strokeWidth" : 0.0,
       "strokeColor" : "black",
-      "strokeLinecap" : "BUTT"
+      "strokeLinecap" : "BUTT",
+      "strokeAlign": "CENTER"
     }
   } ]
 }
@@ -284,6 +289,10 @@ Example:
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
 
+**stroke.strokeAlign** Defines where the border will be drawn. Values are `CENTER` that is the standard, where half of
+the border overlaps the figure, `OUTSET` emulated by a path, is drawn outside the figure (only available on
+rectangles and circles) and `INSET` that is not implemented yet.
+
 Example:
 
 ```
@@ -318,7 +327,8 @@ Example:
     "stroke" : {
       "strokeWidth" : 0.0,
       "strokeColor" : "black",
-      "strokeLinecap" : "BUTT"
+      "strokeLinecap" : "BUTT",
+      "strokeAlign": "OUTSET"
     },
     "xRadius" : 0,
     "xradius" : 0,

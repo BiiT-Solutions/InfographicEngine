@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.components;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgLineDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -110,9 +111,9 @@ public class SvgLine extends SvgAreaElement {
         if (style == null) {
             style = new StringBuilder();
         }
-        if (getElementAttributes().getGradient() != null) {
+        if (getGradient() != null) {
             style.append("fill:url(#");
-            style.append(getElementAttributes().getGradient().getId());
+            style.append(getGradient().getId());
             style.append(");");
         }
         return style;
@@ -122,8 +123,25 @@ public class SvgLine extends SvgAreaElement {
     public void elementStroke(Element element) throws InvalidAttributeException {
         super.elementStroke(element);
         //Lines has the gradient on the stroke, not on the area.
-        if (getElementAttributes().getGradient() != null) {
-            element.setAttributeNS(null, "stroke", "url(#" + getElementAttributes().getGradient().getId() + ")");
+        if (getGradient() != null) {
+            element.setAttributeNS(null, "stroke", "url(#" + getGradient().getId() + ")");
         }
+    }
+
+    @Override
+    public void setGradient(SvgGradient gradient) {
+        if (gradient.getX1Coordinate() == null) {
+            gradient.setX1Coordinate(getElementAttributes().getXCoordinate());
+        }
+        if (gradient.getY1Coordinate() == null) {
+            gradient.setY1Coordinate(getElementAttributes().getYCoordinate());
+        }
+        if (gradient.getX2Coordinate() == null) {
+            gradient.setX2Coordinate(getX2Coordinate());
+        }
+        if (gradient.getY2Coordinate() == null) {
+            gradient.setY2Coordinate(getY2Coordinate());
+        }
+        super.setGradient(gradient);
     }
 }

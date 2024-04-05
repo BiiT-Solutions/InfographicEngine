@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.serialization;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementStroke;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
+import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +28,9 @@ public abstract class SvgAreaElementDeserializer<T extends SvgAreaElement> exten
         }
         if (jsonObject.get("stroke") != null) {
             element.setElementStroke(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("stroke").toPrettyString(), ElementStroke.class));
+        }
+        if (jsonObject.get("gradient") != null) {
+            element.setGradient(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("gradient").toPrettyString(), SvgGradient.class));
         }
     }
 }

@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
+import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
@@ -241,15 +242,9 @@ public class SvgTemplate extends SvgAreaElement {
             int idCounter = 0;
             final HashMap<String, HashSet<FontWeight>> embeddedFonts = new HashMap<>();
             for (SvgAreaElement element : elements) {
-                if (element.getElementAttributes() != null && element.getElementAttributes().getGradient() != null) {
-                    final SvgGradient gradient = element.getElementAttributes().getGradient();
+                if (element.getElementAttributes() != null && element.getGradient() != null) {
+                    final SvgGradient gradient = element.getGradient();
                     gradient.setId(SvgGradient.ID_PREFIX + "_" + element.getElementType().name().toLowerCase() + "_" + ++idCounter);
-                    if (element instanceof SvgLine) {
-                        gradient.setX1Coordinate(element.getElementAttributes().getXCoordinate());
-                        gradient.setY1Coordinate(element.getElementAttributes().getYCoordinate());
-                        gradient.setX2Coordinate(((SvgLine) element).getX2Coordinate());
-                        gradient.setY2Coordinate(((SvgLine) element).getY2Coordinate());
-                    }
                     final Collection<Element> elements = gradient.generateSvg(doc);
                     elements.forEach(defs::appendChild);
                 }

@@ -41,6 +41,23 @@ public class SvgGradient extends SvgElement {
         setElementType(ElementType.GRADIENT);
     }
 
+    public SvgGradient(Number x1Coordinate, Number y1Coordinate, Number x2Coordinate, Number y2Coordinate, SvgGradientStop... stops) {
+        this(x1Coordinate != null ? x1Coordinate.longValue() : null,
+                y1Coordinate != null ? y1Coordinate.longValue() : null,
+                x2Coordinate != null ? x2Coordinate.longValue() : null,
+                y2Coordinate != null ? y2Coordinate.longValue() : null,
+                stops);
+    }
+
+    public SvgGradient(Long x1Coordinate, Long y1Coordinate, Long x2Coordinate, Long y2Coordinate, SvgGradientStop... stops) {
+        this();
+        setX1Coordinate(x1Coordinate);
+        setY1Coordinate(y1Coordinate);
+        setX2Coordinate(x2Coordinate);
+        setY2Coordinate(y2Coordinate);
+        setStops(Arrays.asList(stops));
+    }
+
     public SvgGradient(SvgGradientStop... stops) {
         this();
         setStops(Arrays.asList(stops));

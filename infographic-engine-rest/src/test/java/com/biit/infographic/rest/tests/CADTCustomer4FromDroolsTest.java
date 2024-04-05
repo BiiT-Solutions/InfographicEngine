@@ -703,7 +703,7 @@ public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTest
         elements.add(scoreCircleIcon2);
 
         final SvgLine gradientLine = new SvgLine(STRUCTURE_COLOR, DEFAULT_STROKE_WIDTH, 555L, 2044L, 994L, 2044L);
-        gradientLine.getElementAttributes().setGradient(new SvgGradient(
+        gradientLine.setGradient(new SvgGradient(
                 new SvgGradientStop(STRUCTURE_COLOR, FULL_ALPHA, 0.0),
                 new SvgGradientStop(INSPIRATION_COLOR, FULL_ALPHA, 1.0)));
         elements.add(gradientLine);
@@ -820,7 +820,7 @@ public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTest
         elements.add(scoreCircleIcon2);
 
         final SvgLine gradientLine = new SvgLine(ADAPTABILITY_COLOR, DEFAULT_STROKE_WIDTH, 1440L, 2044L, 1885L, 2044L);
-        gradientLine.getElementAttributes().setGradient(new SvgGradient(
+        gradientLine.setGradient(new SvgGradient(
                 new SvgGradientStop(ADAPTABILITY_COLOR, FULL_ALPHA, 0.0),
                 new SvgGradientStop(ACTION_COLOR, FULL_ALPHA, 1.0)));
         elements.add(gradientLine);
