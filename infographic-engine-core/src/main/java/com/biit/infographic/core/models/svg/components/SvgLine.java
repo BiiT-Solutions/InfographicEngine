@@ -79,10 +79,17 @@ public class SvgLine extends SvgAreaElement {
     public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
         final Element line = doc.createElementNS(NAMESPACE, "line");
-        line.setAttributeNS(null, "x1", String.valueOf(getElementAttributes().getXCoordinate()));
-        line.setAttributeNS(null, "y1", String.valueOf(getElementAttributes().getYCoordinate()));
-        line.setAttributeNS(null, "x2", String.valueOf(getX2Coordinate()));
-        line.setAttributeNS(null, "y2", String.valueOf(getY2Coordinate()));
+        if (getElementStroke() != null && getElementStroke().getStrokeWidth() > 1) {
+            line.setAttributeNS(null, "x1", String.valueOf(getElementAttributes().getXCoordinate() + getElementStroke().getStrokeWidth() / 2));
+            line.setAttributeNS(null, "y1", String.valueOf(getElementAttributes().getYCoordinate()));
+            line.setAttributeNS(null, "x2", String.valueOf(getX2Coordinate() + getElementStroke().getStrokeWidth() / 2));
+            line.setAttributeNS(null, "y2", String.valueOf(getY2Coordinate()));
+        } else {
+            line.setAttributeNS(null, "x1", String.valueOf(getElementAttributes().getXCoordinate()));
+            line.setAttributeNS(null, "y1", String.valueOf(getElementAttributes().getYCoordinate()));
+            line.setAttributeNS(null, "x2", String.valueOf(getX2Coordinate()));
+            line.setAttributeNS(null, "y2", String.valueOf(getY2Coordinate()));
+        }
         elementStroke(line);
         elementAttributes(line);
         return Collections.singletonList(line);
