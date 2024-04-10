@@ -12,7 +12,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -69,7 +68,7 @@ public class SvgEmbedded extends SvgAreaElement {
         return resourceName;
     }
 
-    public void setResourceName(String resourceName) throws FileNotFoundException {
+    public void setResourceName(String resourceName) {
         readSvg(resourceName);
     }
 
@@ -77,6 +76,10 @@ public class SvgEmbedded extends SvgAreaElement {
     public Collection<Element> generateSvg(Document doc) {
         //Wrap all inner elements in a group.
         final Element container = doc.createElementNS(NAMESPACE, "g");
+        //Maybe is a drools variable just updated and has not read the resource after.
+        if (svgCode == null && resourceName != null) {
+            readSvg(resourceName);
+        }
         try {
             container.setAttributeNS(null, "transform", " translate("
                     + (getElementAttributes().getXCoordinate()) + "," + getElementAttributes().getYCoordinate() + ")"

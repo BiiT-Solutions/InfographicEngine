@@ -98,7 +98,7 @@ public class SvgCircle extends SvgAreaElement {
         final SvgPath border = new SvgPath(getElementAttributes().getXCoordinate() + (long) (getElementStroke().getStrokeWidth() / 2),
                 getElementAttributes().getYCoordinate() + getRadius(),
                 new Arc(getElementAttributes().getXCoordinate() + getRadius(),
-                        getElementAttributes().getXCoordinate() + (2 * getRadius()) - (long) (getElementStroke().getStrokeWidth() / 2)),
+                        getElementAttributes().getYCoordinate() + (2 * getRadius()) - (long) (getElementStroke().getStrokeWidth() / 2)),
                 new Arc(getElementAttributes().getXCoordinate() + (2 * getRadius()) - (long) (getElementStroke().getStrokeWidth() / 2),
                         getElementAttributes().getYCoordinate() + getRadius()),
                 new Arc(getElementAttributes().getXCoordinate() + getRadius(),
