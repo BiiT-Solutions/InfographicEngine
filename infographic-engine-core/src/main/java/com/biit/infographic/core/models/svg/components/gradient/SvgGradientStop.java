@@ -35,6 +35,12 @@ public class SvgGradientStop extends SvgElement {
         setElementType(ElementType.GRADIENT_STOP);
     }
 
+    public SvgGradientStop(String color, Double offset) {
+        this();
+        setColor(color);
+        setOffset(offset);
+    }
+
     public SvgGradientStop(String color, Double opacity, Double offset) {
         this();
         setColor(color);
@@ -85,26 +91,16 @@ public class SvgGradientStop extends SvgElement {
         if (getId() != null) {
             stop.setAttributeNS(null, "id", getId());
         }
-        stop.setAttributeNS(null, "style", generateStyle(new StringBuilder()).toString());
-        stop.setAttributeNS(null, "offset", String.valueOf(getOffset()));
-        return Collections.singletonList(stop);
-    }
-
-    protected StringBuilder generateStyle(StringBuilder style) {
-        if (style == null) {
-            style = new StringBuilder();
-        }
         if (getColor() != null) {
-            style.append("stop-color:");
-            style.append(getColor());
-            style.append(";");
+            stop.setAttributeNS(null, "stop-color", String.valueOf(getColor()));
         }
-
-        style.append("stop-opacity:");
-        style.append(getOpacity() != null ? getOpacity() : 1);
-        style.append(";");
-
-        return style;
+        if (getOpacity() != null) {
+            stop.setAttributeNS(null, "stop-opacity", String.valueOf(getOpacity()));
+        }
+        if (getOffset() != null) {
+            stop.setAttributeNS(null, "offset", String.valueOf(getOffset()));
+        }
+        return Collections.singletonList(stop);
     }
 
     @Override

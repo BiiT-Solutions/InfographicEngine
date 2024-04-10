@@ -2,12 +2,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="256" zoomAndPan="magnify" contentStyleType="text/css" height="256" viewBox="0 0 256 256" preserveAspectRatio="xMidYMid meet" version="1.0">
     <defs>
         <linearGradient x1="128" gradientUnits="userSpaceOnUse" x2="256" y1="128" y2="128" xlink:type="simple" xlink:actuate="onLoad" id="linearGradient_rectangle_1" xlink:show="other">
-            <stop offset="0.0" style="stop-color:#ff0000;stop-opacity:1.0;"/>
-            <stop offset="1.0" style="stop-color:#0000ff;stop-opacity:1.0;"/>
+            <stop offset="0.0" stop-opacity="1.0" stop-color="#ff0000"/>
+            <stop offset="1.0" stop-opacity="1.0" stop-color="#0000ff"/>
         </linearGradient>
         <linearGradient x1="0" gradientUnits="userSpaceOnUse" x2="128" y1="0" y2="0" xlink:type="simple" xlink:actuate="onLoad" id="linearGradient_rectangle_2" xlink:show="other">
-            <stop offset="0.0" style="stop-color:#00ff00;stop-opacity:1.0;"/>
-            <stop offset="1.0" style="stop-color:#ff00ff;stop-opacity:1.0;"/>
+            <stop offset="0.0" stop-opacity="1.0" stop-color="#00ff00"/>
+            <stop offset="1.0" stop-opacity="1.0" stop-color="#ff00ff"/>
         </linearGradient>
     </defs>
     <rect width="128.0" fill="url(#linearGradient_rectangle_1)" x="128.0" height="128.0" y="128.0" id="rectangle0"/>
