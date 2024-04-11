@@ -488,7 +488,8 @@ public class SvgText extends SvgAreaElement {
                 } else {
                     // elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation())));
                     //It is a phrase split, but not the starting of the phrase.
-                    dy = getRealFontSize() * (emptyLinesCounter + 1) + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation() : getLineSeparation());
+                    dy = getRealFontSize() * (emptyLinesCounter + 1) + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation()
+                            : getLineSeparation() * (emptyLinesCounter + 1));
                 }
                 //If previous phrase uses more than one line, has a different 'dy' that we need to compensate now.
                 if (!lines.get(i - 1).startOfPhrase && lines.get(i - 1).endOfPhrase) {
