@@ -60,7 +60,7 @@ public class SvgText extends SvgAreaElement {
     private int lineSeparation = LINE_SEPARATION;
 
     @JsonProperty("minLineSeparation")
-    private Integer minLineSeparation = LINE_SEPARATION;
+    private Integer minLineSeparation = null;
 
     //When a phrase is split on multiples line, use a special line separator.
     @JsonProperty("samePhraseLineSeparator")
@@ -489,7 +489,7 @@ public class SvgText extends SvgAreaElement {
                     // elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation())));
                     //It is a phrase split, but not the starting of the phrase.
                     dy = getRealFontSize() * (emptyLinesCounter + 1) + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation()
-                            : getLineSeparation() * (emptyLinesCounter + 1));
+                            : getLineSeparation());
                 }
                 //If previous phrase uses more than one line, has a different 'dy' that we need to compensate now.
                 if (!lines.get(i - 1).startOfPhrase && lines.get(i - 1).endOfPhrase) {
@@ -815,7 +815,7 @@ public class SvgText extends SvgAreaElement {
 
     public void setMinLineSeparation(Integer minLineSeparation) {
         this.minLineSeparation = minLineSeparation;
-        if (minLineSeparation > this.lineSeparation) {
+        if (minLineSeparation != null && minLineSeparation > this.lineSeparation) {
             setLineSeparation(this.minLineSeparation);
         }
     }
@@ -839,6 +839,11 @@ public class SvgText extends SvgAreaElement {
 
         int length() {
             return text.length();
+        }
+
+        @Override
+        public String toString() {
+            return text;
         }
     }
 }
