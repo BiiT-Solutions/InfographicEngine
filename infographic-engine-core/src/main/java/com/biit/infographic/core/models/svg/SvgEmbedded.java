@@ -2,7 +2,9 @@ package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.files.SvgSearcher;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.infographic.core.models.svg.exceptions.InvalidCodeException;
 import com.biit.infographic.core.models.svg.serialization.SvgEmbeddedDeserializer;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -102,6 +104,9 @@ public class SvgEmbedded extends SvgAreaElement {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new RuntimeException(e);
+        } catch (InvalidCodeException e) {
+            InfographicEngineLogger.severe(this.getClass(), this + " has not valid svg code to embed.");
+            throw e;
         }
         return Collections.singletonList(container);
     }
@@ -154,5 +159,14 @@ public class SvgEmbedded extends SvgAreaElement {
     @Override
     public void validateAttributes() throws InvalidAttributeException {
 
+    }
+
+    @Override
+    public String toString() {
+        return "SvgEmbedded{"
+                + "id='" + getId() + '\''
+                + ", elementType=" + getElementType()
+                + ", resourceName='" + resourceName + '\''
+                + '}';
     }
 }

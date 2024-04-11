@@ -16,7 +16,7 @@ public class Parameter {
     private static final int PARAM_NAME_FIELD_INDEX = 1;
     private static final int PARAM_ATTRIBUTE_FIELD_INDEX = 2;
 
-    private static final String VARIABLE_SEARCH = "[#][A-Z].*?[#]";
+    private static final String VARIABLE_SEARCH = "#[^#%]+%[^#%]+%[^#%]+#";
 
 
     private String name;

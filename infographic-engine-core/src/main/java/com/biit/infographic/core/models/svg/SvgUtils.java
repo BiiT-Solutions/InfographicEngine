@@ -1,5 +1,6 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.exceptions.InvalidCodeException;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,6 +23,9 @@ public final class SvgUtils {
     }
 
     public static Document stringToSvg(String svgCode) throws ParserConfigurationException, IOException, SAXException {
+        if (svgCode == null) {
+            throw new InvalidCodeException(SvgUtils.class, "Provided code is null");
+        }
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(IOUtils.toInputStream(svgCode));
     }
 
