@@ -59,6 +59,9 @@ public class SvgText extends SvgAreaElement {
     @JsonIgnore
     private int lineSeparation = LINE_SEPARATION;
 
+    @JsonProperty("minLineSeparation")
+    private Integer minLineSeparation = LINE_SEPARATION;
+
     //Font variant must be available on the font.
     @JsonProperty("fontVariant")
     private FontVariantType fontVariant;
@@ -135,6 +138,18 @@ public class SvgText extends SvgAreaElement {
 
     public SvgText(String fontFamily, String text, int fontSize, Long x, Long y) {
         this(text, fontSize, x, y);
+        setFontFamily(fontFamily);
+    }
+
+    public SvgText(String fontFamily, String text, int fontSize, Number x, Number y, Number width, Number height) {
+        this(fontFamily, text, fontSize, x != null ? x.longValue() : null, y != null ? y.longValue() : null,
+                width != null ? width.longValue() : null, height != null ? height.longValue() : null);
+    }
+
+    public SvgText(String fontFamily, String text, int fontSize, Long x, Long y, Long width, Long height) {
+        this(text, fontSize, x, y);
+        setMaxParagraphHeight(height);
+        setMaxLineWidth(width);
         setFontFamily(fontFamily);
     }
 
@@ -432,8 +447,8 @@ public class SvgText extends SvgAreaElement {
                 longestLinePixels = getLineWidthPixels(longestLine);
             }
             //Check text is not overflowing the paragraph.
-        } while (!fitsInParagraph(lines) && (getRealFontSize() >= MINIMUM_FONT_SIZE + 1 || getLineSeparation() >= MIN_LINE_SEPARATION));
-        if (getRealFontSize() == MINIMUM_FONT_SIZE && getLineSeparation() == MIN_LINE_SEPARATION) {
+        } while (!fitsInParagraph(lines) && (getRealFontSize() >= MINIMUM_FONT_SIZE + 1 || getLineSeparation() >= getMinLineSeparation()));
+        if (getRealFontSize() == MINIMUM_FONT_SIZE && getLineSeparation() == getMinLineSeparation()) {
             SvgGeneratorLogger.warning(this.getClass(), "Text '{}' cannot fit on a height '{}' and width '{}'.",
                     getText(), getMaxParagraphHeight(), getMaxLineWidth() != null ? getMaxLineWidth() : getMaxLineLength());
         }
@@ -570,11 +585,11 @@ public class SvgText extends SvgAreaElement {
     }
 
     private void decreaseHeight() {
-        if (getLineSeparation() > MIN_LINE_SEPARATION) {
+        if (getLineSeparation() > getMinLineSeparation()) {
             setLineSeparation(getLineSeparation() - 1);
         } else {
             setRealFontSize(getRealFontSize() - 1);
-            setLineSeparation(LINE_SEPARATION);
+            setLineSeparation(Math.max(LINE_SEPARATION, getMinLineSeparation()));
         }
     }
 
@@ -717,16 +732,12 @@ public class SvgText extends SvgAreaElement {
 
     private String embeddedFontScript(String fontFamily) throws IOException {
         final StringBuilder script = new StringBuilder();
-//        script.append("<![CDATA[\n");
         script.append("\n\t\t@font-face {\n");
         script.append("\t\t\tfont-family: '").append(fontFamily).append("';\n");
-//        if (getFontWeight() != null && getFontWeight() != FontWeight.NORMAL) {
         script.append("\t\t\t").append(getFontWeight().getFontDefinition()).append("\n");
-//        }
         script.append("\t\t\tsrc: url('data:application/font-truetype;charset=utf-8;base64,")
                 .append(FontFactory.encodeFontToBase64(fontFamily, getFontWeight())).append("');\n");
         script.append("\t\t}\n");
-//        script.append("]]>\n");
         return script.toString();
     }
 
@@ -751,4 +762,14 @@ public class SvgText extends SvgAreaElement {
         super.setGradient(gradient);
     }
 
+    public int getMinLineSeparation() {
+        return Objects.requireNonNullElse(minLineSeparation, MIN_LINE_SEPARATION);
+    }
+
+    public void setMinLineSeparation(Integer minLineSeparation) {
+        this.minLineSeparation = minLineSeparation;
+        if (minLineSeparation > this.lineSeparation) {
+            setLineSeparation(this.minLineSeparation);
+        }
+    }
 }
