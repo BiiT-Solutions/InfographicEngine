@@ -41,6 +41,7 @@ public class SvgTextDeserializer extends SvgAreaElementDeserializer<SvgText> {
         element.setMaxLineWidth(DeserializerParser.parseInteger("maxLineWidth", jsonObject));
         element.setMaxParagraphHeight(DeserializerParser.parseInteger("maxParagraphHeight", jsonObject));
         element.setMinLineSeparation(DeserializerParser.parseInteger("minLineSeparation", jsonObject));
+        element.setSamePhraseLineSeparator(DeserializerParser.parseInteger("samePhraseLineSeparator", jsonObject));
         element.setTextAlign(TextAlign.getAlignment(DeserializerParser.parseString("textAlign", jsonObject)));
         if (DeserializerParser.parseString("fontWeight", jsonObject) != null) {
             element.setFontWeight(FontWeight.getWeight(DeserializerParser.parseString("fontWeight", jsonObject)));

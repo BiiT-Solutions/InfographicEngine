@@ -62,6 +62,10 @@ public class SvgText extends SvgAreaElement {
     @JsonProperty("minLineSeparation")
     private Integer minLineSeparation = LINE_SEPARATION;
 
+    //When a phrase is split on multiples line, use a special line separator.
+    @JsonProperty("samePhraseLineSeparator")
+    private Integer samePhraseLineSeparator;
+
     //Font variant must be available on the font.
     @JsonProperty("fontVariant")
     private FontVariantType fontVariant;
@@ -240,6 +244,14 @@ public class SvgText extends SvgAreaElement {
 
     private void setLineSeparation(int lineSeparation) {
         this.lineSeparation = lineSeparation;
+    }
+
+    public Integer getSamePhraseLineSeparation() {
+        return samePhraseLineSeparator;
+    }
+
+    public void setSamePhraseLineSeparator(Integer samePhraseLineSeparator) {
+        this.samePhraseLineSeparator = samePhraseLineSeparator;
     }
 
     public FontVariantType getFontVariant() {
@@ -432,7 +444,7 @@ public class SvgText extends SvgAreaElement {
     public Collection<Element> generateSvg(Document doc) {
         final Element text = doc.createElementNS(NAMESPACE, "text");
 
-        List<String> lines;
+        List<Line> lines;
         int longestLinePixels;
         //To compensate the first size reduction on the loop.
         setLineSeparation(getLineSeparation() + 1);
@@ -443,8 +455,8 @@ public class SvgText extends SvgAreaElement {
                 longestLinePixels = getMaxLineWidth().intValue();
             } else {
                 lines = getLines(getText(), getMaxLineLength() != null ? getMaxLineLength() : Integer.MAX_VALUE);
-                final String longestLine = lines.stream().max(Comparator.comparingInt(String::length)).orElse("");
-                longestLinePixels = getLineWidthPixels(longestLine);
+                final Line longestLine = lines.stream().max(Comparator.comparingInt(Line::length)).orElse(new Line(""));
+                longestLinePixels = getLineWidthPixels(longestLine.text);
             }
             //Check text is not overflowing the paragraph.
         } while (!fitsInParagraph(lines) && (getRealFontSize() >= MINIMUM_FONT_SIZE + 1 || getLineSeparation() >= getMinLineSeparation()));
@@ -454,18 +466,47 @@ public class SvgText extends SvgAreaElement {
         }
         int emptyLinesCounter = 0;
         for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).trim().isEmpty()) {
+            if (lines.get(i).text.trim().isEmpty()) {
                 emptyLinesCounter++;
                 continue;
             }
             final Element elementLine = doc.createElementNS(NAMESPACE, "tspan");
             if (i > 0) {
-                elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation())));
+                //Phrases that are split on multiple lines can have different separation.
+                int dy;
+                if (lines.get(i).startOfPhrase) {
+                    // Starting of a split phrase does not end with new line character (except last line, that does not need new line character).
+                    if (!lines.get(i).endOfPhrase && i < lines.size() - 1 && getSamePhraseLineSeparation() != null) {
+                        //First phrase Y coordinate is changed to allow multiples lines to fit in a row.
+                        dy = (getRealFontSize() * (emptyLinesCounter + 1)
+                                + getLineSeparation()
+                                - ((getFontSize() + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation() : 0)) / 2));
+                    } else {
+                        //It is a phrase in one line.
+                        dy = getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation();
+                    }
+                } else {
+                    // elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation())));
+                    //It is a phrase split, but not the starting of the phrase.
+                    dy = getRealFontSize() * (emptyLinesCounter + 1) + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation() : getLineSeparation());
+                }
+                //If previous phrase uses more than one line, has a different 'dy' that we need to compensate now.
+                if (!lines.get(i - 1).startOfPhrase && lines.get(i - 1).endOfPhrase) {
+                    dy -= (getSamePhraseLineSeparation() != null ? getFontSize() + getSamePhraseLineSeparation() : 0) / 2;
+                }
+                elementLine.setAttribute("dy", String.valueOf(dy));
+            } else {
+                //First phrase needs two rows?
+                if (lines.get(i).startOfPhrase && !lines.get(i).endOfPhrase && getSamePhraseLineSeparation() != null) {
+                    elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1)
+                            + getLineSeparation()
+                            - ((getFontSize() + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation() : 0) / 2)))));
+                }
             }
             elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
             if (i < lines.size() - 1 && getTextAlign() == TextAlign.JUSTIFY) {
-                if (!lines.get(i).endsWith(NEW_LINE_SYMBOL) && !lines.get(i).trim().isEmpty()) {
-                    elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i), longestLinePixels)));
+                if (!lines.get(i).text.endsWith(NEW_LINE_SYMBOL) && !lines.get(i).text.trim().isEmpty()) {
+                    elementLine.setAttribute("letter-spacing", String.valueOf(getLetterSpacing(lines.get(i).text, longestLinePixels)));
                 }
             }
             final String style = generateStyle(null).toString();
@@ -473,7 +514,7 @@ public class SvgText extends SvgAreaElement {
                 elementLine.setAttribute("style", style);
             }
             //Add text without new line character.
-            elementLine.setTextContent(lines.get(i).replaceAll(NEW_LINE_SYMBOL, " "));
+            elementLine.setTextContent(lines.get(i).text.replaceAll(NEW_LINE_SYMBOL, " "));
             text.appendChild(elementLine);
             emptyLinesCounter = 0;
         }
@@ -576,7 +617,7 @@ public class SvgText extends SvgAreaElement {
         return (int) (font.getStringBounds(text, frc).getWidth());
     }
 
-    private boolean fitsInParagraph(List<String> lines) {
+    private boolean fitsInParagraph(List<Line> lines) {
         if (getMaxParagraphHeight() == null) {
             return true;
         }
@@ -598,14 +639,14 @@ public class SvgText extends SvgAreaElement {
         return (double) (maxLinePixels - currentPixels) / text.length();
     }
 
-    private List<String> getLines(String content, long maxLineLength) {
-        final List<String> lines = new ArrayList<>();
+    private List<Line> getLines(String content, long maxLineLength) {
+        final List<Line> lines = new ArrayList<>();
         if (content != null) {
             int iterations = 0;
             while (!content.isBlank() && iterations < MAX_ITERATIONS) {
                 iterations++;
                 if (content.startsWith(NEW_LINE_SYMBOL)) {
-                    lines.add("");
+                    lines.add(new Line(""));
                     content = content.substring(NEW_LINE_SYMBOL.length() + 1);
                     continue;
                 }
@@ -617,16 +658,20 @@ public class SvgText extends SvgAreaElement {
                     endOfLine = (int) maxLineLength;
                 }
                 if (content.length() < endOfLine) {
-                    lines.add(content);
+                    lines.add(new Line(content,
+                            (lines.isEmpty() || lines.get(lines.size() - 1).text.endsWith(NEW_LINE_SYMBOL)),
+                            content.endsWith(NEW_LINE_SYMBOL)));
                     break;
                 }
                 final String pieceOfText = content.substring(0, endOfLine);
                 for (int i = pieceOfText.length() - 1; i >= 0; i--) {
                     if (Character.isWhitespace(pieceOfText.charAt(i))) {
-                        lines.add(pieceOfText.substring(0, i));
+                        lines.add(new Line(pieceOfText.substring(0, i),
+                                (lines.isEmpty() || lines.get(lines.size() - 1).text.endsWith(NEW_LINE_SYMBOL)),
+                                content.endsWith(NEW_LINE_SYMBOL)));
                         //Add new line separator for later
                         if (Objects.equals(pieceOfText.charAt(i) + "", NEW_LINE_SYMBOL)) {
-                            lines.set(lines.size() - 1, lines.get(lines.size() - 1) + NEW_LINE_SYMBOL);
+                            lines.set(lines.size() - 1, new Line(lines.get(lines.size() - 1).text + NEW_LINE_SYMBOL));
                         }
                         try {
                             content = content.substring(i + 1);
@@ -644,13 +689,13 @@ public class SvgText extends SvgAreaElement {
         return lines;
     }
 
-    private List<String> getLinesByPixels(String content, long lineWidth) {
-        final List<String> lines = new ArrayList<>();
+    private List<Line> getLinesByPixels(String content, long lineWidth) {
+        final List<Line> lines = new ArrayList<>();
         if (content != null) {
             content = addSpacesToNewLines(content);
             final Deque<String> words = new ArrayDeque<>(Arrays.asList(content.split("[ \\t\\x0B\\f\\r]+")));
             if (words.size() == 1) {
-                lines.add(words.pop());
+                lines.add(new Line(words.pop()));
                 return lines;
             }
             int iterator = 0;
@@ -687,7 +732,8 @@ public class SvgText extends SvgAreaElement {
                 }
 //                if (!line.isEmpty()) {
                 try {
-                    lines.add(line);
+                    lines.add(new Line(line, (lines.isEmpty() || lines.get(lines.size() - 1).text.endsWith(NEW_LINE_SYMBOL)),
+                            line.endsWith(NEW_LINE_SYMBOL) || words.isEmpty()));
                 } catch (OutOfMemoryError r) {
                     InfographicEngineLogger.severe(this.getClass(), "Cannot add line '" + line
                             + "'.");
@@ -695,7 +741,7 @@ public class SvgText extends SvgAreaElement {
                 }
 //                }
                 for (int i = 0; i < extraLines; i++) {
-                    lines.add(" ");
+                    lines.add(new Line(" "));
                 }
             }
             if (iterator >= lineWidth) {
@@ -770,6 +816,28 @@ public class SvgText extends SvgAreaElement {
         this.minLineSeparation = minLineSeparation;
         if (minLineSeparation > this.lineSeparation) {
             setLineSeparation(this.minLineSeparation);
+        }
+    }
+
+    static class Line {
+        private final String text;
+
+        private final boolean startOfPhrase;
+        private final boolean endOfPhrase;
+
+        Line(String text) {
+            this(text, true, true);
+        }
+
+
+        Line(String text, boolean startOfPhrase, boolean endOfPhrase) {
+            this.text = text;
+            this.startOfPhrase = startOfPhrase;
+            this.endOfPhrase = endOfPhrase;
+        }
+
+        int length() {
+            return text.length();
         }
     }
 }
