@@ -44,6 +44,14 @@ public class ElementStroke {
         return strokeWidth;
     }
 
+    public void setStrokeWidth(Number strokeWidth) {
+        if (strokeWidth != null) {
+            this.strokeWidth = strokeWidth.doubleValue();
+        } else {
+            this.strokeWidth = null;
+        }
+    }
+
     public void setStrokeWidth(Double strokeWidth) {
         this.strokeWidth = strokeWidth;
     }
