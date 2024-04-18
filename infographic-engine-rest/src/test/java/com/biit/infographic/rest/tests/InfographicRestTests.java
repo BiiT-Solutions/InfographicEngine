@@ -91,8 +91,8 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
     private void checkContent(String content, String resourceFile) {
         try {
-            Assert.assertEquals(content.trim(), new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
-                    .getResource("svg" + File.separator + resourceFile).toURI()))).trim());
+            Assert.assertEquals(content.trim(), Files.readString(Paths.get(getClass().getClassLoader()
+                    .getResource("svg" + File.separator + resourceFile).toURI())).trim());
         } catch (IOException | URISyntaxException e) {
             Assert.fail();
         }
@@ -548,7 +548,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
     }
 
     //Failing on Jenkins ¿?
-    @Test(dependsOnMethods = "populateDatabase", enabled = false)
+    @Test(dependsOnMethods = "populateDatabase")
     public void generateInfographicFromDrools() throws Exception {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("createdBy", USER_NAME);
