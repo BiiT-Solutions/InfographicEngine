@@ -1,5 +1,7 @@
 package com.biit.infographic.core.models.svg.utils;
 
+import com.biit.infographic.logger.SvgGeneratorLogger;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,23 @@ public final class Color {
         }
         return ((double) Integer.parseInt(color.substring(color.length() - 2), HEX_VALUES))
                 / RGB_VALUES;
+    }
+
+    public static String getFillOpacity(String fillOpacity) {
+        try {
+            if (fillOpacity == null || "null".equals(fillOpacity)) {
+                return null;
+            } else if (isDroolsVariable(fillOpacity)) {
+                return fillOpacity;
+            } else if (Double.parseDouble(fillOpacity) < 0 || Double.parseDouble(fillOpacity) > 1) {
+                SvgGeneratorLogger.warning(Color.class, "Opacity value '" + fillOpacity + "' is invalid and therefore ignored.");
+            } else {
+                return fillOpacity;
+            }
+        } catch (NumberFormatException e) {
+            SvgGeneratorLogger.severe(Color.class, "Opacity value '" + fillOpacity + "' is invalid!.");
+        }
+        return null;
     }
 
     public static boolean isDroolsVariable(String color) {

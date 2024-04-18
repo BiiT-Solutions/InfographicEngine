@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public final class SvgUtils {
     private static final List<String> CHILDREN_ALLOWED = Arrays.asList("defs", "path", "g");
@@ -39,20 +40,29 @@ public final class SvgUtils {
     }
 
     public static List<Element> getContent(String svgCode, List<String> filter) throws ParserConfigurationException, IOException, SAXException {
-        final NodeList children = stringToSvg(svgCode).getDocumentElement().getChildNodes();
-        final List<Element> selectedOnes = new ArrayList<>();
-        for (int i = 0; i < children.getLength(); i++) {
-            if (children.item(i) != null && (filter == null || filter.isEmpty() || filter.contains(children.item(i).getNodeName()))) {
-                try {
-                    final Element child = (Element) children.item(i);
-                    if (INKSCAPE_NOT_ALLOWED.stream().noneMatch(s -> child.getNodeName().startsWith(s))) {
-                        selectedOnes.add(child);
+        try {
+            final NodeList children = stringToSvg(svgCode).getDocumentElement().getChildNodes();
+            final List<Element> selectedOnes = new ArrayList<>();
+            for (int i = 0; i < children.getLength(); i++) {
+                if (children.item(i) != null && (filter == null || filter.isEmpty() || filter.contains(children.item(i).getNodeName()))) {
+                    try {
+                        final Element child = (Element) children.item(i);
+                        if (INKSCAPE_NOT_ALLOWED.stream().noneMatch(s -> child.getNodeName().startsWith(s))) {
+                            //Filter empty defs.
+                            if (!Objects.equals(child.getNodeName(), "defs") || child.getChildNodes().getLength() > 1
+                                    //Defs has empty spaces when embedding svgs
+                                    || (child.getChildNodes().getLength() == 1 && !((Element) child.getChildNodes()).getTextContent().trim().isEmpty())) {
+                                selectedOnes.add(child);
+                            }
+                        }
+                    } catch (Exception ignored) {
+                        //Not a node
                     }
-                } catch (Exception ignored) {
-                    //Not a node
                 }
             }
+            return selectedOnes;
+        } catch (InvalidCodeException e) {
+            return new ArrayList<>();
         }
-        return selectedOnes;
     }
 }

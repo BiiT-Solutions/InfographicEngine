@@ -154,7 +154,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
                 element.setAttributeNS(null, "stroke", elementStroke.getStrokeColor());
                 element.setAttributeNS(null, "stroke-width", String.valueOf(elementStroke.getStrokeWidth()));
                 if (elementStroke.getStrokeOpacity() != null) {
-                    element.setAttributeNS(null, "stroke-opacity", String.valueOf(elementStroke.getStrokeOpacity()));
+                    element.setAttributeNS(null, "stroke-opacity", elementStroke.getStrokeOpacity());
                 }
             }
             if (elementStroke.getStrokeDash() != null && !elementStroke.getStrokeDash().isEmpty()) {

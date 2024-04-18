@@ -22,7 +22,7 @@ public class ElementStroke {
     private String strokeColor;
 
     @JsonProperty("strokeOpacity")
-    private Double strokeOpacity;
+    private String strokeOpacity;
 
     @JsonProperty("strokeDash")
     private List<Integer> strokeDash;
@@ -67,12 +67,14 @@ public class ElementStroke {
         strokeColor = Color.checkColor(strokeColor);
         if (Color.isValidWithoutTransparency(strokeColor)) {
             this.strokeColor = strokeColor;
+        } else if (Color.isDroolsVariable(strokeColor)) {
+            this.strokeColor = strokeColor;
         } else if (Color.isValidWithTransparency(strokeColor)) {
             this.strokeColor = strokeColor.substring(0, Color.COLOR_WITH_TRANSPARENCY_LENGTH - 1);
             setStrokeOpacity(Color.getOpacity(strokeColor));
         } else if (Color.isValidName(strokeColor)) {
             this.strokeColor = strokeColor;
-            setStrokeOpacity(null);
+            //this.strokeOpacity = null;
         } else {
             //Some predefined tags.
             SvgGeneratorLogger.warning(this.getClass(), "Stroke color value '" + strokeColor + "' is invalid and therefore ignored.");
@@ -80,11 +82,19 @@ public class ElementStroke {
         }
     }
 
-    public Double getStrokeOpacity() {
+    public String getStrokeOpacity() {
         return strokeOpacity;
     }
 
     public void setStrokeOpacity(Double strokeOpacity) {
+        if (strokeOpacity != null) {
+            this.strokeOpacity = String.valueOf(strokeOpacity);
+        } else {
+            this.strokeOpacity = null;
+        }
+    }
+
+    public void setStrokeOpacity(String strokeOpacity) {
         this.strokeOpacity = strokeOpacity;
     }
 

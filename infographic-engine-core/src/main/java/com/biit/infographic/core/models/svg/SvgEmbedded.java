@@ -120,40 +120,44 @@ public class SvgEmbedded extends SvgAreaElement {
      * @throws SAXException
      */
     private double getScale() throws ParserConfigurationException, IOException, SAXException {
-        final Document doc = SvgUtils.stringToSvg(svgCode);
-        if (getElementAttributes().getWidth() == null && getElementAttributes().getHeight() == null) {
-            return 1D;
-        }
-        Long width;
         try {
-            width = Long.parseLong(doc.getDocumentElement().getAttribute("width"));
-        } catch (NumberFormatException e) {
-            width = getElementAttributes().getWidth();
-            SvgGeneratorLogger.debug(this.getClass(), "No width found on Imported SVG");
-        }
-        Long height;
-        try {
-            height = Long.parseLong(doc.getDocumentElement().getAttribute("height"));
-        } catch (NumberFormatException e) {
-            height = getElementAttributes().getHeight();
-            SvgGeneratorLogger.debug(this.getClass(), "No width found on Imported SVG");
-        }
+            final Document doc = SvgUtils.stringToSvg(svgCode);
+            if (getElementAttributes().getWidth() == null && getElementAttributes().getHeight() == null) {
+                return 1D;
+            }
+            Long width;
+            try {
+                width = Long.parseLong(doc.getDocumentElement().getAttribute("width"));
+            } catch (NumberFormatException e) {
+                width = getElementAttributes().getWidth();
+                SvgGeneratorLogger.debug(this.getClass(), "No width found on Imported SVG");
+            }
+            Long height;
+            try {
+                height = Long.parseLong(doc.getDocumentElement().getAttribute("height"));
+            } catch (NumberFormatException e) {
+                height = getElementAttributes().getHeight();
+                SvgGeneratorLogger.debug(this.getClass(), "No width found on Imported SVG");
+            }
 
-        final double widthRatio;
-        if (getElementAttributes().getWidth() != null && width != null && width != 0) {
-            widthRatio = (double) getElementAttributes().getWidth() / width;
-        } else {
-            widthRatio = 1D;
-        }
+            final double widthRatio;
+            if (getElementAttributes().getWidth() != null && width != null && width != 0) {
+                widthRatio = (double) getElementAttributes().getWidth() / width;
+            } else {
+                widthRatio = 1D;
+            }
 
-        final double heightRatio;
-        if (getElementAttributes().getHeight() != null && height != null && height != 0) {
-            heightRatio = (double) getElementAttributes().getHeight() / height;
-        } else {
-            heightRatio = 1D;
-        }
+            final double heightRatio;
+            if (getElementAttributes().getHeight() != null && height != null && height != 0) {
+                heightRatio = (double) getElementAttributes().getHeight() / height;
+            } else {
+                heightRatio = 1D;
+            }
 
-        return Math.min(heightRatio, widthRatio);
+            return Math.min(heightRatio, widthRatio);
+        } catch (InvalidCodeException e) {
+            return 1.0;
+        }
     }
 
     @Override
