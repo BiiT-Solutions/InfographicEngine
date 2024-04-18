@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
-public class FileSearcher {
+public class InfographicSearcher {
 
     public static final String JSON_EXTENSION = ".json";
     private static final String SYSTEM_VARIABLE_CONFIG = "INFOGRAPHIC_FOLDER";
@@ -56,14 +56,14 @@ public class FileSearcher {
         // Load Json file
         final String infographicFilePath = readEnvironmentVariable() + File.separator + path;
         InfographicEngineLogger.debug(this.getClass().getName(),
-                "Infographic file path: " + infographicFilePath);
+                "Infographic from environment '{}' file path is '{}' ", readEnvironmentVariable(), infographicFilePath);
         return Files.readString(Paths.get(infographicFilePath), StandardCharsets.UTF_8);
     }
 
     private String getInfographicFromDefaultFolder(String path) throws IOException {
         // Load Json file
         InfographicEngineLogger.debug(this.getClass().getName(),
-                "Infographic file path: " + path);
+                "Infographic file from default folder path '{}'. ", path);
         return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
     }
 
@@ -72,7 +72,7 @@ public class FileSearcher {
         if (path.startsWith(File.separator)) {
             path = path.substring(1);
         }
-        InfographicEngineLogger.debug(this.getClass().getName(), "Infographic file path: " + path);
+        InfographicEngineLogger.debug(this.getClass().getName(), "Infographic file from resource path '{}'.", path);
         return FileReader.getResource(path, StandardCharsets.UTF_8);
     }
 

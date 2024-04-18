@@ -33,7 +33,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
             templates.add(template);
         }
         for (TreeNode<InfographicFileElement> child : getChildren()) {
-            templates.addAll(((InfographicFolder) child).getAllTemplates(FileSearcher.getInfographicPath(rootPath, getDefinition())));
+            templates.addAll(((InfographicFolder) child).getAllTemplates(InfographicSearcher.getInfographicPath(rootPath, getDefinition())));
         }
         return templates;
     }
@@ -46,7 +46,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
                 templates.add(getTemplate(rootPath + File.separator));
             } else {
                 for (TreeNode<InfographicFileElement> child : children) {
-                    templates.addAll(((InfographicFolder) child).getSelectedTemplates(FileSearcher.getInfographicPath(rootPath, getDefinition())));
+                    templates.addAll(((InfographicFolder) child).getSelectedTemplates(InfographicSearcher.getInfographicPath(rootPath, getDefinition())));
                 }
             }
         }
@@ -66,7 +66,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
             final InfographicTemplate infographicTemplate = new InfographicTemplate();
             infographicTemplate.setIndexFile(getJsonFile());
             try {
-                infographicTemplate.setTemplate(new FileSearcher().readFile(FileSearcher.getInfographicPath(path, getDefinition())));
+                infographicTemplate.setTemplate(new InfographicSearcher().readFile(InfographicSearcher.getInfographicPath(path, getDefinition())));
             } catch (FileNotFoundException | NullPointerException e) {
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
             }
@@ -159,7 +159,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
                 // Parse index.json structure
                 InfographicEngineLogger.debug(InfographicFolder.class.getName(),
                         "Searching for '" + path + INDEX_FILE_NAME + "'.");
-                final String indexFile = new FileSearcher().readFile(path + INDEX_FILE_NAME);
+                final String indexFile = new InfographicSearcher().readFile(path + INDEX_FILE_NAME);
                 if (indexFile == null) {
                     throw new MalformedTemplateException(this.getClass(), "No index file at '" + path + INDEX_FILE_NAME + "'");
                 }
@@ -177,7 +177,7 @@ public class InfographicFolder extends TreeNode<InfographicFileElement> {
                     final InfographicFolder node = new InfographicFolder(infographicFileElement);
                     infographicFolders.add(node);
                     if (infographicFileElement.isFolder()) {
-                        for (InfographicFolder subTree : getInfographicNodes(FileSearcher.getInfographicPath(path, node.getDefinition()))) {
+                        for (InfographicFolder subTree : getInfographicNodes(InfographicSearcher.getInfographicPath(path, node.getDefinition()))) {
                             if (subTree != null) {
                                 node.addChild(subTree);
                             }
