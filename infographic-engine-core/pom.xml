@@ -58,6 +58,10 @@
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-codec</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.biit</groupId>
+            <artifactId>user-manager-system-rest-client</artifactId>
+        </dependency>
 
         <!--Testing-->
         <dependency>

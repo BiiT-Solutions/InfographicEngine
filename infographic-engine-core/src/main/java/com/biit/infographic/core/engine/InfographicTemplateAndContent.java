@@ -94,7 +94,7 @@ public class InfographicTemplateAndContent {
 
     private String replaceContent(String text) {
         for (Map.Entry<String, String> value : content.entrySet()) {
-            text = text.replace(value.getKey(), value.getValue());
+            text = text.replace(value.getKey(), value.getValue() != null ? value.getValue() : "");
         }
         return text;
     }

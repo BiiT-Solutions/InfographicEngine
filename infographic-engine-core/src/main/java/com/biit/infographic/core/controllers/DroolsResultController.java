@@ -62,22 +62,22 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
      * Gets the drools answer, executes a template and generate a SVG.
      *
      * @param droolsSubmittedForm the answers obtained from base form drool engine.
-     * @param executedBy          the owner of the form.
+     * @param createdBy          the owner of the form.
      */
-    public void process(DroolsSubmittedForm droolsSubmittedForm, String formName, String executedBy) {
+    public void process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy) {
         //Generate SVG.
-        final List<String> svgContents = executeFromTemplates(droolsSubmittedForm);
+        final List<String> svgContents = executeFromTemplates(droolsSubmittedForm, createdBy);
 
         //Store SVG.
         final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents,
-                formName, executedBy);
+                formName, createdBy);
         generatedInfographicProvider.save(generatedInfographic);
 
         //Send a new event.
-        droolsEventSender.sendResultEvents(generatedInfographic, executedBy);
+        droolsEventSender.sendResultEvents(generatedInfographic, createdBy);
     }
 
-    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm) {
+    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, String createdBy) {
         //Get the template for this form.
         final List<InfographicTemplate> templates = infographicEngineController.getTemplates(droolsSubmittedForm);
         return executeFromTemplates(droolsSubmittedForm, templates);

@@ -75,7 +75,7 @@ public class SvgServices extends ImageServices {
             produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public List<String> createFromDrools(@RequestBody DroolsSubmittedForm droolsForm, Authentication authentication, HttpServletResponse response,
                                          HttpServletRequest request) {
-        return droolsResultController.executeFromTemplates(droolsForm);
+        return droolsResultController.executeFromTemplates(droolsForm, authentication.getName());
     }
 
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
@@ -90,7 +90,7 @@ public class SvgServices extends ImageServices {
         } catch (JsonProcessingException ex) {
             throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
         }
-        return droolsResultController.executeFromTemplates(droolsSubmittedForm);
+        return droolsResultController.executeFromTemplates(droolsSubmittedForm, authentication.getName());
     }
 
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
@@ -108,7 +108,7 @@ public class SvgServices extends ImageServices {
         } catch (JsonProcessingException ex) {
             throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
         }
-        final List<String> svg = droolsResultController.executeFromTemplates(droolsSubmittedForm);
+        final List<String> svg = droolsResultController.executeFromTemplates(droolsSubmittedForm, authentication.getName());
         if (svg.isEmpty()) {
             throw new ElementDoesNotExistsException(this.getClass(), "No svg obtained from this input.");
         }

@@ -7,6 +7,7 @@ import com.biit.infographic.core.engine.InfographicTemplateAndContent;
 import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.engine.ParameterType;
 import com.biit.infographic.core.engine.content.DroolsContent;
+import com.biit.infographic.core.engine.content.UserContent;
 import com.biit.infographic.core.engine.files.InfographicFileElement;
 import com.biit.infographic.core.engine.files.InfographicFolder;
 import com.biit.infographic.core.engine.files.TreeNode;
@@ -30,9 +31,11 @@ public class InfographicEngineController {
 
     public static final String INFOGRAPHIC_PATH = "/infographics";
     private final DroolsContent droolsContent;
+    private final UserContent userContent;
 
-    public InfographicEngineController(DroolsContent droolsContent) {
+    public InfographicEngineController(DroolsContent droolsContent, UserContent userContent) {
         this.droolsContent = droolsContent;
+        this.userContent = userContent;
     }
 
     public List<InfographicTemplateAndContent> addContentToTemplates(List<InfographicTemplate> templates,
@@ -79,6 +82,9 @@ public class InfographicEngineController {
             // Update parameters with values.
             droolsContent.setDroolsVariablesValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
 
+            // Obtain user information.
+            userContent.setUserVariableValues(parametersByType.get(ParameterType.USER), droolsSubmittedForm);
+
             // Obtain goals.
 //            setGoalsVariablesValues(examinationResult, appointment, parametersByType.get(ParameterType.GOAL));
 //
@@ -108,6 +114,9 @@ public class InfographicEngineController {
             } else if (parameter.getType().equalsIgnoreCase(ParameterType.CUSTOM_TEXT.name())) {
                 parametersByType.computeIfAbsent(ParameterType.CUSTOM_TEXT, k -> new HashSet<>());
                 parametersByType.get(ParameterType.CUSTOM_TEXT).add(parameter);
+            } else if (parameter.getType().equalsIgnoreCase(ParameterType.USER.name())) {
+                parametersByType.computeIfAbsent(ParameterType.USER, k -> new HashSet<>());
+                parametersByType.get(ParameterType.USER).add(parameter);
             } else {
                 throw new InvalidParameterException(this.getClass(),
                         "Parameter '" + parameter + "' has type '" + parameter.getType() + "' and it is not implemented!");

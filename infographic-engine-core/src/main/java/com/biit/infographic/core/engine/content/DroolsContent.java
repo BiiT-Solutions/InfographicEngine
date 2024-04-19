@@ -70,6 +70,8 @@ public class DroolsContent {
             if (parameters != null) {
                 for (SubmittedObject submittedObject : formElements) {
                     for (Parameter parameter : parameters) {
+                        InfographicEngineLogger.debug(this.getClass(), "Processing parameter '#{}%{}%{}#'.",
+                                parameter.getType(), parameter.getName(), parameter.getAttributes());
                         // Search for any variable defined in the parameters
                         for (String attribute : parameter.getAttributes().keySet()) {
                             if (parameter.getName() != null
