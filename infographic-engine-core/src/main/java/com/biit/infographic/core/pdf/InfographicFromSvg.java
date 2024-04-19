@@ -1,5 +1,6 @@
 package com.biit.infographic.core.pdf;
 
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.FontFactory;
@@ -88,6 +89,7 @@ public class InfographicFromSvg extends InfographicPdf {
         final DefaultFontMapper fontMapper = new DefaultFontMapper();
         com.biit.infographic.core.models.svg.components.text.FontFactory.getDefaultFoldersToSearch()
                 .forEach(folder -> {
+                    InfographicEngineLogger.info(InfographicFromSvg.class, "Registering folder '{}' for PDF font mapper.", folder);
                     fontMapper.insertDirectory(folder);
                     FontFactory.registerDirectory(folder);
                 });
