@@ -95,8 +95,9 @@ public class InfographicFromSvg extends InfographicPdf {
                     InfographicEngineLogger.info(InfographicFromSvg.class, "Registering folder '{}' for PDF font mapper.", folder);
                     fontMapper.insertDirectory(folder);
                     FontFactory.registerDirectory(folder);
-                    registerFonts(folder);
+                    //registerFonts(folder);
                 });
+        InfographicEngineLogger.debug(InfographicFromSvg.class, "Registered fonts are '{}'", FontFactory.getRegisteredFonts());
         return fontMapper;
     }
 
