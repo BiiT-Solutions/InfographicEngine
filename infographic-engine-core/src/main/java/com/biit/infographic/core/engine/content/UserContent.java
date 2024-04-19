@@ -31,6 +31,9 @@ public class UserContent {
 
     public void setUserVariableValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm)
             throws ElementDoesNotExistsException {
+        if (parameters == null) {
+            return;
+        }
         for (Parameter parameter : parameters) {
             if (Objects.equals(parameter.getName(), SUBMITTER_PARAMETER)) {
                 InfographicEngineLogger.debug(this.getClass(), "Processing parameter '#{}%{}%{}#'.",
