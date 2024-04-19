@@ -205,7 +205,7 @@ public final class FontFactory {
         if (systemVariablesFilePath == null) {
             InfographicEngineLogger.warning(FontFactory.class, "No environmental variable '{}' defined!", FontSearcher.SYSTEM_VARIABLE_FILES_LOCATION);
         } else {
-            InfographicEngineLogger.debug(FontFactory.class, "Environment variable set as '{}.'", systemVariablesFilePath);
+            InfographicEngineLogger.debug(FontFactory.class, "Environment variable set as '{}'.", systemVariablesFilePath);
             if (new File(systemVariablesFilePath + File.separator + FONTS_FOLDER).exists()) {
                 fontsFolders.add(systemVariablesFilePath + File.separator + FONTS_FOLDER);
                 InfographicEngineLogger.debug(FontFactory.class, "Fonts Folder '{}' loaded.", systemVariablesFilePath + File.separator + FONTS_FOLDER);
