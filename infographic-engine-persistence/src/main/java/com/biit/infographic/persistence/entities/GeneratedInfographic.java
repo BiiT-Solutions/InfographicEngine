@@ -1,9 +1,11 @@
 package com.biit.infographic.persistence.entities;
 
+import com.biit.database.encryption.StringCryptoConverter;
 import com.biit.server.persistence.entities.Element;
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -48,9 +50,11 @@ public class GeneratedInfographic extends Element<Long> {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "svg_contents", joinColumns = @JoinColumn(name = "generated_infographic_id"))
     @Column(name = "svg_content", columnDefinition = "TEXT", nullable = false)
+    @Convert(converter = StringCryptoConverter.class)
     private List<String> svgContents;
 
     @Column(name = "drools_submitted_form", columnDefinition = "TEXT")
+    @Convert(converter = StringCryptoConverter.class)
     private String droolsSubmittedForm;
 
     @Override

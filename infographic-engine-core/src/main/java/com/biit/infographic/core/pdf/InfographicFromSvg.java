@@ -5,7 +5,6 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.ImgTemplate;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.FontMapper;
 import com.lowagie.text.pdf.PdfTemplate;
@@ -22,11 +21,9 @@ import org.w3c.dom.svg.SVGDocument;
 
 import java.awt.Graphics2D;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class InfographicFromSvg extends InfographicPdf {
 
@@ -95,36 +92,8 @@ public class InfographicFromSvg extends InfographicPdf {
                     InfographicEngineLogger.info(InfographicFromSvg.class, "Registering folder '{}' for PDF font mapper.", folder);
                     fontMapper.insertDirectory(folder);
                     FontFactory.registerDirectory(folder);
-                    //registerFonts(folder);
                 });
         InfographicEngineLogger.debug(InfographicFromSvg.class, "Registered fonts are '{}'", FontFactory.getRegisteredFonts());
         return fontMapper;
-    }
-
-    private static void registerFonts(String folder) {
-        final File[] fonts = new File(folder).listFiles();
-        if (fonts != null) {
-            Stream.of(fonts).forEach(file -> {
-                if (file.isDirectory()) {
-                    registerFonts(file.getPath());
-                } else {
-                    createFont(file);
-                }
-            });
-        }
-    }
-
-    private static BaseFont createFont(File file) {
-        try {
-            try {
-                return BaseFont.createFont(file.getPath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            } finally {
-                InfographicEngineLogger.debug(InfographicFromSvg.class, "Font registered '{}'.", file.getPath());
-            }
-        } catch (Exception e) {
-            InfographicEngineLogger.warning(InfographicFromSvg.class, "Font registration error '{}'.", file.getPath());
-            InfographicEngineLogger.errorMessage(InfographicFromSvg.class, e);
-        }
-        return null;
     }
 }

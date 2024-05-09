@@ -14,7 +14,7 @@ import java.util.List;
 public interface GeneratedInfographicRepository extends ElementRepository<GeneratedInfographic, Long> {
 
     /**
-     * Find all infographic that matches the search parameters. If startTime and endTime is defined, will search any appointment inside this range.
+     * Find all infographics that match the search parameters. If startTime and endTime is defined, will search any appointment inside this range.
      *
      * @param formName          the organization of the parameters (can be null for any organization).
      * @param formVersion       who must resolve the appointment (can be null for any organizer).

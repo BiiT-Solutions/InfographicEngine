@@ -1,8 +1,10 @@
 package com.biit.infographic.persistence.entities;
 
+import com.biit.database.encryption.StringCryptoConverter;
 import com.biit.server.persistence.entities.Element;
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -45,6 +47,7 @@ public class DroolsResult extends Element<Long> {
     private String createdBy;
 
     @Column(name = "drools_content", columnDefinition = "TEXT", nullable = false)
+    @Convert(converter = StringCryptoConverter.class)
     private String form;
 
 
