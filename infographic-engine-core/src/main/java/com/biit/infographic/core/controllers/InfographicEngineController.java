@@ -82,10 +82,12 @@ public class InfographicEngineController {
             // Update parameters with values.
             droolsContent.setDroolsVariablesValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
 
-            // Obtain user information.
+            // Collect user information.
             userContent.setUserVariableValues(parametersByType.get(ParameterType.USER), droolsSubmittedForm);
 
-            // Obtain goals.
+            // Get system variables.
+
+            // Get goals.
 //            setGoalsVariablesValues(examinationResult, appointment, parametersByType.get(ParameterType.GOAL));
 //
 //            // Obtain defined variables.
