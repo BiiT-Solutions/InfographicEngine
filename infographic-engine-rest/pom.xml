@@ -131,7 +131,7 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <argLine>-Xmx20248m</argLine>
+                    <argLine>-Xmx2024m</argLine>
                 </configuration>
                 <dependencies>
                     <dependency>
