@@ -2,8 +2,8 @@ package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.LayoutType;
-import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
+import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;

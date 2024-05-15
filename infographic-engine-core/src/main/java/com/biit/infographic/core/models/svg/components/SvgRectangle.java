@@ -4,6 +4,7 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
+import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgRectangleDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;

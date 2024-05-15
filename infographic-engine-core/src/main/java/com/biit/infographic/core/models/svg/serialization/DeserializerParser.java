@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class DeserializerParser {
     public static final String TIMESTAMP_FORMAT = "dd-MM-yyyy HH:mm:ss";
@@ -66,12 +68,21 @@ public final class DeserializerParser {
     public static <T> List<T> parseList(String name, JsonNode jsonObject) throws JsonProcessingException {
         final JsonNode valuesJson = jsonObject.get(name);
         if (valuesJson != null) {
-            final List<T> values = ObjectMapperFactory.getObjectMapper().readValue(valuesJson.toPrettyString(),
+            return ObjectMapperFactory.getObjectMapper().readValue(valuesJson.toPrettyString(),
                     new TypeReference<>() {
                     });
-            return values;
         }
         return new ArrayList<>();
+    }
+
+    public static Map<String, String> parseMap(String name, JsonNode jsonObject) throws JsonProcessingException {
+        final JsonNode valuesJson = jsonObject.get(name);
+        if (valuesJson != null) {
+            return ObjectMapperFactory.getObjectMapper().readValue(valuesJson.toPrettyString(),
+                    new TypeReference<HashMap<String, String>>() {
+                    });
+        }
+        return new HashMap<>();
     }
 
     public static boolean parseBoolean(String name, JsonNode jsonObject) {

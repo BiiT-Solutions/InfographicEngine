@@ -10,6 +10,13 @@ import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
+import com.biit.infographic.core.models.svg.components.path.Arc;
+import com.biit.infographic.core.models.svg.components.path.BezierCurve;
+import com.biit.infographic.core.models.svg.components.path.BezierCurveJoin;
+import com.biit.infographic.core.models.svg.components.path.BezierCurveQuadratic;
+import com.biit.infographic.core.models.svg.components.path.HorizontalLine;
+import com.biit.infographic.core.models.svg.components.path.Point;
+import com.biit.infographic.core.models.svg.components.path.VerticalLine;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 
 public enum ElementType {
@@ -26,7 +33,14 @@ public enum ElementType {
     SCRIPT(SvgScript.class),
     GAUGE(SvgGauge.class),
     GRADIENT(SvgGradient.class),
-    GRADIENT_STOP(SvgGradientStop.class);
+    GRADIENT_STOP(SvgGradientStop.class),
+    ARC(Arc.class),
+    BEZIER_CURVE(BezierCurve.class),
+    BEZIER_CURVE_JOIN(BezierCurveJoin.class),
+    BEZIER_CURVE_QUADRATIC(BezierCurveQuadratic.class),
+    HORIZONTAL_LINE(HorizontalLine.class),
+    POINT(Point.class),
+    VERTICAL_LINE(VerticalLine.class);
 
     private final Class<?> relatedClass;
 

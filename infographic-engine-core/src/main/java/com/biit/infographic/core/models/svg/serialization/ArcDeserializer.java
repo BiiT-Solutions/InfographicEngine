@@ -1,26 +1,21 @@
 package com.biit.infographic.core.models.svg.serialization;
 
-import com.biit.infographic.core.models.svg.components.Arc;
-import com.fasterxml.jackson.core.JsonParser;
+import com.biit.infographic.core.models.svg.components.path.Arc;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 
-public class ArcDeserializer extends StdDeserializer<Arc> {
+public class ArcDeserializer extends PathElementDeserializer<Arc> {
 
     public ArcDeserializer() {
         super(Arc.class);
     }
 
     @Override
-    public Arc deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        final JsonNode jsonObject = jsonParser.getCodec().readTree(jsonParser);
-
-        final Arc arc = new Arc();
-        arc.setX(DeserializerParser.parseLong("x", jsonObject));
-        arc.setY(DeserializerParser.parseLong("y", jsonObject));
-        return arc;
+    public void deserialize(Arc element, JsonNode jsonObject, DeserializationContext context) throws IOException {
+        super.deserialize(element, jsonObject, context);
+        element.setX(DeserializerParser.parseLong("x", jsonObject));
+        element.setY(DeserializerParser.parseLong("y", jsonObject));
     }
 }

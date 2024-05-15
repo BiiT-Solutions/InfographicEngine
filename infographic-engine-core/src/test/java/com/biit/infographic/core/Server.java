@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ConfigurationPropertiesScan({"com.biit.infographic"})
 @EnableJpaRepositories({"com.biit.infographic.persistence.repositories"})
 @EntityScan({"com.biit.infographic.persistence.entities"})
-@ComponentScan({"com.biit.infographic", "com.biit.usermanager.client", "com.biit.server.client", "com.biit.kafka"})
+@ComponentScan({"com.biit.infographic", "com.biit.usermanager.client", "com.biit.server.client", "com.biit.kafka", "com.biit.appointment.rest.client"})
 public class Server {
     public static void main(String[] args) {
         SpringApplication.run(Server.class, args);

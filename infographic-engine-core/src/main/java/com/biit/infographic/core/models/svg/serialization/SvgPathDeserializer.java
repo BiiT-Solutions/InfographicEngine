@@ -1,17 +1,15 @@
 package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.form.log.FormStructureLogger;
-import com.biit.infographic.core.models.svg.components.Arc;
-import com.biit.infographic.core.models.svg.components.PathElement;
-import com.biit.infographic.core.models.svg.components.Point;
+import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.components.SvgPath;
+import com.biit.infographic.core.models.svg.components.path.PathElement;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SvgPathDeserializer extends SvgAreaElementDeserializer<SvgPath> {
 
@@ -31,13 +29,11 @@ public class SvgPathDeserializer extends SvgAreaElementDeserializer<SvgPath> {
             if (elementsJson.isArray()) {
                 for (JsonNode childNode : elementsJson) {
                     try {
-                        if (DeserializerParser.parseString("element", childNode) != null
-                                && Objects.equals(DeserializerParser.parseString("element", childNode), Arc.ELEMENT_NAME)) {
-                            //Is an arc
-                            elements.add(new Arc(DeserializerParser.parseLong("x", childNode), DeserializerParser.parseLong("y", childNode)));
-                        } else {
-                            //Is a point
-                            elements.add(new Point(DeserializerParser.parseLong("x", childNode), DeserializerParser.parseLong("y", childNode)));
+                        final ElementType type = ElementType.fromString(childNode.get("elementType").textValue());
+                        if (type != null) {
+                            final PathElement childElement = (PathElement) ObjectMapperFactory.getObjectMapper()
+                                    .readValue(childNode.toPrettyString(), type.getRelatedClass());
+                            elements.add(childElement);
                         }
                     } catch (NullPointerException e) {
                         FormStructureLogger.severe(this.getClass().getName(), "Invalid path element:\n" + jsonObject.toPrettyString());

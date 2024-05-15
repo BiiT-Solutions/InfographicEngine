@@ -1,5 +1,6 @@
-package com.biit.infographic.core.models.svg.components;
+package com.biit.infographic.core.models.svg.components.path;
 
+import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.serialization.ArcDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -7,12 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = ArcDeserializer.class)
 @JsonRootName(value = "arc")
-public class Arc implements PathElement {
-
-    public static final String ELEMENT_NAME = "ARC";
-
-    @JsonProperty("element")
-    private final String element = ELEMENT_NAME;
+public class Arc extends PathElement {
 
     @JsonProperty("x")
     private Long x;
@@ -22,6 +18,7 @@ public class Arc implements PathElement {
 
     public Arc() {
         super();
+        setElementType(ElementType.ARC);
     }
 
     public Arc(Number x, Number y) {
@@ -30,6 +27,7 @@ public class Arc implements PathElement {
     }
 
     public Arc(Long x, Long y) {
+        this();
         this.x = x;
         this.y = y;
     }
@@ -69,9 +67,5 @@ public class Arc implements PathElement {
                 + " "
                 + getY()
                 + " ";
-    }
-
-    public String getElement() {
-        return element;
     }
 }

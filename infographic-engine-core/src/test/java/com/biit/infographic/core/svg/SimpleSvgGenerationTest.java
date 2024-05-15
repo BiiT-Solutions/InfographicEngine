@@ -6,8 +6,10 @@ import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgEmbedded;
 import com.biit.infographic.core.models.svg.SvgTemplate;
-import com.biit.infographic.core.models.svg.components.Arc;
-import com.biit.infographic.core.models.svg.components.Point;
+import com.biit.infographic.core.models.svg.components.path.Arc;
+import com.biit.infographic.core.models.svg.components.path.BezierCurve;
+import com.biit.infographic.core.models.svg.components.path.HorizontalLine;
+import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
@@ -18,6 +20,7 @@ import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
+import com.biit.infographic.core.models.svg.components.path.VerticalLine;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import org.testng.Assert;
@@ -396,6 +399,22 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPathMixingLinesAndArcs.svg");
+    }
+
+    @Test
+    public void documentDrawPathWithBezierCurves() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.addElement(new SvgPath(43, 35,
+                new VerticalLine(3),
+                new BezierCurve(8, 8, 0, 5, 3, 8),
+                new HorizontalLine(30)));
+
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawPathWithBezierCurves.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
     }
 
     @Test

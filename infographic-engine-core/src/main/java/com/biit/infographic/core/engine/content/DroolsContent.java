@@ -63,7 +63,7 @@ public class DroolsContent {
             final XPath xpathCompiler = XPathFactory.newInstance().newXPath();
 
             final LinkedHashSet<SubmittedObject> formElements = new LinkedHashSet<>();
-            // Allow to search on the form root too
+            // Allow searching on the form root too
             formElements.add(droolsSubmittedForm);
             formElements.addAll(droolsSubmittedForm.getAllChildrenInHierarchy());
 

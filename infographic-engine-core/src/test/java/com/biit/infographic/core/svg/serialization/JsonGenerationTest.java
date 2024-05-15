@@ -2,8 +2,8 @@ package com.biit.infographic.core.svg.serialization;
 
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
-import com.biit.infographic.core.models.svg.components.Arc;
-import com.biit.infographic.core.models.svg.components.Point;
+import com.biit.infographic.core.models.svg.components.path.Arc;
+import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
@@ -29,11 +29,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.components;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
+import com.biit.infographic.core.models.svg.components.path.PathElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgPathDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;

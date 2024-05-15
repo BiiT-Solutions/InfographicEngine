@@ -1,14 +1,13 @@
 package com.biit.infographic.core.models.svg.serialization;
 
-import com.biit.infographic.core.models.svg.components.Point;
+import com.biit.infographic.core.models.svg.components.path.Point;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 
-public class PointDeserializer extends StdDeserializer<Point> {
+public class PointDeserializer extends PathElementDeserializer<Point> {
 
     public PointDeserializer() {
         super(Point.class);

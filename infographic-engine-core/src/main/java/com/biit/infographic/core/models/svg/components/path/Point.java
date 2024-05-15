@@ -1,5 +1,6 @@
-package com.biit.infographic.core.models.svg.components;
+package com.biit.infographic.core.models.svg.components.path;
 
+import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.serialization.PointDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -7,11 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = PointDeserializer.class)
 @JsonRootName(value = "point")
-public class Point implements PathElement {
-    public static final String ELEMENT_NAME = "POINT";
-
-    @JsonProperty("element")
-    private final String element = ELEMENT_NAME;
+public class Point extends PathElement {
 
     @JsonProperty("x")
     private Long x;
@@ -21,6 +18,7 @@ public class Point implements PathElement {
 
     public Point() {
         super();
+        setElementType(ElementType.POINT);
     }
 
     public Point(Number x, Number y) {
@@ -58,9 +56,5 @@ public class Point implements PathElement {
                 + " "
                 + getY()
                 + " ";
-    }
-
-    public String getElement() {
-        return element;
     }
 }
