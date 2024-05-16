@@ -4,6 +4,7 @@ import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
+import com.biit.infographic.core.models.svg.components.SvgLink;
 import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
@@ -40,7 +41,9 @@ public enum ElementType {
     BEZIER_CURVE_QUADRATIC(BezierCurveQuadratic.class),
     HORIZONTAL_LINE(HorizontalLine.class),
     POINT(Point.class),
-    VERTICAL_LINE(VerticalLine.class);
+    VERTICAL_LINE(VerticalLine.class),
+    LINK(SvgLink.class),
+    ELEMENT_ATTRIBUTES(ElementAttributes.class);
 
     private final Class<?> relatedClass;
 

@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
+import com.biit.infographic.core.models.svg.components.SvgLink;
 import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
@@ -23,8 +24,8 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
     @JsonProperty("gradient")
     private SvgGradient gradient;
 
-    @JsonProperty("href")
-    private String href;
+    @JsonProperty("link")
+    private SvgLink link;
 
     public SvgAreaElement() {
         setElementAttributes(new ElementAttributes());
@@ -66,12 +67,16 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         this.elementAttributes = elementAttributes;
     }
 
-    public String getHref() {
-        return href;
+    public SvgLink getLink() {
+        return link;
     }
 
-    public void setHref(String href) {
-        this.href = href;
+    public void setLink(SvgLink link) {
+        this.link = link;
+    }
+
+    public void setLink(String href) {
+        this.link = new SvgLink(href);
     }
 
 
@@ -143,8 +148,8 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         if (!style.isBlank()) {
             element.setAttributeNS(null, "style", style);
         }
-        if (href != null) {
-            element.setAttribute("onclick", "window.location='" + href + "'");
+        if (getLink() != null && getLink().getHref() != null) {
+            element.setAttribute("onclick", "window.location='" + getLink().getHref() + "'");
         }
     }
 
@@ -173,9 +178,9 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
             style.append(elementStroke.getLineCap().value());
             style.append(";");
         }
-        //Paths puts gradient on style
+        //Paths put gradient on style
         if (this instanceof SvgPath && getElementStroke().getGradient() != null) {
-            style.append("stroke:url(#" + getGradient().getId() + ");fill:none");
+            style.append("stroke:url(#").append(getGradient().getId()).append(");fill:none");
         }
         return style;
     }

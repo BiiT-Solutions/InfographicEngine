@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.serialization;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementStroke;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
+import com.biit.infographic.core.models.svg.components.SvgLink;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -32,8 +33,8 @@ public abstract class SvgAreaElementDeserializer<T extends SvgAreaElement> exten
         if (jsonObject.get("gradient") != null) {
             element.setGradient(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("gradient").toPrettyString(), SvgGradient.class));
         }
-        if (jsonObject.get("href") != null) {
-            element.setHref(DeserializerParser.parseString("href", jsonObject));
+        if (jsonObject.get("link") != null) {
+            element.setLink(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("link").toPrettyString(), SvgLink.class));
         }
     }
 }

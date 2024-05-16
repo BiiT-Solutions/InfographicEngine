@@ -15,7 +15,6 @@ public class SvgImageDeserializer extends SvgAreaElementDeserializer<SvgImage> {
     @Override
     public void deserialize(SvgImage element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         super.deserialize(element, jsonObject, context);
-        element.setHref(DeserializerParser.parseString("href", jsonObject));
         element.setContent(DeserializerParser.parseString("content", jsonObject));
         element.setResource(DeserializerParser.parseString("resource", jsonObject));
         element.setResourceAlreadyInBase64(DeserializerParser.parseBoolean("resourceAlreadyInBase64", jsonObject));

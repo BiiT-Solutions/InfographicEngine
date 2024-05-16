@@ -28,9 +28,6 @@ public class SvgImage extends SvgAreaElement {
     @JsonProperty("content")
     private String content;
 
-    @JsonProperty("href")
-    private String href;
-
     // To define a resource path where the image will be read after the rules' execution.
     @JsonProperty("resource")
     private String resource;
@@ -72,7 +69,7 @@ public class SvgImage extends SvgAreaElement {
         this(elementAttributes);
         setId(id);
         setContent(content);
-        setHref(href);
+        setLink(href);
     }
 
     public String getContent() {
@@ -129,14 +126,6 @@ public class SvgImage extends SvgAreaElement {
         this.resourceAlreadyInBase64 = resourceAlreadyInBase64;
     }
 
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
     @Override
     public Collection<Element> generateSvg(Document doc) {
         String finalContent = content;
@@ -158,8 +147,8 @@ public class SvgImage extends SvgAreaElement {
             image.setAttributeNS("http://www.w3.org/1999/xlink", "href", finalContent);
         }
 
-        if (href != null) {
-            image.setAttribute("onclick", "window.location='" + href + "'");
+        if (getLink() != null && getLink().getHref() != null) {
+            image.setAttribute("onclick", "window.location='" + getLink().getHref() + "'");
         }
         elementAttributes(image);
         return Collections.singletonList(image);

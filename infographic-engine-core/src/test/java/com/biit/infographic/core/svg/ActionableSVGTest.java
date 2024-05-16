@@ -54,7 +54,7 @@ public class ActionableSVGTest extends SvgGeneration {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
         SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
                 SvgTemplate.DEFAULT_WIDTH / 4);
-        svgCircle.setHref("http://www.google.es");
+        svgCircle.setLink("http://www.google.es");
         svgTemplate.addElement(svgCircle);
 
         svgTemplate.addElement(new SvgScript(SCRIPT));

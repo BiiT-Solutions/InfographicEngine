@@ -1,0 +1,71 @@
+package com.biit.infographic.core.models.svg;
+
+import com.biit.infographic.core.models.svg.serialization.FillAttributesDeserializer;
+import com.biit.infographic.core.models.svg.utils.Color;
+import com.biit.infographic.logger.SvgGeneratorLogger;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import java.util.Objects;
+
+@JsonRootName(value = "fillAttributes")
+@JsonDeserialize(using = FillAttributesDeserializer.class)
+public class FillAttributes {
+
+    @JsonProperty("elementType")
+    private ElementType elementType;
+
+    @JsonProperty("fill")
+    private String fill;
+
+    @JsonProperty("fillOpacity")
+    private String fillOpacity;
+
+    public ElementType getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(ElementType elementType) {
+        this.elementType = elementType;
+    }
+
+    public String getFill() {
+        return fill;
+    }
+
+    public void setFill(String fill) {
+        fill = Color.checkColor(fill);
+        if (Color.isDroolsVariable(fill)) {
+            this.fill = fill;
+        } else if (Color.isValidWithoutTransparency(fill)) {
+            this.fill = fill;
+        } else if (Color.isValidWithTransparency(fill)) {
+            this.fill = fill.substring(0, Color.COLOR_WITH_TRANSPARENCY_LENGTH - 1);
+            setFillOpacity(String.valueOf(Color.getOpacity(fill)));
+        } else if (Color.isValidName(fill)) {
+            this.fill = fill;
+            setFillOpacity((String) null);
+        } else {
+            //Some predefined tags.
+            if (Objects.equals("none", fill)) {
+                this.fill = fill;
+            } else {
+                SvgGeneratorLogger.warning(this.getClass(), "Fill value '" + fill + "' is invalid and therefore ignored.");
+                this.fill = fill;
+            }
+        }
+    }
+
+    public String getFillOpacity() {
+        return fillOpacity;
+    }
+
+    public void setFillOpacity(Double fillOpacity) {
+        setFillOpacity(String.valueOf(fillOpacity));
+    }
+
+    public void setFillOpacity(String fillOpacity) {
+        this.fillOpacity = Color.getFillOpacity(fillOpacity);
+    }
+}

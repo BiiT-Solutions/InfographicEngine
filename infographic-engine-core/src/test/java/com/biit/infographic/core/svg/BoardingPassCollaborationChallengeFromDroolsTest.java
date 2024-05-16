@@ -273,13 +273,13 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         final SvgRectangle button = new SvgRectangle(107, 434, 146, 38, SUBMIT_BUTTON_COLOR);
         button.setXRadius(9);
         button.setYRadius(9);
-        button.setHref(BUTTON_URL);
+        button.setLink(BUTTON_URL);
         elements.add(button);
 
         final SvgText buttonLabel = new SvgText(TITLE_FONT_FAMILY, "FINISH STEP", BUTTON_FONT_SIZE, 144, 447);
         buttonLabel.getElementAttributes().setFill(SUBMIT_BUTTON_TEXT_COLOR);
         buttonLabel.setFontWeight(FontWeight.BOLD);
-        buttonLabel.setHref(BUTTON_URL);
+        buttonLabel.setLink(BUTTON_URL);
         elements.add(buttonLabel);
 
         return elements;
