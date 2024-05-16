@@ -38,6 +38,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +103,9 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
 
     @Autowired
     private TestAppointmentCenterClient testAppointmentCenterClient;
+
+    @Autowired
+    private AppointmentContent appointmentContent;
 
     private SvgTemplate boardingPassTemplate;
 
@@ -315,8 +319,11 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
 
     @BeforeClass
     public void defineAppointment() {
-        testAppointmentCenterClient.setStatedTimePassed(125);
-        testAppointmentCenterClient.setAppointmentDuration(120);
+        LocalDateTime time = LocalDateTime.of(2024, 5, 16, 16, 19, 32);
+
+        appointmentContent.setDateToCheck(time);
+        testAppointmentCenterClient.setStartTime(time.minusMinutes(15));
+        testAppointmentCenterClient.setEndTime(time.plusMinutes(105));
     }
 
     @Test

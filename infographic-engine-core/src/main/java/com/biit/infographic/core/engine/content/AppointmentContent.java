@@ -36,11 +36,13 @@ public class AppointmentContent {
 
     private final AppointmentProvider appointmentProvider;
     private final UserProvider userProvider;
+    private LocalDateTime dateToCheck;
 
     public AppointmentContent(AppointmentProvider appointmentProvider,
                               UserProvider userProvider) {
         this.appointmentProvider = appointmentProvider;
         this.userProvider = userProvider;
+        this.dateToCheck = LocalDateTime.now();
     }
 
     public void setAppointmentValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm)
@@ -100,7 +102,7 @@ public class AppointmentContent {
             return action;
         }
 
-        if (LocalDateTime.now().isBefore(appointment.getStartTime())) {
+        if (dateToCheck.isBefore(appointment.getStartTime())) {
             return actions[ACTION_FAILURE];
         }
         if (condition.startsWith(DURATION_TIME_OPERATION)) {
@@ -111,7 +113,7 @@ public class AppointmentContent {
 
             try {
                 final LocalDateTime limit = appointment.getStartTime().plusSeconds((long) operationExecution(duration.getSeconds() + operation));
-                if (LocalDateTime.now().isBefore(limit)) {
+                if (dateToCheck.isBefore(limit)) {
                     return actions[ACTION_SUCCESS];
                 }
             } catch (Exception e) {
@@ -155,5 +157,11 @@ public class AppointmentContent {
         return Double.parseDouble(parts[0]) * Double.parseDouble(parts[1]);
     }
 
+    public LocalDateTime getDateToCheck() {
+        return dateToCheck;
+    }
 
+    public void setDateToCheck(LocalDateTime dateToCheck) {
+        this.dateToCheck = dateToCheck;
+    }
 }
