@@ -12,8 +12,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 
 @Component
@@ -21,6 +23,10 @@ public class AppointmentContent {
 
     private static final String TEMPLATE_PARAMETER = "TEMPLATE";
     private static final String DURATION_TIME_OPERATION = "DURATION_TIME";
+    private static final String APPOINTMENT_STARTING_TIME_HOUR = "STARTING_TIME_HOUR";
+    private static final String APPOINTMENT_ENDING_TIME_HOUR = "ENDING_TIME_HOUR";
+    public static final String ATTRIBUTE_FIELDS_SEPARATION = "|";
+    public static final String CONDITION_SEPARATION = "?";
 
     private static final int TEMPLATE_NAME_POSITION = 0;
     private static final int TEMPLATE_CONDITION_POSITION = 1;
@@ -52,7 +58,7 @@ public class AppointmentContent {
                 for (String attribute : parameter.getAttributes().keySet()) {
                     //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|DURATION_TIME/3|ffffff:000000#
                     if (attribute.contains(DURATION_TIME_OPERATION)) {
-                        final String[] actions = attribute.split("\\|");
+                        final String[] actions = attribute.split(Pattern.quote(ATTRIBUTE_FIELDS_SEPARATION));
                         if (actions.length == TEMPLATE_ACTION_POSITION + 1) {
                             final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
                                     actions[TEMPLATE_NAME_POSITION]);
@@ -60,6 +66,22 @@ public class AppointmentContent {
                                 parameter.getAttributes().put(attribute, getTimeBasedAction(actions[TEMPLATE_CONDITION_POSITION],
                                         actions[TEMPLATE_ACTION_POSITION], appointment));
                             }
+                        }
+                        //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|STARTING_TIME#
+                    } else if (attribute.contains(APPOINTMENT_STARTING_TIME_HOUR)) {
+                        final String[] actions = attribute.split(Pattern.quote(ATTRIBUTE_FIELDS_SEPARATION));
+                        final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
+                                actions[TEMPLATE_NAME_POSITION]);
+                        if (appointment != null) {
+                            parameter.getAttributes().put(attribute, appointment.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                        }
+                        //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|ENDING_TIME#
+                    } else if (attribute.contains(APPOINTMENT_ENDING_TIME_HOUR)) {
+                        final String[] actions = attribute.split(Pattern.quote(ATTRIBUTE_FIELDS_SEPARATION));
+                        final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
+                                actions[TEMPLATE_NAME_POSITION]);
+                        if (appointment != null) {
+                            parameter.getAttributes().put(attribute, appointment.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")));
                         }
                     }
                 }
@@ -73,7 +95,7 @@ public class AppointmentContent {
             return null;
         }
 
-        final String[] actions = action.split(":");
+        final String[] actions = action.split(Pattern.quote(CONDITION_SEPARATION));
         if (actions.length == 1) {
             return action;
         }

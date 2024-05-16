@@ -3,6 +3,7 @@ package com.biit.infographic.core.svg;
 import com.biit.appointment.rest.client.TestAppointmentCenterClient;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.engine.content.AppointmentContent;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
@@ -72,21 +73,26 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
     private static final int TEXT_FONT_SIZE = 12;
 
     private static final int PATH_WIDTH = 4;
-    private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.25|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SECOND_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.5|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String THIRD_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FORTH_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.9|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SECOND_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String THIRD_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FORTH_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
 
-    private static final String FIRST_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SECOND_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.25|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String THIRD_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.5|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FIFTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIRST_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SECOND_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String THIRD_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIFTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
 
-    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + BUTTON_TEXT_DISABLED_COLOR + ":" + BUTTON_TEXT_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + "#";
 
-    private static final String BUTTON_URL = "http://google.es";
+    private static final String STARTING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "STARTING_TIME_HOUR#";
+    private static final String ENDING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "ENDING_TIME_HOUR#";
+
+    private static final String BAD_URL = "";
+    private static final String GOOD_URL = "http://goodurl.com";
+    private static final String BUTTON_URL = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + BAD_URL + AppointmentContent.CONDITION_SEPARATION + GOOD_URL + "#";
 
     @Autowired
     private DroolsResultController droolsResultController;
@@ -240,17 +246,17 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         elements.add(checkIn);
 
         final SvgText paragraph1 = new SvgText(TEXT_FONT_FAMILY, "Een teambuildingactiviteit waarbij deelnemers worden uitgedaagd om samen te werken aan een complexe taak.",
-                TEXT_FONT_SIZE, 64, 159);
+                TEXT_FONT_SIZE, 64, 160);
         paragraph1.setMaxLineWidth(228);
         elements.add(paragraph1);
 
         final SvgText paragraph2 = new SvgText(TEXT_FONT_FAMILY, "Het benadrukken van het belang van samenwerking, communicatie en het nemen van initiatief in het behalen van het gezamenlijke doel.",
-                TEXT_FONT_SIZE, 64, 254);
+                TEXT_FONT_SIZE, 64, 255);
         paragraph2.setMaxLineWidth(228);
         elements.add(paragraph2);
 
         final SvgText paragraph3 = new SvgText(TEXT_FONT_FAMILY, "Een debriefingssessie om de geleerde lessen te bespreken en de toepassing ervan op de werksituaties.",
-                TEXT_FONT_SIZE, 64, 364);
+                TEXT_FONT_SIZE, 64, 365);
         paragraph3.setMaxLineWidth(228);
         elements.add(paragraph3);
 
@@ -270,11 +276,29 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         button.setHref(BUTTON_URL);
         elements.add(button);
 
-        final SvgText buttonLabel = new SvgText(TITLE_FONT_FAMILY, "STAP VOLTEIN", BUTTON_FONT_SIZE, 140, 447);
+        final SvgText buttonLabel = new SvgText(TITLE_FONT_FAMILY, "FINISH STEP", BUTTON_FONT_SIZE, 144, 447);
         buttonLabel.getElementAttributes().setFill(SUBMIT_BUTTON_TEXT_COLOR);
         buttonLabel.setFontWeight(FontWeight.BOLD);
         buttonLabel.setHref(BUTTON_URL);
         elements.add(buttonLabel);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateTimeTexts() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText checkInTime = new SvgText(TEXT_FONT_FAMILY, STARTING_TIME, TEXT_FONT_SIZE, 58, 91);
+        elements.add(checkInTime);
+
+        final SvgText checkInTimeUnit = new SvgText(TEXT_FONT_FAMILY, "h", TEXT_FONT_SIZE, 90, 91);
+        elements.add(checkInTimeUnit);
+
+        final SvgText checkOutTime = new SvgText(TEXT_FONT_FAMILY, ENDING_TIME, TEXT_FONT_SIZE, 58, 511);
+        elements.add(checkOutTime);
+
+        final SvgText checkOutTimeUnit = new SvgText(TEXT_FONT_FAMILY, "h", TEXT_FONT_SIZE, 90, 511);
+        elements.add(checkOutTimeUnit);
 
         return elements;
     }
@@ -291,7 +315,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
 
     @BeforeClass
     public void defineAppointment() {
-        testAppointmentCenterClient.setStatedTimePassed(65);
+        testAppointmentCenterClient.setStatedTimePassed(125);
         testAppointmentCenterClient.setAppointmentDuration(120);
     }
 
@@ -307,6 +331,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         boardingPassTemplate.addElements(generateIcons());
         boardingPassTemplate.addElements(generateFixedTexts());
         boardingPassTemplate.addElements(generateSubmitButton());
+        boardingPassTemplate.addElements(generateTimeTexts());
     }
 
     @Test(dependsOnMethods = "generateBoardingPass")
@@ -326,7 +351,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
 
     @Test(dependsOnMethods = "generateBoardingPass")
     public void checkSerialization() throws JsonProcessingException {
-        //cadtTemplate.toJson() is what must be deployed into the infographic docker container
+        //boardingPassTemplate.toJson() is what must be deployed into the infographic docker container
         SvgTemplate svgTemplate1 = SvgTemplate.fromJson(boardingPassTemplate.toJson());
         Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(boardingPassTemplate));
     }
