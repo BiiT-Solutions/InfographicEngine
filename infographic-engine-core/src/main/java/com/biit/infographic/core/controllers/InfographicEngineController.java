@@ -124,6 +124,9 @@ public class InfographicEngineController {
             } else if (parameter.getType().equalsIgnoreCase(ParameterType.USER.name())) {
                 parametersByType.computeIfAbsent(ParameterType.USER, k -> new HashSet<>());
                 parametersByType.get(ParameterType.USER).add(parameter);
+            } else if (parameter.getType().equalsIgnoreCase(ParameterType.APPOINTMENT.name())) {
+                parametersByType.computeIfAbsent(ParameterType.APPOINTMENT, k -> new HashSet<>());
+                parametersByType.get(ParameterType.APPOINTMENT).add(parameter);
             } else {
                 throw new InvalidParameterException(this.getClass(),
                         "Parameter '" + parameter + "' has type '" + parameter.getType() + "' and it is not implemented!");

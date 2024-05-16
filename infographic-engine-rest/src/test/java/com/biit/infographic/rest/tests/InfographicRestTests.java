@@ -3,8 +3,8 @@ package com.biit.infographic.rest.tests;
 import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.models.GeneratedInfographicDTO;
 import com.biit.infographic.rest.api.model.InfographicSearch;
-import com.biit.server.security.AuthenticatedUserProvider;
 import com.biit.server.security.model.AuthRequest;
+import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
 import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,13 +54,13 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
     private static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
 
-    private final static String USER_NAME = "user";
-    private final static String USER_PASSWORD = "password";
+    private static final String USER_NAME = "user";
+    private static final String USER_PASSWORD = "password";
 
-    private final static String JWT_SALT = "4567";
-    private final static String FORM_NAME = "images/CADT";
-    private final static String FORM_NAME_WITH_DATA = "IHaveData";
-    private final static int FORM_VERSION = 1;
+    private static final String JWT_SALT = "4567";
+    private static final String FORM_NAME = "images/CADT";
+    private static final String FORM_NAME_WITH_DATA = "IHaveData";
+    private static final int FORM_VERSION = 1;
 
     @Autowired
     private WebApplicationContext context;

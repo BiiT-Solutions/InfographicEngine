@@ -66,6 +66,11 @@
             <groupId>com.biit.appointment</groupId>
             <artifactId>appointment-center-rest-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+            <version>15.1</version>
+        </dependency>
 
         <!--Testing-->
         <dependency>

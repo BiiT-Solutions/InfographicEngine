@@ -1,0 +1,339 @@
+package com.biit.infographic.core.svg;
+
+import com.biit.appointment.rest.client.TestAppointmentCenterClient;
+import com.biit.drools.form.DroolsSubmittedForm;
+import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.generators.SvgGenerator;
+import com.biit.infographic.core.models.svg.SvgAreaElement;
+import com.biit.infographic.core.models.svg.SvgBackground;
+import com.biit.infographic.core.models.svg.SvgEmbedded;
+import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgPath;
+import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.components.path.BezierCurve;
+import com.biit.infographic.core.models.svg.components.path.HorizontalLine;
+import com.biit.infographic.core.models.svg.components.path.VerticalLine;
+import com.biit.infographic.core.models.svg.components.text.FontFactory;
+import com.biit.infographic.core.models.svg.components.text.FontWeight;
+import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
+import com.biit.utils.file.FileReader;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@SpringBootTest
+@Test(groups = "boardingPass")
+public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTestNGSpringContextTests {
+
+    protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
+
+    private static final String DROOLS_FORM_FILE_PATH = "drools/boardingPassCollaborationChallengeTemplate.json";
+
+    //The one that has submitted the drools json.
+    private final static String USER_NAME = "Chuck Norris";
+
+    private static final String TEMPLATE_NAME = "boardingPassCollaborationChallengeTemplate";
+    private static final String TEMPLATE_BACKGROUND_COLOR = "f0eeed";
+
+    private static final String TEMPLATE_DISABLED_COLOR = "d3d4d4";
+    private static final String TEMPLATE_ENABLED_COLOR = "b49057";
+
+    private static final String BUTTON_TEXT_DISABLED_COLOR = "b9b9b9";
+    private static final String BUTTON_TEXT_ENABLED_COLOR = "000000";
+
+    private static final String ICON = "images/CADT/Society.svg";
+    private static final int ICON_SIZE = 16;
+
+    private static final String TITLE_FONT_FAMILY = "Sofia Sans Extra Condensed";
+    private static final int TITLE_FONT_SIZE = 20;
+    private static final int BUTTON_FONT_SIZE = 20;
+    private static final int SUBTITLE_FONT_SIZE = 16;
+    private static final String TEXT_FONT_FAMILY = "Arial";
+    private static final int TEXT_FONT_SIZE = 12;
+
+    private static final int PATH_WIDTH = 4;
+    private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.25|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SECOND_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.5|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String THIRD_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FORTH_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.9|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+
+    private static final String FIRST_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SECOND_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.25|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String THIRD_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.5|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIFTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+
+    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + TEMPLATE_DISABLED_COLOR + ":" + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + "|DURATION_TIME*0.75|" + BUTTON_TEXT_DISABLED_COLOR + ":" + BUTTON_TEXT_ENABLED_COLOR + "#";
+
+    private static final String BUTTON_URL = "http://google.es";
+
+    @Autowired
+    private DroolsResultController droolsResultController;
+
+    @Autowired
+    private AuthenticatedUserProvider authenticatedUserProvider;
+
+    @Autowired
+    private TestAppointmentCenterClient testAppointmentCenterClient;
+
+    private SvgTemplate boardingPassTemplate;
+
+    protected String readBase64Image(String imageName) {
+        try {
+            return new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
+                    .getResource("images" + File.separator + imageName).toURI())));
+        } catch (Exception e) {
+            Assert.fail("Cannot read resource 'images/" + imageName + "'.");
+        }
+        return null;
+    }
+
+    private void checkContent(String content, String resourceFile) {
+        try {
+            Assert.assertEquals(content.trim(), new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
+                    .getResource("svg" + File.separator + resourceFile).toURI()))).trim());
+        } catch (IOException | URISyntaxException e) {
+            Assert.fail();
+        }
+    }
+
+    protected boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
+    private SvgBackground generateBackground() {
+        final SvgBackground svgBackground = new SvgBackground();
+        svgBackground.setBackgroundColor(TEMPLATE_BACKGROUND_COLOR);
+        return svgBackground;
+    }
+
+    private List<SvgAreaElement> generatePath() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgPath path = new SvgPath(36, 84,
+                new VerticalLine(93),
+                new BezierCurve(68, 125, 36, 109, 50, 125),
+                new HorizontalLine(292),
+                new BezierCurve(324, 157, 310, 125, 324, 140),
+                new VerticalLine(174));
+        path.getElementStroke().setStrokeColor(FIRST_PATH_COLOR);
+        path.getElementStroke().setStrokeWidth(PATH_WIDTH);
+        elements.add(path);
+
+        final SvgPath path2 = new SvgPath(324, 180,
+                new VerticalLine(196),
+                new BezierCurve(292, 228, 324, 214, 310, 228),
+                new HorizontalLine(68),
+                new BezierCurve(36, 260, 50, 228, 36, 242),
+                new VerticalLine(277));
+        path2.getElementStroke().setStrokeColor(SECOND_PATH_COLOR);
+        path2.getElementStroke().setStrokeWidth(PATH_WIDTH);
+        elements.add(path2);
+
+        final SvgPath path3 = new SvgPath(36, 283,
+                new VerticalLine(299),
+                new BezierCurve(68, 331, 36, 317, 50, 331),
+                new HorizontalLine(292),
+                new BezierCurve(324, 363, 310, 330, 324, 345),
+                new VerticalLine(380));
+        path3.getElementStroke().setStrokeColor(THIRD_PATH_COLOR);
+        path3.getElementStroke().setStrokeWidth(PATH_WIDTH);
+        elements.add(path3);
+
+        final SvgPath path4 = new SvgPath(324, 386,
+                new VerticalLine(421),
+                new BezierCurve(292, 453, 324, 440, 310, 453),
+                new HorizontalLine(68),
+                new BezierCurve(36, 485, 50, 453, 36, 467),
+                new VerticalLine(506));
+        path4.getElementStroke().setStrokeColor(FORTH_PATH_COLOR);
+        path4.getElementStroke().setStrokeWidth(PATH_WIDTH);
+        elements.add(path4);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateCircles() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgCircle svgCircle1 = new SvgCircle(23, 72, 13);
+        svgCircle1.getElementAttributes().setFill(FIRST_CIRCLE_COLOR);
+        elements.add(svgCircle1);
+
+        final SvgCircle svgCircle2 = new SvgCircle(312, 164, 13);
+        svgCircle2.getElementAttributes().setFill(SECOND_CIRCLE_COLOR);
+        elements.add(svgCircle2);
+
+        final SvgCircle svgCircle3 = new SvgCircle(23, 267, 13);
+        svgCircle3.getElementAttributes().setFill(THIRD_CIRCLE_COLOR);
+        elements.add(svgCircle3);
+
+        final SvgCircle svgCircle4 = new SvgCircle(312, 370, 13);
+        svgCircle4.getElementAttributes().setFill(FORTH_CIRCLE_COLOR);
+        elements.add(svgCircle4);
+
+        final SvgCircle svgCircle5 = new SvgCircle(23, 492, 13);
+        svgCircle5.getElementAttributes().setFill(FIFTH_CIRCLE_COLOR);
+        elements.add(svgCircle5);
+
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateIcons() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgEmbedded circleIcon1 = new SvgEmbedded(ICON, 317, 169);
+        circleIcon1.getElementAttributes().setWidth(ICON_SIZE);
+        circleIcon1.getElementAttributes().setHeight(ICON_SIZE);
+        elements.add(circleIcon1);
+
+        final SvgEmbedded circleIcon2 = new SvgEmbedded(ICON, 28, 272);
+        circleIcon2.getElementAttributes().setWidth(ICON_SIZE);
+        circleIcon2.getElementAttributes().setHeight(ICON_SIZE);
+        elements.add(circleIcon2);
+
+        final SvgEmbedded circleIcon3 = new SvgEmbedded(ICON, 317, 375);
+        circleIcon3.getElementAttributes().setWidth(ICON_SIZE);
+        circleIcon3.getElementAttributes().setHeight(ICON_SIZE);
+        elements.add(circleIcon3);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateFixedTexts() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText title = new SvgText(TITLE_FONT_FAMILY, "SAMENWERKINGSUITDAGING", TITLE_FONT_SIZE, 24, 29);
+        title.setFontWeight(FontWeight.BOLD);
+        elements.add(title);
+
+        final SvgText checkIn = new SvgText(TITLE_FONT_FAMILY, "CHECK IN", SUBTITLE_FONT_SIZE, 58, 71);
+        checkIn.setFontWeight(FontWeight.BOLD);
+        elements.add(checkIn);
+
+        final SvgText paragraph1 = new SvgText(TEXT_FONT_FAMILY, "Een teambuildingactiviteit waarbij deelnemers worden uitgedaagd om samen te werken aan een complexe taak.",
+                TEXT_FONT_SIZE, 64, 159);
+        paragraph1.setMaxLineWidth(228);
+        elements.add(paragraph1);
+
+        final SvgText paragraph2 = new SvgText(TEXT_FONT_FAMILY, "Het benadrukken van het belang van samenwerking, communicatie en het nemen van initiatief in het behalen van het gezamenlijke doel.",
+                TEXT_FONT_SIZE, 64, 254);
+        paragraph2.setMaxLineWidth(228);
+        elements.add(paragraph2);
+
+        final SvgText paragraph3 = new SvgText(TEXT_FONT_FAMILY, "Een debriefingssessie om de geleerde lessen te bespreken en de toepassing ervan op de werksituaties.",
+                TEXT_FONT_SIZE, 64, 364);
+        paragraph3.setMaxLineWidth(228);
+        elements.add(paragraph3);
+
+        final SvgText checkOut = new SvgText(TITLE_FONT_FAMILY, "CHECK OUT", SUBTITLE_FONT_SIZE, 58, 492);
+        checkOut.setFontWeight(FontWeight.BOLD);
+        elements.add(checkOut);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateSubmitButton() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgRectangle button = new SvgRectangle(107, 434, 146, 38, SUBMIT_BUTTON_COLOR);
+        button.setXRadius(9);
+        button.setYRadius(9);
+        button.setHref(BUTTON_URL);
+        elements.add(button);
+
+        final SvgText buttonLabel = new SvgText(TITLE_FONT_FAMILY, "STAP VOLTEIN", BUTTON_FONT_SIZE, 140, 447);
+        buttonLabel.getElementAttributes().setFill(SUBMIT_BUTTON_TEXT_COLOR);
+        buttonLabel.setFontWeight(FontWeight.BOLD);
+        buttonLabel.setHref(BUTTON_URL);
+        elements.add(buttonLabel);
+
+        return elements;
+    }
+
+    @BeforeClass
+    public void createUser() throws IOException {
+        authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
+    }
+
+    @BeforeClass
+    public void prepareFolder() throws IOException {
+        Files.createDirectories(Paths.get(OUTPUT_FOLDER));
+    }
+
+    @BeforeClass
+    public void defineAppointment() {
+        testAppointmentCenterClient.setStatedTimePassed(65);
+        testAppointmentCenterClient.setAppointmentDuration(120);
+    }
+
+    @Test
+    public void generateBoardingPass() {
+        boardingPassTemplate = new SvgTemplate();
+        boardingPassTemplate.getElementAttributes().setHeight(640);
+        boardingPassTemplate.getElementAttributes().setWidth(360);
+        boardingPassTemplate.setSvgBackground(generateBackground());
+
+        boardingPassTemplate.addElements(generatePath());
+        boardingPassTemplate.addElements(generateCircles());
+        boardingPassTemplate.addElements(generateIcons());
+        boardingPassTemplate.addElements(generateFixedTexts());
+        boardingPassTemplate.addElements(generateSubmitButton());
+    }
+
+    @Test(dependsOnMethods = "generateBoardingPass")
+    public void executeBoardingPass() throws IOException {
+        FontFactory.resetFonts();
+        final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
+        final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(boardingPassTemplate));
+        Assert.assertEquals(svgResults.size(), 1);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + TEMPLATE_NAME + ".svg")), true)) {
+            out.println(svgResults.get(0));
+        }
+
+        checkContent(svgResults.get(0), TEMPLATE_NAME + ".svg");
+    }
+
+    @Test(dependsOnMethods = "generateBoardingPass")
+    public void checkSerialization() throws JsonProcessingException {
+        //cadtTemplate.toJson() is what must be deployed into the infographic docker container
+        SvgTemplate svgTemplate1 = SvgTemplate.fromJson(boardingPassTemplate.toJson());
+        Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(boardingPassTemplate));
+    }
+
+
+    @AfterClass
+    public void removeFolder() {
+        Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+    }
+}

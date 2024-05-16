@@ -27,13 +27,13 @@ import java.nio.file.Paths;
 @Test(groups = "templateFromDrools")
 public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
-    private final static String APPLICATION_NAME = "Test";
-    private final static String FORM_NAME = "TheForm";
-    private final static Integer FORM_VERSION = 3;
-    private final static Long FORM_ORGANIZATION = 23L;
+    private static final String APPLICATION_NAME = "Test";
+    private static final String FORM_NAME = "TheForm";
+    private static final Integer FORM_VERSION = 3;
+    private static final Long FORM_ORGANIZATION = 23L;
 
-    private final static String DROOLS_VARIABLE_NAME = "Score";
-    private final static String USER = "dummy@user.com";
+    private static final String DROOLS_VARIABLE_NAME = "Score";
+    private static final String USER = "dummy@user.com";
 
     @Autowired
     private DroolsResultController droolsResultController;

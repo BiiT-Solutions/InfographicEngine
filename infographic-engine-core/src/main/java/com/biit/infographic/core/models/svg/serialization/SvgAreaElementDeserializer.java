@@ -32,5 +32,8 @@ public abstract class SvgAreaElementDeserializer<T extends SvgAreaElement> exten
         if (jsonObject.get("gradient") != null) {
             element.setGradient(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("gradient").toPrettyString(), SvgGradient.class));
         }
+        if (jsonObject.get("href") != null) {
+            element.setHref(DeserializerParser.parseString("href", jsonObject));
+        }
     }
 }

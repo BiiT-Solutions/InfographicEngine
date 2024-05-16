@@ -47,7 +47,7 @@ import java.util.List;
 public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTests {
     protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
 
-    private final static String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadtCustomer_4.json";
+    private static final String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadtCustomer_4.json";
 
     private static final String TITLE = "YOUR CADT PROFILE";
     private static final String INTRODUCTION_CONTENT = "The result of the CADT assessment is the personal CADT profile, which is a guide of your actual situation and of the further improvements you can work " +

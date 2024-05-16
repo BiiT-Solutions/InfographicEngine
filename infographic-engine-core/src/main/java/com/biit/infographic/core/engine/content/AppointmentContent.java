@@ -4,14 +4,12 @@ import com.biit.appointment.core.models.AppointmentDTO;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
+import com.biit.infographic.core.exceptions.InvalidParameterException;
 import com.biit.infographic.core.providers.AppointmentProvider;
 import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.springframework.stereotype.Component;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -90,11 +88,11 @@ public class AppointmentContent {
             final String operation = condition.substring(DURATION_TIME_OPERATION.length());
 
             try {
-                final LocalDateTime limit = appointment.getStartTime().plusSeconds(operationExecution(duration.getSeconds() + operation));
+                final LocalDateTime limit = appointment.getStartTime().plusSeconds((long) operationExecution(duration.getSeconds() + operation));
                 if (LocalDateTime.now().isBefore(limit)) {
                     return actions[ACTION_SUCCESS];
                 }
-            } catch (ScriptException e) {
+            } catch (Exception e) {
                 InfographicEngineLogger.severe(this.getClass(), "Operation '" + duration.getSeconds() + operation
                         + "' cannot be executed");
             }
@@ -103,9 +101,36 @@ public class AppointmentContent {
         return actions[ACTION_FAILURE];
     }
 
-    private long operationExecution(String operation) throws ScriptException {
-        final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-        return Double.valueOf(engine.eval(operation) + "").longValue();
+    private double operationExecution(String operation) {
+        //7200/10
+        if (operation.contains("/")) {
+            return generateFraction(operation);
+        }
+        if (operation.contains("*")) {
+            return generateMultiplication(operation);
+        }
+        try {
+            return Double.parseDouble(operation);
+        } catch (Exception e) {
+            throw new InvalidParameterException(this.getClass(), "Operation '" + operation + "' is invalid!");
+        }
+    }
+
+
+    private double generateFraction(String operation) {
+        final String[] parts = operation.split("/");
+        if (parts.length == 1) {
+            return Double.parseDouble(parts[0]);
+        }
+        return Double.parseDouble(parts[0]) / Double.parseDouble(parts[1]);
+    }
+
+    private double generateMultiplication(String operation) {
+        final String[] parts = operation.split("\\*");
+        if (parts.length == 1) {
+            return Long.parseLong(parts[0]);
+        }
+        return Double.parseDouble(parts[0]) * Double.parseDouble(parts[1]);
     }
 
 
