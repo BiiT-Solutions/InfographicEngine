@@ -344,6 +344,10 @@ public class SvgText extends SvgAreaElement {
         return getDx() + getDxUnit().getValue();
     }
 
+    public void setDx(Number dx) {
+        this.dx = (dx != null ? dx.longValue() : null);
+    }
+
     public void setDx(Long dx) {
         this.dx = dx;
     }
@@ -355,6 +359,10 @@ public class SvgText extends SvgAreaElement {
 
     public Long getDy() {
         return dy;
+    }
+
+    public void setDy(Number dy) {
+        this.dy = (dy != null ? dy.longValue() : null);
     }
 
     public void setDy(Long dy) {

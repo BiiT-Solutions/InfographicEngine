@@ -73,6 +73,8 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
     private static final int SUBTITLE_FONT_SIZE = 16;
     private static final String TEXT_FONT_FAMILY = "Arial";
     private static final int TEXT_FONT_SIZE = 12;
+    private static final int TEXT_LINE_SEPARATOR = 2;
+
 
     private static final int PATH_WIDTH = 4;
     private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
@@ -86,9 +88,9 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
     private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
     private static final String FIFTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
 
-    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SUBMIT_BUTTON_HOVER_OPACITY = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR_HOVER + "#";
-    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_HOVER_OPACITY = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR_HOVER + "#";
+    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + "#";
 
     private static final String STARTING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "STARTING_TIME_HOUR#";
     private static final String ENDING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "ENDING_TIME_HOUR#";
@@ -240,7 +242,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         return elements;
     }
 
-    private List<SvgAreaElement> generateFixedTexts() {
+    private List<SvgAreaElement> generateStaticTexts() {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
         final SvgText title = new SvgText(TITLE_FONT_FAMILY, "SAMENWERKINGSUITDAGING", TITLE_FONT_SIZE, 24, 29);
@@ -252,18 +254,21 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         elements.add(checkIn);
 
         final SvgText paragraph1 = new SvgText(TEXT_FONT_FAMILY, "Een teambuildingactiviteit waarbij deelnemers worden uitgedaagd om samen te werken aan een complexe taak.",
-                TEXT_FONT_SIZE, 64, 160);
+                TEXT_FONT_SIZE, 64, 155);
         paragraph1.setMaxLineWidth(228);
+        paragraph1.setSamePhraseLineSeparator(TEXT_LINE_SEPARATOR);
         elements.add(paragraph1);
 
         final SvgText paragraph2 = new SvgText(TEXT_FONT_FAMILY, "Het benadrukken van het belang van samenwerking, communicatie en het nemen van initiatief in het behalen van het gezamenlijke doel.",
-                TEXT_FONT_SIZE, 64, 255);
+                TEXT_FONT_SIZE, 64, 251);
         paragraph2.setMaxLineWidth(228);
+        paragraph2.setSamePhraseLineSeparator(TEXT_LINE_SEPARATOR);
         elements.add(paragraph2);
 
         final SvgText paragraph3 = new SvgText(TEXT_FONT_FAMILY, "Een debriefingssessie om de geleerde lessen te bespreken en de toepassing ervan op de werksituaties.",
-                TEXT_FONT_SIZE, 64, 365);
+                TEXT_FONT_SIZE, 64, 361);
         paragraph3.setMaxLineWidth(228);
+        paragraph3.setSamePhraseLineSeparator(TEXT_LINE_SEPARATOR);
         elements.add(paragraph3);
 
         final SvgText checkOut = new SvgText(TITLE_FONT_FAMILY, "CHECK OUT", SUBTITLE_FONT_SIZE, 58, 492);
@@ -325,8 +330,8 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         LocalDateTime time = LocalDateTime.of(2024, 5, 16, 16, 19, 32);
 
         appointmentContent.setDateToCheck(time);
-        testAppointmentCenterClient.setStartTime(time.minusMinutes(60));
-        testAppointmentCenterClient.setEndTime(time.plusMinutes(60));
+        testAppointmentCenterClient.setStartTime(time.minusMinutes(120));
+        testAppointmentCenterClient.setEndTime(time.plusMinutes(0));
     }
 
     @Test
@@ -339,7 +344,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         boardingPassTemplate.addElements(generatePath());
         boardingPassTemplate.addElements(generateCircles());
         boardingPassTemplate.addElements(generateIcons());
-        boardingPassTemplate.addElements(generateFixedTexts());
+        boardingPassTemplate.addElements(generateStaticTexts());
         boardingPassTemplate.addElements(generateSubmitButton());
         boardingPassTemplate.addElements(generateTimeTexts());
     }
