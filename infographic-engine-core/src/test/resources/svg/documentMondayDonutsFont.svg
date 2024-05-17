@@ -9,7 +9,7 @@
 		}
 </style>
     </defs>
-    <text x="0" font-size="6" y="3.7800000000000002" style="font-family:Monday Donuts;" font-family="Monday Donuts" id="text0" font-variant="normal">
+    <text x="0" font-size="6" y="3.7800000000000002" style="font-family:Monday Donuts;" font-family="Monday Donuts" class="text0" id="text0" font-variant="normal">
         <tspan style="font-family:Monday Donuts;" x="0" letter-spacing="0.06493506493506493">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat,</tspan>
         <tspan x="0" dy="8" style="font-family:Monday Donuts;" letter-spacing="0.30434782608695654">rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam,</tspan>
         <tspan x="0" dy="8" style="font-family:Monday Donuts;" letter-spacing="0.2898550724637681">commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum,</tspan>

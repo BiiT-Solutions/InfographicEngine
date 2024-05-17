@@ -330,8 +330,8 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         LocalDateTime time = LocalDateTime.of(2024, 5, 16, 16, 19, 32);
 
         appointmentContent.setDateToCheck(time);
-        testAppointmentCenterClient.setStartTime(time.minusMinutes(120));
-        testAppointmentCenterClient.setEndTime(time.plusMinutes(0));
+        testAppointmentCenterClient.setStartTime(time.minusMinutes(110));
+        testAppointmentCenterClient.setEndTime(time.plusMinutes(10));
     }
 
     @Test

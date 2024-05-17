@@ -9,7 +9,7 @@
 		}
 </style>
     </defs>
-    <text x="128" id="text0" font-size="12" y="135.56" style="font-weight:bold;font-family:Arial;" font-family="Arial">
+    <text x="128" font-size="12" y="135.56" style="font-weight:bold;font-family:Arial;" font-family="Arial" class="text0" id="text0">
         <tspan style="font-weight:bold;font-family:Arial;" x="128" letter-spacing="0.025974025974025976">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat,</tspan>
         <tspan x="128" dy="17" style="font-weight:bold;font-family:Arial;" letter-spacing="-0.38961038961038963">rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam, commodo</tspan>
         <tspan style="font-weight:bold;font-family:Arial;" x="128" dy="17">eget maximus quis, lobortis id dolor. </tspan>

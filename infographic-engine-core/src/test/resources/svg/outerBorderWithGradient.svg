@@ -10,9 +10,9 @@
             <stop offset="1.0" stop-opacity="0.5" stop-color="#0000ff"/>
         </linearGradient>
     </defs>
-    <circle fill="#00ff00" id="circle0" r="28" cx="64" cy="64"/>
+    <circle fill="#00ff00" id="circle0" r="28" class="circle0" cx="64" cy="64"/>
     <path d="m 34 64 A 30 30 0 0 0 64 94 A 30 -30 0 0 0 94 64 A -30 -30 0 0 0 64 34 A -30 30 0 0 0 34 64 " stroke-width="4.0" style="stroke:url(#linearGradient_circle_stroke_1);fill:none" stroke="black"/>
-    <rect x="196.0" y="68.0" fill="#00ff00" width="56.0" style="stroke-linecap:square;" id="rectangle1" height="56.0"/>
+    <rect x="196.0" y="68.0" fill="#00ff00" width="56.0" style="stroke-linecap:square;" class="rectangle1" height="56.0" id="rectangle1"/>
     <path d="m 194 66 L 194 126 L 254 126 L 254 66 L 194 66 " stroke-width="4.0" style="stroke-linecap:square;stroke:url(#linearGradient_rectangle_stroke_2);fill:none" stroke="black"/>
 </svg>
 

@@ -9,7 +9,7 @@
 		}
 </style>
     </defs>
-    <text x="0" font-size="5" y="3.15" style="font-family:Montserrat;" font-family="Montserrat" id="text0" font-variant="normal">
+    <text x="0" font-size="5" y="3.15" style="font-family:Montserrat;" font-family="Montserrat" class="text0" id="text0" font-variant="normal">
         <tspan style="font-family:Montserrat;" x="0" letter-spacing="0.16883116883116883">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis erat,</tspan>
         <tspan x="0" dy="9" style="font-family:Montserrat;" letter-spacing="0.34782608695652173">rutrum et neque sit amet, rhoncus tincidunt felis. Vivamus nibh quam,</tspan>
         <tspan x="0" dy="9" style="font-family:Montserrat;" letter-spacing="0.21739130434782608">commodo eget maximus quis, lobortis id dolor. Nullam ac sem bibendum,</tspan>
