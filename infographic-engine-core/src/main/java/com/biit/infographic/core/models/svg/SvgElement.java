@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgElementDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -22,12 +23,16 @@ public abstract class SvgElement implements ISvgElement {
     @JsonProperty("elementType")
     private ElementType elementType;
 
+    @JsonIgnore
+    private String cssClass;
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+        this.cssClass = id;
     }
 
 
@@ -43,6 +48,17 @@ public abstract class SvgElement implements ISvgElement {
         if (getId() != null) {
             element.setAttribute("id", getId());
         }
+        if (getCssClass() != null) {
+            element.setAttribute("class", getCssClass());
+        }
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
     }
 
     //Each child must implement and filter invalid attributes.

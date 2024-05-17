@@ -494,6 +494,40 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         checkContent(SvgGenerator.generate(svgTemplate), "outerBorderWithGradient.svg");
     }
 
+    @Test
+    public void documentDrawRectangleWithLinkHoverTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000");
+        rectangle.setLink("https://google.es");
+        rectangle.getLink().getFillAttributes().setHoverFillColor("00ff00");
+        svgTemplate.addElement(rectangle);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawRectangleWithLinkHover.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawRectangleWithLinkHover.svg");
+    }
+
+
+    @Test
+    public void documentDrawRectangleWithLinkHoverOpacityTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000");
+        rectangle.setLink("https://google.es");
+        rectangle.getLink().getFillAttributes().setHoverFillOpacity(0.5);
+        svgTemplate.addElement(rectangle);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawRectangleWithLinkHoverOpacity.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawRectangleWithLinkHoverOpacity.svg");
+    }
+
+
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));

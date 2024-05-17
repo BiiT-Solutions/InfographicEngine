@@ -22,6 +22,12 @@ public class FillAttributes {
     @JsonProperty("fillOpacity")
     private String fillOpacity;
 
+    @JsonProperty("hoverFillColor")
+    private String hoverFillColor;
+
+    @JsonProperty("hoverFillOpacity")
+    private String hoverFillOpacity;
+
     public ElementType getElementType() {
         return elementType;
     }
@@ -67,5 +73,45 @@ public class FillAttributes {
 
     public void setFillOpacity(String fillOpacity) {
         this.fillOpacity = Color.getFillOpacity(fillOpacity);
+    }
+
+    public String getHoverFillColor() {
+        return hoverFillColor;
+    }
+
+    public void setHoverFillColor(String hover) {
+        hover = Color.checkColor(hover);
+        if (Color.isDroolsVariable(hover)) {
+            this.hoverFillColor = hover;
+        } else if (Color.isValidWithoutTransparency(hover)) {
+            this.hoverFillColor = hover;
+        } else if (Color.isValidWithTransparency(hover)) {
+            this.hoverFillColor = hover.substring(0, Color.COLOR_WITH_TRANSPARENCY_LENGTH - 1);
+            setHoverFillOpacity(String.valueOf(Color.getOpacity(hover)));
+        } else if (Color.isValidName(hover)) {
+            this.hoverFillColor = hover;
+            setHoverFillOpacity((String) null);
+        } else {
+            //Some predefined tags.
+            if (Objects.equals("none", hover)) {
+                this.hoverFillColor = hover;
+            } else {
+                SvgGeneratorLogger.warning(this.getClass(), "hover value '" + hover + "' is invalid and therefore ignored.");
+                this.hoverFillColor = hover;
+            }
+        }
+    }
+
+    public void setHoverFillOpacity(Double fillOpacity) {
+        setHoverFillOpacity(String.valueOf(fillOpacity));
+    }
+
+
+    public String getHoverFillOpacity() {
+        return hoverFillOpacity;
+    }
+
+    public void setHoverFillOpacity(String hoverFillOpacity) {
+        this.hoverFillOpacity = hoverFillOpacity;
     }
 }

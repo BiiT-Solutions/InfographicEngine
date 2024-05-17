@@ -264,6 +264,9 @@ public class SvgTemplate extends SvgAreaElement {
                         }
                     }
                 }
+                if (element.getLink() != null) {
+                    createLinkDef(doc, element, defs, element.getElementType().name().toLowerCase(), idCounter);
+                }
             }
 
             if (idCounter.get() > 0) {
@@ -280,6 +283,19 @@ public class SvgTemplate extends SvgAreaElement {
                     getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(), getElementAttributes().getYCoordinate() / 2);
             final Collection<Element> elements = gradient.generateSvg(doc);
             elements.forEach(defs::appendChild);
+        }
+    }
+
+
+    private void createLinkDef(Document doc, SvgAreaElement element, Element defs, String id, AtomicInteger idCounter) {
+        element.setId(SvgGradient.ID_PREFIX + "_" + id + "_" + idCounter.incrementAndGet());
+        element.setCssClass(SvgGradient.ID_PREFIX + "_" + id + "_" + idCounter.incrementAndGet());
+        element.getLink().setCssClass(element.getCssClass());
+        if (element.getLink() != null) {
+            final Element linkStyle = element.getLink().embeddedStyle(doc);
+            if (linkStyle != null) {
+                defs.appendChild(linkStyle);
+            }
         }
     }
 

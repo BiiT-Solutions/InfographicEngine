@@ -59,6 +59,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
 
     private static final String TEMPLATE_DISABLED_COLOR = "d3d4d4";
     private static final String TEMPLATE_ENABLED_COLOR = "b49057";
+    private static final String TEMPLATE_ENABLED_COLOR_HOVER = "d4c1a1";
 
     private static final String BUTTON_TEXT_DISABLED_COLOR = "b9b9b9";
     private static final String BUTTON_TEXT_ENABLED_COLOR = "000000";
@@ -86,13 +87,14 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
     private static final String FIFTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
 
     private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_HOVER_OPACITY = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR_HOVER + "#";
     private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + AppointmentContent.CONDITION_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + "#";
 
     private static final String STARTING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "STARTING_TIME_HOUR#";
     private static final String ENDING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "ENDING_TIME_HOUR#";
 
     private static final String BAD_URL = "";
-    private static final String GOOD_URL = "http://goodurl.com";
+    private static final String GOOD_URL = "http://google.com";
     private static final String BUTTON_URL = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + AppointmentContent.ATTRIBUTE_FIELDS_SEPARATION + BAD_URL + AppointmentContent.CONDITION_SEPARATION + GOOD_URL + "#";
 
     @Autowired
@@ -278,6 +280,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         button.setXRadius(9);
         button.setYRadius(9);
         button.setLink(BUTTON_URL);
+        button.getLink().getFillAttributes().setHoverFillColor(SUBMIT_BUTTON_HOVER_OPACITY);
         elements.add(button);
 
         final SvgText buttonLabel = new SvgText(TITLE_FONT_FAMILY, "FINISH STEP", BUTTON_FONT_SIZE, 144, 447);
@@ -322,8 +325,8 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
         LocalDateTime time = LocalDateTime.of(2024, 5, 16, 16, 19, 32);
 
         appointmentContent.setDateToCheck(time);
-        testAppointmentCenterClient.setStartTime(time.minusMinutes(15));
-        testAppointmentCenterClient.setEndTime(time.plusMinutes(105));
+        testAppointmentCenterClient.setStartTime(time.minusMinutes(60));
+        testAppointmentCenterClient.setEndTime(time.plusMinutes(60));
     }
 
     @Test

@@ -15,16 +15,20 @@ import java.lang.reflect.InvocationTargetException;
 
 public class FillAttributesDeserializer<T extends FillAttributes> extends StdDeserializer<T> {
 
-    private final Class<T> specificClass;
+
+    public FillAttributesDeserializer() {
+        super(FillAttributes.class);
+    }
 
     public FillAttributesDeserializer(Class<T> aClass) {
         super(aClass);
-        this.specificClass = aClass;
     }
 
     public void deserialize(T element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         element.setFill(DeserializerParser.parseString("fill", jsonObject));
         element.setFillOpacity(DeserializerParser.parseString("fillOpacity", jsonObject));
+        element.setHoverFillColor(DeserializerParser.parseString("hoverFillColor", jsonObject));
+        element.setHoverFillOpacity(DeserializerParser.parseString("hoverFillOpacity", jsonObject));
     }
 
 
