@@ -1,5 +1,6 @@
 package com.biit.infographic.rest.exceptions;
 
+import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.exceptions.FormNotFoundException;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
@@ -53,5 +54,11 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
     public ResponseEntity<?> emptyPdfBodyException(Exception ex) {
         RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
         return new ResponseEntity<>(new ErrorMessage("Pdf cannot be formed"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ElementDoesNotExistsException.class)
+    public ResponseEntity<?> elementDoesNotExistsException(Exception ex) {
+        RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
+        return new ResponseEntity<>(new ErrorMessage(ex.getMessage(), ex), HttpStatus.NOT_FOUND);
     }
 }

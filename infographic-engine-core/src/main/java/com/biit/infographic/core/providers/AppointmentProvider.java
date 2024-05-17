@@ -1,8 +1,9 @@
 package com.biit.infographic.core.providers;
 
 import com.biit.appointment.core.models.AppointmentDTO;
-import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.appointment.core.models.IAppointmentCenterRestClient;
+import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
+import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.utils.pool.BasePool;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,8 @@ public class AppointmentProvider extends BasePool<String, AppointmentDTO> {
                 appointment = appointmentCenterRestClient.findByAttendeeAndTemplateCurrent(userUUID, appointmentTemplateName).orElse(null);
                 if (appointment == null) {
                     InfographicEngineLogger.severe(this.getClass(), "No appointment found for user '{}' and template '{}'.", userUUID, appointmentTemplateName);
+                    throw new ElementDoesNotExistsException(this.getClass(), "\"No appointment found for user '"
+                            + userUUID + "' and template '" + appointmentTemplateName + "'.");
                 } else {
                     addElement(appointment, userUUID + "_" + appointmentTemplateName);
                 }
