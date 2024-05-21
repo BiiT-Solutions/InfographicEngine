@@ -3,6 +3,8 @@ package com.biit.infographic.core.engine.content;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.form.submitted.implementation.SubmittedObject;
 import com.biit.infographic.core.engine.Parameter;
+import com.biit.infographic.core.engine.content.value.Condition;
+import com.biit.infographic.core.engine.content.value.ValueCalculator;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.springframework.stereotype.Component;
@@ -29,9 +31,14 @@ import java.util.Set;
 
 @Component
 public class DroolsContent {
-    private static final String DATE_FORMAT = "dd-MM-yyyy";
     private static final DecimalFormat DECIMAL_FORMAT_VALUES = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-    private static final DecimalFormat DECIMAL_FORMAT_GOALS = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+
+    private final ValueCalculator valueCalculator;
+
+    public DroolsContent(ValueCalculator valueCalculator) {
+        this.valueCalculator = valueCalculator;
+    }
+
 
     /**
      * Search the form structure to find any variable value obtained when executing
@@ -74,25 +81,41 @@ public class DroolsContent {
                                 parameter.getType(), parameter.getName(), parameter.getAttributes());
                         // Search for any variable defined in the parameters
                         for (String attribute : parameter.getAttributes().keySet()) {
+                            final String element;
+
+                            //Check if attribute has some operators
+                            final Condition condition = valueCalculator.getCondition(attribute);
+                            if (condition == null) {
+                                element = attribute;
+                            } else {
+                                element = condition.getElement();
+                            }
+
                             if (parameter.getName() != null
                                     && (parameter.getName().equalsIgnoreCase(submittedObject.getTag())
                                     || parameter.getName().equals(submittedObject.getPathName()))) {
-                                String path = submittedObject.getXPath() + "/variables/" + attribute + "/text()";
+                                String path = submittedObject.getXPath() + "/variables/" + element + "/text()";
 
                                 // Search as a variable.
                                 String value = getValue(path, document, xpathCompiler);
                                 // Not a variable, maybe a question value.
                                 if (value == null) {
-                                    path = submittedObject.getXPath() + "/" + attribute + "/text()";
+                                    path = submittedObject.getXPath() + "/" + element + "/text()";
                                     value = getValue(path, document, xpathCompiler);
                                 }
                                 final String attributeValue;
                                 if (value != null && !value.isEmpty()) {
-                                    attributeValue = value.trim();
-                                    InfographicEngineLogger.info(getClass().getName(), attribute + " " + attributeValue);
+                                    if (condition == null) {
+                                        attributeValue = value.trim();
+                                        InfographicEngineLogger.info(getClass().getName(), element + " " + attributeValue);
+                                    } else {
+                                        //If it is a condition, resolve it.
+                                        attributeValue = condition.getResult(value);
+                                    }
+
                                 } else {
                                     attributeValue = "";
-                                    InfographicEngineLogger.warning(getClass().getName(), attribute + " has empty value.");
+                                    InfographicEngineLogger.warning(getClass().getName(), element + " has empty value.");
                                 }
                                 parameter.getAttributes().put(attribute, attributeValue);
                             }

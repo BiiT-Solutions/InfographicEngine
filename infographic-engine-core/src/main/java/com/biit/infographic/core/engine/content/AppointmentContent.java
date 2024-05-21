@@ -3,8 +3,8 @@ package com.biit.infographic.core.engine.content;
 import com.biit.appointment.core.models.AppointmentDTO;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.engine.Parameter;
+import com.biit.infographic.core.engine.content.value.ValueCalculator;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
-import com.biit.infographic.core.exceptions.InvalidParameterException;
 import com.biit.infographic.core.providers.AppointmentProvider;
 import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.logger.InfographicEngineLogger;
@@ -25,8 +25,7 @@ public class AppointmentContent {
     private static final String DURATION_TIME_OPERATION = "DURATION_TIME";
     private static final String APPOINTMENT_STARTING_TIME_HOUR = "STARTING_TIME_HOUR";
     private static final String APPOINTMENT_ENDING_TIME_HOUR = "ENDING_TIME_HOUR";
-    public static final String ATTRIBUTE_FIELDS_SEPARATION = "|";
-    public static final String CONDITION_SEPARATION = "?";
+
 
     private static final int TEMPLATE_NAME_POSITION = 0;
     private static final int TEMPLATE_CONDITION_POSITION = 1;
@@ -38,10 +37,13 @@ public class AppointmentContent {
     private final UserProvider userProvider;
     private LocalDateTime dateToCheck;
 
+    private final ValueCalculator valueCalculator;
+
     public AppointmentContent(AppointmentProvider appointmentProvider,
-                              UserProvider userProvider) {
+                              UserProvider userProvider, ValueCalculator valueCalculator) {
         this.appointmentProvider = appointmentProvider;
         this.userProvider = userProvider;
+        this.valueCalculator = valueCalculator;
         this.dateToCheck = LocalDateTime.now();
     }
 
@@ -60,7 +62,7 @@ public class AppointmentContent {
                 for (String attribute : parameter.getAttributes().keySet()) {
                     //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|DURATION_TIME/3|ffffff:000000#
                     if (attribute.contains(DURATION_TIME_OPERATION)) {
-                        final String[] actions = attribute.split(Pattern.quote(ATTRIBUTE_FIELDS_SEPARATION));
+                        final String[] actions = attribute.split(Pattern.quote(ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION));
                         if (actions.length == TEMPLATE_ACTION_POSITION + 1) {
                             final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
                                     actions[TEMPLATE_NAME_POSITION]);
@@ -71,7 +73,7 @@ public class AppointmentContent {
                         }
                         //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|STARTING_TIME#
                     } else if (attribute.contains(APPOINTMENT_STARTING_TIME_HOUR)) {
-                        final String[] actions = attribute.split(Pattern.quote(ATTRIBUTE_FIELDS_SEPARATION));
+                        final String[] actions = attribute.split(Pattern.quote(ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION));
                         final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
                                 actions[TEMPLATE_NAME_POSITION]);
                         if (appointment != null) {
@@ -79,7 +81,7 @@ public class AppointmentContent {
                         }
                         //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|ENDING_TIME#
                     } else if (attribute.contains(APPOINTMENT_ENDING_TIME_HOUR)) {
-                        final String[] actions = attribute.split(Pattern.quote(ATTRIBUTE_FIELDS_SEPARATION));
+                        final String[] actions = attribute.split(Pattern.quote(ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION));
                         final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
                                 actions[TEMPLATE_NAME_POSITION]);
                         if (appointment != null) {
@@ -97,7 +99,7 @@ public class AppointmentContent {
             return null;
         }
 
-        final String[] actions = action.split(Pattern.quote(CONDITION_SEPARATION));
+        final String[] actions = action.split(Pattern.quote(ValueCalculator.CONDITION_SEPARATION));
         if (actions.length == 1) {
             return action;
         }
@@ -112,7 +114,8 @@ public class AppointmentContent {
             final String operation = condition.substring(DURATION_TIME_OPERATION.length());
 
             try {
-                final LocalDateTime limit = appointment.getStartTime().plusSeconds((long) operationExecution(duration.getSeconds() + operation));
+                final LocalDateTime limit = appointment.getStartTime().plusSeconds((long) valueCalculator
+                        .operationExecution(duration.getSeconds() + operation));
                 if (dateToCheck.isBefore(limit)) {
                     return actions[ACTION_SUCCESS];
                 }
@@ -123,38 +126,6 @@ public class AppointmentContent {
         }
 
         return actions[ACTION_FAILURE];
-    }
-
-    private double operationExecution(String operation) {
-        //7200/10
-        if (operation.contains("/")) {
-            return generateFraction(operation);
-        }
-        if (operation.contains("*")) {
-            return generateMultiplication(operation);
-        }
-        try {
-            return Double.parseDouble(operation);
-        } catch (Exception e) {
-            throw new InvalidParameterException(this.getClass(), "Operation '" + operation + "' is invalid!");
-        }
-    }
-
-
-    private double generateFraction(String operation) {
-        final String[] parts = operation.split("/");
-        if (parts.length == 1) {
-            return Double.parseDouble(parts[0]);
-        }
-        return Double.parseDouble(parts[0]) / Double.parseDouble(parts[1]);
-    }
-
-    private double generateMultiplication(String operation) {
-        final String[] parts = operation.split("\\*");
-        if (parts.length == 1) {
-            return Long.parseLong(parts[0]);
-        }
-        return Double.parseDouble(parts[0]) * Double.parseDouble(parts[1]);
     }
 
     public LocalDateTime getDateToCheck() {
