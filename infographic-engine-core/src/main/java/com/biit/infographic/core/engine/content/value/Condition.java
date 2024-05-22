@@ -60,6 +60,6 @@ public class Condition {
         } catch (NumberFormatException e) {
             InfographicEngineLogger.errorMessage(this.getClass(), e);
         }
-        return value;
+        return resultIfNotEquals;
     }
 }
