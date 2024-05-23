@@ -312,7 +312,7 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     @Test
     public void generateBoardingPass() {
         boardingPassTemplate = new SvgTemplate();
-        boardingPassTemplate.getElementAttributes().setHeight(640);
+        boardingPassTemplate.getElementAttributes().setHeight(444);
         boardingPassTemplate.getElementAttributes().setWidth(360);
         boardingPassTemplate.setSvgBackground(generateBackground());
 

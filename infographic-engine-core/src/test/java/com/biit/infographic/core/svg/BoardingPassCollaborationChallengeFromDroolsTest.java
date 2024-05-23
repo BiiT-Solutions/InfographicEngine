@@ -338,7 +338,7 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
     @Test
     public void generateBoardingPass() {
         boardingPassTemplate = new SvgTemplate();
-        boardingPassTemplate.getElementAttributes().setHeight(640);
+        boardingPassTemplate.getElementAttributes().setHeight(547);
         boardingPassTemplate.getElementAttributes().setWidth(360);
         boardingPassTemplate.setSvgBackground(generateBackground());
 
