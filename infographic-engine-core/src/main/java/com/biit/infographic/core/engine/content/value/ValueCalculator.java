@@ -11,11 +11,12 @@ public class ValueCalculator {
     public static final String ATTRIBUTE_FIELDS_SEPARATION = "|";
     public static final String CONDITION_SEPARATION = "?";
 
-    public static final String VALUE_SEPARATION = ":";
+    public static final String VALUE_SEPARATION = "!";
 
-    //#SOMETHING%SOMELEMENT%element==value?ffffff:000000#
+    //#SOMETHING%SOMELEMENT%element==value?ffffff!000000#
     public Condition getCondition(String attribute) {
-        if (!attribute.contains(CONDITION_SEPARATION)) {
+        //Has a question mark, but it is not a URL.
+        if (!attribute.contains(CONDITION_SEPARATION) || attribute.startsWith("http")) {
             return null;
         }
         final String[] actions = attribute.split(Pattern.quote(CONDITION_SEPARATION));
@@ -24,7 +25,7 @@ public class ValueCalculator {
             return null;
         }
         final String[] condition = actions[0].split(operator.getRepresentation());
-        final String[] values = actions[1].split(VALUE_SEPARATION);
+        final String[] values = actions[1].split(Pattern.quote(VALUE_SEPARATION));
         return new Condition(condition[0], operator, condition[1], values[0], values[1]);
     }
 

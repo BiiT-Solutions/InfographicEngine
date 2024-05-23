@@ -83,6 +83,12 @@ public class DroolsContent {
                         for (String attribute : parameter.getAttributes().keySet()) {
                             final String element;
 
+                            //Check if it is the default CREATED_BY field.
+                            if (DroolsFields.SUBMITTED_BY.name().equalsIgnoreCase(attribute)) {
+                                parameter.getAttributes().put(attribute, droolsSubmittedForm.getSubmittedBy());
+                                continue;
+                            }
+
                             //Check if attribute has some operators
                             final Condition condition = valueCalculator.getCondition(attribute);
                             if (condition == null) {

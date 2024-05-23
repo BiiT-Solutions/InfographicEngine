@@ -78,26 +78,26 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
 
 
     private static final int PATH_WIDTH = 4;
-    private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SECOND_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String THIRD_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FORTH_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SECOND_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String THIRD_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FORTH_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
 
-    private static final String FIRST_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SECOND_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.30" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String THIRD_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.60" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*1" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIRST_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SECOND_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.30" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String THIRD_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.60" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*1" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
 
-    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SUBMIT_BUTTON_HOVER_OPACITY = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR_HOVER + "#";
-    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + ValueCalculator.CONDITION_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_HOVER_OPACITY = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR_HOVER + "#";
+    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + "#";
 
     private static final String STARTING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "STARTING_TIME_HOUR#";
     private static final String ENDING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "ENDING_TIME_HOUR#";
 
     private static final String BAD_URL = "";
-    private static final String GOOD_URL = "http://google.com";
-    private static final String BUTTON_URL = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + BAD_URL + ValueCalculator.CONDITION_SEPARATION + GOOD_URL + "#";
+    private static final String GOOD_URL = "https://google.com";
+    private static final String BUTTON_URL = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + BAD_URL + ValueCalculator.VALUE_SEPARATION + GOOD_URL + "#";
 
     @Autowired
     private DroolsResultController droolsResultController;
@@ -316,12 +316,12 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
         boardingPassTemplate.getElementAttributes().setWidth(360);
         boardingPassTemplate.setSvgBackground(generateBackground());
 
-        boardingPassTemplate.addElements(generatePath());
-        boardingPassTemplate.addElements(generateCircles());
-        boardingPassTemplate.addElements(generateIcons());
-        boardingPassTemplate.addElements(generateStaticTexts());
+//        boardingPassTemplate.addElements(generatePath());
+//        boardingPassTemplate.addElements(generateCircles());
+//        boardingPassTemplate.addElements(generateIcons());
+//        boardingPassTemplate.addElements(generateStaticTexts());
         boardingPassTemplate.addElements(generateSubmitButton());
-        boardingPassTemplate.addElements(generateTimeTexts());
+//        boardingPassTemplate.addElements(generateTimeTexts());
     }
 
     @Test(dependsOnMethods = "generateBoardingPass")

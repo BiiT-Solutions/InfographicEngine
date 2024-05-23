@@ -28,8 +28,6 @@ public class AppointmentContent {
 
 
     private static final int TEMPLATE_NAME_POSITION = 0;
-    private static final int TEMPLATE_CONDITION_POSITION = 1;
-    private static final int TEMPLATE_ACTION_POSITION = 2;
     private static final int ACTION_SUCCESS = 0;
     private static final int ACTION_FAILURE = 1;
 
@@ -60,15 +58,18 @@ public class AppointmentContent {
                         parameter.getType(), parameter.getName(), parameter.getAttributes());
                 // Search for any variable defined in the parameters
                 for (String attribute : parameter.getAttributes().keySet()) {
-                    //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|DURATION_TIME/3|ffffff:000000#
+                    //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|DURATION_TIME/3?ffffff!000000#
                     if (attribute.contains(DURATION_TIME_OPERATION)) {
-                        final String[] actions = attribute.split(Pattern.quote(ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION));
-                        if (actions.length == TEMPLATE_ACTION_POSITION + 1) {
+                        final String[] conditions = attribute.split(Pattern.quote(ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION));
+                        if (conditions.length == 2) {
+                            //<TEMPLATE_NAME>>
                             final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
-                                    actions[TEMPLATE_NAME_POSITION]);
+                                    conditions[TEMPLATE_NAME_POSITION]);
                             if (appointment != null) {
-                                parameter.getAttributes().put(attribute, getTimeBasedAction(actions[TEMPLATE_CONDITION_POSITION],
-                                        actions[TEMPLATE_ACTION_POSITION], appointment));
+                                //DURATION_TIME/3?ffffff!000000#
+                                final int questionMark = conditions[1].indexOf('?');
+                                parameter.getAttributes().put(attribute, getTimeBasedAction(conditions[1].substring(0, questionMark),
+                                        conditions[1].substring(questionMark + 1), appointment));
                             }
                         }
                         //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|STARTING_TIME#
@@ -99,13 +100,18 @@ public class AppointmentContent {
             return null;
         }
 
-        final String[] actions = action.split(Pattern.quote(ValueCalculator.CONDITION_SEPARATION));
-        if (actions.length == 1) {
+        // condition: DURATION_TIME/3
+        // action: ffffff:000000#
+        final int separatorIndex = action.indexOf(ValueCalculator.VALUE_SEPARATION);
+        if (separatorIndex < 0) {
             return action;
         }
 
+        final String actionSuccess = action.substring(0, separatorIndex);
+        final String actionFailure = action.substring(separatorIndex + 1);
+
         if (dateToCheck.isBefore(appointment.getStartTime())) {
-            return actions[ACTION_FAILURE];
+            return actionFailure;
         }
         if (condition.startsWith(DURATION_TIME_OPERATION)) {
             final Duration duration = Duration.between(appointment.getStartTime(), appointment.getEndTime());
@@ -117,7 +123,7 @@ public class AppointmentContent {
                 final LocalDateTime limit = appointment.getStartTime().plusSeconds((long) valueCalculator
                         .operationExecution(duration.getSeconds() + operation));
                 if (dateToCheck.isBefore(limit)) {
-                    return actions[ACTION_SUCCESS];
+                    return actionSuccess;
                 }
             } catch (Exception e) {
                 InfographicEngineLogger.severe(this.getClass(), "Operation '" + duration.getSeconds() + operation
@@ -125,7 +131,7 @@ public class AppointmentContent {
             }
         }
 
-        return actions[ACTION_FAILURE];
+        return actionFailure;
     }
 
     public LocalDateTime getDateToCheck() {
