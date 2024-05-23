@@ -316,12 +316,12 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
         boardingPassTemplate.getElementAttributes().setWidth(360);
         boardingPassTemplate.setSvgBackground(generateBackground());
 
-//        boardingPassTemplate.addElements(generatePath());
-//        boardingPassTemplate.addElements(generateCircles());
-//        boardingPassTemplate.addElements(generateIcons());
-//        boardingPassTemplate.addElements(generateStaticTexts());
+        boardingPassTemplate.addElements(generatePath());
+        boardingPassTemplate.addElements(generateCircles());
+        boardingPassTemplate.addElements(generateIcons());
+        boardingPassTemplate.addElements(generateStaticTexts());
         boardingPassTemplate.addElements(generateSubmitButton());
-//        boardingPassTemplate.addElements(generateTimeTexts());
+        boardingPassTemplate.addElements(generateTimeTexts());
     }
 
     @Test(dependsOnMethods = "generateBoardingPass")
