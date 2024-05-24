@@ -45,6 +45,9 @@ public class Condition {
      * @return the chosen value.
      */
     public String getResult(String value) {
+        if (value == null) {
+            return resultIfNotEquals;
+        }
         try {
             return switch (operator) {
                 case EQUALS -> value.equalsIgnoreCase(comparedTo) ? resultIfEquals : resultIfNotEquals;
@@ -61,5 +64,16 @@ public class Condition {
             InfographicEngineLogger.errorMessage(this.getClass(), e);
         }
         return resultIfNotEquals;
+    }
+
+    @Override
+    public String toString() {
+        return "Condition{"
+                + "element='" + element + '\''
+                + ", operator=" + operator
+                + ", comparedTo='" + comparedTo + '\''
+                + ", resultIfEquals='" + resultIfEquals + '\''
+                + ", resultIfNotEquals='" + resultIfNotEquals + '\''
+                + '}';
     }
 }

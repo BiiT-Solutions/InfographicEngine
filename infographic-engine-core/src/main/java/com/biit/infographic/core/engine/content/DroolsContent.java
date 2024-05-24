@@ -118,9 +118,13 @@ public class DroolsContent {
                                         //If it is a condition, resolve it.
                                         attributeValue = condition.getResult(value);
                                     }
-
                                 } else {
-                                    attributeValue = "";
+                                    if (condition == null) {
+                                        attributeValue = "";
+                                    } else {
+                                        //If it is a condition, resolve it.
+                                        attributeValue = condition.getResult(value);
+                                    }
                                     InfographicEngineLogger.warning(getClass().getName(), element + " has empty value.");
                                 }
                                 parameter.getAttributes().put(attribute, attributeValue);

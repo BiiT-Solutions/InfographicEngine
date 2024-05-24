@@ -20,6 +20,7 @@
                 <include name="cadtCustomer2"/>
                 <include name="cadtCustomer3"/>
                 <include name="cadtCustomer4"/>
+                <include name="nca"/>
                 <include name="ncai"/>
                 <include name="boardingPass"/>
                 <include name="eventParser"/>
@@ -48,6 +49,7 @@
             <class name="com.biit.infographic.core.svg.CADTCustomer2FromDroolsTest"/>
             <class name="com.biit.infographic.core.svg.CADTCustomer3FromDroolsTest"/>
             <class name="com.biit.infographic.core.svg.NcaFromDroolsTest"/>
+            <class name="com.biit.infographic.core.svg.NcaiFromDroolsTest"/>
             <class name="com.biit.infographic.core.svg.BoardingPassCollaborationChallengeFromDroolsTest"/>
             <class name="com.biit.infographic.core.engine.EventParserTests"/>
             <class name="com.biit.infographic.core.engine.EventControllerTests"/>
