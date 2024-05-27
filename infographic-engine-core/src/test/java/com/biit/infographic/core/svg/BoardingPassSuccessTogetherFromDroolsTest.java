@@ -55,7 +55,7 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     //The one that has submitted the drools json.
     private final static String USER_NAME = "Chuck Norris";
 
-    private static final String TEMPLATE_NAME = "boardingPassSuccessTogetherTemplate";
+    private static final String TEMPLATE_NAME = "Success Together";
     private static final String TEMPLATE_BACKGROUND_COLOR = "f0eeed";
 
     private static final String TEMPLATE_DISABLED_COLOR = "d3d4d4";
