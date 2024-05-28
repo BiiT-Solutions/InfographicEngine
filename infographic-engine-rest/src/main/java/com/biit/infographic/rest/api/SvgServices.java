@@ -11,6 +11,7 @@ import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.rest.api.model.InfographicSearch;
 import com.biit.server.exceptions.BadRequestException;
 import com.biit.server.exceptions.NotFoundException;
+import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.SecurityService;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.server.utils.exceptions.InvalidXmlElementException;
