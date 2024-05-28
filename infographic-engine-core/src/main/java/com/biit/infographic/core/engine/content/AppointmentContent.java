@@ -14,6 +14,7 @@ import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Set;
@@ -142,8 +143,8 @@ public class AppointmentContent {
         if (timezone != null && !timezone.isBlank()) {
             try {
                 InfographicEngineLogger.debug(this.getClass(), "Converting timezone from '{}' ({}) to '{}' ({}).",
-                        localDateTime, ZoneId.systemDefault(), localDateTime, ZoneId.of(timezone));
-                return localDateTime.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of(timezone)).format(DateTimeFormatter.ofPattern(TIME_FORMAT));
+                        localDateTime, ZoneOffset.UTC, localDateTime, ZoneId.of(timezone));
+                return localDateTime.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format(DateTimeFormatter.ofPattern(TIME_FORMAT));
             } catch (DateTimeException e) {
                 InfographicEngineLogger.severe(this.getClass(), "Invalid timezone provided '" + timezone + "'.");
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
