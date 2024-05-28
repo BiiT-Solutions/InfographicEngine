@@ -141,7 +141,7 @@ public class AppointmentContent {
     private String formatTime(LocalDateTime localDateTime, String timezone) {
         if (timezone != null && !timezone.isBlank()) {
             try {
-                return localDateTime.atZone(ZoneId.of(timezone)).format(DateTimeFormatter.ofPattern(TIME_FORMAT));
+                return localDateTime.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of(timezone)).format(DateTimeFormatter.ofPattern(TIME_FORMAT));
             } catch (DateTimeException e) {
                 InfographicEngineLogger.severe(this.getClass(), "Invalid timezone provided '" + timezone + "'.");
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
