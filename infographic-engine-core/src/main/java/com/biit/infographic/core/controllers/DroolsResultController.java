@@ -62,11 +62,11 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
      * Gets the drools answer, executes a template and generate a SVG.
      *
      * @param droolsSubmittedForm the answers obtained from base form drool engine.
-     * @param createdBy          the owner of the form.
+     * @param createdBy           the owner of the form.
      */
-    public void process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy) {
+    public void process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String timeZone) {
         //Generate SVG.
-        final List<String> svgContents = executeFromTemplates(droolsSubmittedForm, createdBy);
+        final List<String> svgContents = executeFromTemplates(droolsSubmittedForm, createdBy, timeZone);
 
         //Store SVG.
         final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents,
@@ -77,16 +77,16 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
         droolsEventSender.sendResultEvents(generatedInfographic, createdBy);
     }
 
-    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, String createdBy) {
+    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, String createdBy, String timeZone) {
         //Get the template for this form.
         final List<InfographicTemplate> templates = infographicEngineController.getTemplates(droolsSubmittedForm);
-        return executeFromTemplates(droolsSubmittedForm, templates);
+        return executeFromTemplates(droolsSubmittedForm, templates, timeZone);
     }
 
-    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, List<InfographicTemplate> templates) {
+    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, List<InfographicTemplate> templates, String timeZone) {
         //Replace template variables by drools values.
         final Map<InfographicFileElement, Set<Parameter>> values = infographicEngineController.getValues(droolsSubmittedForm,
-                infographicEngineController.getParamsFromTemplates(templates));
+                infographicEngineController.getParamsFromTemplates(templates), timeZone);
         final List<InfographicTemplateAndContent> templateAndContents = infographicEngineController.addContentToTemplates(templates, values);
 
         //Generate SVG.
@@ -104,6 +104,10 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
     }
 
     public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates) {
+        return execute(droolsSubmittedForm, svgTemplates, null);
+    }
+
+    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates, String timeZone) {
         //Replace template variables by drools values.
         return executeFromTemplates(droolsSubmittedForm, svgTemplates.stream().map(svgTemplate -> {
             try {
@@ -113,10 +117,10 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
                 throw new RuntimeException(e);
             }
-        }).toList());
+        }).toList(), timeZone);
     }
 
-    public DroolsResultDTO findLatest(String name, Integer version, Long organizationId, String createdBy) {
+    public DroolsResultDTO findLatest(String name, Integer version, Long organizationId, String createdBy, String timeZone) {
         return convert(getProvider()
                 .findLatest(name, version, createdBy, organizationId)
                 .orElseThrow(() -> new FormNotFoundException(this.getClass(),

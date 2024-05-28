@@ -10,8 +10,10 @@ import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.springframework.stereotype.Component;
 
+import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Set;
@@ -25,6 +27,7 @@ public class AppointmentContent {
     private static final String DURATION_TIME_OPERATION = "DURATION_TIME";
     private static final String APPOINTMENT_STARTING_TIME_HOUR = "STARTING_TIME_HOUR";
     private static final String APPOINTMENT_ENDING_TIME_HOUR = "ENDING_TIME_HOUR";
+    private static final String TIME_FORMAT = "HH:mm";
 
 
     private static final int TEMPLATE_NAME_POSITION = 0;
@@ -45,7 +48,7 @@ public class AppointmentContent {
         this.dateToCheck = LocalDateTime.now();
     }
 
-    public void setAppointmentValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm)
+    public void setAppointmentValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm, String timezone)
             throws ElementDoesNotExistsException {
         if (parameters == null) {
             return;
@@ -69,7 +72,7 @@ public class AppointmentContent {
                                 //DURATION_TIME/3?ffffff!000000#
                                 final int questionMark = conditions[1].indexOf('?');
                                 parameter.getAttributes().put(attribute, getTimeBasedAction(conditions[1].substring(0, questionMark),
-                                        conditions[1].substring(questionMark + 1), appointment));
+                                        conditions[1].substring(questionMark + 1), appointment, timezone));
                             }
                         }
                         //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|STARTING_TIME#
@@ -78,7 +81,7 @@ public class AppointmentContent {
                         final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
                                 actions[TEMPLATE_NAME_POSITION]);
                         if (appointment != null) {
-                            parameter.getAttributes().put(attribute, appointment.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                            parameter.getAttributes().put(attribute, formatTime(appointment.getStartTime(), timezone));
                         }
                         //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|ENDING_TIME#
                     } else if (attribute.contains(APPOINTMENT_ENDING_TIME_HOUR)) {
@@ -86,7 +89,7 @@ public class AppointmentContent {
                         final AppointmentDTO appointment = appointmentProvider.getAppointment(userProvider.getUserUUID(droolsSubmittedForm),
                                 actions[TEMPLATE_NAME_POSITION]);
                         if (appointment != null) {
-                            parameter.getAttributes().put(attribute, appointment.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                            parameter.getAttributes().put(attribute, formatTime(appointment.getEndTime(), timezone));
                         }
                     }
                 }
@@ -95,7 +98,7 @@ public class AppointmentContent {
     }
 
 
-    private String getTimeBasedAction(String condition, String action, AppointmentDTO appointment) {
+    private String getTimeBasedAction(String condition, String action, AppointmentDTO appointment, String timezone) {
         if (appointment == null) {
             return null;
         }
@@ -133,6 +136,20 @@ public class AppointmentContent {
 
         return actionFailure;
     }
+
+
+    private String formatTime(LocalDateTime localDateTime, String timezone) {
+        if (timezone != null && !timezone.isBlank()) {
+            try {
+                localDateTime.atZone(ZoneId.of(timezone)).format(DateTimeFormatter.ofPattern(TIME_FORMAT));
+            } catch (DateTimeException e) {
+                InfographicEngineLogger.severe(this.getClass(), "Invalid timezone provided '" + timezone + "'.");
+                InfographicEngineLogger.errorMessage(this.getClass(), e);
+            }
+        }
+        return localDateTime.format(DateTimeFormatter.ofPattern(TIME_FORMAT));
+    }
+
 
     public LocalDateTime getDateToCheck() {
         return dateToCheck;

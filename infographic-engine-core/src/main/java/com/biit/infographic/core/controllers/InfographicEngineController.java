@@ -75,7 +75,8 @@ public class InfographicEngineController {
     }
 
     public Map<InfographicFileElement, Set<Parameter>> getValues(DroolsSubmittedForm droolsSubmittedForm, Map<InfographicFileElement,
-            Set<Parameter>> parameters) throws java.security.InvalidParameterException, ElementDoesNotExistsException, ReportNotReadyException {
+            Set<Parameter>> parameters, String timezone) throws java.security.InvalidParameterException, ElementDoesNotExistsException,
+            ReportNotReadyException {
         final Map<InfographicFileElement, Set<Parameter>> filledParams = new HashMap<>();
         // Group parameters by type.
         for (InfographicFileElement infographicDefinition : parameters.keySet()) {
@@ -89,7 +90,7 @@ public class InfographicEngineController {
             userContent.setUserVariableValues(parametersByType.get(ParameterType.USER), droolsSubmittedForm);
 
             // Get appointment variables.
-            appointmentContent.setAppointmentValues(parametersByType.get(ParameterType.APPOINTMENT), droolsSubmittedForm);
+            appointmentContent.setAppointmentValues(parametersByType.get(ParameterType.APPOINTMENT), droolsSubmittedForm, timezone);
 
 
             // Get goals.

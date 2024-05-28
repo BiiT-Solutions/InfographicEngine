@@ -67,7 +67,7 @@ public class EventController {
             droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
             EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
             //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
-            droolsResultController.process(droolsForm, event.getTag(), createdBy);
+            droolsResultController.process(droolsForm, event.getTag(), createdBy, null);
         } catch (JsonProcessingException e) {
             EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
             EventsLogger.errorMessage(this.getClass(), e);

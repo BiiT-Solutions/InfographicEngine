@@ -700,6 +700,10 @@ An example of a template: a rectangle with a text that represent the score at fo
 }
 ```
 
+# Special fields
+
+`X-Time-Zone: Europe/Amsterdam` Header to set the timezone when appointment information is involved.
+
 # HowTo create an infographic
 
 Steps of how to generate a form and shown an infographic from it.
