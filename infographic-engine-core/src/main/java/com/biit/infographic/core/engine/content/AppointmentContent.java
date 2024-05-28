@@ -146,6 +146,8 @@ public class AppointmentContent {
                 InfographicEngineLogger.severe(this.getClass(), "Invalid timezone provided '" + timezone + "'.");
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
             }
+        } else {
+            InfographicEngineLogger.warning(this.getClass(), "No timezone provided.");
         }
         return localDateTime.format(DateTimeFormatter.ofPattern(TIME_FORMAT));
     }
