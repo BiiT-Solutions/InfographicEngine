@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Set;
@@ -114,7 +115,8 @@ public class AppointmentContent {
         final String actionSuccess = action.substring(0, separatorIndex);
         final String actionFailure = action.substring(separatorIndex + 1);
 
-        if (dateToCheck.isBefore(appointment.getStartTime())) {
+        final ZonedDateTime startTime = applyTimezone(appointment.getStartTime(), timezone);
+        if (dateToCheck.isBefore(startTime.toLocalDateTime())) {
             return actionFailure;
         }
         if (condition.startsWith(DURATION_TIME_OPERATION)) {
@@ -124,7 +126,7 @@ public class AppointmentContent {
             final String operation = condition.substring(DURATION_TIME_OPERATION.length());
 
             try {
-                final LocalDateTime limit = appointment.getStartTime().plusSeconds((long) valueCalculator
+                final LocalDateTime limit = startTime.toLocalDateTime().plusSeconds((long) valueCalculator
                         .operationExecution(duration.getSeconds() + operation));
                 if (dateToCheck.isBefore(limit)) {
                     return actionSuccess;
@@ -140,11 +142,16 @@ public class AppointmentContent {
 
 
     private String formatTime(LocalDateTime localDateTime, String timezone) {
+        return applyTimezone(localDateTime, timezone).format(DateTimeFormatter.ofPattern(TIME_FORMAT));
+    }
+
+
+    private ZonedDateTime applyTimezone(LocalDateTime localDateTime, String timezone) {
         if (timezone != null && !timezone.isBlank()) {
             try {
                 InfographicEngineLogger.debug(this.getClass(), "Converting timezone from '{}' ({}) to '{}' ({}).",
                         localDateTime, ZoneOffset.UTC, localDateTime, ZoneId.of(timezone));
-                return localDateTime.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format(DateTimeFormatter.ofPattern(TIME_FORMAT));
+                return localDateTime.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone));
             } catch (DateTimeException e) {
                 InfographicEngineLogger.severe(this.getClass(), "Invalid timezone provided '" + timezone + "'.");
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
@@ -152,7 +159,7 @@ public class AppointmentContent {
         } else {
             InfographicEngineLogger.warning(this.getClass(), "No timezone provided.");
         }
-        return localDateTime.format(DateTimeFormatter.ofPattern(TIME_FORMAT));
+        return localDateTime.atZone(ZoneOffset.systemDefault());
     }
 
 
