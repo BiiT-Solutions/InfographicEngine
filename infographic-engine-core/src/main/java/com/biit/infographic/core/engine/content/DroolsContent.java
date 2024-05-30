@@ -1,6 +1,7 @@
 package com.biit.infographic.core.engine.content;
 
 import com.biit.drools.form.DroolsSubmittedForm;
+import com.biit.form.submitted.ISubmittedObject;
 import com.biit.form.submitted.implementation.SubmittedObject;
 import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.engine.content.value.Condition;
@@ -108,6 +109,14 @@ public class DroolsContent {
                                 if (value == null) {
                                     path = submittedObject.getXPath() + "/" + element + "/text()";
                                     value = getValue(path, document, xpathCompiler);
+                                }
+                                //Get the answer if not
+                                if (value == null) {
+                                    final ISubmittedObject child = submittedObject.getChild(element.replaceAll("/form/", ""));
+                                    if (child != null) {
+                                        path = child.getXPath() + "/value/text()";
+                                        value = getValue(path, document, xpathCompiler);
+                                    }
                                 }
                                 final String attributeValue;
                                 if (value != null && !value.isEmpty()) {
