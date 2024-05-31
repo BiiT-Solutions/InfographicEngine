@@ -6,12 +6,9 @@ import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgEmbedded;
 import com.biit.infographic.core.models.svg.SvgTemplate;
-import com.biit.infographic.core.models.svg.components.path.Arc;
-import com.biit.infographic.core.models.svg.components.path.BezierCurve;
-import com.biit.infographic.core.models.svg.components.path.HorizontalLine;
-import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgCircleSector;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
@@ -20,6 +17,10 @@ import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
+import com.biit.infographic.core.models.svg.components.path.Arc;
+import com.biit.infographic.core.models.svg.components.path.BezierCurve;
+import com.biit.infographic.core.models.svg.components.path.HorizontalLine;
+import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.components.path.VerticalLine;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
@@ -525,6 +526,41 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
             out.println(SvgGenerator.generate(svgTemplate));
         }
         checkContent(SvgGenerator.generate(svgTemplate), "documentDrawRectangleWithLinkHoverOpacity.svg");
+    }
+
+    @Test
+    public void documentDrawCircleSectorTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgCircleSector svgCircleSector = new SvgCircleSector(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                20, 290);
+        svgCircleSector.getElementAttributes().setFill("none");
+        svgTemplate.addElement(svgCircleSector);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawCircleSector.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawCircleSector.svg");
+    }
+
+    @Test
+    public void documentDrawCircleSectorFilledTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgCircleSector svgCircleSector = new SvgCircleSector(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                20, 290);
+        svgCircleSector.getElementAttributes().setFill("red");
+        svgTemplate.addElement(svgCircleSector);
+
+        final SvgCircleSector svgCircleSector2 = new SvgCircleSector(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                290, 20);
+        svgCircleSector2.getElementAttributes().setFill("green");
+        svgTemplate.addElement(svgCircleSector2);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawCircleSectorFilled.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawCircleSectorFilled.svg");
     }
 
 

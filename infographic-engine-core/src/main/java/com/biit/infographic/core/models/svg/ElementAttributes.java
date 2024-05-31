@@ -47,6 +47,7 @@ public class ElementAttributes extends FillAttributes {
 
     public ElementAttributes(String width, String height) {
         this();
+        setFill("black");
         setWidthValue(width);
         setHeightValue(height);
     }

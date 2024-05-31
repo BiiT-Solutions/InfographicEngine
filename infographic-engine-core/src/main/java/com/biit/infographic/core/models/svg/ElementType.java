@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
 import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgCircleSector;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
@@ -27,6 +28,7 @@ public enum ElementType {
     IMAGE(SvgImage.class),
     RECTANGLE(SvgRectangle.class),
     CIRCLE(SvgCircle.class),
+    CIRCLE_SECTOR(SvgCircleSector.class),
     ELLIPSE(SvgEllipse.class),
     LINE(SvgLine.class),
     PATH(SvgPath.class),
