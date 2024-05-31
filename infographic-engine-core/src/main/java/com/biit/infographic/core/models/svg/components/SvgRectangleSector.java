@@ -15,7 +15,7 @@ import java.util.Collection;
 public class SvgRectangleSector extends SvgAreaElement {
     private static final double LATERAL_TO_RADIUS = 0.8;
 
-    private static final int TOTAL_DEGREES = 360;
+    private static final int CIRCLE_DEGREES = 360;
     private static final int FIRST_CORNER_DEGREES = 45;
     private static final int SECOND_CORNER_DEGREES = 135;
     private static final int THIRD_CORNER_DEGREES = 225;
@@ -34,6 +34,16 @@ public class SvgRectangleSector extends SvgAreaElement {
 
     public SvgRectangleSector() {
         this(new ElementAttributes());
+    }
+
+    public SvgRectangleSector(Number xCoordinate, Number yCoordinate, String width, String height, Number percentage) {
+        this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
+                width, height,
+                0,
+                CIRCLE_DEGREES * percentage.doubleValue());
+        if (percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
+            throw new IllegalArgumentException("percentage must be between 0 and 1");
+        }
     }
 
     public SvgRectangleSector(Number xCoordinate, Number yCoordinate, String width, String height, Number startAngle, Number endAngle) {
@@ -144,7 +154,7 @@ public class SvgRectangleSector extends SvgAreaElement {
 
 
     private Point getStartSquareLateral(long angleInDegrees) {
-        angleInDegrees = angleInDegrees % TOTAL_DEGREES;
+        angleInDegrees = angleInDegrees % CIRCLE_DEGREES;
         if (angleInDegrees < FIRST_CORNER_DEGREES) {
             return new Point(getElementAttributes().getXCoordinate(),
                     getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
@@ -161,7 +171,7 @@ public class SvgRectangleSector extends SvgAreaElement {
     }
 
     private Point getEndSquareLateral(long angleInDegrees) {
-        angleInDegrees = angleInDegrees % TOTAL_DEGREES;
+        angleInDegrees = angleInDegrees % CIRCLE_DEGREES;
         if (angleInDegrees < FIRST_CORNER_DEGREES) {
             return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
                     getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
