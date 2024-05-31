@@ -14,6 +14,7 @@ import com.biit.infographic.core.models.svg.components.SvgImage;
 import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.components.SvgRectangleSector;
 import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
@@ -561,6 +562,57 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
             out.println(SvgGenerator.generate(svgTemplate));
         }
         checkContent(SvgGenerator.generate(svgTemplate), "documentDrawCircleSectorFilled.svg");
+    }
+
+
+    @Test
+    public void documentDrawCircleSectorPercentageTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgCircleSector svgCircleSector = new SvgCircleSector(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                0.75);
+        svgCircleSector.getElementAttributes().setFill("red");
+        svgTemplate.addElement(svgCircleSector);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawCircleSectorPercentage.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawCircleSectorPercentage.svg");
+    }
+
+
+    @Test
+    public void documentDrawRectangleSectorFilledTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgRectangleSector svgRectangleSector = new SvgRectangleSector(0, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 2 + "", SvgTemplate.DEFAULT_HEIGHT / 2 + "",
+                0, 240);
+        svgRectangleSector.getElementAttributes().setFill("red");
+        svgTemplate.addElement(svgRectangleSector);
+
+        final SvgRectangleSector svgRectangleSector2 = new SvgRectangleSector(SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 2 + "", SvgTemplate.DEFAULT_HEIGHT / 2 + "",
+                60, 290);
+        svgRectangleSector2.getElementAttributes().setFill("green");
+        svgTemplate.addElement(svgRectangleSector2);
+
+        final SvgRectangleSector svgRectangleSector3 = new SvgRectangleSector(0, SvgTemplate.DEFAULT_HEIGHT,
+                SvgTemplate.DEFAULT_WIDTH / 2 + "", SvgTemplate.DEFAULT_HEIGHT / 2 + "",
+                110, 190);
+        svgRectangleSector3.getElementAttributes().setFill("blue");
+        svgTemplate.addElement(svgRectangleSector3);
+
+        final SvgRectangleSector svgRectangleSector4 = new SvgRectangleSector(SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT,
+                SvgTemplate.DEFAULT_WIDTH / 2 + "", SvgTemplate.DEFAULT_HEIGHT / 2 + "",
+                0, 120);
+        svgRectangleSector4.getElementAttributes().setFill("yellow");
+        svgTemplate.addElement(svgRectangleSector4);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "documentDrawRectangleSectorFilled.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "documentDrawRectangleSectorFilled.svg");
     }
 
 

@@ -57,4 +57,12 @@ public class Point extends PathElement {
                 + getY()
                 + " ";
     }
+
+    @Override
+    public String toString() {
+        return "Point{"
+                + "x=" + x
+                + ", y=" + y
+                + '}';
+    }
 }

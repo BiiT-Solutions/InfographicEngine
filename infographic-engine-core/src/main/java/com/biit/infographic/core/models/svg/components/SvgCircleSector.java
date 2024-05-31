@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class SvgCircleSector extends SvgAreaElement {
-    private static final int HALF_CIRCLE_DEGREES = 180;
+    private static final int CIRCLE_DEGREES = 360;
 
     @JsonProperty("radius")
     private Long radius;
@@ -30,6 +30,24 @@ public class SvgCircleSector extends SvgAreaElement {
 
     public SvgCircleSector() {
         this(new ElementAttributes());
+    }
+
+
+    /**
+     * Create a sector.
+     *
+     * @param xCoordinate x for the circle.
+     * @param yCoordinate y for the circle.
+     * @param radius      radius of the circle.
+     * @param percentage  percentage filled up [0, 1]
+     */
+    public SvgCircleSector(Number xCoordinate, Number yCoordinate, Number radius, Number percentage) {
+        this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
+                radius != null ? radius.longValue() : 0, 0,
+                CIRCLE_DEGREES * percentage.doubleValue());
+        if (percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
+            throw new IllegalArgumentException("percentage must be between 0 and 1");
+        }
     }
 
     public SvgCircleSector(Number xCoordinate, Number yCoordinate, Number radius, Number startAngle, Number endAngle) {
@@ -92,7 +110,7 @@ public class SvgCircleSector extends SvgAreaElement {
         final Point start = polarToCartesian(x, y, radius, endAngle);
         final Point end = polarToCartesian(x, y, radius, startAngle);
 
-        final int largeArcFlag = endAngle - startAngle <= HALF_CIRCLE_DEGREES ? 0 : 1;
+        final int largeArcFlag = endAngle - startAngle <= CIRCLE_DEGREES / 2 ? 0 : 1;
 
         path.append(start.getX()).append(" ").append(start.getY()).append(" ")
                 .append("A ").append(radius).append(" ").append(radius).append(" ").append("0 ")
