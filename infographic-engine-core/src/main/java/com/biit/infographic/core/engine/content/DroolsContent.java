@@ -126,6 +126,7 @@ public class DroolsContent {
                                     } else {
                                         //If it is a condition, resolve it.
                                         attributeValue = condition.getResult(value);
+                                        InfographicEngineLogger.debug(this.getClass(), "{} return {}.", condition, attributeValue);
                                     }
                                 } else {
                                     if (condition == null) {
@@ -133,6 +134,7 @@ public class DroolsContent {
                                     } else {
                                         //If it is a condition, resolve it.
                                         attributeValue = condition.getResult(value);
+                                        InfographicEngineLogger.debug(this.getClass(), "{} return {}.", condition, attributeValue);
                                     }
                                     InfographicEngineLogger.warning(getClass().getName(), element + " has empty value.");
                                 }
