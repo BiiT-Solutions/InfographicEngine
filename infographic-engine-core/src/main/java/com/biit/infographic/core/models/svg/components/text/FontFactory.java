@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 public final class FontFactory {
-    public static final String FONTS_FOLDER = "fonts";
+    public static final String FONTS_FOLDER = "";
     private static final String FONTS_REGULAR = "Regular";
     private static final long FONTS_POOL_EXPIRATION_TIME = 60 * 60 * 1000;
     //Font Family --> Font Weight --> Font

@@ -90,12 +90,12 @@ public final class FileSearcher {
     public static List<String> getFilesOnFolder(String folderName, String systemVariableFilesLocation) {
         final List<String> files = new ArrayList<>();
         try {
-            files.addAll(FileReader.getResourceFiles(File.separator + folderName));
+            files.addAll(FileReader.getResourceFiles(File.separator + (folderName != null ? folderName : "")));
         } catch (Exception e) {
             SvgGeneratorLogger.errorMessage(FontFactory.class, e);
         }
         final String systemVariablesFilePath = readEnvironmentVariable(systemVariableFilesLocation);
-        final File folder = new File(systemVariablesFilePath + File.separator + folderName);
+        final File folder = new File(systemVariablesFilePath + File.separator + (folderName != null ? folderName : ""));
         SvgGeneratorLogger.info(FileSearcher.class, "Searching fonts on '{}'.", folder.getAbsolutePath());
         if (folder.listFiles() != null) {
             files.addAll(Arrays.stream(Objects.requireNonNull(folder.listFiles())).map(File::getName).collect(Collectors.toSet()));
