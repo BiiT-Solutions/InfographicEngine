@@ -9,7 +9,7 @@ public class TestLogging extends BasicLogger {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestLogging.class);
 
     /**
-     * Events that have business meaning (i.e. creating category, deleting form,
+     * Events that have business meaning (i.e., creating category, deleting form,
      * ...). To follow user actions.
      *
      * @param className       the name of the class to log.
@@ -25,7 +25,7 @@ public class TestLogging extends BasicLogger {
     }
 
     /**
-     * Shows not critical errors. I.e. Email address not found, permissions not
+     * Shows not critical errors. I.e., Email address not found, permissions not
      * allowed for this user, ...
      *
      * @param className       the name of the class to log.
