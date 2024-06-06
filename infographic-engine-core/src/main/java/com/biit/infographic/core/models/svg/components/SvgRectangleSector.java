@@ -3,6 +3,7 @@ package com.biit.infographic.core.models.svg.components;
 import com.biit.infographic.core.exceptions.InvalidParameterException;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
+import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.serialization.SvgRectangleSectorDeserializer;
@@ -131,13 +132,33 @@ public class SvgRectangleSector extends SvgAreaElement {
         return elements;
     }
 
+    /**
+     * Stroke is included on the X and must be subtracted.
+     *
+     * @return the calculated coordinate
+     */
+    protected Double generateRealXCoordinate() {
+        return (getElementAttributes().getXCoordinate()
+                + (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
+    }
+
+    /**
+     * Stroke is included on the y and must be subtracted.
+     *
+     * @return the calculated coordinate
+     */
+    protected Double generateRealYCoordinate() {
+        return (getElementAttributes().getYCoordinate() + getElementAttributes().getHeight()
+                + (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
+    }
+
 
     private String createSection() {
         final StringBuilder path = new StringBuilder();
 
         //Start at the middle.
-        final Point center = new Point(getElementAttributes().getXCoordinate() + (getElementAttributes().getWidth() / 2),
-                getElementAttributes().getYCoordinate() - (getElementAttributes().getHeight() / 2));
+        final Point center = new Point(generateRealXCoordinate() + (getElementAttributes().getWidth() / 2),
+                generateRealYCoordinate() - (getElementAttributes().getHeight() / 2));
         path.append(center.getX()).append(" ").append(center.getY()).append(" ");
 
         //Go to the first intersection of the angle with the square.
@@ -145,23 +166,23 @@ public class SvgRectangleSector extends SvgAreaElement {
         path.append(angleZeroIntersection.getX()).append(",").append(angleZeroIntersection.getY()).append(" ");
         //Add needed square corners;
         if (getStartAngle() < FIRST_CORNER_DEGREES && getCalculatedEndAngle() > FIRST_CORNER_DEGREES) {
-            path.append(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth()).append(",")
-                    .append(getElementAttributes().getYCoordinate() - getElementAttributes().getHeight()).append(" ");
+            path.append(generateRealXCoordinate() + getElementAttributes().getWidth()).append(",")
+                    .append(generateRealYCoordinate() - getElementAttributes().getHeight()).append(" ");
         }
 
         if (getStartAngle() < SECOND_CORNER_DEGREES && getCalculatedEndAngle() > SECOND_CORNER_DEGREES) {
-            path.append(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth()).append(",")
-                    .append(getElementAttributes().getYCoordinate()).append(" ");
+            path.append(generateRealXCoordinate() + getElementAttributes().getWidth()).append(",")
+                    .append(generateRealYCoordinate()).append(" ");
         }
 
         if (getStartAngle() < THIRD_CORNER_DEGREES && getCalculatedEndAngle() > THIRD_CORNER_DEGREES) {
-            path.append(getElementAttributes().getXCoordinate()).append(",")
-                    .append(getElementAttributes().getYCoordinate()).append(" ");
+            path.append(generateRealXCoordinate()).append(",")
+                    .append(generateRealYCoordinate()).append(" ");
         }
 
         if (getStartAngle() < FORTH_CORNER_DEGREES && getCalculatedEndAngle() > FORTH_CORNER_DEGREES) {
-            path.append(getElementAttributes().getXCoordinate()).append(",")
-                    .append(getElementAttributes().getYCoordinate() - getElementAttributes().getHeight()).append(" ");
+            path.append(generateRealXCoordinate()).append(",")
+                    .append(generateRealYCoordinate() - getElementAttributes().getHeight()).append(" ");
         }
 
         final Point angleIntersection = getIntesectionPoint(getCalculatedEndAngle());
@@ -172,8 +193,8 @@ public class SvgRectangleSector extends SvgAreaElement {
 
 
     private Point getIntesectionPoint(long angleInDegrees) {
-        final Point center = new Point(getElementAttributes().getXCoordinate() + (double) getElementAttributes().getWidth() / 2,
-                getElementAttributes().getYCoordinate() - (double) getElementAttributes().getHeight() / 2);
+        final Point center = new Point(generateRealXCoordinate() + (double) getElementAttributes().getWidth() / 2,
+                generateRealYCoordinate() - (double) getElementAttributes().getHeight() / 2);
         final Point anglePoint = polarToCartesian(center.getX(), center.getY(),
                 (long) (Math.max(getElementAttributes().getWidth(), getElementAttributes().getHeight()) * LATERAL_TO_RADIUS),
                 angleInDegrees);
@@ -197,39 +218,39 @@ public class SvgRectangleSector extends SvgAreaElement {
     private Point getStartSquareLateral(long angleInDegrees) {
         angleInDegrees = angleInDegrees % CIRCLE_DEGREES;
         if (angleInDegrees < FIRST_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate(),
-                    getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
+            return new Point(generateRealXCoordinate(),
+                    generateRealYCoordinate() - getElementAttributes().getHeight());
         } else if (angleInDegrees < SECOND_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
-                    getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
+            return new Point(generateRealXCoordinate() + getElementAttributes().getWidth(),
+                    generateRealYCoordinate() - getElementAttributes().getHeight());
         } else if (angleInDegrees < THIRD_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
-                    getElementAttributes().getYCoordinate());
+            return new Point(generateRealXCoordinate() + getElementAttributes().getWidth(),
+                    generateRealYCoordinate());
         } else if (angleInDegrees < FORTH_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate(),
-                    getElementAttributes().getYCoordinate());
+            return new Point(generateRealXCoordinate(),
+                    generateRealYCoordinate());
         }
-        return new Point(getElementAttributes().getXCoordinate(),
-                getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
+        return new Point(generateRealXCoordinate(),
+                generateRealYCoordinate() - getElementAttributes().getHeight());
     }
 
     private Point getEndSquareLateral(long angleInDegrees) {
         angleInDegrees = angleInDegrees % CIRCLE_DEGREES;
         if (angleInDegrees < FIRST_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
-                    getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
+            return new Point(generateRealXCoordinate() + getElementAttributes().getWidth(),
+                    generateRealYCoordinate() - getElementAttributes().getHeight());
         } else if (angleInDegrees < SECOND_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
-                    getElementAttributes().getYCoordinate());
+            return new Point(generateRealXCoordinate() + getElementAttributes().getWidth(),
+                    generateRealYCoordinate());
         } else if (angleInDegrees < THIRD_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate(),
-                    getElementAttributes().getYCoordinate());
+            return new Point(generateRealXCoordinate(),
+                    generateRealYCoordinate());
         } else if (angleInDegrees < FORTH_CORNER_DEGREES) {
-            return new Point(getElementAttributes().getXCoordinate(),
-                    getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
+            return new Point(generateRealXCoordinate(),
+                    generateRealYCoordinate() - getElementAttributes().getHeight());
         }
-        return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
-                getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
+        return new Point(generateRealXCoordinate() + getElementAttributes().getWidth(),
+                generateRealYCoordinate() - getElementAttributes().getHeight());
     }
 
 

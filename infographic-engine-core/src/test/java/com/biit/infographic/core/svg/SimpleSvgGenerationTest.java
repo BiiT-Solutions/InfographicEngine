@@ -632,6 +632,49 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         checkContent(SvgGenerator.generate(svgTemplate), "documentDrawRectangleSectorFilled.svg");
     }
 
+    @Test
+    public void compareCoordinatesRectangleAndSectionTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+
+        final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "yellow");
+        svgTemplate.addElement(rectangle);
+
+        final SvgRectangleSector svgRectangleSector = new SvgRectangleSector(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                0, 240);
+        svgRectangleSector.getElementAttributes().setFill("red");
+        svgTemplate.addElement(svgRectangleSector);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "compareCoordinatesRectangleAndSection.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "compareCoordinatesRectangleAndSection.svg");
+    }
+
+
+    @Test
+    public void compareCoordinatesCircleAndSectionTest() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+
+        final SvgCircle circle = new SvgCircle(0, 0,
+                SvgTemplate.DEFAULT_WIDTH / 2);
+        circle.getElementAttributes().setFill("blue");
+        svgTemplate.addElement(circle);
+
+        final SvgCircleSector svgCircleSector = new SvgCircleSector(0, 0,
+                SvgTemplate.DEFAULT_HEIGHT / 2, 0.75);
+        svgCircleSector.getElementAttributes().setFill("red");
+        svgTemplate.addElement(svgCircleSector);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "compareCoordinatesRectangleAndSection.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+        checkContent(SvgGenerator.generate(svgTemplate), "compareCoordinatesRectangleAndSection.svg");
+    }
+
 
     @AfterClass
     public void removeFolder() {
