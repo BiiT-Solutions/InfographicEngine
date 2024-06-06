@@ -119,7 +119,11 @@ public class SvgCircleSector extends SvgAreaElement {
         if (endAngle != null && (endAngle != 0 || percentage == null)) {
             return endAngle;
         }
-        return (long) Math.min(CIRCLE_DEGREES, CIRCLE_DEGREES * Double.parseDouble(percentage.isBlank() ? "0" : percentage));
+        try {
+            return (long) Math.min(CIRCLE_DEGREES, CIRCLE_DEGREES * Double.parseDouble(percentage.isBlank() ? "0" : percentage));
+        } catch (NumberFormatException nfe) {
+            return 0L;
+        }
     }
 
     public void setEndAngle(Long endAngle) {
