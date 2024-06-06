@@ -8,6 +8,7 @@ import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgLink;
 import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
+import com.biit.infographic.core.models.svg.components.SvgRectangleSector;
 import com.biit.infographic.core.models.svg.components.SvgScript;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
@@ -27,6 +28,7 @@ public enum ElementType {
     EMBEDDED_SVG(SvgEmbedded.class),
     IMAGE(SvgImage.class),
     RECTANGLE(SvgRectangle.class),
+    RECTANGLE_SECTOR(SvgRectangleSector.class),
     CIRCLE(SvgCircle.class),
     CIRCLE_SECTOR(SvgCircleSector.class),
     ELLIPSE(SvgEllipse.class),

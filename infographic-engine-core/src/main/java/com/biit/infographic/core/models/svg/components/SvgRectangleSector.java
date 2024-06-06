@@ -37,7 +37,7 @@ public class SvgRectangleSector extends SvgAreaElement {
 
     public SvgRectangleSector(ElementAttributes elementAttributes) {
         super(elementAttributes);
-        setElementType(ElementType.CIRCLE_SECTOR);
+        setElementType(ElementType.RECTANGLE_SECTOR);
     }
 
     public SvgRectangleSector() {
