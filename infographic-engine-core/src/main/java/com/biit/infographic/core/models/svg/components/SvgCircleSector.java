@@ -2,9 +2,11 @@ package com.biit.infographic.core.models.svg.components;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
+import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.serialization.SvgCircleSectorDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -63,11 +65,11 @@ public class SvgCircleSector extends SvgAreaElement {
      */
     public SvgCircleSector(Number xCoordinate, Number yCoordinate, Number radius, Number percentage) {
         this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
-                radius != null ? radius.longValue() : 0, 0,
-                CIRCLE_DEGREES * percentage.doubleValue());
+                radius != null ? radius.longValue() : 0, 0, null);
         if (percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
             throw new IllegalArgumentException("percentage must be between 0 and 1");
         }
+        setPercentage(percentage);
     }
 
     public SvgCircleSector(Number xCoordinate, Number yCoordinate, Number radius, Number startAngle, Number endAngle) {
@@ -88,6 +90,11 @@ public class SvgCircleSector extends SvgAreaElement {
         return radius;
     }
 
+    public Long getRealRadius() {
+        return (long) (radius
+                - (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
+    }
+
     public void setRadius(Long radius) {
         this.radius = radius;
     }
@@ -104,10 +111,15 @@ public class SvgCircleSector extends SvgAreaElement {
     }
 
     public Long getEndAngle() {
-        if (endAngle != null) {
+        return endAngle;
+    }
+
+    @JsonIgnore
+    public Long getCalculatedEndAngle() {
+        if (endAngle != null && (endAngle != 0 || percentage == null)) {
             return endAngle;
         }
-        return (long) (CIRCLE_DEGREES * Double.parseDouble(percentage));
+        return (long) Math.min(CIRCLE_DEGREES, CIRCLE_DEGREES * Double.parseDouble(percentage.isBlank() ? "0" : percentage));
     }
 
     public void setEndAngle(Long endAngle) {
@@ -128,19 +140,26 @@ public class SvgCircleSector extends SvgAreaElement {
         if (percentage == null || percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
             throw new IllegalArgumentException("percentage must be between 0 and 1");
         }
-        setStartAngle(0L);
-        setEndAngle((long) (CIRCLE_DEGREES * percentage.doubleValue()));
+        this.percentage = String.valueOf(percentage);
     }
 
     @Override
     public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
         final ArrayList<Element> elements = new ArrayList<>();
-        final Element sector = doc.createElementNS(NAMESPACE, "path");
+        final Element sector;
+        //Calculate as a Circle
+        if (getCalculatedEndAngle() == CIRCLE_DEGREES) {
+            sector = doc.createElementNS(NAMESPACE, "circle");
+            sector.setAttributeNS(null, "cx", String.valueOf(getElementAttributes().getXCoordinate() + getRadius()));
+            sector.setAttributeNS(null, "cy", String.valueOf(getElementAttributes().getYCoordinate() + getRadius()));
+            sector.setAttributeNS(null, "r", String.valueOf(getRealRadius()));
+        } else {
+            sector = doc.createElementNS(NAMESPACE, "path");
+            sector.setAttributeNS(null, "d", "m " + createArc(getElementAttributes().getXCoordinate() + getRadius(),
+                    getElementAttributes().getYCoordinate() + getRadius(), getRadius(), getStartAngle(), getCalculatedEndAngle()));
+        }
         elements.add(sector);
-
-        sector.setAttributeNS(null, "d", "m " + createArc(getElementAttributes().getXCoordinate(),
-                getElementAttributes().getYCoordinate(), getRadius(), getStartAngle(), getEndAngle()));
         elementStroke(sector);
         elementAttributes(sector);
 

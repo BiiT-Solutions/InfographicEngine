@@ -568,10 +568,15 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleSectorPercentageTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
-        final SvgCircleSector svgCircleSector = new SvgCircleSector(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+        final SvgCircleSector svgCircleSector = new SvgCircleSector(SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
                 0.75);
         svgCircleSector.getElementAttributes().setFill("red");
         svgTemplate.addElement(svgCircleSector);
+
+        final SvgCircleSector svgCircleSector2 = new SvgCircleSector(SvgTemplate.DEFAULT_WIDTH * 0.75, SvgTemplate.DEFAULT_HEIGHT / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
+                1.0);
+        svgCircleSector2.getElementAttributes().setFill("blue");
+        svgTemplate.addElement(svgCircleSector2);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawCircleSectorPercentage.svg")), true)) {
@@ -585,19 +590,19 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     public void documentDrawRectangleSectorFilledTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
         final SvgRectangleSector svgRectangleSector = new SvgRectangleSector(0, SvgTemplate.DEFAULT_HEIGHT / 2,
-                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2 ,
+                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 0, 240);
         svgRectangleSector.getElementAttributes().setFill("red");
         svgTemplate.addElement(svgRectangleSector);
 
         final SvgRectangleSector svgRectangleSector2 = new SvgRectangleSector(SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
-                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2 ,
+                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 60, 290);
         svgRectangleSector2.getElementAttributes().setFill("green");
         svgTemplate.addElement(svgRectangleSector2);
 
         final SvgRectangleSector svgRectangleSector3 = new SvgRectangleSector(0, SvgTemplate.DEFAULT_HEIGHT,
-                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2 ,
+                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 110, 190);
         svgRectangleSector3.getElementAttributes().setFill("blue");
         svgTemplate.addElement(svgRectangleSector3);
@@ -607,6 +612,18 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
                 0, 120);
         svgRectangleSector4.getElementAttributes().setFill("yellow");
         svgTemplate.addElement(svgRectangleSector4);
+
+        final SvgRectangleSector svgRectangleSector5 = new SvgRectangleSector(0, SvgTemplate.DEFAULT_HEIGHT * 1.5,
+                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                0, 350);
+        svgRectangleSector5.getElementAttributes().setFill("magenta");
+        svgTemplate.addElement(svgRectangleSector5);
+
+        final SvgRectangleSector svgRectangleSector6 = new SvgRectangleSector(SvgTemplate.DEFAULT_HEIGHT / 2, SvgTemplate.DEFAULT_HEIGHT * 1.5,
+                SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
+                0, 360);
+        svgRectangleSector6.getElementAttributes().setFill("orange");
+        svgTemplate.addElement(svgRectangleSector6);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
                 + File.separator + "documentDrawRectangleSectorFilled.svg")), true)) {

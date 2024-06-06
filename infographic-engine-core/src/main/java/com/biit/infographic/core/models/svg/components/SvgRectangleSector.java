@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.components.path.Point;
 import com.biit.infographic.core.models.svg.serialization.SvgRectangleSectorDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -51,12 +52,11 @@ public class SvgRectangleSector extends SvgAreaElement {
 
     public SvgRectangleSector(Number xCoordinate, Number yCoordinate, Number width, Number height, Number percentage) {
         this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
-                width, height,
-                0,
-                CIRCLE_DEGREES * percentage.doubleValue());
+                width, height, 0, null);
         if (percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
             throw new IllegalArgumentException("percentage must be between 0 and 1");
         }
+        setPercentage(percentage);
     }
 
     public SvgRectangleSector(Number xCoordinate, Number yCoordinate, Number width, Number height, Number startAngle, Number endAngle) {
@@ -85,10 +85,15 @@ public class SvgRectangleSector extends SvgAreaElement {
     }
 
     public Long getEndAngle() {
-        if (endAngle != null) {
+        return endAngle;
+    }
+
+    @JsonIgnore
+    public Long getCalculatedEndAngle() {
+        if (endAngle != null && (endAngle != 0 || percentage == null)) {
             return endAngle;
         }
-        return (long) (CIRCLE_DEGREES * Double.parseDouble(percentage));
+        return (long) (CIRCLE_DEGREES * Double.parseDouble(percentage.isBlank() ? "0" : percentage));
     }
 
     public void setEndAngle(Long endAngle) {
@@ -109,8 +114,7 @@ public class SvgRectangleSector extends SvgAreaElement {
         if (percentage == null || percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
             throw new IllegalArgumentException("percentage must be between 0 and 1");
         }
-        setStartAngle(0L);
-        setEndAngle((long) (CIRCLE_DEGREES * percentage.doubleValue()));
+        this.percentage = String.valueOf(percentage);
     }
 
     @Override
@@ -140,27 +144,27 @@ public class SvgRectangleSector extends SvgAreaElement {
         final Point angleZeroIntersection = getIntesectionPoint(getStartAngle());
         path.append(angleZeroIntersection.getX()).append(",").append(angleZeroIntersection.getY()).append(" ");
         //Add needed square corners;
-        if (getStartAngle() < FIRST_CORNER_DEGREES && getEndAngle() > FIRST_CORNER_DEGREES) {
+        if (getStartAngle() < FIRST_CORNER_DEGREES && getCalculatedEndAngle() > FIRST_CORNER_DEGREES) {
             path.append(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth()).append(",")
                     .append(getElementAttributes().getYCoordinate() - getElementAttributes().getHeight()).append(" ");
         }
 
-        if (getStartAngle() < SECOND_CORNER_DEGREES && getEndAngle() > SECOND_CORNER_DEGREES) {
+        if (getStartAngle() < SECOND_CORNER_DEGREES && getCalculatedEndAngle() > SECOND_CORNER_DEGREES) {
             path.append(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth()).append(",")
                     .append(getElementAttributes().getYCoordinate()).append(" ");
         }
 
-        if (getStartAngle() < THIRD_CORNER_DEGREES && getEndAngle() > THIRD_CORNER_DEGREES) {
+        if (getStartAngle() < THIRD_CORNER_DEGREES && getCalculatedEndAngle() > THIRD_CORNER_DEGREES) {
             path.append(getElementAttributes().getXCoordinate()).append(",")
                     .append(getElementAttributes().getYCoordinate()).append(" ");
         }
 
-        if (getStartAngle() < FORTH_CORNER_DEGREES && getEndAngle() > FORTH_CORNER_DEGREES) {
-            path.append(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth()).append(",")
-                    .append(getElementAttributes().getYCoordinate()).append(" ");
+        if (getStartAngle() < FORTH_CORNER_DEGREES && getCalculatedEndAngle() > FORTH_CORNER_DEGREES) {
+            path.append(getElementAttributes().getXCoordinate()).append(",")
+                    .append(getElementAttributes().getYCoordinate() - getElementAttributes().getHeight()).append(" ");
         }
 
-        final Point angleIntersection = getIntesectionPoint(getEndAngle());
+        final Point angleIntersection = getIntesectionPoint(getCalculatedEndAngle());
         path.append(angleIntersection.getX()).append(",").append(angleIntersection.getY()).append(" Z");
 
         return path.toString();
@@ -201,10 +205,12 @@ public class SvgRectangleSector extends SvgAreaElement {
         } else if (angleInDegrees < THIRD_CORNER_DEGREES) {
             return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
                     getElementAttributes().getYCoordinate());
-        } else {
+        } else if (angleInDegrees < FORTH_CORNER_DEGREES) {
             return new Point(getElementAttributes().getXCoordinate(),
                     getElementAttributes().getYCoordinate());
         }
+        return new Point(getElementAttributes().getXCoordinate(),
+                getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
     }
 
     private Point getEndSquareLateral(long angleInDegrees) {
@@ -218,10 +224,12 @@ public class SvgRectangleSector extends SvgAreaElement {
         } else if (angleInDegrees < THIRD_CORNER_DEGREES) {
             return new Point(getElementAttributes().getXCoordinate(),
                     getElementAttributes().getYCoordinate());
-        } else {
+        } else if (angleInDegrees < FORTH_CORNER_DEGREES) {
             return new Point(getElementAttributes().getXCoordinate(),
                     getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
         }
+        return new Point(getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(),
+                getElementAttributes().getYCoordinate() - getElementAttributes().getHeight());
     }
 
 
