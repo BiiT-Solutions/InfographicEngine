@@ -4,13 +4,18 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.components.path.Point;
+import com.biit.infographic.core.models.svg.serialization.SvgCircleSectorDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@JsonDeserialize(using = SvgCircleSectorDeserializer.class)
+@JsonRootName(value = "circleSector")
 public class SvgCircleSector extends SvgAreaElement {
     private static final int CIRCLE_DEGREES = 360;
 
@@ -23,6 +28,9 @@ public class SvgCircleSector extends SvgAreaElement {
     @JsonProperty("endAngle")
     private Long endAngle;
 
+    @JsonProperty("percentage")
+    private String percentage;
+
     public SvgCircleSector(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.CIRCLE_SECTOR);
@@ -30,6 +38,18 @@ public class SvgCircleSector extends SvgAreaElement {
 
     public SvgCircleSector() {
         this(new ElementAttributes());
+    }
+
+    /**
+     * Create a sector.
+     *
+     * @param xCoordinate x for the circle.
+     * @param yCoordinate y for the circle.
+     * @param radius      radius of the circle.
+     */
+    public SvgCircleSector(Number xCoordinate, Number yCoordinate, Number radius) {
+        this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
+                radius != null ? radius.longValue() : 0, 0, 0);
     }
 
 
@@ -73,7 +93,10 @@ public class SvgCircleSector extends SvgAreaElement {
     }
 
     public Long getStartAngle() {
-        return startAngle;
+        if (startAngle != null) {
+            return startAngle;
+        }
+        return 0L;
     }
 
     public void setStartAngle(Long startAngle) {
@@ -81,11 +104,32 @@ public class SvgCircleSector extends SvgAreaElement {
     }
 
     public Long getEndAngle() {
-        return endAngle;
+        if (endAngle != null) {
+            return endAngle;
+        }
+        return (long) (CIRCLE_DEGREES * Double.parseDouble(percentage));
     }
 
     public void setEndAngle(Long endAngle) {
         this.endAngle = endAngle;
+    }
+
+    /**
+     * @param percentage
+     */
+    public void setPercentage(String percentage) {
+        this.percentage = percentage;
+    }
+
+    /**
+     * @param percentage percentage filled up [0, 1]
+     */
+    public void setPercentage(Number percentage) {
+        if (percentage == null || percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
+            throw new IllegalArgumentException("percentage must be between 0 and 1");
+        }
+        setStartAngle(0L);
+        setEndAngle((long) (CIRCLE_DEGREES * percentage.doubleValue()));
     }
 
     @Override

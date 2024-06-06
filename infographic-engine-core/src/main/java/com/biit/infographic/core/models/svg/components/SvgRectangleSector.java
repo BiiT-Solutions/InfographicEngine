@@ -5,13 +5,18 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.components.path.Point;
+import com.biit.infographic.core.models.svg.serialization.SvgRectangleSectorDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@JsonDeserialize(using = SvgRectangleSectorDeserializer.class)
+@JsonRootName(value = "rectangleSector")
 public class SvgRectangleSector extends SvgAreaElement {
     private static final double LATERAL_TO_RADIUS = 0.8;
 
@@ -27,6 +32,9 @@ public class SvgRectangleSector extends SvgAreaElement {
     @JsonProperty("endAngle")
     private Long endAngle;
 
+    @JsonProperty("percentage")
+    private String percentage;
+
     public SvgRectangleSector(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.CIRCLE_SECTOR);
@@ -36,7 +44,12 @@ public class SvgRectangleSector extends SvgAreaElement {
         this(new ElementAttributes());
     }
 
-    public SvgRectangleSector(Number xCoordinate, Number yCoordinate, String width, String height, Number percentage) {
+    public SvgRectangleSector(Number xCoordinate, Number yCoordinate, Number width, Number height) {
+        this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
+                width, height, 0, 0);
+    }
+
+    public SvgRectangleSector(Number xCoordinate, Number yCoordinate, Number width, Number height, Number percentage) {
         this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
                 width, height,
                 0,
@@ -46,22 +59,25 @@ public class SvgRectangleSector extends SvgAreaElement {
         }
     }
 
-    public SvgRectangleSector(Number xCoordinate, Number yCoordinate, String width, String height, Number startAngle, Number endAngle) {
+    public SvgRectangleSector(Number xCoordinate, Number yCoordinate, Number width, Number height, Number startAngle, Number endAngle) {
         this(xCoordinate != null ? xCoordinate.longValue() : 0, yCoordinate != null ? yCoordinate.longValue() : 0,
-                width, height,
+                width.longValue(), height.longValue(),
                 startAngle != null ? startAngle.longValue() : 0,
                 endAngle != null ? endAngle.longValue() : 0);
     }
 
-    public SvgRectangleSector(Long xCoordinate, Long yCoordinate, String width, String height, Long startAngle, Long endAngle) {
-        this(new ElementAttributes(xCoordinate, yCoordinate, width, height, null));
+    public SvgRectangleSector(Long xCoordinate, Long yCoordinate, Long width, Long height, Long startAngle, Long endAngle) {
+        this(new ElementAttributes(xCoordinate, yCoordinate, String.valueOf(width), String.valueOf(height), null));
         setStartAngle(startAngle);
         setEndAngle(endAngle);
         getElementStroke().setStrokeWidth(1);
     }
 
     public Long getStartAngle() {
-        return startAngle;
+        if (startAngle != null) {
+            return startAngle;
+        }
+        return 0L;
     }
 
     public void setStartAngle(Long startAngle) {
@@ -69,11 +85,32 @@ public class SvgRectangleSector extends SvgAreaElement {
     }
 
     public Long getEndAngle() {
-        return endAngle;
+        if (endAngle != null) {
+            return endAngle;
+        }
+        return (long) (CIRCLE_DEGREES * Double.parseDouble(percentage));
     }
 
     public void setEndAngle(Long endAngle) {
         this.endAngle = endAngle;
+    }
+
+    /**
+     * @param percentage
+     */
+    public void setPercentage(String percentage) {
+        this.percentage = percentage;
+    }
+
+    /**
+     * @param percentage percentage filled up [0, 1]
+     */
+    public void setPercentage(Number percentage) {
+        if (percentage == null || percentage.doubleValue() < 0 || percentage.doubleValue() > 1) {
+            throw new IllegalArgumentException("percentage must be between 0 and 1");
+        }
+        setStartAngle(0L);
+        setEndAngle((long) (CIRCLE_DEGREES * percentage.doubleValue()));
     }
 
     @Override
