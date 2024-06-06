@@ -669,10 +669,10 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         svgTemplate.addElement(svgCircleSector);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "compareCoordinatesRectangleAndSection.svg")), true)) {
+                + File.separator + "compareCoordinatesCircleAndSection.svg")), true)) {
             out.println(SvgGenerator.generate(svgTemplate));
         }
-        checkContent(SvgGenerator.generate(svgTemplate), "compareCoordinatesRectangleAndSection.svg");
+        checkContent(SvgGenerator.generate(svgTemplate), "compareCoordinatesCircleAndSection.svg");
     }
 
 

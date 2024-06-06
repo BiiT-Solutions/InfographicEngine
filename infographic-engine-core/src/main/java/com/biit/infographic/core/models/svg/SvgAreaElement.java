@@ -138,10 +138,10 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         if (elementAttributes.getCssClass() != null) {
             element.setAttribute("class", elementAttributes.getCssClass());
         }
-        if (elementAttributes.getWidth() != null) {
+        if (elementAttributes.getWidth() != null && generateRealWidth() != null) {
             element.setAttributeNS(null, "width", generateRealWidth());
         }
-        if (elementAttributes.getHeight() != null) {
+        if (elementAttributes.getHeight() != null && generateRealHeight() != null) {
             element.setAttributeNS(null, "height", generateRealHeight());
         }
         final String style = generateStyle(new StringBuilder(getElementAttributes().getStyle())).toString();

@@ -137,6 +137,7 @@ public class SvgRectangleSector extends SvgAreaElement {
      *
      * @return the calculated coordinate
      */
+    @Override
     protected Double generateRealXCoordinate() {
         return (getElementAttributes().getXCoordinate()
                 + (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
@@ -147,9 +148,20 @@ public class SvgRectangleSector extends SvgAreaElement {
      *
      * @return the calculated coordinate
      */
+    @Override
     protected Double generateRealYCoordinate() {
         return (getElementAttributes().getYCoordinate() + getElementAttributes().getHeight()
                 + (getElementStroke().getStrokeAlign() == StrokeAlign.OUTSET ? getElementStroke().getStrokeWidth() : getElementStroke().getStrokeWidth() / 2));
+    }
+
+    @Override
+    protected String generateRealWidth() {
+        return null;
+    }
+
+    @Override
+    protected String generateRealHeight() {
+        return null;
     }
 
 
