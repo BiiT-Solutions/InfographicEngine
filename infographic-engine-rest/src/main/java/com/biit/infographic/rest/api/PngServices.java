@@ -92,7 +92,7 @@ public class PngServices extends ImageServices {
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
-            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
+            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null) {
             createdBy = authentication.getName();
@@ -135,7 +135,7 @@ public class PngServices extends ImageServices {
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
-            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
+            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (createdBy == null) {
             createdBy = authentication.getName();
@@ -178,7 +178,7 @@ public class PngServices extends ImageServices {
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
-            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
+            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws InvalidXmlElementException,
             EmptyPdfBodyException {
         if (createdBy == null) {

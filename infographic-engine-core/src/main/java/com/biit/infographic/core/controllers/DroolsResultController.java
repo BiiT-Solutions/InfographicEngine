@@ -120,16 +120,16 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
         }).toList(), timeZone);
     }
 
-    public DroolsResultDTO findLatest(String name, Integer version, Long organizationId, String createdBy, String timeZone) {
+    public DroolsResultDTO findLatest(String name, Integer version, String organization, String createdBy, String timeZone) {
         return convert(getProvider()
-                .findLatest(name, version, createdBy, organizationId)
+                .findLatest(name, version, createdBy, organization)
                 .orElseThrow(() -> new FormNotFoundException(this.getClass(),
                         "No drools result found with name '" + name + "', version '" + version + "', creator '"
-                                + createdBy + "' and organization '" + organizationId + "'.")));
+                                + createdBy + "' and organization '" + organization + "'.")));
     }
 
-    public List<DroolsResultDTO> findBy(String name, Integer version, Long organizationId, String createdBy,
+    public List<DroolsResultDTO> findBy(String name, Integer version, String organization, String createdBy,
                                         LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
-        return convertAll(getProvider().findBy(name, version, organizationId, createdBy, lowerTimeBoundary, upperTimeBoundary));
+        return convertAll(getProvider().findBy(name, version, organization, createdBy, lowerTimeBoundary, upperTimeBoundary));
     }
 }

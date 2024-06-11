@@ -32,7 +32,7 @@ public class EventConverter {
         } else {
             droolsResult.setFormVersion(1);
         }
-        droolsResult.setOrganizationId(droolsSubmittedForm.getOrganizationId());
+        droolsResult.setOrganization(droolsSubmittedForm.getOrganization());
         return droolsResult;
     }
 
@@ -47,7 +47,7 @@ public class EventConverter {
             receivedForm.setFormName(droolsSubmittedForm.getName());
         }
         receivedForm.setFormVersion(droolsSubmittedForm.getVersion());
-        receivedForm.setOrganizationId(droolsSubmittedForm.getOrganizationId());
+        receivedForm.setOrganization(droolsSubmittedForm.getOrganization());
         return receivedForm;
     }
 

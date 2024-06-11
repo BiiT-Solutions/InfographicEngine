@@ -5,13 +5,13 @@ public class InfographicSearch {
     private Integer version;
     private String createdBy;
 
-    private Long organization;
+    private String organization;
 
     public InfographicSearch() {
         super();
     }
 
-    public InfographicSearch(String form, Integer version, String createdBy, Long organization) {
+    public InfographicSearch(String form, Integer version, String createdBy, String organization) {
         this();
         this.form = form;
         this.version = version;
@@ -43,11 +43,11 @@ public class InfographicSearch {
         this.createdBy = createdBy;
     }
 
-    public Long getOrganization() {
+    public String getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Long organization) {
+    public void setOrganization(String organization) {
         this.organization = organization;
     }
 }

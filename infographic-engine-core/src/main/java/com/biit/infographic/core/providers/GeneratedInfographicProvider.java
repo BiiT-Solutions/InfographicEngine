@@ -22,7 +22,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         final GeneratedInfographic generatedInfographic = new GeneratedInfographic();
         generatedInfographic.setSvgContents(svgContents);
         generatedInfographic.setDroolsSubmittedForm(droolsSubmittedForm.toJson());
-        generatedInfographic.setOrganizationId(droolsSubmittedForm.getOrganizationId());
+        generatedInfographic.setOrganization(droolsSubmittedForm.getOrganization());
         generatedInfographic.setCreatedBy(createdBy);
         //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
         if (formName != null) {
@@ -31,17 +31,17 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
             generatedInfographic.setFormName(droolsSubmittedForm.getName());
         }
         generatedInfographic.setFormVersion(droolsSubmittedForm.getVersion() != null ? droolsSubmittedForm.getVersion() : 1);
-        generatedInfographic.setOrganizationId(droolsSubmittedForm.getOrganizationId());
+        generatedInfographic.setOrganization(droolsSubmittedForm.getOrganization());
         return generatedInfographic;
     }
 
-    public List<GeneratedInfographic> findBy(String name, Integer version, Long organizationId, String createdBy,
+    public List<GeneratedInfographic> findBy(String name, Integer version, String organization, String createdBy,
                                              LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
-        return getRepository().findBy(name, version, organizationId, createdBy, lowerTimeBoundary, upperTimeBoundary);
+        return getRepository().findBy(name, version, organization, createdBy, lowerTimeBoundary, upperTimeBoundary);
     }
 
-    public Optional<GeneratedInfographic> findLatest(String name, Integer version, String createdBy, Long organizationId) {
-        final List<GeneratedInfographic> results = getRepository().findBy(name, version, createdBy, organizationId);
+    public Optional<GeneratedInfographic> findLatest(String name, Integer version, String createdBy, String organization) {
+        final List<GeneratedInfographic> results = getRepository().findBy(name, version, createdBy, organization);
         if (results.isEmpty()) {
             return Optional.empty();
         }

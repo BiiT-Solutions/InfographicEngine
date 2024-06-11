@@ -173,7 +173,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("version", String.valueOf(FORM_VERSION));
         requestParams.add("createdBy", USER_NAME);
 
-        mockMvc.perform(get("/infographic/find/latest")
+        mockMvc.perform(get("/infographics/find/latest")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -223,7 +223,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("version", String.valueOf(FORM_VERSION));
         requestParams.add("createdBy", USER_NAME);
 
-        mockMvc.perform(get("/infographic/find/latest")
+        mockMvc.perform(get("/infographics/find/latest")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -344,7 +344,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("version", "500");
         requestParams.add("createdBy", USER_NAME);
 
-        mockMvc.perform(get("/infographic/find/latest")
+        mockMvc.perform(get("/infographics/find/latest")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -361,7 +361,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("version", String.valueOf(FORM_VERSION));
         requestParams.add("createdBy", USER_NAME + "_not_me");
 
-        mockMvc.perform(get("/infographic/find/latest")
+        mockMvc.perform(get("/infographics/find/latest")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -378,7 +378,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("version", String.valueOf(FORM_VERSION));
         requestParams.add("createdBy", USER_NAME);
 
-        mockMvc.perform(get("/infographic/find/latest")
+        mockMvc.perform(get("/infographics/find/latest")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -396,7 +396,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("version", String.valueOf(FORM_VERSION));
         requestParams.add("createdBy", USER_NAME);
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -415,7 +415,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("createdBy", USER_NAME);
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -434,7 +434,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("form", FORM_NAME);
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -454,7 +454,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("version", String.valueOf(FORM_VERSION));
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -474,7 +474,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("version", String.valueOf(3));
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -494,7 +494,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("from", "2023-01-01T00:00:00.00Z");
         requestParams.add("to", "2050-01-01T00:00:00.00Z");
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -514,7 +514,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         requestParams.add("from", "2049-01-01T00:00:00.00Z");
         requestParams.add("to", "2050-01-01T00:00:00.00Z");
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -534,7 +534,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("createdBy", USER_NAME);
 
-        MvcResult createResult = mockMvc.perform(get("/infographic/find/latest")
+        MvcResult createResult = mockMvc.perform(get("/infographics/find/latest")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

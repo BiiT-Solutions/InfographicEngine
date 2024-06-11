@@ -15,7 +15,7 @@ public class GeneratedInfographicAsJpegDTO extends GeneratedInfographicAsImageDT
         generatedInfographicAsJpegDTO.setId(generatedInfographicDTO.getId());
         generatedInfographicAsJpegDTO.setFormName(generatedInfographicDTO.getFormName());
         generatedInfographicAsJpegDTO.setFormVersion(generatedInfographicDTO.getFormVersion());
-        generatedInfographicAsJpegDTO.setOrganizationId(generatedInfographicDTO.getOrganizationId());
+        generatedInfographicAsJpegDTO.setOrganization(generatedInfographicDTO.getOrganization());
         generatedInfographicAsJpegDTO.setCreatedBy(generatedInfographicDTO.getCreatedBy());
         generatedInfographicAsJpegDTO.setContents(new ArrayList<>());
         for (String svg : generatedInfographicDTO.getSvgContents()) {

@@ -29,7 +29,7 @@ import java.util.List;
         indexes = {
                 @Index(name = "ind_name", columnList = "form_name"),
                 @Index(name = "ind_version", columnList = "form_version"),
-                @Index(name = "ind_organization", columnList = "organization_id")
+                @Index(name = "ind_organization", columnList = "organization")
         })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class GeneratedInfographic extends Element<Long> {
@@ -44,8 +44,8 @@ public class GeneratedInfographic extends Element<Long> {
     @Column(name = "form_version")
     private int formVersion;
 
-    @Column(name = "organization_id")
-    private Long organizationId;
+    @Column(name = "organization")
+    private String organization;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "svg_contents", joinColumns = @JoinColumn(name = "generated_infographic_id"))
@@ -83,12 +83,12 @@ public class GeneratedInfographic extends Element<Long> {
         this.formVersion = formVersion;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public String getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public List<String> getSvgContents() {

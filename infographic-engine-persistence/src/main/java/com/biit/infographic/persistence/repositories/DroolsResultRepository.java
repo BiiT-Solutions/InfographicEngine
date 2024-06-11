@@ -18,7 +18,7 @@ public interface DroolsResultRepository extends ElementRepository<DroolsResult, 
      *
      * @param formName          the organization of the parameters (can be null for any organization).
      * @param formVersion       who must resolve the appointment (can be null for any organizer).
-     * @param organizationId    the status of the appointment (can be null for any status).
+     * @param organization      the organization (can be null for any status).
      * @param createdBy         the type of the appointment (can be null for any type).
      * @param lowerTimeBoundary the lower limit on time for searching an appointment  (can be null for no limit).
      * @param upperTimeBoundary the upper limit on time for searching an appointment  (can be null for no limit).
@@ -28,32 +28,32 @@ public interface DroolsResultRepository extends ElementRepository<DroolsResult, 
             SELECT a FROM DroolsResult a WHERE
             (:formName IS NULL OR a.formName = :formName) AND
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
-            (:organizationId IS NULL OR a.organizationId = :organizationId) AND
+            (:organization IS NULL OR a.organization = :organization) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy) AND
             ((:lowerTimeBoundary IS NULL OR a.createdAt >= :lowerTimeBoundary) AND
             (:upperTimeBoundary IS NULL OR a.createdAt <= :upperTimeBoundary))
             ORDER BY a.createdAt DESC
             """)
-    List<DroolsResult> findBy(String formName, Integer formVersion, Long organizationId, String createdBy,
+    List<DroolsResult> findBy(String formName, Integer formVersion, String organization, String createdBy,
                               LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary);
 
     /**
      * Find all forms that matches the search parameters. If startTime and endTime is defined, will search any appointment inside this range.
      *
-     * @param formName       the organization of the parameters (can be null for any organization).
-     * @param formVersion    who must resolve the appointment (can be null for any organizer).
-     * @param organizationId the status of the appointment (can be null for any status).
-     * @param createdBy      the type of the appointment (can be null for any type).
+     * @param formName     the organization of the parameters (can be null for any organization).
+     * @param formVersion  who must resolve the appointment (can be null for any organizer).
+     * @param organization the organization (can be null for any status).
+     * @param createdBy    the type of the appointment (can be null for any type).
      * @return a list of appointments.
      */
     @Query("""
             SELECT a FROM DroolsResult a WHERE
             (:formName IS NULL OR a.formName = :formName) AND
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
-            (:organizationId IS NULL OR a.organizationId = :organizationId) AND
+            (:organization IS NULL OR a.organization = :organization) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy)
             ORDER BY a.createdAt DESC
             """)
-    List<DroolsResult> findBy(String formName, Integer formVersion, String createdBy, Long organizationId);
+    List<DroolsResult> findBy(String formName, Integer formVersion, String createdBy, String organization);
 
 }

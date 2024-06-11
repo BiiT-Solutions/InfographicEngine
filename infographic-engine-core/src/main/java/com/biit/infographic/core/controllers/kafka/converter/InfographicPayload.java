@@ -13,7 +13,7 @@ public class InfographicPayload extends Element<Long> implements EventPayload {
 
     private int formVersion;
 
-    private Long organizationId;
+    private String organization;
 
     private List<String> svgContents;
 
@@ -43,12 +43,12 @@ public class InfographicPayload extends Element<Long> implements EventPayload {
         this.formVersion = formVersion;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public String getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public List<String> getSvgContents() {

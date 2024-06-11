@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("/infographic")
+@RequestMapping("/infographics")
 @SecurityRequirement(name = "bearerAuth")
 public class GeneratedInfographicService extends ElementServices<GeneratedInfographic, Long, GeneratedInfographicDTO, GeneratedInfographicRepository,
         GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter, GeneratedInfographicController> {
@@ -98,7 +98,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
-            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
+            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-01T00:00:00.00Z")
             @RequestParam(value = "from", required = false) OffsetDateTime from,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-31T23:59:59.99Z")
@@ -133,7 +133,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
-            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
+            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null) {
             createdBy = authentication.getName();
@@ -162,7 +162,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
-            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
+            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null) {
             createdBy = authentication.getName();
@@ -191,7 +191,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
-            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) Long organization,
+            @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null) {
             createdBy = authentication.getName();

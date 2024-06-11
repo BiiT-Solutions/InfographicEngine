@@ -25,7 +25,7 @@ import java.util.Objects;
         indexes = {
                 @Index(name = "ind_name", columnList = "form_name"),
                 @Index(name = "ind_version", columnList = "form_version"),
-                @Index(name = "ind_organization", columnList = "organization_id")
+                @Index(name = "ind_organization", columnList = "organization")
         })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class DroolsResult extends Element<Long> {
@@ -40,8 +40,8 @@ public class DroolsResult extends Element<Long> {
     @Column(name = "form_version")
     private int formVersion;
 
-    @Column(name = "organization_id")
-    private Long organizationId;
+    @Column(name = "organization")
+    private String organization;
 
     @Column(name = "created_by")
     private String createdBy;
@@ -77,12 +77,12 @@ public class DroolsResult extends Element<Long> {
         this.formVersion = Objects.requireNonNullElse(formVersion, 1);
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public String getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public String getCreatedBy() {

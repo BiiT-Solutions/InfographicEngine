@@ -32,16 +32,16 @@ public class GeneratedInfographicController extends ElementController<GeneratedI
     }
 
 
-    public GeneratedInfographicDTO findLatest(String name, Integer version, Long organizationId, String createdBy) {
+    public GeneratedInfographicDTO findLatest(String name, Integer version, String organization, String createdBy) {
         return convert(getProvider()
-                .findLatest(name, version, createdBy, organizationId)
+                .findLatest(name, version, createdBy, organization)
                 .orElseThrow(() -> new FormNotFoundException(this.getClass(),
                         "No infographic found with name '" + name + "', version '" + version + "', creator '"
-                                + createdBy + "' and organization '" + organizationId + "'.", ExceptionType.DEBUG)));
+                                + createdBy + "' and organization '" + organization + "'.", ExceptionType.DEBUG)));
     }
 
-    public List<GeneratedInfographicDTO> findBy(String name, Integer version, Long organizationId, String createdBy,
+    public List<GeneratedInfographicDTO> findBy(String name, Integer version, String organization, String createdBy,
                                                 LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
-        return convertAll(getProvider().findBy(name, version, organizationId, createdBy, lowerTimeBoundary, upperTimeBoundary));
+        return convertAll(getProvider().findBy(name, version, organization, createdBy, lowerTimeBoundary, upperTimeBoundary));
     }
 }

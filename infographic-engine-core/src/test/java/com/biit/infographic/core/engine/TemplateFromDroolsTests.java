@@ -30,7 +30,7 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
     private static final String APPLICATION_NAME = "Test";
     private static final String FORM_NAME = "TheForm";
     private static final Integer FORM_VERSION = 3;
-    private static final Long FORM_ORGANIZATION = 23L;
+    private static final String FORM_ORGANIZATION = "The Organization";
 
     private static final String DROOLS_VARIABLE_NAME = "Score";
     private static final String USER = "dummy@user.com";
@@ -71,7 +71,7 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
         droolsSubmittedForm.setApplicationName(APPLICATION_NAME);
         droolsSubmittedForm.setTag(FORM_NAME);
         droolsSubmittedForm.setVersion(FORM_VERSION);
-        droolsSubmittedForm.setOrganizationId(FORM_ORGANIZATION);
+        droolsSubmittedForm.setOrganization(FORM_ORGANIZATION);
 
         DroolsSubmittedCategory category = new DroolsSubmittedCategory("The Category");
         droolsSubmittedForm.addChild(category);
