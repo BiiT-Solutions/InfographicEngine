@@ -57,7 +57,7 @@ public class EventConverter {
         return infographicPayload;
     }
 
-    public Event getInfographicEvent(GeneratedInfographic generatedInfographic, String executedBy) {
+    public Event getInfographicEvent(GeneratedInfographic generatedInfographic, String executedBy, String organization) {
         final InfographicPayload eventPayload = generatePayload(generatedInfographic);
         final Event event = new Event(eventPayload);
         event.setCreatedBy(executedBy);
@@ -68,6 +68,7 @@ public class EventConverter {
         event.setReplyTo(applicationName);
         event.setTag(generatedInfographic.getFormName());
         event.setCustomProperty(EventCustomProperties.FACT_TYPE, INFOGRAPHIC_VARIABLE_EVENT_TYPE);
+        event.setOrganization(organization);
         return event;
     }
 }
