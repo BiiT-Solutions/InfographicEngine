@@ -40,6 +40,7 @@ public class DatabaseConfiguration {
                                                                           @Qualifier("infographicEngineDataSource") DataSource dataSource) {
         final HashMap<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", environment.getProperty("spring.infographic.datasource.jpa.hibernate.ddl-auto"));
+        properties.put("hibernate.dialect", environment.getProperty("spring.infographic.datasource.hibernate.dialect"));
         return builder.dataSource(dataSource).properties(properties).packages(PACKAGE).build();
     }
 
