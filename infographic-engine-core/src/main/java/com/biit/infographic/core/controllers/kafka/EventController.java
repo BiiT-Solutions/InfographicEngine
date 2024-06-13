@@ -4,6 +4,7 @@ import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
 import com.biit.infographic.logger.EventsLogger;
+import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.kafka.consumers.EventListener;
 import com.biit.kafka.events.Event;
@@ -30,16 +31,19 @@ public class EventController {
 
     private final DroolsResultController droolsResultController;
 
+    private final DroolsEventSender droolsEventSender;
+
 
     public EventController(@Autowired(required = false) EventListener eventListener,
                            EventConverter eventConverter,
                            DroolsResultRepository droolsResultRepository,
-                           DroolsResultController droolsResultController) {
+                           DroolsResultController droolsResultController, DroolsEventSender droolsEventSender) {
         this.eventConverter = eventConverter;
         this.droolsResultRepository = droolsResultRepository;
         this.droolsResultController = droolsResultController;
+        this.droolsEventSender = droolsEventSender;
 
-        //Listen to topic
+        //Listen to a topic
         if (eventListener != null) {
             eventListener.addListener((event, offset, groupId, key, partition, topic, timeStamp) ->
                     eventHandler(event, groupId, key, partition, topic, timeStamp));
@@ -67,7 +71,9 @@ public class EventController {
             droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
             EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
             //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
-            droolsResultController.process(droolsForm, event.getTag(), createdBy, event.getOrganization(), null);
+            final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
+                    event.getOrganization(), null);
+            droolsEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
         } catch (JsonProcessingException e) {
             EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
             EventsLogger.errorMessage(this.getClass(), e);

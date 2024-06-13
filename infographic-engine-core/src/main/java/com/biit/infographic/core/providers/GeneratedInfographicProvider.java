@@ -18,20 +18,23 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
     }
 
     public GeneratedInfographic createGeneratedInfographic(DroolsSubmittedForm droolsSubmittedForm, List<String> svgContents,
-                                                           String formName, String createdBy) {
+                                                           String formName, String createdBy, String organization) {
         final GeneratedInfographic generatedInfographic = new GeneratedInfographic();
         generatedInfographic.setSvgContents(svgContents);
         generatedInfographic.setDroolsSubmittedForm(droolsSubmittedForm.toJson());
-        generatedInfographic.setOrganization(droolsSubmittedForm.getOrganization());
+        if (organization != null) {
+            generatedInfographic.setOrganization(organization);
+        } else {
+            generatedInfographic.setOrganization(droolsSubmittedForm.getOrganization());
+        }
         generatedInfographic.setCreatedBy(createdBy);
-        //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
+        //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
         if (formName != null) {
             generatedInfographic.setFormName(formName);
         } else {
             generatedInfographic.setFormName(droolsSubmittedForm.getName());
         }
         generatedInfographic.setFormVersion(droolsSubmittedForm.getVersion() != null ? droolsSubmittedForm.getVersion() : 1);
-        generatedInfographic.setOrganization(droolsSubmittedForm.getOrganization());
         return generatedInfographic;
     }
 

@@ -2,7 +2,6 @@ package com.biit.infographic.core.controllers;
 
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.kafka.DroolsEventSender;
 import com.biit.infographic.core.converters.DroolsResultConverter;
 import com.biit.infographic.core.converters.models.DroolsResultConverterRequest;
 import com.biit.infographic.core.engine.InfographicTemplate;
@@ -37,17 +36,16 @@ import java.util.Set;
 public class DroolsResultController extends ElementController<DroolsResult, Long, DroolsResultDTO, DroolsResultRepository,
         DroolsResultProvider, DroolsResultConverterRequest, DroolsResultConverter> {
 
-    private final DroolsEventSender droolsEventSender;
+
     private final GeneratedInfographicProvider generatedInfographicProvider;
     private final InfographicEngineController infographicEngineController;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter, DroolsEventSender droolsEventSender,
+    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter,
                                      GeneratedInfographicProvider generatedInfographicProvider,
                                      InfographicEngineController infographicEngineController, ObjectMapper objectMapper) {
         super(provider, converter);
-        this.droolsEventSender = droolsEventSender;
         this.generatedInfographicProvider = generatedInfographicProvider;
         this.infographicEngineController = infographicEngineController;
         this.objectMapper = objectMapper;
@@ -59,22 +57,19 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
     }
 
     /**
-     * Gets the drools answer, executes a template and generate a SVG.
+     * Gets the drools answer, executes a template and generate an SVG.
      *
      * @param droolsSubmittedForm the answers obtained from base form drool engine.
      * @param createdBy           the owner of the form.
      */
-    public void process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String organization, String timeZone) {
+    public GeneratedInfographic process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String organization, String timeZone) {
         //Generate SVG.
         final List<String> svgContents = executeFromTemplates(droolsSubmittedForm, createdBy, timeZone);
 
         //Store SVG.
         final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents,
-                formName, createdBy);
-        generatedInfographicProvider.save(generatedInfographic);
-
-        //Send a new event.
-        droolsEventSender.sendResultEvents(generatedInfographic, createdBy, organization);
+                formName, createdBy, organization);
+        return generatedInfographicProvider.save(generatedInfographic);
     }
 
     public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, String createdBy, String timeZone) {
