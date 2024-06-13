@@ -84,7 +84,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             Parameters:
             - form: the form name.
             - version: the form version.
-            - createdBy: who has filled up the form.
+            - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
@@ -104,7 +104,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-31T23:59:59.99Z")
             @RequestParam(value = "to", required = false) OffsetDateTime to,
             Authentication authentication, HttpServletRequest request) {
-        if (createdBy == null) {
+        if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
 
@@ -119,7 +119,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             Parameters:
             - form: the form name.
             - version: the form version.
-            - createdBy: who has filled up the form.
+            - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
@@ -135,7 +135,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request) {
-        if (createdBy == null) {
+        if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
         canBeDoneForDifferentUsers(createdBy, authentication);
@@ -148,7 +148,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             Parameters:
             - form: the form name.
             - version: the form version.
-            - createdBy: who has filled up the form.
+            - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
@@ -164,7 +164,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request) {
-        if (createdBy == null) {
+        if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
         canBeDoneForDifferentUsers(createdBy, authentication);
@@ -177,7 +177,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             Parameters:
             - form: the form name.
             - version: the form version.
-            - createdBy: who has filled up the form.
+            - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
@@ -193,7 +193,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             Authentication authentication, HttpServletRequest request) {
-        if (createdBy == null) {
+        if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
         canBeDoneForDifferentUsers(createdBy, authentication);
