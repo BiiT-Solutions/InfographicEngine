@@ -1,6 +1,7 @@
 package com.biit.infographic.core.pdf;
 
 import com.biit.infographic.logger.InfographicEngineLogger;
+import com.biit.server.utils.pdf.PdfDocument;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.FontFactory;
@@ -62,8 +63,10 @@ public class InfographicFromSvg extends InfographicPdf {
         this.svgs.forEach(svg -> {
             try {
                 final GraphicsNode graphicsNode = convert(svg);
-                final float svgImageWidth = (float) graphicsNode.getPrimitiveBounds().getWidth();
-                final float svgImageHeight = (float) graphicsNode.getPrimitiveBounds().getHeight();
+                final float svgImageWidth = (float) graphicsNode.getPrimitiveBounds().getWidth()
+                        - (PdfDocument.DEFAULT_RIGHT_MARGIN + PdfDocument.DEFAULT_LEFT_MARGIN);
+                final float svgImageHeight = (float) graphicsNode.getPrimitiveBounds().getHeight()
+                        * (svgImageWidth / (float) graphicsNode.getPrimitiveBounds().getWidth());
 
                 final PdfTemplate template = PdfTemplate.createTemplate(writer, svgImageWidth, svgImageHeight);
 
