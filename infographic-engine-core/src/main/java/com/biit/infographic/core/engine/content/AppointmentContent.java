@@ -38,7 +38,8 @@ public class AppointmentContent {
 
     private final AppointmentProvider appointmentProvider;
     private final UserProvider userProvider;
-    private LocalDateTime dateToCheck;
+    //Only for testing purposes. Emulate the current time.
+    private ZonedDateTime dateToCheck;
 
     private final ValueCalculator valueCalculator;
 
@@ -47,7 +48,6 @@ public class AppointmentContent {
         this.appointmentProvider = appointmentProvider;
         this.userProvider = userProvider;
         this.valueCalculator = valueCalculator;
-        this.dateToCheck = LocalDateTime.now();
     }
 
     public void setAppointmentValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm, String timezone)
@@ -74,7 +74,8 @@ public class AppointmentContent {
                                 //DURATION_TIME/3?ffffff!000000#
                                 final int questionMark = conditions[1].indexOf('?');
                                 parameter.getAttributes().put(attribute, getTimeBasedAction(conditions[1].substring(0, questionMark),
-                                        conditions[1].substring(questionMark + 1), appointment, timezone));
+                                        conditions[1].substring(questionMark + 1), appointment, timezone,
+                                        this.dateToCheck != null ? this.dateToCheck : applyTimezone(LocalDateTime.now(), timezone)));
                             }
                         }
                         //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|STARTING_TIME#
@@ -100,7 +101,7 @@ public class AppointmentContent {
     }
 
 
-    private String getTimeBasedAction(String condition, String action, AppointmentDTO appointment, String timezone) {
+    private String getTimeBasedAction(String condition, String action, AppointmentDTO appointment, String timezone, ZonedDateTime dateToCheck) {
         if (appointment == null) {
             return null;
         }
@@ -116,7 +117,7 @@ public class AppointmentContent {
         final String actionFailure = action.substring(separatorIndex + 1);
 
         final ZonedDateTime startTime = applyTimezone(appointment.getStartTime(), timezone);
-        if (dateToCheck.isBefore(startTime.toLocalDateTime())) {
+        if (dateToCheck.isBefore(startTime)) {
             return actionFailure;
         }
         if (condition.startsWith(DURATION_TIME_OPERATION)) {
@@ -126,9 +127,9 @@ public class AppointmentContent {
             final String operation = condition.substring(DURATION_TIME_OPERATION.length());
 
             try {
-                final LocalDateTime limit = startTime.toLocalDateTime().plusSeconds((long) valueCalculator
+                final ZonedDateTime limit = startTime.plusSeconds((long) valueCalculator
                         .operationExecution(duration.getSeconds() + operation));
-                if (dateToCheck.isBefore(limit)) {
+                if (dateToCheck.isAfter(limit)) {
                     return actionSuccess;
                 }
             } catch (Exception e) {
@@ -162,12 +163,12 @@ public class AppointmentContent {
         return localDateTime.atZone(ZoneOffset.systemDefault());
     }
 
-
-    public LocalDateTime getDateToCheck() {
-        return dateToCheck;
-    }
-
-    public void setDateToCheck(LocalDateTime dateToCheck) {
+    /**
+     * Only for testing purposes. Emulate the current time.
+     *
+     * @param dateToCheck zoned time to check.
+     */
+    public void setDateToCheck(ZonedDateTime dateToCheck) {
         this.dateToCheck = dateToCheck;
     }
 }

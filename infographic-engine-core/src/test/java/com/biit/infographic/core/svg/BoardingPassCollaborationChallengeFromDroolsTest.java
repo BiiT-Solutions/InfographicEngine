@@ -39,7 +39,10 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,12 +61,12 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
     private static final String TEMPLATE_NAME = "Collaboration Challenge";
     private static final String TEMPLATE_BACKGROUND_COLOR = "f0eeed";
 
-    private static final String TEMPLATE_DISABLED_COLOR = "d3d4d4";
     private static final String TEMPLATE_ENABLED_COLOR = "b49057";
+    private static final String TEMPLATE_DISABLED_COLOR = "d3d4d4";
     private static final String TEMPLATE_ENABLED_COLOR_HOVER = "d4c1a1";
 
-    private static final String BUTTON_TEXT_DISABLED_COLOR = "b9b9b9";
     private static final String BUTTON_TEXT_ENABLED_COLOR = "000000";
+    private static final String BUTTON_TEXT_DISABLED_COLOR = "b9b9b9";
 
     private static final String ICON = "images/CADT/Society.svg";
     private static final int ICON_SIZE = 16;
@@ -78,20 +81,20 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
 
 
     private static final int PATH_WIDTH = 4;
-    private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SECOND_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String THIRD_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FORTH_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIRST_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String SECOND_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String THIRD_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String FORTH_PATH_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
 
-    private static final String FIRST_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SECOND_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String THIRD_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String FIFTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
+    private static final String FIRST_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String SECOND_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.25" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String THIRD_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.5" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String FORTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.75" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String FIFTH_CIRCLE_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
 
-    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR + "#";
-    private static final String SUBMIT_BUTTON_HOVER_OPACITY = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR_HOVER + "#";
-    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + ValueCalculator.VALUE_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_DISABLED_COLOR + "#";
+    private static final String SUBMIT_BUTTON_HOVER_OPACITY = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + TEMPLATE_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + TEMPLATE_ENABLED_COLOR_HOVER + "#";
+    private static final String SUBMIT_BUTTON_TEXT_COLOR = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + BUTTON_TEXT_ENABLED_COLOR + ValueCalculator.VALUE_SEPARATION + BUTTON_TEXT_DISABLED_COLOR + "#";
 
     private static final String STARTING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "STARTING_TIME_HOUR#";
     private static final String ENDING_TIME = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "ENDING_TIME_HOUR#";
@@ -329,11 +332,11 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
 
     @BeforeClass
     public void defineAppointment() {
-        LocalDateTime time = LocalDateTime.of(2024, 5, 16, 16, 19, 32);
+        ZonedDateTime time = ZonedDateTime.of(LocalDate.of(2024, 5, 16), LocalTime.of(16, 19, 32), ZoneId.of("Europe/Madrid"));
 
         appointmentContent.setDateToCheck(time);
-        testAppointmentCenterClient.setStartTime(time.minusMinutes(110));
-        testAppointmentCenterClient.setEndTime(time.plusMinutes(10));
+        testAppointmentCenterClient.setStartTime(time.minusMinutes(110).toLocalDateTime());
+        testAppointmentCenterClient.setEndTime(time.plusMinutes(10).toLocalDateTime());
     }
 
     @Test
