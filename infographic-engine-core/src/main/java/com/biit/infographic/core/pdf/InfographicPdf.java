@@ -7,11 +7,6 @@ import com.lowagie.text.pdf.PdfWriter;
 
 public abstract class InfographicPdf extends PdfDocument {
 
-    private static final int DEFAULT_RIGHT_MARGIN = 30;
-    private static final int DEFAULT_LEFT_MARGIN = 30;
-    private static final int DEFAULT_TOP_MARGIN = 30;
-    private static final int DEFAULT_BOTTOM_MARGIN = 30;
-
     public InfographicPdf() {
         super();
         setRightMargin(DEFAULT_RIGHT_MARGIN);

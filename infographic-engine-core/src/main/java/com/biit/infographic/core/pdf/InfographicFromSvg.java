@@ -63,12 +63,12 @@ public class InfographicFromSvg extends InfographicPdf {
         this.svgs.forEach(svg -> {
             try {
                 final GraphicsNode graphicsNode = convert(svg);
-                final float svgImageWidth = (float) graphicsNode.getPrimitiveBounds().getWidth()
-                        - (PdfDocument.DEFAULT_RIGHT_MARGIN + PdfDocument.DEFAULT_LEFT_MARGIN);
-                final float svgImageHeight = (float) graphicsNode.getPrimitiveBounds().getHeight()
-                        * (svgImageWidth / (float) graphicsNode.getPrimitiveBounds().getWidth());
+                final double svgImageWidth = graphicsNode.getPrimitiveBounds().getWidth();
+                final double svgImageHeight = graphicsNode.getPrimitiveBounds().getHeight()
+                        * (svgImageWidth / graphicsNode.getPrimitiveBounds().getWidth());
 
-                final PdfTemplate template = PdfTemplate.createTemplate(writer, svgImageWidth, svgImageHeight);
+                final PdfTemplate template = PdfTemplate.createTemplate(writer, (float) svgImageWidth,
+                        (float) svgImageHeight);
 
                 final Graphics2D g2d = template.createGraphics(template.getWidth(), template.getHeight(), FONT_MAPPER);
                 try {
@@ -78,8 +78,10 @@ public class InfographicFromSvg extends InfographicPdf {
                 }
 
                 final ImgTemplate image = new ImgTemplate(template);
-                if (image.getHeight() > getPageSize().getHeight() || image.getWidth() > getPageSize().getWidth()) {
-                    image.scaleToFit(getPageSize().getWidth(), getPageSize().getHeight());
+                if (image.getHeight() > getPageSize().getHeight() - (PdfDocument.DEFAULT_TOP_MARGIN + PdfDocument.DEFAULT_BOTTOM_MARGIN)
+                        || image.getWidth() > getPageSize().getWidth() - (PdfDocument.DEFAULT_RIGHT_MARGIN + PdfDocument.DEFAULT_LEFT_MARGIN)) {
+                    image.scaleToFit(getPageSize().getWidth() - (PdfDocument.DEFAULT_RIGHT_MARGIN + PdfDocument.DEFAULT_LEFT_MARGIN),
+                            getPageSize().getHeight() - (PdfDocument.DEFAULT_TOP_MARGIN + PdfDocument.DEFAULT_BOTTOM_MARGIN));
                 }
                 document.add(image);
             } catch (IOException e) {
