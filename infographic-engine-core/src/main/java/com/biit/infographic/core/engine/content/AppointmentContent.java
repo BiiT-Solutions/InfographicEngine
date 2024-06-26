@@ -75,7 +75,7 @@ public class AppointmentContent {
                                 final int questionMark = conditions[1].indexOf('?');
                                 parameter.getAttributes().put(attribute, getTimeBasedAction(conditions[1].substring(0, questionMark),
                                         conditions[1].substring(questionMark + 1), appointment, timezone,
-                                        this.dateToCheck != null ? this.dateToCheck : applyTimezone(LocalDateTime.now(), timezone)));
+                                        this.dateToCheck != null ? this.dateToCheck : ZonedDateTime.now()));
                             }
                         }
                         //#APPOINTMENT%TEMPLATE%<<TEMPLATE_NAME>>|STARTING_TIME#
