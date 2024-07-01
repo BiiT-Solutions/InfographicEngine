@@ -1,6 +1,7 @@
 package com.biit.infographic.core.engine.content.value;
 
 import com.biit.infographic.core.exceptions.InvalidParameterException;
+import com.biit.infographic.core.exceptions.MalformedConditionException;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -26,7 +27,11 @@ public class ValueCalculator {
         }
         final String[] condition = actions[0].split(operator.getRepresentation());
         final String[] values = actions[1].split(Pattern.quote(VALUE_SEPARATION));
-        return new Condition(condition[0], operator, condition[1], values[0], values[1]);
+        try {
+            return new Condition(condition[0], operator, condition[1], values[0], values[1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new MalformedConditionException(this.getClass(), "Invalid condition structure on '" + attribute + "'.");
+        }
     }
 
 

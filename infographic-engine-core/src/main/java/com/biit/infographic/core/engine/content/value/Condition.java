@@ -2,8 +2,10 @@ package com.biit.infographic.core.engine.content.value;
 
 import com.biit.infographic.logger.InfographicEngineLogger;
 
-public class Condition {
+import java.util.Set;
 
+public class Condition {
+    private static final String VALUE_ARRAY_SEPARATOR = " ";
     private final String element;
     private final ConditionOperation operator;
     private final String comparedTo;
@@ -51,6 +53,7 @@ public class Condition {
         try {
             return switch (operator) {
                 case EQUALS -> value.equalsIgnoreCase(comparedTo) ? resultIfEquals : resultIfNotEquals;
+                case NOT_EQUALS -> !value.equalsIgnoreCase(comparedTo) ? resultIfEquals : resultIfNotEquals;
                 case LESS ->
                         Double.parseDouble(value) < Double.parseDouble(comparedTo) ? resultIfEquals : resultIfNotEquals;
                 case LESS_EQUALS ->
@@ -59,6 +62,10 @@ public class Condition {
                         Double.parseDouble(value) > Double.parseDouble(comparedTo) ? resultIfEquals : resultIfNotEquals;
                 case GREATER_EQUALS ->
                         Double.parseDouble(value) >= Double.parseDouble(comparedTo) ? resultIfEquals : resultIfNotEquals;
+                case CONTAINS ->
+                        Set.of(value.split(VALUE_ARRAY_SEPARATOR)).contains(comparedTo) ? resultIfEquals : resultIfNotEquals;
+                case NOT_CONTAINS ->
+                        !Set.of(value.split(VALUE_ARRAY_SEPARATOR)).contains(comparedTo) ? resultIfEquals : resultIfNotEquals;
             };
         } catch (NumberFormatException e) {
             InfographicEngineLogger.errorMessage(this.getClass(), e);
