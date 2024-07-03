@@ -26,6 +26,12 @@ public class SvgTemplateDeserializer extends SvgAreaElementDeserializer<SvgTempl
             element.setSvgBackground(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("background").toPrettyString(), SvgBackground.class));
         }
         element.setLayoutType(LayoutType.getType(DeserializerParser.parseString("type", jsonObject)));
+        if (jsonObject.get("embedFonts") != null) {
+            element.setEmbedFonts(DeserializerParser.parseBoolean("embedFonts", jsonObject));
+        }
+        if (jsonObject.get("documentSize") != null) {
+            element.setDocumentSize(DeserializerParser.parseBoolean("documentSize", jsonObject));
+        }
 
         final List<SvgAreaElement> templateElements = new ArrayList<>();
         final JsonNode elementsJson = jsonObject.get("elements");

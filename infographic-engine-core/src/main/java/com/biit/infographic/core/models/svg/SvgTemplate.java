@@ -51,6 +51,9 @@ public class SvgTemplate extends SvgAreaElement {
     @JsonProperty("embedFonts")
     private Boolean embedFonts;
 
+    @JsonProperty("documentSize")
+    private boolean documentSize = true;
+
     public SvgTemplate(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.SVG);
@@ -106,6 +109,14 @@ public class SvgTemplate extends SvgAreaElement {
         return elements;
     }
 
+    public boolean isDocumentSize() {
+        return documentSize;
+    }
+
+    public void setDocumentSize(boolean documentSize) {
+        this.documentSize = documentSize;
+    }
+
     public void setElements(List<SvgAreaElement> elements) {
         this.elements = elements;
     }
@@ -151,10 +162,12 @@ public class SvgTemplate extends SvgAreaElement {
             defineViewBox(svgRoot);
         }
 
-        svgRoot.setAttributeNS(null, "width", String.valueOf(getElementAttributes().getWidth() != null
-                && getElementAttributes().getWidth() != 0 ? getElementAttributes().getWidth() : DEFAULT_WIDTH));
-        svgRoot.setAttributeNS(null, "height", String.valueOf(getElementAttributes().getHeight() != null
-                && getElementAttributes().getHeight() != 0 ? getElementAttributes().getHeight() : DEFAULT_HEIGHT));
+        if (isDocumentSize()) {
+            svgRoot.setAttributeNS(null, "width", String.valueOf(getElementAttributes().getWidth() != null
+                    && getElementAttributes().getWidth() != 0 ? getElementAttributes().getWidth() : DEFAULT_WIDTH));
+            svgRoot.setAttributeNS(null, "height", String.valueOf(getElementAttributes().getHeight() != null
+                    && getElementAttributes().getHeight() != 0 ? getElementAttributes().getHeight() : DEFAULT_HEIGHT));
+        }
 
         generateDefs(doc, svgRoot);
 

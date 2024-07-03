@@ -71,7 +71,7 @@ public class InfographicEngineController {
     }
 
     private List<TreeNode<String>> getSelectableElements() throws MalformedTemplateException {
-        return new InfographicFolder(null).getSelectableElementsTree(getReportPath());
+        return new InfographicFolder(null).getSelectableElementsTree(getInfographicsPath());
     }
 
     public Map<InfographicFileElement, Set<Parameter>> getValues(DroolsSubmittedForm droolsSubmittedForm, Map<InfographicFileElement,
@@ -136,13 +136,13 @@ public class InfographicEngineController {
         return parametersByType;
     }
 
-    private String getReportPath() {
+    private String getInfographicsPath() {
         return INFOGRAPHIC_PATH;
     }
 
 
     private String getTemplateBasePath(DroolsSubmittedForm droolsSubmittedForm) {
-        return getReportPath() + File.separator + droolsSubmittedForm.getName() + "_v"
+        return getInfographicsPath() + File.separator + droolsSubmittedForm.getName() + "_v"
                 + (droolsSubmittedForm.getVersion() != null ? droolsSubmittedForm.getVersion() : 1);
     }
 
@@ -151,7 +151,7 @@ public class InfographicEngineController {
     }
 
     private List<InfographicTemplate> getTemplates(List<TreeNode<String>> selections) throws MalformedTemplateException {
-        final String reportPath = getReportPath();
+        final String reportPath = getInfographicsPath();
         return new InfographicFolder(null).getTemplatesFromPath(reportPath, selections);
     }
 
