@@ -2,6 +2,7 @@ package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementStroke;
+import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.clip.SvgClipPath;
 import com.biit.infographic.core.models.svg.components.SvgLink;
@@ -38,7 +39,9 @@ public abstract class SvgAreaElementDeserializer<T extends SvgAreaElement> exten
             element.setLink(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("link").toPrettyString(), SvgLink.class));
         }
         if (jsonObject.get("clipPath") != null) {
-            element.setClipPath(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(), SvgClipPath.class));
+            //element.setClipPath(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(), SvgClipPath.class));
+            final ElementType elementType = ElementType.fromString(jsonObject.get("clipPath").get("elementType").asText());
+            element.setClipPath((SvgClipPath) ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(), elementType.getRelatedClass()));
         }
     }
 }

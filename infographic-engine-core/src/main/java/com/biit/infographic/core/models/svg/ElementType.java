@@ -1,5 +1,7 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.clip.SvgClipPath;
+import com.biit.infographic.core.models.svg.clip.SvgRectangleClipPath;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgCircleSector;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
@@ -47,6 +49,8 @@ public enum ElementType {
     POINT(Point.class),
     VERTICAL_LINE(VerticalLine.class),
     LINK(SvgLink.class),
+    CLIP_PATH(SvgClipPath.class),
+    RECTANGLE_CLIP_PATH(SvgRectangleClipPath.class),
     ELEMENT_ATTRIBUTES(ElementAttributes.class);
 
     private final Class<?> relatedClass;

@@ -1,5 +1,6 @@
 package com.biit.infographic.core.models.svg.clip;
 
+import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
@@ -29,6 +30,14 @@ public abstract class SvgClipPath extends SvgElement {
 
     @JsonProperty("sourceWidth")
     private Long sourceWidth;
+
+    @JsonProperty("clipType")
+    private ClipType clipType;
+
+    protected SvgClipPath(ClipType clipType) {
+        this.clipType = clipType;
+        setElementType(ElementType.CLIP_PATH);
+    }
 
     protected abstract SvgAreaElement generateArea();
 
@@ -62,6 +71,14 @@ public abstract class SvgClipPath extends SvgElement {
 
     public void setSourceWidth(Long width) {
         this.sourceWidth = width;
+    }
+
+    public void setClipType(ClipType clipType) {
+        this.clipType = clipType;
+    }
+
+    public ClipType getClipType() {
+        return clipType;
     }
 
     @Override

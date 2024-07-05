@@ -151,6 +151,7 @@ public class SvgRectangle extends SvgAreaElement {
             border.getElementAttributes().setFill(null);
             border.setGradient(getElementStroke().getGradient());
         }
+        border.setClipPath(getClipPath());
         return border.generateSvg(doc);
     }
 }

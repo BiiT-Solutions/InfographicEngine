@@ -28,6 +28,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
     @JsonProperty("link")
     private SvgLink link;
 
+    @JsonProperty("clipPath")
     private SvgClipPath clipPath;
 
     public SvgAreaElement() {

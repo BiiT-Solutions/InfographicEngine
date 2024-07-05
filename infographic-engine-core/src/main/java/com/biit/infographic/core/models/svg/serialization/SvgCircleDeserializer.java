@@ -15,7 +15,6 @@ public class SvgCircleDeserializer extends SvgAreaElementDeserializer<SvgCircle>
     @Override
     public void deserialize(SvgCircle element, JsonNode jsonObject, DeserializationContext context) throws IOException {
         super.deserialize(element, jsonObject, context);
-
         element.setRadius(DeserializerParser.parseLong("radius", jsonObject));
     }
 }

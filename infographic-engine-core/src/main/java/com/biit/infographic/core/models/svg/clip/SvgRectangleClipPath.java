@@ -1,6 +1,7 @@
 package com.biit.infographic.core.models.svg.clip;
 
 import com.biit.infographic.core.models.svg.ElementAttributes;
+import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.serialization.SvgRectangleClipPathDeserializer;
@@ -19,10 +20,12 @@ public class SvgRectangleClipPath extends SvgClipPath {
     private ClipDirection clipDirection = ClipDirection.LEFT_TO_RIGHT;
 
     public SvgRectangleClipPath() {
-        super();
+        super(ClipType.RECTANGLE);
+        setElementType(ElementType.RECTANGLE_CLIP_PATH);
     }
 
     public SvgRectangleClipPath(double percentage, ClipDirection clipDirection) {
+        this();
         this.percentage = percentage;
         this.clipDirection = clipDirection;
     }
@@ -64,14 +67,18 @@ public class SvgRectangleClipPath extends SvgClipPath {
 
     private Long getHeight(Long sourceHeight) {
         if (clipDirection == ClipDirection.TOP_TO_BOTTOM || clipDirection == ClipDirection.BOTTOM_TO_TOP) {
-            return Math.round(sourceHeight * getPercentage());
+            if (sourceHeight != null) {
+                return Math.round(sourceHeight * getPercentage());
+            }
         }
         return sourceHeight;
     }
 
     private Long getWidth(Long sourceWidth) {
         if (clipDirection == ClipDirection.RIGHT_TO_LEFT || clipDirection == ClipDirection.LEFT_TO_RIGHT) {
-            return Math.round(sourceWidth * getPercentage());
+            if (sourceWidth != null) {
+                return Math.round(sourceWidth * getPercentage());
+            }
         }
         return sourceWidth;
     }

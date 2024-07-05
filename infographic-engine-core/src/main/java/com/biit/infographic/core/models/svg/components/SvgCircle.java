@@ -47,6 +47,9 @@ public class SvgCircle extends SvgAreaElement {
     }
 
     public Long getRadius() {
+        if (radius == null) {
+            return 0L;
+        }
         return radius;
     }
 
@@ -61,6 +64,7 @@ public class SvgCircle extends SvgAreaElement {
 
     public void setRadius(Long radius) {
         this.radius = radius;
+        updateClipPath();
     }
 
     @Override

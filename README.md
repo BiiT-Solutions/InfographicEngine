@@ -71,6 +71,18 @@ defined as an array of integers where each integer is the length of one dash.
 the border overlaps the figure, `OUTSET` emulated by a path, is drawn outside the figure (only available on
 rectangles and circles) and `INSET` that is not implemented yet.
 
+**clipPath.sourceX** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the x coordinate of the region.
+
+**clipPath.sourceY** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the y coordinate of the region.
+
+**clipPath.sourceHeight** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the height of the region.
+
+**clipPath.sourceWidth** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the width coordinate of the region.
+
 Example:
 
 ```
@@ -128,6 +140,18 @@ Example:
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
+
+**clipPath.sourceX** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the x coordinate of the region.
+
+**clipPath.sourceY** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the y coordinate of the region.
+
+**clipPath.sourceHeight** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the height of the region.
+
+**clipPath.sourceWidth** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the width coordinate of the region.
 
 Example:
 
@@ -292,6 +316,18 @@ defined as an array of integers where each integer is the length of one dash.
 **stroke.strokeAlign** Defines where the border will be drawn. Values are `CENTER` that is the standard, where half of
 the border overlaps the figure, `OUTSET` emulated by a path, is drawn outside the figure (only available on
 rectangles and circles) and `INSET` that is not implemented yet.
+
+**clipPath.sourceX** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the x coordinate of the region.
+
+**clipPath.sourceY** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the y coordinate of the region.
+
+**clipPath.sourceHeight** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the height of the region.
+
+**clipPath.sourceWidth** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the width coordinate of the region.
 
 Example:
 
@@ -504,6 +540,18 @@ set, will be used as the starting point. Define the point as absolute coordinate
 
 **stroke.strokeDash** Defines the pattern of dashes and gaps used to paint the outline of the shape. It is
 defined as an array of integers where each integer is the length of one dash.
+
+**clipPath.sourceX** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the x coordinate of the region.
+
+**clipPath.sourceY** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the y coordinate of the region.
+
+**clipPath.sourceHeight** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the height of the region.
+
+**clipPath.sourceWidth** If defined, a clipping path restricts the region to which paint can be applied. This parameter
+defines the width coordinate of the region.
 
 Example:
 
