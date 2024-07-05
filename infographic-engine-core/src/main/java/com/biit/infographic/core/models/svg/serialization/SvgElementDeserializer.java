@@ -4,7 +4,6 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;

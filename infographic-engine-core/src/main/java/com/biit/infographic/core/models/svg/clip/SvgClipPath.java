@@ -1,11 +1,10 @@
 package com.biit.infographic.core.models.svg.clip;
 
-import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgClipPathDeserializer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
@@ -19,18 +18,51 @@ import java.util.Collection;
 public abstract class SvgClipPath extends SvgElement {
     public static final String ID_PREFIX = "clipPath";
 
-    @JsonIgnore
-    private ElementAttributes elementAttributes;
+    @JsonProperty("sourceX")
+    private Long sourceX;
 
-    public ElementAttributes getElementAttributes() {
-        return elementAttributes;
-    }
+    @JsonProperty("sourceY")
+    private Long sourceY;
 
-    public void setElementAttributes(ElementAttributes elementAttributes) {
-        this.elementAttributes = elementAttributes;
-    }
+    @JsonProperty("sourceHeight")
+    private Long sourceHeight;
+
+    @JsonProperty("sourceWidth")
+    private Long sourceWidth;
 
     protected abstract SvgAreaElement generateArea();
+
+    public Long getSourceX() {
+        return sourceX;
+    }
+
+    public void setSourceX(Long xCoordinate) {
+        this.sourceX = xCoordinate;
+    }
+
+    public Long getSourceY() {
+        return sourceY;
+    }
+
+    public void setSourceY(Long yCoordinate) {
+        this.sourceY = yCoordinate;
+    }
+
+    public Long getSourceHeight() {
+        return sourceHeight;
+    }
+
+    public void setSourceHeight(Long height) {
+        this.sourceHeight = height;
+    }
+
+    public Long getSourceWidth() {
+        return sourceWidth;
+    }
+
+    public void setSourceWidth(Long width) {
+        this.sourceWidth = width;
+    }
 
     @Override
     public Collection<Element> generateSvg(Document doc) {

@@ -209,8 +209,8 @@ public class SvgTemplate extends SvgAreaElement {
                 x = Math.min(x, element.getElementAttributes().getXCoordinate());
                 y = Math.min(y, element.getElementAttributes().getYCoordinate());
                 if (element instanceof SvgCircle) {
-                    height = Math.max(height, ((SvgCircle) element).getRadius() + element.getElementAttributes().getYCoordinate());
-                    width = Math.max(width, ((SvgCircle) element).getRadius() + element.getElementAttributes().getXCoordinate());
+                    height = Math.max(height, ((SvgCircle) element).getRadius() * 2 + element.getElementAttributes().getYCoordinate());
+                    width = Math.max(width, ((SvgCircle) element).getRadius() * 2 + element.getElementAttributes().getXCoordinate());
 //                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgCircle) element).getRadius());
 //                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgCircle) element).getRadius());
                 }

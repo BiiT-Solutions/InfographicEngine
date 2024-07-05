@@ -193,6 +193,8 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleOutsideTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.getElementAttributes().setWidth(SvgTemplate.DEFAULT_WIDTH);
+        svgTemplate.getElementAttributes().setHeight(SvgTemplate.DEFAULT_HEIGHT);
         svgTemplate.addElement(new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 2 - 100, SvgTemplate.DEFAULT_HEIGHT / 2 - 100,
                 SvgTemplate.DEFAULT_HEIGHT));
 

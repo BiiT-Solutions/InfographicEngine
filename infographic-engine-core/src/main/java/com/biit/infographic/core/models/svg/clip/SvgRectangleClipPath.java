@@ -54,24 +54,24 @@ public class SvgRectangleClipPath extends SvgClipPath {
         final SvgRectangle area = new SvgRectangle();
         //Obtain rectangle size.
         final ElementAttributes elementAttributes = new ElementAttributes();
-        elementAttributes.setHeight(getHeight(getElementAttributes().getHeight()));
-        elementAttributes.setWidth(getWidth(getElementAttributes().getWidth()));
-        elementAttributes.setXCoordinate(getX(getElementAttributes().getXCoordinate()));
-        elementAttributes.setYCoordinate(getY(getElementAttributes().getYCoordinate()));
+        elementAttributes.setHeight(getHeight(getSourceHeight()));
+        elementAttributes.setWidth(getWidth(getSourceWidth()));
+        elementAttributes.setXCoordinate(getX(getSourceX()));
+        elementAttributes.setYCoordinate(getY(getSourceY()));
         area.setElementAttributes(elementAttributes);
         return area;
     }
 
     private Long getHeight(Long sourceHeight) {
         if (clipDirection == ClipDirection.TOP_TO_BOTTOM || clipDirection == ClipDirection.BOTTOM_TO_TOP) {
-            return (long) (sourceHeight * getPercentage());
+            return Math.round(sourceHeight * getPercentage());
         }
         return sourceHeight;
     }
 
     private Long getWidth(Long sourceWidth) {
         if (clipDirection == ClipDirection.RIGHT_TO_LEFT || clipDirection == ClipDirection.LEFT_TO_RIGHT) {
-            return (long) (sourceWidth * getPercentage());
+            return Math.round(sourceWidth * getPercentage());
         }
         return sourceWidth;
     }
@@ -80,7 +80,7 @@ public class SvgRectangleClipPath extends SvgClipPath {
         if (clipDirection == ClipDirection.LEFT_TO_RIGHT || clipDirection == ClipDirection.TOP_TO_BOTTOM || clipDirection == ClipDirection.BOTTOM_TO_TOP) {
             return sourceX;
         }
-        return (long) (sourceX + getElementAttributes().getWidth() -  (getElementAttributes().getWidth()) * getPercentage());
+        return Math.round(sourceX + getSourceWidth() - (getSourceWidth() * getPercentage()));
     }
 
     private Long getY(long sourceY) {
@@ -88,6 +88,6 @@ public class SvgRectangleClipPath extends SvgClipPath {
             return sourceY;
         }
         //Return percentage missing to Y.
-        return (long) (sourceY + getElementAttributes().getHeight() - (getElementAttributes().getHeight() * getPercentage()));
+        return Math.round(sourceY + getSourceHeight() - (getSourceHeight() * getPercentage()));
     }
 }

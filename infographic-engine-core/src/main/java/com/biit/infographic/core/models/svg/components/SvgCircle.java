@@ -61,8 +61,6 @@ public class SvgCircle extends SvgAreaElement {
 
     public void setRadius(Long radius) {
         this.radius = radius;
-        getElementAttributes().setHeight(radius * 2);
-        getElementAttributes().setWidth(radius * 2);
     }
 
     @Override
@@ -89,8 +87,12 @@ public class SvgCircle extends SvgAreaElement {
         if (radius == null || radius == 0) {
             throw new InvalidAttributeException(this.getClass(), "Invalid radius on circle '" + getId() + "'");
         }
-        getElementAttributes().setHeight(getRadius() * 2);
-        getElementAttributes().setWidth(getRadius() * 2);
+        if (getElementAttributes().getHeight() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'height' attribute");
+        }
+        if (getElementAttributes().getWidth() != null) {
+            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'width' attribute");
+        }
     }
 
     private Collection<Element> createOuterStroke(Document doc) {
@@ -111,5 +113,15 @@ public class SvgCircle extends SvgAreaElement {
             border.setGradient(getElementStroke().getGradient());
         }
         return border.generateSvg(doc);
+    }
+
+    @Override
+    protected void updateClipPath() {
+        if (getClipPath() != null) {
+            getClipPath().setSourceY(getElementAttributes().getYCoordinate());
+            getClipPath().setSourceX(getElementAttributes().getXCoordinate());
+            getClipPath().setSourceWidth(getRadius() * 2);
+            getClipPath().setSourceHeight(getRadius() * 2);
+        }
     }
 }

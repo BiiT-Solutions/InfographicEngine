@@ -33,7 +33,6 @@ public class ElementAttributes extends FillAttributes {
     @JsonProperty("style")
     private String style;
 
-
     @JsonProperty("class")
     private String cssClass;
 

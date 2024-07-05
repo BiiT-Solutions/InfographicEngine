@@ -68,9 +68,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     public void setElementAttributes(ElementAttributes elementAttributes) {
         this.elementAttributes = elementAttributes;
-        if (clipPath != null) {
-            clipPath.setElementAttributes(elementAttributes);
-        }
+        updateClipPath();
     }
 
     public SvgLink getLink() {
@@ -91,7 +89,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     public void setClipPath(SvgClipPath clipPath) {
         this.clipPath = clipPath;
-        this.clipPath.setElementAttributes(getElementAttributes());
+        updateClipPath();
     }
 
     /**
@@ -204,6 +202,7 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
+        updateClipPath();
         if (elementAttributes.getFill() != null && getGradient() != null) {
             throw new InvalidAttributeException(this.getClass(), "Cannot define fill color and gradient on '" + getId() + "'");
         }
@@ -230,6 +229,15 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
             if (gradient.getY2Coordinate() == null) {
                 gradient.setY2Coordinate(getElementAttributes().getYCoordinate());
             }
+        }
+    }
+
+    protected void updateClipPath() {
+        if (getClipPath() != null) {
+            getClipPath().setSourceY(getElementAttributes().getYCoordinate());
+            getClipPath().setSourceX(getElementAttributes().getXCoordinate());
+            getClipPath().setSourceWidth(getElementAttributes().getWidth());
+            getClipPath().setSourceHeight(getElementAttributes().getHeight());
         }
     }
 
