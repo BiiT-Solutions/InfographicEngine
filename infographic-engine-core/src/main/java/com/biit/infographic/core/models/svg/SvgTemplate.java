@@ -1,5 +1,6 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.clip.SvgClipPath;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
 import com.biit.infographic.core.models.svg.components.SvgEllipse;
 import com.biit.infographic.core.models.svg.components.SvgLine;
@@ -171,6 +172,8 @@ public class SvgTemplate extends SvgAreaElement {
 
         generateDefs(doc, svgRoot);
 
+        generateClipPaths(doc, svgRoot);
+
         setSvgBackground(doc, svgRoot);
 
         if (getElements() != null && !getElements().isEmpty()) {
@@ -242,6 +245,21 @@ public class SvgTemplate extends SvgAreaElement {
 
         svgRoot.setAttributeNS(null, "viewBox", x + " " + y + " " + getElementAttributes().getWidth()
                 + " " + getElementAttributes().getHeight());
+    }
+
+    private void generateClipPaths(Document doc, Element svgRoot) {
+        if (getElements() != null && !getElements().isEmpty()) {
+            final AtomicInteger idCounter = new AtomicInteger(0);
+            for (SvgAreaElement element : getElements()) {
+                if (element.getClipPath() != null) {
+                    element.getClipPath().setId(SvgClipPath.ID_PREFIX + "_" + idCounter.incrementAndGet());
+                    final Collection<Element> clipPathElements = element.getClipPath().generateSvg(doc);
+                    if (clipPathElements != null && !clipPathElements.isEmpty()) {
+                        clipPathElements.forEach(svgRoot::appendChild);
+                    }
+                }
+            }
+        }
     }
 
     /**

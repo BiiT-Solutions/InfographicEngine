@@ -61,6 +61,8 @@ public class SvgCircle extends SvgAreaElement {
 
     public void setRadius(Long radius) {
         this.radius = radius;
+        getElementAttributes().setHeight(radius * 2);
+        getElementAttributes().setWidth(radius * 2);
     }
 
     @Override
@@ -87,12 +89,8 @@ public class SvgCircle extends SvgAreaElement {
         if (radius == null || radius == 0) {
             throw new InvalidAttributeException(this.getClass(), "Invalid radius on circle '" + getId() + "'");
         }
-        if (getElementAttributes().getHeight() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'height' attribute");
-        }
-        if (getElementAttributes().getWidth() != null) {
-            throw new InvalidAttributeException(this.getClass(), "Circle '" + getId() + "' must not have 'width' attribute");
-        }
+        getElementAttributes().setHeight(getRadius() * 2);
+        getElementAttributes().setWidth(getRadius() * 2);
     }
 
     private Collection<Element> createOuterStroke(Document doc) {

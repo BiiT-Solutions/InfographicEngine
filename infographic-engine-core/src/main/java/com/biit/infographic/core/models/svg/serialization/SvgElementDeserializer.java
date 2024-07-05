@@ -29,7 +29,7 @@ public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDe
 
 
     @Override
-    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final JsonNode jsonObject = jsonParser.getCodec().readTree(jsonParser);
 
         try {

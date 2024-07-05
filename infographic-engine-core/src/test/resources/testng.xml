@@ -27,6 +27,7 @@
                 <include name="eventController"/>
                 <include name="pdfFromSvg"/>
                 <include name="pdfFromPng"/>
+                <include name="clipSvgGenerationTest"/>
             </run>
         </groups>
         <classes>
@@ -55,6 +56,7 @@
             <class name="com.biit.infographic.core.engine.EventControllerTests"/>
             <class name="com.biit.infographic.core.pdf.PdfFromSVGTest"/>
             <class name="com.biit.infographic.core.pdf.PdfFromPngTest"/>
+            <class name="com.biit.infographic.core.svg.ClipSvgGenerationTest"/>
         </classes>
     </test>
 </suite>

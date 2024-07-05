@@ -1,5 +1,6 @@
 package com.biit.infographic.core.models.svg;
 
+import com.biit.infographic.core.models.svg.clip.SvgClipPath;
 import com.biit.infographic.core.models.svg.components.StrokeLineCap;
 import com.biit.infographic.core.models.svg.components.SvgLink;
 import com.biit.infographic.core.models.svg.components.SvgPath;
@@ -26,6 +27,8 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     @JsonProperty("link")
     private SvgLink link;
+
+    private SvgClipPath clipPath;
 
     public SvgAreaElement() {
         setElementAttributes(new ElementAttributes());
@@ -65,6 +68,9 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
 
     public void setElementAttributes(ElementAttributes elementAttributes) {
         this.elementAttributes = elementAttributes;
+        if (clipPath != null) {
+            clipPath.setElementAttributes(elementAttributes);
+        }
     }
 
     public SvgLink getLink() {
@@ -79,6 +85,14 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         this.link = new SvgLink(href);
     }
 
+    public SvgClipPath getClipPath() {
+        return clipPath;
+    }
+
+    public void setClipPath(SvgClipPath clipPath) {
+        this.clipPath = clipPath;
+        this.clipPath.setElementAttributes(getElementAttributes());
+    }
 
     /**
      * Stroke is included on the width and must be subtracted.
@@ -150,6 +164,9 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
         }
         if (getLink() != null && getLink().getHref() != null) {
             element.setAttribute("onclick", "window.location='" + getLink().getHref() + "'");
+        }
+        if (getClipPath() != null) {
+            element.setAttributeNS(null, "clip-path", "url(#" + getClipPath().getId() + ")");
         }
     }
 
