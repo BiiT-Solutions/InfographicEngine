@@ -1,6 +1,6 @@
 {
   "class": "com.biit.drools.form.DroolsSubmittedForm",
-  "tag": "CADT_Profile_Creator",
+  "tag": "CADT_Profile_Creator_Layer",
   "children": [
     {
       "class": "com.biit.drools.form.DroolsSubmittedCategory",
