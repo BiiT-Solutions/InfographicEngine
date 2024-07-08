@@ -14,8 +14,8 @@ public class SvgLineDeserializer extends SvgAreaElementDeserializer<SvgLine> {
 
     @Override
     public void deserialize(SvgLine element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        super.deserialize(element, jsonObject, context);
         element.setX2Coordinate(DeserializerParser.parseLong("x2", jsonObject));
         element.setY2Coordinate(DeserializerParser.parseLong("y2", jsonObject));
+        super.deserialize(element, jsonObject, context);
     }
 }

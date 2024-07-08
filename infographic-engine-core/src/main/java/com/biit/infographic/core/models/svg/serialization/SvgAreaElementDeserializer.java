@@ -41,7 +41,8 @@ public abstract class SvgAreaElementDeserializer<T extends SvgAreaElement> exten
         if (jsonObject.get("clipPath") != null) {
             //element.setClipPath(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(), SvgClipPath.class));
             final ElementType elementType = ElementType.fromString(jsonObject.get("clipPath").get("elementType").asText());
-            element.setClipPath((SvgClipPath) ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(), elementType.getRelatedClass()));
+            element.setClipPath((SvgClipPath) ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(),
+                    elementType.getRelatedClass()));
         }
     }
 }

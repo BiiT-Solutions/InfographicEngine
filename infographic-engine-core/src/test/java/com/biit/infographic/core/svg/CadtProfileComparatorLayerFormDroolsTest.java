@@ -8,6 +8,7 @@ import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.clip.ClipDirection;
 import com.biit.infographic.core.models.svg.clip.SvgRectangleClipPath;
 import com.biit.infographic.core.models.svg.components.SvgCircle;
+import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.pdf.PdfController;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
@@ -39,7 +40,7 @@ import java.util.List;
 public class CadtProfileComparatorLayerFormDroolsTest extends CadtProfileCreatorFormDroolsTest {
     protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
 
-    private static final String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadtProfileCreator.json";
+    private static final String DROOLS_FORM_FILE_PATH = "drools/DroolsSubmittedCadtProfileCreatorLayer.json";
 
     @Autowired
     private DroolsResultController droolsResultController;
@@ -53,26 +54,27 @@ public class CadtProfileComparatorLayerFormDroolsTest extends CadtProfileCreator
         Files.createDirectories(Paths.get(OUTPUT_FOLDER));
     }
 
-    private List<SvgAreaElement> generateContent() {
-        final List<SvgAreaElement> elements = new ArrayList<>();
+    protected void addBorder(List<SvgAreaElement> elements, SvgAreaElement border) {
+        //No borders here
+    }
 
-        elements.addAll(generateUniversal());
-        elements.addAll(generateSociety());
-        elements.addAll(generateVision());
-        elements.addAll(generateStrength());
+    private List<SvgAreaElement> setClipPaths(List<SvgAreaElement> elements) {
+        //Show only half-circles.
+        elements.forEach(element -> {
+            if (element instanceof SvgCircle) {
+                element.setClipPath(new SvgRectangleClipPath(0.5, ClipDirection.LEFT_TO_RIGHT));
+            }
+            if (element instanceof SvgRectangle) {
+                element.setClipPath(new SvgRectangleClipPath(0.5, ClipDirection.LEFT_TO_RIGHT));
+            }
+            if (element instanceof SvgLine) {
+                element.setClipPath(new SvgRectangleClipPath(0.5, ClipDirection.LEFT_TO_RIGHT));
+            }
+        });
+        return elements;
+    }
 
-        elements.addAll(generateStructureInspiration());
-        elements.addAll(generateStructure());
-        elements.addAll(generateInspiration());
-        elements.addAll(generateAdaptabilityAction());
-        elements.addAll(generateAdaptability());
-        elements.addAll(generateAction());
-
-        elements.addAll(generateMaterialAttachment());
-        elements.addAll(generateCommunication());
-        elements.addAll(generateSelfAware());
-        elements.addAll(generateAnalysis());
-
+    private List<SvgAreaElement> setBalanceClipPaths(List<SvgAreaElement> elements) {
         //Show only half-circles.
         elements.forEach(element -> {
             if (element instanceof SvgCircle) {
@@ -82,6 +84,28 @@ public class CadtProfileComparatorLayerFormDroolsTest extends CadtProfileCreator
                 element.setClipPath(new SvgRectangleClipPath(0.5, ClipDirection.LEFT_TO_RIGHT));
             }
         });
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateContent() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        elements.addAll(setClipPaths(generateUniversal()));
+        elements.addAll(setClipPaths(generateSociety()));
+        elements.addAll(setClipPaths(generateVision()));
+        elements.addAll(setClipPaths(generateStrength()));
+
+        elements.addAll(generateStructureInspiration());
+        elements.addAll(setBalanceClipPaths(generateStructure()));
+        elements.addAll(setBalanceClipPaths(generateInspiration()));
+        elements.addAll(generateAdaptabilityAction());
+        elements.addAll(setBalanceClipPaths(generateAdaptability()));
+        elements.addAll(setBalanceClipPaths(generateAction()));
+
+        elements.addAll(setClipPaths(generateMaterialAttachment()));
+        elements.addAll(setClipPaths(generateCommunication()));
+        elements.addAll(setClipPaths(generateSelfAware()));
+        elements.addAll(setClipPaths(generateAnalysis()));
 
 
         return elements;

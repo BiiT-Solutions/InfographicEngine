@@ -151,4 +151,16 @@ public class SvgLine extends SvgAreaElement {
         }
         super.setGradient(gradient);
     }
+
+    @Override
+    protected void updateClipPath() {
+        if (getClipPath() != null) {
+            getClipPath().setSourceX(Math.min(getElementAttributes().getXCoordinate(), getX2Coordinate()));
+            getClipPath().setSourceY(Math.min(getElementAttributes().getYCoordinate(), getY2Coordinate()));
+            getClipPath().setSourceWidth((long) (Math.abs(getElementAttributes().getXCoordinate() - getX2Coordinate())
+                    + (getElementStroke() != null ? getElementStroke().getStrokeWidth() : 0)));
+            getClipPath().setSourceHeight((long) (Math.abs(getElementAttributes().getYCoordinate() - getY2Coordinate())
+                    + (getElementStroke() != null ? getElementStroke().getStrokeWidth() : 0)));
+        }
+    }
 }

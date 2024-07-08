@@ -1,0 +1,129 @@
+{
+  "class": "com.biit.drools.form.DroolsSubmittedForm",
+  "tag": "CADT_Profile_Creator",
+  "children": [
+    {
+      "class": "com.biit.drools.form.DroolsSubmittedCategory",
+      "tag": "profile",
+      "text": "profile",
+      "children": [
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "receptive",
+          "text": "receptive",
+          "children": [],
+          "answers": [
+            "receptive",
+            "interpersonal-sensitivity",
+            "multicultural-sensitivity"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "innovator",
+          "text": "innovator",
+          "children": [],
+          "answers": [
+            "innovator"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "visionary",
+          "text": "visionary",
+          "children": [],
+          "answers": [
+            "visionary",
+            "persuasiveness",
+            "future"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "strategist",
+          "text": "strategist",
+          "children": [],
+          "answers": [
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "structure",
+          "text": "structure",
+          "children": [],
+          "answers": [
+            "discipline",
+            "goal-setting"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "inspiration",
+          "text": "inspiration",
+          "children": [],
+          "answers": [
+            "conscientiousness"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "adaptability",
+          "text": "adaptability",
+          "children": [],
+          "answers": [
+            "flexibility"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "action",
+          "text": "action",
+          "children": [],
+          "answers": [
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "banker",
+          "text": "banker",
+          "children": [],
+          "answers": [
+            "banker",
+            "business-minded",
+            "tenacity"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "tradesman",
+          "text": "tradesman",
+          "children": [],
+          "answers": [
+            "tradesman"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "leader",
+          "text": "leader",
+          "children": [],
+          "answers": [
+            "leader",
+            "leadership",
+            "independence"
+          ]
+        },
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "scientist",
+          "text": "scientist",
+          "children": [],
+          "answers": [
+          ]
+        }
+      ]
+    }
+  ],
+  "applicationName": "",
+  "version": 1
+}
