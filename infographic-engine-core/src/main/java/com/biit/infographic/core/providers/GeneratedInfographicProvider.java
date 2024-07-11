@@ -7,8 +7,11 @@ import com.biit.server.providers.ElementProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfographic, Long, GeneratedInfographicRepository> {
@@ -49,5 +52,12 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
             return Optional.empty();
         }
         return Optional.of(results.get(0));
+    }
+
+    public Map<String, GeneratedInfographic> findLatest(String name, Integer version, Set<String> creators) {
+        final Map<String, GeneratedInfographic> infographics = new HashMap<>();
+        creators.forEach(creator ->
+                infographics.put(creator, findLatest(name, version, creator, null).orElse(null)));
+        return infographics;
     }
 }

@@ -15,6 +15,9 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class GeneratedInfographicController extends ElementController<GeneratedInfographic, Long, GeneratedInfographicDTO,
@@ -38,6 +41,11 @@ public class GeneratedInfographicController extends ElementController<GeneratedI
                 .orElseThrow(() -> new FormNotFoundException(this.getClass(),
                         "No infographic found with name '" + name + "', version '" + version + "', creator '"
                                 + createdBy + "' and organization '" + organization + "'.", ExceptionType.DEBUG)));
+    }
+
+    public Map<String, GeneratedInfographicDTO> findLatest(String name, Integer version, Set<String> creators) {
+        return getProvider().findLatest(name, version, creators).entrySet()
+                .stream().collect(Collectors.toMap(Map.Entry::getKey, e -> convert(e.getValue())));
     }
 
     public List<GeneratedInfographicDTO> findBy(String name, Integer version, String organization, String createdBy,
