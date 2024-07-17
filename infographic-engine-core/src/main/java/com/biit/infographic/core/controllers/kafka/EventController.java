@@ -67,13 +67,17 @@ public class EventController {
                 }
             }
             final DroolsSubmittedForm droolsForm = getDroolsForm(event);
-            EventsLogger.info(this.getClass(), "Received Drools Result '{}'/'{}'.", droolsForm.getName(), event.getTag());
-            droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
-            EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
-            //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
-            final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
-                    event.getOrganization(), null);
-            droolsEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
+            if (droolsForm != null) {
+                EventsLogger.info(this.getClass(), "Received Drools Result '{}'/'{}'.", droolsForm.getName(), event.getTag());
+                droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
+                EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
+                //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
+                final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
+                        event.getOrganization(), null);
+                droolsEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
+            } else {
+                EventsLogger.debug(this.getClass(), "No drools form obtained.");
+            }
         } catch (JsonProcessingException e) {
             EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
             EventsLogger.errorMessage(this.getClass(), e);
