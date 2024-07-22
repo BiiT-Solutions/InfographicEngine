@@ -54,6 +54,7 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
 
     private static final String DROOLS_FORM_FILE_PATH = "drools/boardingPassSuccessTogetherTemplate.json";
+    protected static final String TEMPLATE_ID = "default_test";
 
     //The one that has submitted the drools json.
     private final static String USER_NAME = "Chuck Norris";
@@ -315,6 +316,7 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     @Test
     public void generateBoardingPass() {
         boardingPassTemplate = new SvgTemplate();
+        boardingPassTemplate.setUuid(TEMPLATE_ID);
         boardingPassTemplate.getElementAttributes().setHeight(444);
         boardingPassTemplate.getElementAttributes().setWidth(360);
         boardingPassTemplate.setSvgBackground(generateBackground());

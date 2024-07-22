@@ -32,6 +32,9 @@ public class SvgTemplateDeserializer extends SvgAreaElementDeserializer<SvgTempl
         if (jsonObject.get("documentSize") != null) {
             element.setDocumentSize(DeserializerParser.parseBoolean("documentSize", jsonObject));
         }
+        if (jsonObject.get("uuid") != null) {
+            element.setUuid(DeserializerParser.parseString("uuid", jsonObject));
+        }
 
         final List<SvgAreaElement> templateElements = new ArrayList<>();
         final JsonNode elementsJson = jsonObject.get("elements");

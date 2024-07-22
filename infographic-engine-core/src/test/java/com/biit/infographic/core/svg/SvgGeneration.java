@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 public class SvgGeneration {
     protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
+    protected static final String TEMPLATE_ID = "default_test";
 
     protected String readBase64Image(String imageName) {
         try {

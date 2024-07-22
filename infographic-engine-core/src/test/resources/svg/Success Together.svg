@@ -16,15 +16,15 @@
 		}
 </style>
         <style type="text/css" xml:space="preserve">
-		.linearGradient_rectangle_4 {
+		.linearGradient_default_test_rectangle_3 {
 		}
 
-		.linearGradient_rectangle_4:hover {
+		.linearGradient_default_test_rectangle_3:hover {
 			fill: #b49057
 		}
 </style>
         <style type="text/css" xml:space="preserve">
-		.linearGradient_text_6 {
+		.linearGradient_default_test_text_4 {
 		}
 </style>
     </defs>
@@ -62,8 +62,8 @@
     <text x="246" font-size="16" y="398.08" style="font-weight:bold;font-family:Sofia Sans Extra Condensed;" font-family="Sofia Sans Extra Condensed" class="text13" id="text13">
         <tspan style="font-weight:bold;font-family:Sofia Sans Extra Condensed;" x="246">CHECK OUT</tspan>
     </text>
-    <rect x="107.0" y="331.0" onclick="window.location=''" fill="#b49057" width="146.0" rx="9" class="linearGradient_rectangle_4" height="38.0" ry="9" id="linearGradient_rectangle_3"/>
-    <text x="144" font-size="20" y="355.6" onclick="window.location=''" fill="#000000" style="font-weight:bold;font-family:Sofia Sans Extra Condensed;" font-family="Sofia Sans Extra Condensed" class="linearGradient_text_6" id="linearGradient_text_5">
+    <rect x="107.0" y="331.0" onclick="window.location=''" fill="#b49057" width="146.0" rx="9" class="linearGradient_default_test_rectangle_3" height="38.0" ry="9" id="linearGradient_default_test_rectangle_3"/>
+    <text x="144" font-size="20" y="355.6" onclick="window.location=''" fill="#000000" style="font-weight:bold;font-family:Sofia Sans Extra Condensed;" font-family="Sofia Sans Extra Condensed" class="linearGradient_default_test_text_4" id="linearGradient_default_test_text_4">
         <tspan style="font-weight:bold;font-family:Sofia Sans Extra Condensed;" x="144">FINISH STEP</tspan>
     </text>
     <text x="58" font-size="12" y="98.56" style="font-family:Arial;" font-family="Arial" class="text16" id="text16">

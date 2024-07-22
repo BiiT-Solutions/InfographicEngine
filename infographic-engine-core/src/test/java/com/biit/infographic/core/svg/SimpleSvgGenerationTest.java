@@ -150,6 +150,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawRectanglesWithGradientTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgRectangle svgRectangle1 = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), null);
         svgRectangle1.setGradient(new SvgGradient(new SvgGradientStop("#ff0000", 1.0, 0.0), new SvgGradientStop("#0000ff", 1.0, 1.0)));
@@ -467,6 +468,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     @Test
     public void outerBorderWithGradientTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
 
         final SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 8, SvgTemplate.DEFAULT_HEIGHT / 8,
                 SvgTemplate.DEFAULT_WIDTH / 8);
@@ -501,6 +503,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawRectangleWithLinkHoverTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000");
         rectangle.setLink("https://google.es");
@@ -518,6 +521,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawRectangleWithLinkHoverOpacityTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000");
         rectangle.setLink("https://google.es");

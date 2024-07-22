@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -54,6 +55,9 @@ public class SvgTemplate extends SvgAreaElement {
 
     @JsonProperty("documentSize")
     private boolean documentSize = true;
+
+    @JsonProperty("uuid")
+    private String uuid;
 
     public SvgTemplate(ElementAttributes elementAttributes) {
         super(elementAttributes);
@@ -252,7 +256,7 @@ public class SvgTemplate extends SvgAreaElement {
             final AtomicInteger idCounter = new AtomicInteger(0);
             for (SvgAreaElement element : getElements()) {
                 if (element.getClipPath() != null) {
-                    element.getClipPath().setId(SvgClipPath.ID_PREFIX + "_" + idCounter.incrementAndGet());
+                    element.getClipPath().setId(generateId(SvgClipPath.ID_PREFIX, element.getElementType().name().toLowerCase(), idCounter));
                     final Collection<Element> clipPathElements = element.getClipPath().generateSvg(doc);
                     if (clipPathElements != null && !clipPathElements.isEmpty()) {
                         clipPathElements.forEach(svgRoot::appendChild);
@@ -308,7 +312,7 @@ public class SvgTemplate extends SvgAreaElement {
 
     private void createGradientDef(Document doc, SvgGradient gradient, Element defs, String id, AtomicInteger idCounter) {
         if (gradient != null) {
-            gradient.setId(SvgGradient.ID_PREFIX + "_" + id + "_" + idCounter.incrementAndGet());
+            gradient.setId(generateId(SvgGradient.ID_PREFIX, id, idCounter));
             //Ensure gradient has coordinates.
             gradient.setDefaultCoordinates(getElementAttributes().getXCoordinate(), getElementAttributes().getYCoordinate() / 2,
                     getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(), getElementAttributes().getYCoordinate() / 2);
@@ -319,8 +323,9 @@ public class SvgTemplate extends SvgAreaElement {
 
 
     private void createLinkDef(Document doc, SvgAreaElement element, Element defs, String id, AtomicInteger idCounter) {
-        element.setId(SvgGradient.ID_PREFIX + "_" + id + "_" + idCounter.incrementAndGet());
-        element.setCssClass(SvgGradient.ID_PREFIX + "_" + id + "_" + idCounter.incrementAndGet());
+        final String elementId = generateId(SvgGradient.ID_PREFIX, id, idCounter);
+        element.setId(elementId);
+        element.setCssClass(elementId);
         element.getLink().setCssClass(element.getCssClass());
         if (element.getLink() != null) {
             final Element linkStyle = element.getLink().embeddedStyle(doc);
@@ -347,5 +352,25 @@ public class SvgTemplate extends SvgAreaElement {
 
     public static SvgTemplate fromJson(String json) throws JsonProcessingException {
         return ObjectMapperFactory.getObjectMapper().readValue(json, SvgTemplate.class);
+    }
+
+    public String getUuid() {
+        if (uuid == null) {
+            uuid = UUID.randomUUID().toString();
+        }
+        return uuid;
+    }
+
+    /**
+     * To ensure that tests always have the same uuid.
+     *
+     * @param uuid
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    private String generateId(String prefix, String id, AtomicInteger idCounter) {
+        return prefix + "_" + getUuid() + "_" + id + "_" + idCounter.incrementAndGet();
     }
 }

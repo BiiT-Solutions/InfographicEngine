@@ -52,6 +52,7 @@ public class ActionableSVGTest extends SvgGeneration {
     @Test
     public void generateSvgWithButton() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
+        svgTemplate.setUuid(TEMPLATE_ID);
         SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
                 SvgTemplate.DEFAULT_WIDTH / 4);
         svgCircle.setLink("http://www.google.es");

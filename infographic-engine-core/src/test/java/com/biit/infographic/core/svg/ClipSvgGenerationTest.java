@@ -30,6 +30,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipTopToBottomTest33() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.33D, ClipDirection.TOP_TO_BOTTOM));
@@ -46,6 +47,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipTopToBottomTest66() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.66D, ClipDirection.TOP_TO_BOTTOM));
@@ -62,6 +64,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipBottomToTopTest33() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.33D, ClipDirection.BOTTOM_TO_TOP));
@@ -78,6 +81,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipBottomToTopTest66() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.66D, ClipDirection.BOTTOM_TO_TOP));
@@ -94,6 +98,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipLeftToRightTest33() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.33D, ClipDirection.LEFT_TO_RIGHT));
@@ -110,6 +115,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipLeftToRightTest66() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.66D, ClipDirection.LEFT_TO_RIGHT));
@@ -126,6 +132,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipRightToLeftTest33() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.33D, ClipDirection.RIGHT_TO_LEFT));
@@ -142,6 +149,7 @@ public class ClipSvgGenerationTest extends SvgGeneration {
     @Test
     public void documentDrawCircleClipRightToLeftTest66() throws IOException {
         final SvgTemplate svgTemplate = new SvgTemplate();
+        svgTemplate.setUuid(TEMPLATE_ID);
         final SvgCircle svgCircle = new SvgCircle(0, 0,
                 SvgTemplate.DEFAULT_WIDTH / 2);
         svgCircle.setClipPath(new SvgRectangleClipPath(0.66D, ClipDirection.RIGHT_TO_LEFT));
