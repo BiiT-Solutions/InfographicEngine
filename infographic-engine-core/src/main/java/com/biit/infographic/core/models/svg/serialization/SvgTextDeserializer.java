@@ -5,6 +5,7 @@ import com.biit.infographic.core.models.svg.components.text.FontLengthAdjust;
 import com.biit.infographic.core.models.svg.components.text.FontStyle;
 import com.biit.infographic.core.models.svg.components.text.FontVariantType;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
+import com.biit.infographic.core.models.svg.components.text.LetterCase;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -43,6 +44,7 @@ public class SvgTextDeserializer extends SvgAreaElementDeserializer<SvgText> {
         element.setMinLineSeparation(DeserializerParser.parseInteger("minLineSeparation", jsonObject));
         element.setSamePhraseLineSeparator(DeserializerParser.parseInteger("samePhraseLineSeparator", jsonObject));
         element.setTextAlign(TextAlign.getAlignment(DeserializerParser.parseString("textAlign", jsonObject)));
+        element.setLetterCase(LetterCase.getCase(DeserializerParser.parseString("letterCase", jsonObject)));
         if (DeserializerParser.parseString("fontWeight", jsonObject) != null) {
             element.setFontWeight(FontWeight.getWeight(DeserializerParser.parseString("fontWeight", jsonObject)));
         }

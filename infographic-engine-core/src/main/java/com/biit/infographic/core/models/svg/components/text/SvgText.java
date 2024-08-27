@@ -116,6 +116,9 @@ public class SvgText extends SvgAreaElement {
     @JsonProperty("fontStyle")
     private FontStyle fontStyle;
 
+    @JsonProperty("letterCase")
+    private LetterCase letterCase;
+
     public SvgText(ElementAttributes elementAttributes) {
         super(elementAttributes);
         setElementType(ElementType.TEXT);
@@ -381,6 +384,30 @@ public class SvgText extends SvgAreaElement {
         return text;
     }
 
+    @JsonIgnore
+    public String getFormattedText() {
+        if (letterCase == null) {
+            return getText();
+        }
+        switch (letterCase) {
+            case UPPERCASE -> {
+                return getText() != null ? getText().toUpperCase() : null;
+            }
+            case LOWERCASE -> {
+                return getText() != null ? getText().toLowerCase() : null;
+            }
+            case CAMELCASE -> {
+                return getText() != null ? LetterCase.toCamelCase(getText()) : null;
+            }
+            case SNAKECASE -> {
+                return getText() != null ? LetterCase.toSnakeCase(getText()) : null;
+            }
+            default -> {
+                return getText();
+            }
+        }
+    }
+
     public void setText(String text) {
         this.text = text;
     }
@@ -414,6 +441,14 @@ public class SvgText extends SvgAreaElement {
 
     public void setTextAlign(TextAlign textAlign) {
         this.textAlign = textAlign;
+    }
+
+    public LetterCase getLetterCase() {
+        return letterCase;
+    }
+
+    public void setLetterCase(LetterCase letterCase) {
+        this.letterCase = letterCase;
     }
 
     public Long getMaxLineWidth() {
@@ -459,10 +494,10 @@ public class SvgText extends SvgAreaElement {
         do {
             decreaseHeight();
             if (getMaxLineWidth() != null) {
-                lines = getLinesByPixels(getText(), getMaxLineWidth());
+                lines = getLinesByPixels(getFormattedText(), getMaxLineWidth());
                 longestLinePixels = getMaxLineWidth().intValue();
             } else {
-                lines = getLines(getText(), getMaxLineLength() != null ? getMaxLineLength() : Integer.MAX_VALUE);
+                lines = getLines(getFormattedText(), getMaxLineLength() != null ? getMaxLineLength() : Integer.MAX_VALUE);
                 final Line longestLine = lines.stream().max(Comparator.comparingInt(Line::length)).orElse(new Line(""));
                 longestLinePixels = getLineWidthPixels(longestLine.text);
             }
@@ -470,7 +505,7 @@ public class SvgText extends SvgAreaElement {
         } while (!fitsInParagraph(lines) && (getRealFontSize() >= MINIMUM_FONT_SIZE + 1 || getLineSeparation() >= getMinLineSeparation()));
         if (getRealFontSize() == MINIMUM_FONT_SIZE && getLineSeparation() == getMinLineSeparation()) {
             SvgGeneratorLogger.warning(this.getClass(), "Text '{}' cannot fit on a height '{}' and width '{}'.",
-                    getText(), getMaxParagraphHeight(), getMaxLineWidth() != null ? getMaxLineWidth() : getMaxLineLength());
+                    getFormattedText(), getMaxParagraphHeight(), getMaxLineWidth() != null ? getMaxLineWidth() : getMaxLineLength());
         }
         int emptyLinesCounter = 0;
         for (int i = 0; i < lines.size(); i++) {
