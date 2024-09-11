@@ -3,13 +3,11 @@ package com.biit.infographic.rest.exceptions;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.exceptions.FormNotFoundException;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
-import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
+import com.biit.server.exceptions.ErrorResponse;
 import com.biit.server.exceptions.NotFoundException;
 import com.biit.server.exceptions.ServerExceptionControllerAdvice;
 import com.biit.server.logger.RestServerExceptionLogger;
-import com.biit.server.security.rest.exceptions.InvalidPasswordException;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
-import org.modelmapper.spi.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,44 +19,30 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> notFoundException(Exception ex) {
         RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
-        return new ResponseEntity<>(new ErrorMessage("NOT_FOUND", ex), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<Object> invalidPasswordException(Exception ex) {
-        RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
-        return new ResponseEntity<>(new ErrorMessage("User not found for provided credentials"), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(InvalidAttributeException.class)
-    public ResponseEntity<?> invalidAttributeException(Exception ex) {
-        RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
-        // Cannot have message as suggested here:
-        // https://stackoverflow.com/questions/32123540/spring-exceptionhandler-and-httpmediatypenotacceptableexception
-        return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(new ErrorResponse("NOT_FOUND", ex), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MalformedTemplateException.class)
     public ResponseEntity<?> malformedTemplateException(Exception ex) {
         RestServerExceptionLogger.errorMessage(this.getClass().getName(), ex);
-        return new ResponseEntity<>(new ErrorMessage("Template not found"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("Template not found", "template_not_found"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FormNotFoundException.class)
     public ResponseEntity<?> formNotFoundException(Exception ex) {
         RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
-        return new ResponseEntity<>(new ErrorMessage("No data found"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorResponse("No data found", "form_not_found"), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EmptyPdfBodyException.class)
     public ResponseEntity<?> emptyPdfBodyException(Exception ex) {
         RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
-        return new ResponseEntity<>(new ErrorMessage("Pdf cannot be formed"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("Pdf cannot be formed", "error_generating_pdf"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ElementDoesNotExistsException.class)
     public ResponseEntity<?> elementDoesNotExistsException(Exception ex) {
         RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
-        return new ResponseEntity<>(new ErrorMessage(ex.getMessage(), ex), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), "element_does_not_exists", ex), HttpStatus.NOT_FOUND);
     }
 }
