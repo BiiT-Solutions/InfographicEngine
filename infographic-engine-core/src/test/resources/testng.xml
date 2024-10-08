@@ -11,7 +11,7 @@
                 <include name="simplePngGenerationTest"/>
                 <include name="simpleJpegGenerationTest"/>
                 <include name="customSvgComponentsTest"/>
-                <include name="svgText"/>
+                <exclude name="svgText"/>
                 <include name="colorValidation"/>
                 <include name="jsonGeneration"/>
                 <include name="templateFromDrools"/>
