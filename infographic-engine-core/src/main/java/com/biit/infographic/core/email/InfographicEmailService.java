@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class InfographicEmailService extends ServerEmailService {
@@ -44,7 +45,7 @@ public class InfographicEmailService extends ServerEmailService {
 
     private final Locale locale = Locale.ENGLISH;
 
-    public InfographicEmailService(EmailSendPool emailSendPool, MessageSource messageSource) {
+    public InfographicEmailService(Optional<EmailSendPool> emailSendPool, MessageSource messageSource) {
         super(emailSendPool, messageSource);
         this.messageSource = messageSource;
     }
