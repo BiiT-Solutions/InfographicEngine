@@ -41,7 +41,7 @@ public class PdfController {
     }
 
     /**
-     * Infographics without background can be cutt by the PDF generator!
+     * The PDF generator can cut infographics without a background!
      */
     public byte[] generatePdfFromSvgs(List<String> svgs) throws InvalidXmlElementException, EmptyPdfBodyException {
         FooterEvent.setFooterText(FOOTER_TEXT);
