@@ -3,20 +3,26 @@ package com.biit.infographic.core.controllers.kafka;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
+import com.biit.infographic.core.email.InfographicEmailService;
+import com.biit.infographic.core.pdf.PdfController;
 import com.biit.infographic.logger.EventsLogger;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.kafka.consumers.EventListener;
 import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
+import com.biit.server.security.IAuthenticatedUser;
+import com.biit.usermanager.client.providers.UserManagerClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Controller;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.TimeZone;
 
 
@@ -33,15 +39,29 @@ public class EventController {
 
     private final DroolsEventSender droolsEventSender;
 
+    private final PdfController pdfController;
+
+    private final InfographicEmailService infographicEmailService;
+
+    private final UserManagerClient userManagerClient;
+
+    private final String smtpServer;
+
 
     public EventController(@Autowired(required = false) EventListener eventListener,
                            EventConverter eventConverter,
                            DroolsResultRepository droolsResultRepository,
-                           DroolsResultController droolsResultController, DroolsEventSender droolsEventSender) {
+                           DroolsResultController droolsResultController, DroolsEventSender droolsEventSender,
+                           PdfController pdfController, InfographicEmailService infographicEmailService,
+                           UserManagerClient userManagerClient, @Value("${mail.server.smtp.server:#{null}}") String smtpServer) {
         this.eventConverter = eventConverter;
         this.droolsResultRepository = droolsResultRepository;
         this.droolsResultController = droolsResultController;
         this.droolsEventSender = droolsEventSender;
+        this.pdfController = pdfController;
+        this.infographicEmailService = infographicEmailService;
+        this.userManagerClient = userManagerClient;
+        this.smtpServer = smtpServer;
 
         //Listen to a topic
         if (eventListener != null) {
@@ -71,10 +91,12 @@ public class EventController {
                 EventsLogger.info(this.getClass(), "Received Drools Result '{}'/'{}'.", droolsForm.getName(), event.getTag());
                 droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
                 EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
-                //As Drools now can execute multiples rules from one form, the rules form name is on the event tag.
+                //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
                 final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
                         event.getOrganization(), null);
                 droolsEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
+                //Send it by email
+                sendInfographicByMail(generatedInfographic, createdBy);
             } else {
                 EventsLogger.debug(this.getClass(), "No drools form obtained.");
             }
@@ -89,5 +111,22 @@ public class EventController {
 
     private DroolsSubmittedForm getDroolsForm(Event event) throws JsonProcessingException {
         return event.getEntity(DroolsSubmittedForm.class);
+    }
+
+
+    private void sendInfographicByMail(GeneratedInfographic generatedInfographic, String createdBy) {
+        try {
+            //Check if email is enabled now to avoid the search for a user.
+            if (smtpServer != null) {
+                final Optional<IAuthenticatedUser> user = userManagerClient.findByUsername(createdBy);
+                if (user.isPresent()) {
+                    final byte[] pdfForm = pdfController.generatePdfFromSvgs(generatedInfographic.getSvgContents());
+                    infographicEmailService.sendPdfInfographic(user.get().getEmailAddress(), generatedInfographic.getCreatedBy(),
+                            generatedInfographic.getFormName(), pdfForm);
+                }
+            }
+        } catch (Exception e) {
+            EventsLogger.errorMessage(this.getClass(), e);
+        }
     }
 }
