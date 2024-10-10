@@ -4,6 +4,7 @@ import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
 import com.biit.infographic.core.email.InfographicEmailService;
+import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.pdf.PdfController;
 import com.biit.infographic.logger.EventsLogger;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
@@ -100,6 +101,8 @@ public class EventController {
             } else {
                 EventsLogger.debug(this.getClass(), "No drools form obtained.");
             }
+        } catch (MalformedTemplateException e) {
+            EventsLogger.warning(this.getClass(), "Template does not exists!. " + e.getMessage());
         } catch (JsonProcessingException e) {
             EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
             EventsLogger.errorMessage(this.getClass(), e);

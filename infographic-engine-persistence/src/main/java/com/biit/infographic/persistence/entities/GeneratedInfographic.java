@@ -49,11 +49,11 @@ public class GeneratedInfographic extends Element<Long> {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "svg_contents", joinColumns = @JoinColumn(name = "generated_infographic_id"))
-    @Column(name = "svg_content", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "svg_content", columnDefinition = "MEDIUMTEXT", nullable = false)
     @Convert(converter = StringCryptoConverter.class)
     private List<String> svgContents;
 
-    @Column(name = "drools_submitted_form", columnDefinition = "TEXT")
+    @Column(name = "drools_submitted_form", columnDefinition = "MEDIUMTEXT")
     @Convert(converter = StringCryptoConverter.class)
     private String droolsSubmittedForm;
 
