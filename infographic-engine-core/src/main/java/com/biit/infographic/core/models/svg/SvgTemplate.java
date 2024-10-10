@@ -53,6 +53,7 @@ public class SvgTemplate extends SvgAreaElement {
     @JsonProperty("embedFonts")
     private Boolean embedFonts;
 
+    //Set height and width on the final SVG document. Recommended for PDF generation.
     @JsonProperty("documentSize")
     private boolean documentSize = true;
 

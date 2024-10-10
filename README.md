@@ -10,7 +10,7 @@ example, please check the test inside `infographic-engine-core` module.
 ### Template
 
 This is the main component and any element must be inside this component. This will generate the SVG document with a
-viewbox and a background.
+viewbox and a background. Background is strongly recommended for a template if you want to generate a PDF.
 
 **background.backgroundColor** The background color of the background.
 

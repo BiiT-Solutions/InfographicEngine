@@ -35,6 +35,15 @@ public class SvgBackground implements ISvgElement {
     @JsonProperty("image")
     private String image = null;
 
+    public SvgBackground() {
+        super();
+    }
+
+    public SvgBackground(String backgroundColor) {
+        this();
+        setBackgroundColor(backgroundColor);
+    }
+
     public String getBackgroundColor() {
         return backgroundColor;
     }
