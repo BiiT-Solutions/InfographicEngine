@@ -38,7 +38,7 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
-    <logger name="com.biit.infographic.logger.EventsLogger" additivity="false" level="DEBUG">
+    <logger name="com.biit.infographic.logger.EventsLogger" additivity="false" level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
@@ -50,7 +50,7 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
-    <logger name="com.biit.infographic.persistence.logger.CacheEventLogger" additivity="false" level="DEBUG">
+    <logger name="com.biit.infographic.persistence.logger.CacheEventLogger" additivity="false" level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
@@ -76,7 +76,7 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
-    <logger name="com.biit.kafka.logger.KafkaLogger" additivity="false" level="DEBUG">
+    <logger name="com.biit.kafka.logger.KafkaLogger" additivity="false" level="INFO">
         <appender-ref ref="DAILY"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
