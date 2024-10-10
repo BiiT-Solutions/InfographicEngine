@@ -29,9 +29,13 @@ public class DroolsEventSender {
         EventsLogger.debug(this.getClass().getName(), "Preparing for sending events...");
         if (kafkaTemplate != null && sendTopic != null && !sendTopic.isEmpty()) {
             //Send the complete svg as an event.
-            kafkaTemplate.send(sendTopic, eventConverter.getInfographicEvent(generatedInfographic, executedBy, organization, sessionId));
-            EventsLogger.debug(this.getClass().getName(), "Event with results from '{}' and version '{}' send!",
-                    generatedInfographic.getFormName(), generatedInfographic.getFormVersion());
+            try {
+                kafkaTemplate.send(sendTopic, eventConverter.getInfographicEvent(generatedInfographic, executedBy, organization, sessionId));
+                EventsLogger.debug(this.getClass().getName(), "Event with results from '{}' and version '{}' send!",
+                        generatedInfographic.getFormName(), generatedInfographic.getFormVersion());
+            } catch (Exception e) {
+                EventsLogger.errorMessage(this.getClass(), e);
+            }
         } else {
             EventsLogger.warning(this.getClass().getName(), "Send topic not defined!");
         }
