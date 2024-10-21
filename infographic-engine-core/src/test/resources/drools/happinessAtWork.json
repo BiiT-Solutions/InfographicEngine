@@ -1,0 +1,78 @@
+{
+  "class" : "com.biit.drools.form.DroolsSubmittedForm",
+  "tag" : "Happiness at Work",
+  "children" : [ {
+    "class" : "com.biit.drools.form.DroolsSubmittedCategory",
+    "tag" : "engagement",
+    "text" : "engagement",
+    "children" : [ {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "vigorous",
+      "text" : "vigorous",
+      "children" : [ ],
+      "answers" : [ "5" ]
+    }, {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "enthusiastic",
+      "text" : "enthusiastic",
+      "children" : [ ],
+      "answers" : [ "3" ]
+    }, {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "carried",
+      "text" : "carried",
+      "children" : [ ],
+      "answers" : [ "2" ]
+    } ]
+  }, {
+    "class" : "com.biit.drools.form.DroolsSubmittedCategory",
+    "tag" : "satisfaction",
+    "text" : "satisfaction",
+    "children" : [ {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "nature",
+      "text" : "nature",
+      "children" : [ ],
+      "answers" : [ "4" ]
+    }, {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "payment",
+      "text" : "payment",
+      "children" : [ ],
+      "answers" : [ "5" ]
+    }, {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "advancement",
+      "text" : "advancement",
+      "children" : [ ],
+      "answers" : [ "1" ]
+    } ]
+  }, {
+    "class" : "com.biit.drools.form.DroolsSubmittedCategory",
+    "tag" : "organisational_affection",
+    "text" : "organisational_affection",
+    "children" : [ {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "career",
+      "text" : "career",
+      "children" : [ ],
+      "answers" : [ "4" ]
+    }, {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "attached",
+      "text" : "attached",
+      "children" : [ ],
+      "answers" : [ "5" ]
+    }, {
+      "class" : "com.biit.drools.form.DroolsSubmittedQuestion",
+      "tag" : "belonging",
+      "text" : "belonging",
+      "children" : [ ],
+      "answers" : [ "3" ]
+    } ]
+  } ],
+  "applicationName" : "",
+  "submittedBy" : "admin@test.com",
+  "version" : 1,
+  "formVariables" : "{\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='organisational_affection']\" : {\n    \"Percentage\" : 0.85\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='engagement']/children/DroolsSubmittedQuestion[@name='carried']\" : {\n    \"Score\" : 2.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='satisfaction']\" : {\n    \"Percentage\" : 0.15\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='satisfaction']/children/DroolsSubmittedQuestion[@name='payment']\" : {\n    \"Score\" : 5.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='satisfaction']/children/DroolsSubmittedQuestion[@name='nature']\" : {\n    \"Score\" : 4.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='organisational_affection']/children/DroolsSubmittedQuestion[@name='career']\" : {\n    \"Score\" : 4.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='engagement']/children/DroolsSubmittedQuestion[@name='enthusiastic']\" : {\n    \"Score\" : 3.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='organisational_affection']/children/DroolsSubmittedQuestion[@name='belonging']\" : {\n    \"Score\" : 3.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='engagement']\" : {\n    \"Percentage\" : 0.33333333333333335\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='satisfaction']/children/DroolsSubmittedQuestion[@name='advancement']\" : {\n    \"Score\" : 1.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='organisational_affection']/children/DroolsSubmittedQuestion[@name='attached']\" : {\n    \"Score\" : 5.0\n  },\n  \"/DroolsSubmittedForm[@label='Happiness at Work']/children/DroolsSubmittedCategory[@name='engagement']/children/DroolsSubmittedQuestion[@name='vigorous']\" : {\n    \"Score\" : 5.0\n  }\n}"
+}
