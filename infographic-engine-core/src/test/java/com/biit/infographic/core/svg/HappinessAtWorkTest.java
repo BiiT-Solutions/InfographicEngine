@@ -143,7 +143,7 @@ public class HappinessAtWorkTest extends AbstractTestNGSpringContextTests {
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
-        final SvgText paragraph = new SvgText(FONT, "Engagement is a special feeling of energy and motivation related to the ability to feel excited, vibrant, enthusiastic or passionate about work.\nIf you want to know how to get this feeling in your organisation by using innovation and game based learning talk to Karen (Living Story). ur organisation by using innovation and game based learning talk to Karen.", PARAGRAPH_FONT_SIZE, 62, 313);
+        final SvgText paragraph = new SvgText(FONT, "Engagement is a special feeling of energy and motivation related to the ability to feel excited, vibrant, enthusiastic or passionate about work.\nIf you want to know how to get this feeling in your organisation by using innovation and game based learning talk to Karen (Living Story).", PARAGRAPH_FONT_SIZE, 62, 313);
         paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
         elements.add(paragraph);
 
