@@ -142,6 +142,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineLength(80);
+        text.setFontFamily("Arial");
         svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
@@ -158,6 +159,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         final SvgText text = new SvgText(LONG_TEXT_WITH_NEW_LINES, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineLength(80);
+        text.setFontFamily("Arial");
         svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
@@ -192,6 +194,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineWidth(300);
+        text.setFontFamily("Arial");
         svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
@@ -208,6 +211,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         final SvgText text = new SvgText(LONG_TEXT_WITH_NEW_LINES, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineWidth(300);
+        text.setFontFamily("Arial");
         svgTemplate.addElement(text);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
@@ -223,6 +227,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
         final SvgText text = new SvgText(LONG_TEXT, 12, SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2);
         text.setTextAlign(TextAlign.JUSTIFY);
+        text.setFontFamily("Arial");
         text.setMaxLineLength(80);
         text.setRotate(90L);
         svgTemplate.addElement(text);
@@ -266,6 +271,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineWidth(120);
         text.setMaxParagraphHeight(180);
+        text.setFontFamily("Arial");
         svgTemplate.addElement(text);
 
 
@@ -285,6 +291,7 @@ public class TextSvgGenerationTest extends SvgGeneration {
         text.setTextAlign(TextAlign.JUSTIFY);
         text.setMaxLineWidth(200);
         text.setMaxParagraphHeight(90);
+        text.setFontFamily("Arial");
         svgTemplate.addElement(text);
 
 

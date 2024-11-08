@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class DroolsEventSender {
+public class InfographicEventSender {
 
     @Value("${spring.kafka.send.topic:}")
     private String sendTopic;
@@ -20,7 +20,7 @@ public class DroolsEventSender {
 
     private final EventConverter eventConverter;
 
-    public DroolsEventSender(@Autowired(required = false) KafkaEventTemplate kafkaTemplate, EventConverter eventConverter) {
+    public InfographicEventSender(@Autowired(required = false) KafkaEventTemplate kafkaTemplate, EventConverter eventConverter) {
         this.kafkaTemplate = kafkaTemplate;
         this.eventConverter = eventConverter;
     }

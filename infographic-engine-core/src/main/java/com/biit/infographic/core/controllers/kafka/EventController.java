@@ -38,7 +38,7 @@ public class EventController {
 
     private final DroolsResultController droolsResultController;
 
-    private final DroolsEventSender droolsEventSender;
+    private final InfographicEventSender infographicEventSender;
 
     private final PdfController pdfController;
 
@@ -52,13 +52,13 @@ public class EventController {
     public EventController(@Autowired(required = false) EventListener eventListener,
                            EventConverter eventConverter,
                            DroolsResultRepository droolsResultRepository,
-                           DroolsResultController droolsResultController, DroolsEventSender droolsEventSender,
+                           DroolsResultController droolsResultController, InfographicEventSender infographicEventSender,
                            PdfController pdfController, InfographicEmailService infographicEmailService,
                            UserManagerClient userManagerClient, @Value("${mail.server.smtp.server:#{null}}") String smtpServer) {
         this.eventConverter = eventConverter;
         this.droolsResultRepository = droolsResultRepository;
         this.droolsResultController = droolsResultController;
-        this.droolsEventSender = droolsEventSender;
+        this.infographicEventSender = infographicEventSender;
         this.pdfController = pdfController;
         this.infographicEmailService = infographicEmailService;
         this.userManagerClient = userManagerClient;
@@ -95,7 +95,7 @@ public class EventController {
                 //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
                 final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
                         event.getOrganization(), null);
-                droolsEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
+                infographicEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
                 //Send it by email
                 sendInfographicByMail(generatedInfographic, createdBy);
             } else {
