@@ -14,7 +14,7 @@ public class PdfFormPayload extends Element<Long> implements EventPayload {
 
     private String formName;
 
-    private int formVersion;
+    private Integer formVersion;
 
     private String organization;
 
@@ -38,11 +38,11 @@ public class PdfFormPayload extends Element<Long> implements EventPayload {
         this.formName = formName;
     }
 
-    public int getFormVersion() {
+    public Integer getFormVersion() {
         return formVersion;
     }
 
-    public void setFormVersion(int formVersion) {
+    public void setFormVersion(Integer formVersion) {
         this.formVersion = formVersion;
     }
 
