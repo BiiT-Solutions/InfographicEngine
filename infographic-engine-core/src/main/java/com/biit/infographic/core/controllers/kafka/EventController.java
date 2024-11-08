@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TimeZone;
+import java.util.UUID;
 
 
 @Controller
@@ -48,13 +49,16 @@ public class EventController {
 
     private final String smtpServer;
 
+    private final InfographicPdfEventSender infographicPdfEventSender;
+
 
     public EventController(@Autowired(required = false) EventListener eventListener,
                            EventConverter eventConverter,
                            DroolsResultRepository droolsResultRepository,
                            DroolsResultController droolsResultController, InfographicEventSender infographicEventSender,
                            PdfController pdfController, InfographicEmailService infographicEmailService,
-                           UserManagerClient userManagerClient, @Value("${mail.server.smtp.server:#{null}}") String smtpServer) {
+                           UserManagerClient userManagerClient, @Value("${mail.server.smtp.server:#{null}}") String smtpServer,
+                           InfographicPdfEventSender infographicPdfEventSender) {
         this.eventConverter = eventConverter;
         this.droolsResultRepository = droolsResultRepository;
         this.droolsResultController = droolsResultController;
@@ -63,6 +67,7 @@ public class EventController {
         this.infographicEmailService = infographicEmailService;
         this.userManagerClient = userManagerClient;
         this.smtpServer = smtpServer;
+        this.infographicPdfEventSender = infographicPdfEventSender;
 
         //Listen to a topic
         if (eventListener != null) {
@@ -96,8 +101,13 @@ public class EventController {
                 final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
                         event.getOrganization(), null);
                 infographicEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
-                //Send it by email
-                sendInfographicByMail(generatedInfographic, createdBy);
+
+                final byte[] pdfForm = pdfController.generatePdfFromSvgs(generatedInfographic.getSvgContents());
+                //Send PDF by email
+                sendInfographicByMail(generatedInfographic, pdfForm, createdBy);
+                //Send PDF as event
+                sendInfographicAsEvent(generatedInfographic, pdfForm, event.getSessionId(), event.getOrganization());
+
             } else {
                 EventsLogger.debug(this.getClass(), "No drools form obtained.");
             }
@@ -117,19 +127,22 @@ public class EventController {
     }
 
 
-    private void sendInfographicByMail(GeneratedInfographic generatedInfographic, String createdBy) {
+    private void sendInfographicByMail(GeneratedInfographic generatedInfographic, byte[] pdfData, String createdBy) {
         try {
             //Check if email is enabled now to avoid the search for a user.
             if (smtpServer != null) {
                 final Optional<IAuthenticatedUser> user = userManagerClient.findByUsername(createdBy);
                 if (user.isPresent()) {
-                    final byte[] pdfForm = pdfController.generatePdfFromSvgs(generatedInfographic.getSvgContents());
                     infographicEmailService.sendPdfInfographic(user.get().getEmailAddress(), generatedInfographic.getCreatedBy(),
-                            generatedInfographic.getFormName(), pdfForm);
+                            generatedInfographic.getFormName(), pdfData);
                 }
             }
         } catch (Exception e) {
             EventsLogger.errorMessage(this.getClass(), e);
         }
+    }
+
+    private void sendInfographicAsEvent(GeneratedInfographic generatedInfographic, byte[] pdfData, UUID sessionId, String organization) {
+        infographicPdfEventSender.sendPdfInfographic(generatedInfographic, pdfData, sessionId, organization);
     }
 }
