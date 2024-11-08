@@ -4,12 +4,15 @@ import com.biit.infographic.core.controllers.kafka.converter.PdfInfographicEvent
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.kafka.events.KafkaEventTemplate;
 import com.biit.kafka.logger.EventsLogger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
+@ConditionalOnExpression("${spring.kafka.enabled:false}")
 public class InfographicPdfEventSender {
 
     @Value("${spring.kafka.send.topic:}")
@@ -19,9 +22,14 @@ public class InfographicPdfEventSender {
 
     private final KafkaEventTemplate kafkaTemplate;
 
+    private InfographicPdfEventSender() {
+        pdfInfographicEventConverter = null;
+        kafkaTemplate = null;
+    }
+
+    @Autowired(required = false)
     public InfographicPdfEventSender(PdfInfographicEventConverter pdfInfographicEventConverter, KafkaEventTemplate kafkaTemplate) {
         this.pdfInfographicEventConverter = pdfInfographicEventConverter;
-
         this.kafkaTemplate = kafkaTemplate;
     }
 

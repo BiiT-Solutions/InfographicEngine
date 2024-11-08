@@ -28,7 +28,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 })
 @ComponentScan({"com.biit.infographic", "com.biit.server.security", "com.biit.server", "com.biit.messagebird.client",
         "com.biit.usermanager.client", "com.biit.kafka", "com.biit.appointment.rest.client"})
-@ConfigurationPropertiesScan({"com.biit.infographic.rest"})
+@ConfigurationPropertiesScan({"com.biit.infographic.rest", "com.biit.kafka.config"})
 @EntityScan({"com.biit.infographic.persistence.entities", "com.biit.server"})
 public class ServicesServer {
     private static final int POOL_SIZE = 20;

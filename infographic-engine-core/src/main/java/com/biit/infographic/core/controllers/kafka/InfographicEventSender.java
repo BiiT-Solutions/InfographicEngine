@@ -6,11 +6,13 @@ import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.kafka.events.KafkaEventTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
+@ConditionalOnExpression("${spring.kafka.enabled:false}")
 public class InfographicEventSender {
 
     @Value("${spring.kafka.send.topic:}")
@@ -20,7 +22,13 @@ public class InfographicEventSender {
 
     private final EventConverter eventConverter;
 
-    public InfographicEventSender(@Autowired(required = false) KafkaEventTemplate kafkaTemplate, EventConverter eventConverter) {
+    private InfographicEventSender(EventConverter eventConverter) {
+        kafkaTemplate = null;
+        this.eventConverter = eventConverter;
+    }
+
+    @Autowired(required = false)
+    public InfographicEventSender(KafkaEventTemplate kafkaTemplate, EventConverter eventConverter) {
         this.kafkaTemplate = kafkaTemplate;
         this.eventConverter = eventConverter;
     }

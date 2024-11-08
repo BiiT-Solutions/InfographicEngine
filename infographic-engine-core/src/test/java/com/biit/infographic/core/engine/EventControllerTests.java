@@ -68,6 +68,5 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
         Optional<GeneratedInfographic> generatedInfographicOptional = generatedInfographicProvider.findLatest(null, null, EVENT_CREATOR, null);
         Assert.assertTrue(generatedInfographicOptional.isPresent());
         Assert.assertTrue(generatedInfographicOptional.get().getSvgContents().get(0).length() > 10000);
-
     }
 }

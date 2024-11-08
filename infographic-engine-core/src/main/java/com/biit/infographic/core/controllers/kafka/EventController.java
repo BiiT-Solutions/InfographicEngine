@@ -51,8 +51,20 @@ public class EventController {
 
     private final InfographicPdfEventSender infographicPdfEventSender;
 
+    private EventController() {
+        this.eventConverter = null;
+        this.droolsResultRepository = null;
+        this.droolsResultController = null;
+        this.infographicEventSender = null;
+        this.pdfController = null;
+        this.infographicEmailService = null;
+        this.userManagerClient = null;
+        this.smtpServer = null;
+        this.infographicPdfEventSender = null;
+    }
 
-    public EventController(@Autowired(required = false) EventListener eventListener,
+    @Autowired(required = false)
+    public EventController(EventListener eventListener,
                            EventConverter eventConverter,
                            DroolsResultRepository droolsResultRepository,
                            DroolsResultController droolsResultController, InfographicEventSender infographicEventSender,
