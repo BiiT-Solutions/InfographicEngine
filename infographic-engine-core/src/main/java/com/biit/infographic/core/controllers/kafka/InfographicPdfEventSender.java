@@ -15,7 +15,7 @@ import java.util.UUID;
 @ConditionalOnExpression("${spring.kafka.enabled:false}")
 public class InfographicPdfEventSender {
 
-    @Value("${spring.kafka.send.topic:}")
+    @Value("${spring.kafka.send.pdf.topic:}")
     private String sendTopic;
 
     private final PdfInfographicEventConverter pdfInfographicEventConverter;
