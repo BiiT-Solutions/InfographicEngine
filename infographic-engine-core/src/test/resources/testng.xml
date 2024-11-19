@@ -29,6 +29,7 @@
                 <include name="pdfFromPng"/>
                 <include name="clipSvgGenerationTest"/>
                 <include name="happinessAtWork"/>
+                <include name="knowledgeSystem"/>
             </run>
         </groups>
         <classes>
@@ -59,6 +60,7 @@
             <class name="com.biit.infographic.core.pdf.PdfFromPngTest"/>
             <class name="com.biit.infographic.core.svg.ClipSvgGenerationTest"/>
             <class name="com.biit.infographic.core.svg.HappinessAtWorkTest"/>
+            <class name="com.biit.infographic.core.svg.KnowledgeSystemTest"/>
         </classes>
     </test>
 </suite>

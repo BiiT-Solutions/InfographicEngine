@@ -33,8 +33,6 @@ public class AppointmentContent {
 
 
     private static final int TEMPLATE_NAME_POSITION = 0;
-    private static final int ACTION_SUCCESS = 0;
-    private static final int ACTION_FAILURE = 1;
 
     private final AppointmentProvider appointmentProvider;
     private final UserProvider userProvider;

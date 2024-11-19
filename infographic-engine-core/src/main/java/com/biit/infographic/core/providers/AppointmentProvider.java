@@ -11,8 +11,8 @@ import java.util.UUID;
 
 @Component
 public class AppointmentProvider extends BasePool<String, AppointmentDTO> {
-    private static final Long APPOINTMENT_POOL_TIME = (long) (5 * 60 * 1000);
 
+    private static final Long APPOINTMENT_POOL_TIME = (long) (5 * 60 * 1000);
 
     private final IAppointmentCenterRestClient appointmentCenterRestClient;
 

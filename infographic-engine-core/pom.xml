@@ -63,6 +63,10 @@
             <artifactId>user-manager-system-rest-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.biit.ks</groupId>
+            <artifactId>knowledge-system-rest-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.biit.appointment</groupId>
             <artifactId>appointment-center-rest-client</artifactId>
         </dependency>
@@ -96,6 +100,11 @@
         <dependency>
             <groupId>com.biit.appointment</groupId>
             <artifactId>appointment-center-rest-client-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.biit.ks</groupId>
+            <artifactId>knowledge-system-rest-client-test</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- To set env variables in tests -->

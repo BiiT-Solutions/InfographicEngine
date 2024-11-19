@@ -1,0 +1,26 @@
+{
+  "class": "com.biit.drools.form.DroolsSubmittedForm",
+  "tag": "KnowledgeSystemTest",
+  "children": [
+    {
+      "class": "com.biit.drools.form.DroolsSubmittedCategory",
+      "tag": "Category1",
+      "text": "Category1",
+      "children": [
+        {
+          "class": "com.biit.drools.form.DroolsSubmittedQuestion",
+          "tag": "question1",
+          "text": "question1",
+          "children": [],
+          "answers": [
+            "0"
+          ]
+        }
+      ]
+    }
+  ],
+  "applicationName": "",
+  "submittedBy": "Chuck Norris",
+  "version": 1,
+  "formVariables": "{\n  \"/DroolsSubmittedForm[@label='KnowledgeSystemTest']\" : {\n    \"Content\" : \"This text comes from $KnowledgeSystem{id123}\" }\n}"
+}

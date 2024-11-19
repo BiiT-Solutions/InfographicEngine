@@ -8,6 +8,7 @@ import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.engine.ParameterType;
 import com.biit.infographic.core.engine.content.AppointmentContent;
 import com.biit.infographic.core.engine.content.DroolsContent;
+import com.biit.infographic.core.engine.content.KnowledgeSystemContent;
 import com.biit.infographic.core.engine.content.UserContent;
 import com.biit.infographic.core.engine.files.InfographicFileElement;
 import com.biit.infographic.core.engine.files.InfographicFolder;
@@ -34,11 +35,14 @@ public class InfographicEngineController {
     private final DroolsContent droolsContent;
     private final UserContent userContent;
     private final AppointmentContent appointmentContent;
+    private final KnowledgeSystemContent knowledgeSystemContent;
 
-    public InfographicEngineController(DroolsContent droolsContent, UserContent userContent, AppointmentContent appointmentContent) {
+    public InfographicEngineController(DroolsContent droolsContent, UserContent userContent, AppointmentContent appointmentContent,
+                                       KnowledgeSystemContent knowledgeSystemContent) {
         this.droolsContent = droolsContent;
         this.userContent = userContent;
         this.appointmentContent = appointmentContent;
+        this.knowledgeSystemContent = knowledgeSystemContent;
     }
 
     public List<InfographicTemplateAndContent> addContentToTemplates(List<InfographicTemplate> templates,
@@ -92,6 +96,8 @@ public class InfographicEngineController {
             // Get appointment variables.
             appointmentContent.setAppointmentValues(parametersByType.get(ParameterType.APPOINTMENT), droolsSubmittedForm, timezone);
 
+            // Knowledge System
+            knowledgeSystemContent.setKnowledgeSystemValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
 
             // Get goals.
 //            setGoalsVariablesValues(examinationResult, appointment, parametersByType.get(ParameterType.GOAL));
