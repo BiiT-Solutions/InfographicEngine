@@ -31,23 +31,25 @@ public class KnowledgeSystemContent {
 
 
     public void setKnowledgeSystemValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm) {
-        String locale = null;
-        //Search a parameter with the knowledge system tag.
-        for (Parameter parameter : parameters) {
-            for (Map.Entry<String, String> attribute : parameter.getAttributes().entrySet()) {
-                try {
-                    if (attribute.getValue().contains(KNOWLEDGE_SYTEM_TAG)) {
-                        final String knowledgeSystemName = extractKnowledgeSystemItem(attribute.getValue());
-                        if (locale == null) {
-                            final IAuthenticatedUser user = userProvider.getUser(droolsSubmittedForm.getSubmittedBy());
-                            locale = user.getLocale() != null ? user.getLocale().getCountry() : Locale.ENGLISH.getCountry();
+        if (parameters != null) {
+            String locale = null;
+            //Search a parameter with the knowledge system tag.
+            for (Parameter parameter : parameters) {
+                for (Map.Entry<String, String> attribute : parameter.getAttributes().entrySet()) {
+                    try {
+                        if (attribute.getValue().contains(KNOWLEDGE_SYTEM_TAG)) {
+                            final String knowledgeSystemName = extractKnowledgeSystemItem(attribute.getValue());
+                            if (locale == null) {
+                                final IAuthenticatedUser user = userProvider.getUser(droolsSubmittedForm.getSubmittedBy());
+                                locale = user.getLocale() != null ? user.getLocale().getCountry() : Locale.ENGLISH.getCountry();
+                            }
+                            final String translatedText = knowledgeSystemTextProvider.get(knowledgeSystemName, locale);
+                            //Replace knowlegeSystem tag with obtained text.
+                            attribute.setValue(attribute.getValue().replaceAll(Pattern.quote(KNOWLEDGE_SYTEM_TAG) + "(.*?)}", translatedText));
                         }
-                        final String translatedText = knowledgeSystemTextProvider.get(knowledgeSystemName, locale);
-                        //Replace knowlegeSystem tag with obtained text.
-                        attribute.setValue(attribute.getValue().replaceAll(Pattern.quote(KNOWLEDGE_SYTEM_TAG) + "(.*?)}", translatedText));
+                    } catch (TextNotFoundException e) {
+                        InfographicEngineLogger.errorMessage(this.getClass(), e);
                     }
-                } catch (TextNotFoundException e) {
-                    InfographicEngineLogger.errorMessage(this.getClass(), e);
                 }
             }
         }
