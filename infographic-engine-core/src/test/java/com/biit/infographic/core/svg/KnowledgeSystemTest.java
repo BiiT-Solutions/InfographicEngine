@@ -9,8 +9,10 @@ import com.biit.ks.client.TestTextClient;
 import com.biit.ks.dto.TextDTO;
 import com.biit.ks.dto.TextLanguagesDTO;
 import com.biit.ks.models.ITextClient;
+import com.biit.server.client.user.AuthenticatedUser;
 import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
 import com.biit.utils.file.FileReader;
+import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -30,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 
 @SpringBootTest
@@ -38,7 +41,7 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
     protected static final String TEMPLATE_ID = "ks_test";
 
-    private static final String KNOWLEDGE_SYSTEM_TEXT_TO_REPLACE = "#DROOLS%KnowledgeSystenTest%Content#";
+    private static final String KNOWLEDGE_SYSTEM_TEXT_TO_REPLACE = "#DROOLS%KnowledgeSystemTest%Content#";
     private static final String KNOWLEDGE_SYSTEM_TEXT_NAME = "id123";
 
     private static final String DROOLS_FORM_FILE_PATH = "drools/KnowledgeSystemTest.json";
@@ -96,7 +99,9 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
 
     @BeforeClass
     public void createUser() throws IOException {
-        authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
+        AuthenticatedUser user = (AuthenticatedUser) authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
+        user.setLocale(LocaleUtils.toLocale("es_ES"));
+        authenticatedUserProvider.updateUser(user);
     }
 
     @Test
@@ -106,7 +111,10 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
         ksTemplate.getElementAttributes().setHeight(480L);
         ksTemplate.getElementAttributes().setWidth(640L);
 
-        ksTemplate.addElements(List.of(new SvgText(KNOWLEDGE_SYSTEM_TEXT_TO_REPLACE, 67, FontWeight.BOLD, 50L, 50L)));
+        final SvgText svgText = new SvgText(KNOWLEDGE_SYSTEM_TEXT_TO_REPLACE, 67, FontWeight.BOLD, 50L, 50L);
+        svgText.setFontSize(12);
+        svgText.setMaxLineWidth(500);
+        ksTemplate.addElements(List.of(svgText));
     }
 
 

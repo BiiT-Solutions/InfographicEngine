@@ -8,7 +8,6 @@ import com.biit.infographic.core.providers.KnowledgeSystemTextProvider;
 import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.server.security.IAuthenticatedUser;
-import com.biit.usermanager.dto.UserDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -41,11 +40,7 @@ public class KnowledgeSystemContent {
                         final String knowledgeSystemName = extractKnowledgeSystemItem(attribute.getValue());
                         if (locale == null) {
                             final IAuthenticatedUser user = userProvider.getUser(droolsSubmittedForm.getSubmittedBy());
-                            if (user instanceof UserDTO) {
-                                locale = ((UserDTO) user).getLocale().getCountry();
-                            } else {
-                                locale = Locale.ENGLISH.getCountry();
-                            }
+                            locale = user.getLocale() != null ? user.getLocale().getCountry() : Locale.ENGLISH.getCountry();
                         }
                         final String translatedText = knowledgeSystemTextProvider.get(knowledgeSystemName, locale);
                         //Replace knowlegeSystem tag with obtained text.
