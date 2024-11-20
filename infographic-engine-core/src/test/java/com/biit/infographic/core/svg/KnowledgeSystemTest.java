@@ -113,6 +113,7 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
         final SvgText svgText = new SvgText(KNOWLEDGE_SYSTEM_TEXT_TO_REPLACE, 67, FontWeight.BOLD, 50L, 50L);
         svgText.setFontSize(12);
         svgText.setMaxLineWidth(500);
+        svgText.setFontFamily("Arial");
         ksTemplate.addElements(List.of(svgText));
     }
 
