@@ -571,4 +571,9 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
+
+    @AfterClass(alwaysRun = true)
+    public void removeUser() {
+        authenticatedUserProvider.clear();
+    }
 }

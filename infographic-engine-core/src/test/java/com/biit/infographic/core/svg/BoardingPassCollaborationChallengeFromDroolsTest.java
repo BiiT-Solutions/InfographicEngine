@@ -383,4 +383,9 @@ public class BoardingPassCollaborationChallengeFromDroolsTest extends AbstractTe
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
+
+    @AfterClass
+    public void removeUser() {
+        authenticatedUserProvider.clear();
+    }
 }

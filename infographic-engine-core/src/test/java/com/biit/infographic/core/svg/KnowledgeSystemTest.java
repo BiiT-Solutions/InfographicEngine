@@ -61,8 +61,6 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private ITextClient textClient;
 
-    private AuthenticatedUser user;
-
     private SvgTemplate ksTemplate;
 
     protected boolean deleteDirectory(File directoryToBeDeleted) {
@@ -100,7 +98,7 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
 
     @BeforeClass
     public void createUser() throws IOException {
-        user = (AuthenticatedUser) authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
+        AuthenticatedUser user = (AuthenticatedUser) authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
         user.setLocale(LocaleUtils.toLocale("es_ES"));
         authenticatedUserProvider.updateUser(user);
     }
@@ -134,13 +132,13 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     }
 
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void removeUser() {
-        authenticatedUserProvider.delete(user);
+        authenticatedUserProvider.clear();
     }
 }
