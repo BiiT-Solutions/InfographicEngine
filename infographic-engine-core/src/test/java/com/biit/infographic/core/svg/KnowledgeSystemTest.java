@@ -32,7 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 
 @SpringBootTest
@@ -61,6 +60,8 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private ITextClient textClient;
+
+    private AuthenticatedUser user;
 
     private SvgTemplate ksTemplate;
 
@@ -99,7 +100,7 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
 
     @BeforeClass
     public void createUser() throws IOException {
-        AuthenticatedUser user = (AuthenticatedUser) authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
+        user = (AuthenticatedUser) authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
         user.setLocale(LocaleUtils.toLocale("es_ES"));
         authenticatedUserProvider.updateUser(user);
     }
@@ -136,5 +137,10 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+    }
+
+    @AfterClass
+    public void removeUser() {
+        authenticatedUserProvider.delete(user);
     }
 }

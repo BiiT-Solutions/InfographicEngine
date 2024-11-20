@@ -19,6 +19,7 @@ import com.biit.infographic.core.models.svg.components.path.VerticalLine;
 import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.server.security.IAuthenticatedUser;
 import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
 import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -114,6 +115,8 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
 
     @Autowired
     private AppointmentContent appointmentContent;
+
+    private IAuthenticatedUser user;
 
     private SvgTemplate boardingPassTemplate;
 
@@ -296,7 +299,7 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
 
     @BeforeClass
     public void createUser() throws IOException {
-        authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
+        user = authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
     }
 
     @BeforeClass
@@ -352,8 +355,13 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     }
 
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void removeUser() {
+        authenticatedUserProvider.delete(user);
     }
 }
