@@ -19,6 +19,7 @@ import com.biit.infographic.core.models.svg.components.path.VerticalLine;
 import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.infographic.core.providers.UserProvider;
 import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
 import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -108,6 +109,9 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
 
     @Autowired
     private AuthenticatedUserProvider authenticatedUserProvider;
+
+    @Autowired
+    private UserProvider userProvider;
 
     @Autowired
     private TestAppointmentCenterClient testAppointmentCenterClient;
@@ -360,5 +364,6 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     @AfterClass(alwaysRun = true)
     public void removeUser() {
         authenticatedUserProvider.clear();
+        userProvider.reset();
     }
 }

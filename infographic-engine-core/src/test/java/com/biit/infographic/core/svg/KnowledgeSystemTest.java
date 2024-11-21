@@ -5,6 +5,7 @@ import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
+import com.biit.infographic.core.providers.UserProvider;
 import com.biit.ks.client.TestTextClient;
 import com.biit.ks.dto.TextDTO;
 import com.biit.ks.dto.TextLanguagesDTO;
@@ -59,6 +60,9 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     private AuthenticatedUserProvider authenticatedUserProvider;
 
     @Autowired
+    private UserProvider userProvider;
+
+    @Autowired
     private ITextClient textClient;
 
     private SvgTemplate ksTemplate;
@@ -97,14 +101,14 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     }
 
     @BeforeClass
-    public void createUser() throws IOException {
+    public void createUser() {
         AuthenticatedUser user = (AuthenticatedUser) authenticatedUserProvider.createUser(USER_NAME, USER_NAME, "123456");
         user.setLocale(LocaleUtils.toLocale("es_ES"));
         authenticatedUserProvider.updateUser(user);
     }
 
     @Test
-    public void generateInfographic() throws IOException {
+    public void generateInfographic() {
         ksTemplate = new SvgTemplate();
         ksTemplate.setUuid(TEMPLATE_ID);
         ksTemplate.getElementAttributes().setHeight(480L);
@@ -141,5 +145,6 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     @AfterClass(alwaysRun = true)
     public void removeUser() {
         authenticatedUserProvider.clear();
+        userProvider.reset();
     }
 }

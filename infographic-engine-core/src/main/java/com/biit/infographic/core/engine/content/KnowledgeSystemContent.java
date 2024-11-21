@@ -41,10 +41,10 @@ public class KnowledgeSystemContent {
                             final String knowledgeSystemName = extractKnowledgeSystemItem(attribute.getValue());
                             if (locale == null) {
                                 final IAuthenticatedUser user = userProvider.getUser(droolsSubmittedForm.getSubmittedBy());
-                                locale = user.getLocale() != null ? user.getLocale().getCountry() : Locale.ENGLISH.getCountry();
+                                locale = user.getLocale() != null ? user.getLocale().getLanguage() : Locale.ENGLISH.getLanguage();
                             }
                             final String translatedText = knowledgeSystemTextProvider.get(knowledgeSystemName, locale);
-                            //Replace knowlegeSystem tag with obtained text.
+                            //Replace knowledgeSystem tag with obtained text.
                             attribute.setValue(attribute.getValue().replaceAll(Pattern.quote(KNOWLEDGE_SYTEM_TAG) + "(.*?)}", translatedText));
                         }
                     } catch (TextNotFoundException e) {

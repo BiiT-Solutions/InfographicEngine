@@ -2,6 +2,7 @@ package com.biit.infographic.rest.tests;
 
 import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.models.GeneratedInfographicDTO;
+import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.rest.api.model.InfographicSearch;
 import com.biit.server.security.model.AuthRequest;
 import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
@@ -70,6 +71,9 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private AuthenticatedUserProvider authenticatedUserProvider;
+
+    @Autowired
+    private UserProvider userProvider;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -575,5 +579,6 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
     @AfterClass(alwaysRun = true)
     public void removeUser() {
         authenticatedUserProvider.clear();
+        userProvider.reset();
     }
 }
