@@ -65,9 +65,6 @@ public class HappinessAtWorkTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private DroolsResultController droolsResultController;
 
-    @Autowired
-    private AppointmentContent appointmentContent;
-
     private SvgTemplate happinessAtWorkTemplate;
 
     protected String readBase64Image(String imageName) {
