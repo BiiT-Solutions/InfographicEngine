@@ -31,12 +31,16 @@ public class FormContent {
                 // Search for any variable defined in the parameters
                 for (String attribute : parameter.getAttributes().keySet()) {
                     //#FORM%SUBMIT%DATE#
-                    if (Objects.equals(attribute, TIME_ATTRIBUTE)) {
-                        parameter.getAttributes().put(attribute, droolsSubmittedForm.getSubmittedAt()
-                                .format(DateTimeFormatter.ofPattern(TIME_ATTRIBUTE_PATTERN)));
-                    } else if (Objects.equals(attribute, DATE_ATTRIBUTE)) {
-                        parameter.getAttributes().put(attribute, droolsSubmittedForm.getSubmittedAt()
-                                .format(DateTimeFormatter.ofPattern(DATE_ATTRIBUTE_PATTERN)));
+                    try {
+                        if (Objects.equals(attribute, TIME_ATTRIBUTE)) {
+                            parameter.getAttributes().put(attribute, droolsSubmittedForm.getSubmittedAt()
+                                    .format(DateTimeFormatter.ofPattern(TIME_ATTRIBUTE_PATTERN)));
+                        } else if (Objects.equals(attribute, DATE_ATTRIBUTE)) {
+                            parameter.getAttributes().put(attribute, droolsSubmittedForm.getSubmittedAt()
+                                    .format(DateTimeFormatter.ofPattern(DATE_ATTRIBUTE_PATTERN)));
+                        }
+                    } catch (Exception e) {
+                        InfographicEngineLogger.errorMessage(this.getClass(), e);
                     }
                 }
             }

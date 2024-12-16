@@ -145,7 +145,7 @@ public class EventController {
             if (smtpServer != null) {
                 final Optional<IAuthenticatedUser> user = userManagerClient.findByUsername(createdBy);
                 if (user.isPresent()) {
-                    infographicEmailService.sendPdfInfographic(user.get().getEmailAddress(), generatedInfographic.getCreatedBy(),
+                    infographicEmailService.sendPdfInfographic(user.get().getEmailAddress(), createdBy,
                             generatedInfographic.getFormName(), pdfData);
                 }
             }

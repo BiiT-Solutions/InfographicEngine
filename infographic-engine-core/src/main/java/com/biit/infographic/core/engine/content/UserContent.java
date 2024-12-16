@@ -2,8 +2,8 @@ package com.biit.infographic.core.engine.content;
 
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.engine.Parameter;
-import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
+import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.springframework.stereotype.Component;
 
@@ -35,10 +35,14 @@ public class UserContent {
                 // Search for any variable defined in the parameters
                 for (String attribute : parameter.getAttributes().keySet()) {
                     //#USER%SUBMITTER%NAME#
-                    if (Objects.equals(attribute, NAME_ATTRIBUTE)) {
-                        parameter.getAttributes().put(attribute, userProvider.getUserName(droolsSubmittedForm));
-                    } else if (Objects.equals(attribute, LASTNAME_ATTRIBUTE)) {
-                        parameter.getAttributes().put(attribute, userProvider.getUserLastname(droolsSubmittedForm));
+                    try {
+                        if (Objects.equals(attribute, NAME_ATTRIBUTE)) {
+                            parameter.getAttributes().put(attribute, userProvider.getUserName(droolsSubmittedForm));
+                        } else if (Objects.equals(attribute, LASTNAME_ATTRIBUTE)) {
+                            parameter.getAttributes().put(attribute, userProvider.getUserLastname(droolsSubmittedForm));
+                        }
+                    } catch (Exception e) {
+                        InfographicEngineLogger.errorMessage(this.getClass(), e);
                     }
                 }
             }
