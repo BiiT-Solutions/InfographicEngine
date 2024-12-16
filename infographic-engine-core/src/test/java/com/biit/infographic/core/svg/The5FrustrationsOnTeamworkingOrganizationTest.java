@@ -57,11 +57,20 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
     private static final String CIRCLE_COLOR = "f20d5eff";
     private static final String CIRCLE_BACKGROUND = "edededff";
 
+    private static final String SUBMIT_TIME = "#FORM%SUBMIT%TIME#";
+    private static final String SUBMIT_DATE = "#FORM%SUBMIT%DATE#";
+
     private static final String FRUSTRATION_1_CIRCLE = "#DROOLS%Frustration On Teamworking Organization%Frustration1#";
     private static final String FRUSTRATION_2_CIRCLE = "#DROOLS%Frustration On Teamworking Organization%Frustration2#";
     private static final String FRUSTRATION_3_CIRCLE = "#DROOLS%Frustration On Teamworking Organization%Frustration3#";
     private static final String FRUSTRATION_4_CIRCLE = "#DROOLS%Frustration On Teamworking Organization%Frustration4#";
     private static final String FRUSTRATION_5_CIRCLE = "#DROOLS%Frustration On Teamworking Organization%Frustration5#";
+
+    private static final String FRUSTRATION_1_VALUE = "#DROOLS%Frustration On Teamworking Organization%Frustration1Total#";
+    private static final String FRUSTRATION_2_VALUE = "#DROOLS%Frustration On Teamworking Organization%Frustration2Total#";
+    private static final String FRUSTRATION_3_VALUE = "#DROOLS%Frustration On Teamworking Organization%Frustration3Total#";
+    private static final String FRUSTRATION_4_VALUE = "#DROOLS%Frustration On Teamworking Organization%Frustration4Total#";
+    private static final String FRUSTRATION_5_VALUE = "#DROOLS%Frustration On Teamworking Organization%Frustration5Total#";
 
 
     @Autowired
@@ -134,6 +143,10 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
+        final SvgText value = new SvgText(FRUSTRATION_1_VALUE, 22, 400, hight + 61);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
         final SvgText paragraph = new SvgText(FONT, "Hierbij verbergen teams hun zwakheden en fouten voor elkaar, geven elkaar geen oprechte feedback en aarzelen om elkaar te hulp te schieten buiten hun eigen verantwoordelijkheid.\n"
                 + "Zonder onderling vertrouwen van leden van een team is gezonde samenwerking onmogelijk. Onder vertrouwen verstaan we de zekerheid van teamleden dat de intenties van hun collega’s goed zijn en dat er geen reden is beschermend of bezorgd over de groep te zijn. Dit wordt ook wel psychologische veiligheid genoemd. Ieder lid van de groep mag zich kwetsbaar durven opstellen. Het vertrouwen is dusdanig zijn dat eigen gebreken en tekortkomingen niet gecamoufleerd hoeven te worden. Fouten toegeven en hulp durven vragen.",
                 PARAGRAPH_FONT_SIZE, 62, hight + 111);
@@ -159,6 +172,10 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
         scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
+
+        final SvgText value = new SvgText(FRUSTRATION_2_VALUE, 22, 400, hight + 61);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
 
         final SvgText paragraph = new SvgText(FONT, "Controversiële onderwerpen worden vermeden en vergaderingen zijn saai en vervelend.\n"
                 + "Alle belangrijke, duurzame relaties hebben productieve conflicten nodig om te kunnen groeien. Dit zijn principiële, ideologische conflicten die beperkt blijven tot concepten en ideeën en niet-destructieve conflicten, die op de man worden gespeeld. Zonder vertrouwen durven teamleden geen eerlijk conflict met elkaar aan te gaan. Ze kennen elkaar niet goed genoeg om het met elkaar oneens te durven zijn",
@@ -186,6 +203,10 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
+        final SvgText value = new SvgText(FRUSTRATION_3_VALUE, 22, 400, hight + 61);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
         final SvgText paragraph = new SvgText(FONT, "Er is onduidelijkheid binnen het team over de richting en de prioriteiten.\n"
                 + "Door het conflict niet op te zoeken – en de ideeën en meningen van sommige teamleden stil te houden – ontstaat bij het nemen van beslissingen een gebrek aan betrokkenheid. Juist wanneer iedereen de kans heeft gekregen zijn zegje te doen, is de kans groter dat bij besluitvorming iedereen betrokken is. Zelfs wanneer een besluit ingaat tegen wat een van de teamleden voor ogen heeft.",
                 PARAGRAPH_FONT_SIZE, 62, hight + 111);
@@ -211,6 +232,10 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
         scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
+
+        final SvgText value = new SvgText(FRUSTRATION_4_VALUE, 22, 400, hight + 61);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
 
         final SvgText paragraph = new SvgText(FONT, "Deze teams moedigen middelmatigheid aan en missen deadlines en belangrijke afspraken. Er ontstaat wrok bij de teamleden door onderlinge prestatieverschillen.\n"
                 + "Wanneer we het hebben over verantwoordelijkheid, hebben we het over de bereidheid van teamleden om elkaar aan te spreken op prestaties of gedragingen die het team kunnen schaden. Maar het is vaak moeilijk een ander ter verantwoording te roepen. Niet zozeer – al stellen we dit wel – omdat we de ander geen naar gevoel willen geven, maar omdat we zelf geen rotgevoel willen hebben. Bang voor een ongemakkelijk gevoel, houden teamleden zich stil.",
@@ -238,12 +263,26 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
+        final SvgText value = new SvgText(FRUSTRATION_5_VALUE, 22, 400, hight + 61);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
         final SvgText paragraph = new SvgText(FONT, "Hierbij stagneert het team en laat het zich makkelijk afleiden. Ook raakt het prestatiegerichte medewerkers kwijt.\n"
                 + "Wanneer teamleden niet op hun tekortschieten worden gewezen, bestaat er een kans dat niet langer iedereen gericht is op het beoogde eindresultaat. Zo kunnen teamstatus of eigen status in de weg staan. Het eerste komt vooral voor bij niet-commerciële welzijnsinstellingen. Teamleden gaan geloven dat de verhevenheid van hun missie op zich al voldoende reden tot tevredenheid is. De individuele status betekent dat teamleden uit zijn op hun eigen positie en doelstellingen en niet op die van het team.",
                 PARAGRAPH_FONT_SIZE, 62, hight + 111);
         paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
         paragraph.setTextAlign(TextAlign.JUSTIFY);
         elements.add(paragraph);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateFooter() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText date = new SvgText(SUBMIT_DATE + " " + SUBMIT_TIME, 14, 737, 1450);
+        date.setTextAlign(TextAlign.RIGHT);
+        elements.add(date);
 
         return elements;
     }
@@ -268,6 +307,8 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
         frustrationOnTeamworking.addElements(generateFrustration3(660));
         frustrationOnTeamworking.addElements(generateFrustration4(896));
         frustrationOnTeamworking.addElements(generateFrustration5(1165));
+
+        frustrationOnTeamworking.addElements(generateFooter());
     }
 
     @Test(dependsOnMethods = "generateFrustrationAtTeamworking")
