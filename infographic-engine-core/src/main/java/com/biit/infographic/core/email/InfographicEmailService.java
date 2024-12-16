@@ -56,7 +56,7 @@ public class InfographicEmailService extends ServerEmailService {
             FileNotFoundException {
         if (mailTo != null) {
             if (smtpServer != null && emailUser != null) {
-                EmailServiceLogger.info(this.getClass(), "Sending form '{}' to email '{}' by ''.", formName, mailTo, submittedBy);
+                EmailServiceLogger.info(this.getClass(), "Sending form '{}' to email '{}' by '{}'.", formName, mailTo, submittedBy);
                 final String emailTemplate = populateUserAccessMailFields(FileReader.getResource(USER_ACCESS_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         new String[]{submittedBy}, locale);
                 sendTemplate(mailTo, getMessage("pdf.infographic.mail.subject", null, locale),

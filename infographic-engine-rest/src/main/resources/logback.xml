@@ -72,7 +72,7 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
-    <logger name="com.biit.logger.BiitCommonLogger" additivity="false" level="ERROR">
+    <logger name="com.biit.logger.BiitCommonLogger" additivity="false" level="WARNING">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
