@@ -8,6 +8,7 @@ import com.biit.infographic.core.engine.Parameter;
 import com.biit.infographic.core.engine.ParameterType;
 import com.biit.infographic.core.engine.content.AppointmentContent;
 import com.biit.infographic.core.engine.content.DroolsContent;
+import com.biit.infographic.core.engine.content.FormContent;
 import com.biit.infographic.core.engine.content.KnowledgeSystemContent;
 import com.biit.infographic.core.engine.content.UserContent;
 import com.biit.infographic.core.engine.files.InfographicFileElement;
@@ -35,13 +36,16 @@ public class InfographicEngineController {
     public static final String INFOGRAPHIC_PATH = "/infographics";
     private final DroolsContent droolsContent;
     private final UserContent userContent;
+    private final FormContent formContent;
     private final AppointmentContent appointmentContent;
     private final KnowledgeSystemContent knowledgeSystemContent;
 
-    public InfographicEngineController(DroolsContent droolsContent, UserContent userContent, AppointmentContent appointmentContent,
+    public InfographicEngineController(DroolsContent droolsContent, UserContent userContent, FormContent formContent,
+                                       AppointmentContent appointmentContent,
                                        KnowledgeSystemContent knowledgeSystemContent) {
         this.droolsContent = droolsContent;
         this.userContent = userContent;
+        this.formContent = formContent;
         this.appointmentContent = appointmentContent;
         this.knowledgeSystemContent = knowledgeSystemContent;
     }
@@ -96,6 +100,9 @@ public class InfographicEngineController {
             final CompletableFuture<Void> completableFutureUserData = CompletableFuture.runAsync(() ->
                     userContent.setUserVariableValues(parametersByType.get(ParameterType.USER), droolsSubmittedForm));
 
+            final CompletableFuture<Void> completableFutureFormData = CompletableFuture.runAsync(() ->
+                    formContent.setUserVariableValues(parametersByType.get(ParameterType.FORM), droolsSubmittedForm));
+
             // Get appointment variables.
             final CompletableFuture<Void> completableFutureAppointmentData = CompletableFuture.runAsync(() ->
                     appointmentContent.setAppointmentValues(parametersByType.get(ParameterType.APPOINTMENT), droolsSubmittedForm, timezone));
@@ -114,7 +121,8 @@ public class InfographicEngineController {
 //            setCustomTextsVariablesValues(appointment, parametersByType.get(ParameterType.CUSTOM_TEXT),
 //                    infographicDefinition.getExaminationFormName());
 
-            CompletableFuture.allOf(completableFutureDrools, completableFutureUserData, completableFutureAppointmentData).join();
+            CompletableFuture.allOf(completableFutureDrools, completableFutureUserData, completableFutureAppointmentData,
+                    completableFutureFormData).join();
             // Knowledge System must be executed after drools
             knowledgeSystemContent.setKnowledgeSystemValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
 
@@ -141,6 +149,9 @@ public class InfographicEngineController {
             } else if (parameter.getType().equalsIgnoreCase(ParameterType.USER.name())) {
                 parametersByType.computeIfAbsent(ParameterType.USER, k -> new HashSet<>());
                 parametersByType.get(ParameterType.USER).add(parameter);
+            } else if (parameter.getType().equalsIgnoreCase(ParameterType.FORM.name())) {
+                parametersByType.computeIfAbsent(ParameterType.FORM, k -> new HashSet<>());
+                parametersByType.get(ParameterType.FORM).add(parameter);
             } else if (parameter.getType().equalsIgnoreCase(ParameterType.APPOINTMENT.name())) {
                 parametersByType.computeIfAbsent(ParameterType.APPOINTMENT, k -> new HashSet<>());
                 parametersByType.get(ParameterType.APPOINTMENT).add(parameter);

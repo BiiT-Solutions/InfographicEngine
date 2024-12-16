@@ -12,6 +12,8 @@ import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import com.biit.infographic.core.providers.UserProvider;
+import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
 import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 @Test(groups = "frustrationOnTeamworking")
@@ -57,6 +60,12 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
     private static final String CIRCLE_COLOR = "f20d5eff";
     private static final String CIRCLE_BACKGROUND = "edededff";
 
+    private static final String USER_NAME = "#USER%SUBMITTER%NAME#";
+    private static final String USER_LASTNAME = "#USER%SUBMITTER%LASTNAME#";
+
+    private static final String SUBMIT_TIME = "#FORM%SUBMIT%TIME#";
+    private static final String SUBMIT_DATE = "#FORM%SUBMIT%DATE#";
+
     private static final String FRUSTRATION_1_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration1#";
     private static final String FRUSTRATION_2_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration2#";
     private static final String FRUSTRATION_3_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration3#";
@@ -66,6 +75,12 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
 
     @Autowired
     private DroolsResultController droolsResultController;
+
+    @Autowired
+    private AuthenticatedUserProvider authenticatedUserProvider;
+
+    @Autowired
+    private UserProvider userProvider;
 
     private SvgTemplate frustrationOnTeamworking;
 
@@ -96,6 +111,11 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
             }
         }
         return directoryToBeDeleted.delete();
+    }
+
+    @BeforeClass
+    public void createUser() throws IOException {
+        authenticatedUserProvider.createUser("admin@test.com", UUID.randomUUID().toString(), "Angus", "MacGyver", "123456", null);
     }
 
     private SvgBackground generateBackground() {
@@ -248,6 +268,19 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
         return elements;
     }
 
+    private List<SvgAreaElement> generateFooter() {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgText name = new SvgText(USER_NAME + " " + USER_LASTNAME, 14, 62, 1450);
+        elements.add(name);
+
+        final SvgText date = new SvgText(SUBMIT_DATE + " " + SUBMIT_TIME, 14, 737, 1450);
+        date.setTextAlign(TextAlign.RIGHT);
+        elements.add(date);
+
+        return elements;
+    }
+
 
     @BeforeClass
     public void prepareFolder() throws IOException {
@@ -268,6 +301,8 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
         frustrationOnTeamworking.addElements(generateFrustration3(660));
         frustrationOnTeamworking.addElements(generateFrustration4(896));
         frustrationOnTeamworking.addElements(generateFrustration5(1165));
+
+        frustrationOnTeamworking.addElements(generateFooter());
     }
 
     @Test(dependsOnMethods = "generateFrustrationAtTeamworking")
@@ -296,5 +331,11 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void removeUser() {
+        authenticatedUserProvider.clear();
+        userProvider.reset();
     }
 }
