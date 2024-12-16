@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 @Controller
 public class InfographicEngineController {
@@ -88,16 +89,20 @@ public class InfographicEngineController {
             final Map<ParameterType, Set<Parameter>> parametersByType = groupParametersByType(filledParams.get(infographicDefinition));
 
             // Update parameters with values.
-            droolsContent.setDroolsVariablesValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
+            final CompletableFuture<Void> completableFutureDrools = CompletableFuture.runAsync(() ->
+                    droolsContent.setDroolsVariablesValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm));
 
             // Collect user information.
-            userContent.setUserVariableValues(parametersByType.get(ParameterType.USER), droolsSubmittedForm);
+            final CompletableFuture<Void> completableFutureUserData = CompletableFuture.runAsync(() ->
+                    userContent.setUserVariableValues(parametersByType.get(ParameterType.USER), droolsSubmittedForm));
 
             // Get appointment variables.
-            appointmentContent.setAppointmentValues(parametersByType.get(ParameterType.APPOINTMENT), droolsSubmittedForm, timezone);
+            final CompletableFuture<Void> completableFutureAppointmentData = CompletableFuture.runAsync(() ->
+                    appointmentContent.setAppointmentValues(parametersByType.get(ParameterType.APPOINTMENT), droolsSubmittedForm, timezone));
 
-            // Knowledge System
-            knowledgeSystemContent.setKnowledgeSystemValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
+            // Kafka Variables
+//            CompletableFuture<Void> completableFutureKnowledgeKafkaVariables = CompletableFuture.runAsync(() ->
+//                    factManagerContent.setFactManagerVariables(parametersByType.get(ParameterType.KAFKA), droolsSubmittedForm));
 
             // Get goals.
 //            setGoalsVariablesValues(examinationResult, appointment, parametersByType.get(ParameterType.GOAL));
@@ -108,6 +113,11 @@ public class InfographicEngineController {
 //            // Obtain custom defined variables.
 //            setCustomTextsVariablesValues(appointment, parametersByType.get(ParameterType.CUSTOM_TEXT),
 //                    infographicDefinition.getExaminationFormName());
+
+            CompletableFuture.allOf(completableFutureDrools, completableFutureUserData, completableFutureAppointmentData).join();
+            // Knowledge System must be executed after drools
+            knowledgeSystemContent.setKnowledgeSystemValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
+
         }
         InfographicEngineLogger.debug(getClass().toString(), "Filled params: '" + filledParams + "'.");
         return filledParams;
@@ -134,6 +144,9 @@ public class InfographicEngineController {
             } else if (parameter.getType().equalsIgnoreCase(ParameterType.APPOINTMENT.name())) {
                 parametersByType.computeIfAbsent(ParameterType.APPOINTMENT, k -> new HashSet<>());
                 parametersByType.get(ParameterType.APPOINTMENT).add(parameter);
+            } else if (parameter.getType().equalsIgnoreCase(ParameterType.KAFKA.name())) {
+                parametersByType.computeIfAbsent(ParameterType.KAFKA, k -> new HashSet<>());
+                parametersByType.get(ParameterType.KAFKA).add(parameter);
             } else {
                 throw new InvalidParameterException(this.getClass(),
                         "Parameter '" + parameter + "' has type '" + parameter.getType() + "' and it is not implemented!");

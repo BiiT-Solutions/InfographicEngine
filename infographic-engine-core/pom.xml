@@ -37,6 +37,10 @@
             <groupId>com.biit</groupId>
             <artifactId>rest-server-utils</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.biit</groupId>
+            <artifactId>fact-manager-rest-client</artifactId>
+        </dependency>
         <!-- Kafka -->
         <dependency>
             <groupId>com.biit</groupId>
