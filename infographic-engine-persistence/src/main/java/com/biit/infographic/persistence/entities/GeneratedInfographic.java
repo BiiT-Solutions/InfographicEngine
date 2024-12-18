@@ -64,11 +64,6 @@ public class GeneratedInfographic extends Element<Long> {
     @Convert(converter = StringCryptoConverter.class)
     private String droolsSubmittedForm;
 
-    private int maxHeight;
-
-    private int maxWidth;
-
-
     @Override
     public Long getId() {
         return id;
