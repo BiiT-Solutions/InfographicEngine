@@ -199,7 +199,7 @@ public class SvgServices extends ImageServices {
             canBeDoneForDifferentUsers(infographicSearch.getCreatedBy(), authentication);
             final Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider
                     .findLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
-                            infographicSearch.getCreatedBy(), infographicSearch.getUnit(), infographicSearch.getOrganization());
+                            infographicSearch.getCreatedBy(), infographicSearch.getOrganization(), infographicSearch.getUnit());
 
             generatedInfographic.ifPresent(infographic -> svgCodes.addAll(infographic.getSvgContents()));
         }
