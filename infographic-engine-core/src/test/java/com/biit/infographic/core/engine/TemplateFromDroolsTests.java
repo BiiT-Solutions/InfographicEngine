@@ -91,7 +91,7 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
     @Test(dependsOnMethods = "checkDroolsSubmittedForm")
     public void readFromDatabase() {
-        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.findLatest(FORM_NAME, FORM_VERSION, USER, FORM_ORGANIZATION).orElse(null);
+        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.findLatest(FORM_NAME, FORM_VERSION, USER, FORM_ORGANIZATION, null).orElse(null);
         Assert.assertNotNull(generatedInfographic);
         Assert.assertEquals(generatedInfographic.getSvgContents().size(), 2);
         checkContent(generatedInfographic.getSvgContents().get(0), "title.svg");
@@ -100,13 +100,13 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
     @Test(dependsOnMethods = "checkDroolsSubmittedForm")
     public void generatedInfographicAsPngDTO() {
-        final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, USER));
+        final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, null, USER));
         Assert.assertNotNull(generatedInfographicAsPngDTO.getContents());
     }
 
     @Test(dependsOnMethods = "checkDroolsSubmittedForm")
     public void generatedInfographicAJpgDTO() {
-        final GeneratedInfographicAsJpegDTO generatedInfographicAsPngDTO = GeneratedInfographicAsJpegDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, USER));
+        final GeneratedInfographicAsJpegDTO generatedInfographicAsPngDTO = GeneratedInfographicAsJpegDTO.from(generatedInfographicController.findLatest(FORM_NAME, FORM_VERSION, FORM_ORGANIZATION, null, USER));
         Assert.assertNotNull(generatedInfographicAsPngDTO.getContents());
     }
 

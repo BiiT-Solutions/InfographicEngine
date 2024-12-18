@@ -47,6 +47,9 @@ public class GeneratedInfographic extends Element<Long> {
     @Column(name = "organization")
     private String organization;
 
+    @Column(name = "unit")
+    private String unit;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "svg_contents", joinColumns = @JoinColumn(name = "generated_infographic_id"))
     @Column(name = "svg_content", columnDefinition = "MEDIUMTEXT", nullable = false)
@@ -89,6 +92,14 @@ public class GeneratedInfographic extends Element<Long> {
 
     public void setOrganization(String organization) {
         this.organization = organization;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public List<String> getSvgContents() {

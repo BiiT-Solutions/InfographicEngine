@@ -88,6 +88,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
+            - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
             """,
@@ -101,6 +102,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
+            @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-01T00:00:00.00Z")
             @RequestParam(value = "from", required = false) OffsetDateTime from,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-31T23:59:59.99Z")
@@ -112,7 +114,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
 
         canBeDoneForDifferentUsers(createdBy, authentication);
 
-        return getController().findBy(form, version, organization, createdBy,
+        return getController().findBy(form, version, organization, unit, createdBy,
                 from != null ? LocalDateTime.ofInstant(from.toInstant(), ZoneId.systemDefault()) : null,
                 to != null ? LocalDateTime.ofInstant(to.toInstant(), ZoneId.systemDefault()) : null);
     }
@@ -123,6 +125,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
+            - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
             """,
@@ -136,13 +139,14 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
+            @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
         canBeDoneForDifferentUsers(createdBy, authentication);
 
-        return getController().findLatest(form, version, organization, createdBy);
+        return getController().findLatest(form, version, organization, unit, createdBy);
     }
 
 
@@ -152,6 +156,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
+            - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
             """,
@@ -165,13 +170,14 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
+            @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
         canBeDoneForDifferentUsers(createdBy, authentication);
 
-        return GeneratedInfographicAsPngDTO.from(getController().findLatest(form, version, organization, createdBy));
+        return GeneratedInfographicAsPngDTO.from(getController().findLatest(form, version, organization, unit, createdBy));
     }
 
 
@@ -181,6 +187,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
+            - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
             """,
@@ -194,13 +201,14 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
+            @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
         canBeDoneForDifferentUsers(createdBy, authentication);
 
-        return GeneratedInfographicAsJpegDTO.from(getController().findLatest(form, version, organization, createdBy));
+        return GeneratedInfographicAsJpegDTO.from(getController().findLatest(form, version, organization, unit, createdBy));
     }
 
 

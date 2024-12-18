@@ -329,7 +329,7 @@ public class InfographicRestTests extends AbstractTestNGSpringContextTests {
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + jwtToken)
                         .content(toJson(Collections.singletonList(new InfographicSearch(FORM_NAME_WITH_DATA,
-                                FORM_VERSION, USER_NAME, null))))
+                                FORM_VERSION, USER_NAME, null, null))))
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())

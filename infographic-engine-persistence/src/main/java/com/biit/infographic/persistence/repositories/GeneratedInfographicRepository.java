@@ -17,10 +17,11 @@ public interface GeneratedInfographicRepository extends ElementRepository<Genera
      * Find all infographics that match the search parameters.
      * If startTime and endTime are defined, will search any appointment inside this range.
      *
-     * @param formName          the organization of the parameters (can be null for any organization).
-     * @param formVersion       who must resolve the appointment (can be null for any organizer).
-     * @param organization      the status of the appointment (can be null for any status).
-     * @param createdBy         the type of the appointment (can be null for any type).
+     * @param formName          the form name
+     * @param formVersion       the version (can be null for any version).
+     * @param organization      the organization of the infographic (can be null for any organization).
+     * @param unit              the team, department, related to the infographic (can be null).
+     * @param createdBy         who has created the infographic or its owner.
      * @param lowerTimeBoundary the lower limit on time for searching an appointment (can be null for no limit).
      * @param upperTimeBoundary the upper limit on time for searching an appointment (can be null for no limit).
      * @return a list of infographics.
@@ -30,22 +31,24 @@ public interface GeneratedInfographicRepository extends ElementRepository<Genera
             (:formName IS NULL OR a.formName = :formName) AND
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
             (:organization IS NULL OR a.organization = :organization) AND
+            (:unit IS NULL OR a.unit = :unit) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy) AND
             ((cast(:lowerTimeBoundary as date) IS NULL OR a.createdAt >= :lowerTimeBoundary) AND
             (cast(:upperTimeBoundary as date) IS NULL OR a.createdAt <= :upperTimeBoundary))
             ORDER BY a.createdAt DESC
             """)
-    List<GeneratedInfographic> findBy(String formName, Integer formVersion, String organization, String createdBy,
-                                      LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary);
+    List<GeneratedInfographic> findBy(String formName, Integer formVersion, String organization, String unit,
+                                      String createdBy, LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary);
 
     /**
      * Find all infographics that match the search parameters.
      * If startTime and endTime are defined, will search any appointment inside this range.
      *
-     * @param formName     the organization of the parameters (can be null for any organization).
-     * @param formVersion  who must resolve the appointment (can be null for any organizer).
-     * @param organization the status of the appointment (can be null for any status).
-     * @param createdBy    the type of the appointment (can be null for any type).
+     * @param formName     the form name
+     * @param formVersion  the version (can be null for any version).
+     * @param organization the organization of the infographic (can be null for any organization).
+     * @param unit         the team, department, related to the infographic (can be null).
+     * @param createdBy    who has created the infographic or its owner.
      * @return a list of infographics.
      */
     @Query("""
@@ -53,9 +56,10 @@ public interface GeneratedInfographicRepository extends ElementRepository<Genera
             (:formName IS NULL OR a.formName = :formName) AND
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
             (:organization IS NULL OR a.organization = :organization) AND
+            (:unit IS NULL OR a.unit = :unit) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy)
             ORDER BY a.createdAt DESC
             """)
-    List<GeneratedInfographic> findBy(String formName, Integer formVersion, String createdBy, String organization);
+    List<GeneratedInfographic> findBy(String formName, Integer formVersion, String createdBy, String organization, String unit);
 
 }

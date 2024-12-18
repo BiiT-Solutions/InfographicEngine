@@ -73,6 +73,7 @@ public class JpegServices extends ImageServices {
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
+            - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
             """,
@@ -87,6 +88,7 @@ public class JpegServices extends ImageServices {
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
+            @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
         if (createdBy == null) {
             createdBy = authentication.getName();
@@ -97,7 +99,7 @@ public class JpegServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsJpegDTO generatedInfographicAsJpegDTO = GeneratedInfographicAsJpegDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, createdBy));
+                .from(generatedInfographicController.findLatest(form, version, organization, unit, createdBy));
 
         if (generatedInfographicAsJpegDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");
@@ -118,6 +120,7 @@ public class JpegServices extends ImageServices {
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
+            - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
             """,
@@ -131,6 +134,7 @@ public class JpegServices extends ImageServices {
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
+            @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
@@ -138,7 +142,7 @@ public class JpegServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsJpegDTO generatedInfographicAsJpegDTO = GeneratedInfographicAsJpegDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, createdBy));
+                .from(generatedInfographicController.findLatest(form, version, organization, unit, createdBy));
 
         if (generatedInfographicAsJpegDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");
@@ -162,6 +166,7 @@ public class JpegServices extends ImageServices {
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
             - organization: which organization the form belongs to.
+            - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
             """,
@@ -175,6 +180,7 @@ public class JpegServices extends ImageServices {
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
+            @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws InvalidXmlElementException,
             EmptyPdfBodyException {
         if (createdBy == null && organization == null) {
@@ -183,7 +189,7 @@ public class JpegServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsJpegDTO generatedInfographicAsJpegDTO = GeneratedInfographicAsJpegDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, createdBy));
+                .from(generatedInfographicController.findLatest(form, version, organization, unit, createdBy));
 
         if (generatedInfographicAsJpegDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");
@@ -217,7 +223,7 @@ public class JpegServices extends ImageServices {
             final GeneratedInfographicAsJpegDTO generatedInfographicAsJpegDTO = GeneratedInfographicAsJpegDTO
                     .from(generatedInfographicController
                             .findLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
-                                    infographicSearch.getOrganization(), infographicSearch.getCreatedBy()));
+                                    infographicSearch.getOrganization(), infographicSearch.getUnit(), infographicSearch.getCreatedBy()));
 
             jpegBitmaps.addAll(generatedInfographicAsJpegDTO.getContents());
         }

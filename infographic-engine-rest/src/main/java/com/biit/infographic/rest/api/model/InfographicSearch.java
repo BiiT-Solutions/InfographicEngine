@@ -6,17 +6,19 @@ public class InfographicSearch {
     private String createdBy;
 
     private String organization;
+    private String unit;
 
     public InfographicSearch() {
         super();
     }
 
-    public InfographicSearch(String form, Integer version, String createdBy, String organization) {
+    public InfographicSearch(String form, Integer version, String createdBy, String organization, String unit) {
         this();
         this.form = form;
         this.version = version;
         this.createdBy = createdBy;
         this.organization = organization;
+        this.unit = unit;
     }
 
     public String getForm() {
@@ -49,5 +51,13 @@ public class InfographicSearch {
 
     public void setOrganization(String organization) {
         this.organization = organization;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

@@ -44,7 +44,7 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     private static final String DROOLS_FORM_FILE_PATH = "drools/Frustration On Teamworking Team.json";
     protected static final String TEMPLATE_ID = "five_frustrations_team";
 
-    private static final String TEMPLATE_NAME = "Frustration On Teamworking Team";
+    private static final String TEMPLATE_NAME = "fin";
     private static final String TEMPLATE_BACKGROUND_COLOR = "ffffffff";
 
     private static final String FONT = "Montserrat";
