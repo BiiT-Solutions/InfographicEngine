@@ -12,6 +12,8 @@ import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
+import com.biit.infographic.core.providers.UserProvider;
+import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
 import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 @Test(groups = "frustrationOnTeamworking")
@@ -44,18 +47,21 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     private static final String DROOLS_FORM_FILE_PATH = "drools/Frustration On Teamworking Team.json";
     protected static final String TEMPLATE_ID = "five_frustrations_team";
 
-    private static final String TEMPLATE_NAME = "fin";
+    private static final String TEMPLATE_NAME = "Frustration On Teamworking Team";
     private static final String TEMPLATE_BACKGROUND_COLOR = "ffffffff";
 
     private static final String FONT = "Montserrat";
     private static final int TITLE_FONT_SIZE = 20;
     private static final int SUBTITLE_FONT_SIZE = 16;
     private static final int PARAGRAPH_FONT_SIZE = 12;
-    private static final int PARAGRAPH_WIDTH = 676;
 
     private static final int CIRCLE_RADIUS = 30;
     private static final String CIRCLE_COLOR = "f20d5eff";
     private static final String CIRCLE_BACKGROUND = "edededff";
+    private static final int CIRCLE_TITLE = 16;
+
+    private static final String USER_NAME = "#USER%SUBMITTER%NAME#";
+    private static final String USER_LASTNAME = "#USER%SUBMITTER%LASTNAME#";
 
     private static final String SUBMIT_TIME = "#FORM%SUBMIT%TIME#";
     private static final String SUBMIT_DATE = "#FORM%SUBMIT%DATE#";
@@ -72,9 +78,21 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     private static final String FRUSTRATION_4_VALUE = "#DROOLS%Frustration On Teamworking Team%Frustration4Total#";
     private static final String FRUSTRATION_5_VALUE = "#DROOLS%Frustration On Teamworking Team%Frustration5Total#";
 
+    private static final String ENGLISH_TEXT_COLOR = "000000";
+    private static final int DOCUMENT_HEIGHT = 1600;
+    private static final int DOCUMENT_WIDTH = 800;
+    private static final int MAIN_MARGIN = 55;
+    private static final int SECOND_MARGIN = 25;
+    private static final int COLUMN_WIDTH = DOCUMENT_WIDTH / 2 - MAIN_MARGIN - SECOND_MARGIN;
 
     @Autowired
     private DroolsResultController droolsResultController;
+
+    @Autowired
+    private AuthenticatedUserProvider authenticatedUserProvider;
+
+    @Autowired
+    private UserProvider userProvider;
 
     private SvgTemplate frustrationOnTeamworking;
 
@@ -107,6 +125,11 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
         return directoryToBeDeleted.delete();
     }
 
+    @BeforeClass
+    public void createUser() throws IOException {
+        authenticatedUserProvider.createUser("admin@test.com", UUID.randomUUID().toString(), "Angus", "MacGyver", "123456", null);
+    }
+
     private SvgBackground generateBackground() {
         final SvgBackground svgBackground = new SvgBackground();
         svgBackground.setBackgroundColor(TEMPLATE_BACKGROUND_COLOR);
@@ -114,163 +137,360 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     }
 
 
-    private List<SvgAreaElement> generateTitle() {
+    private List<SvgAreaElement> generateTitleNL(int margin) {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText title1 = new SvgText(FONT, "De 5 frustraties van teamwork", TITLE_FONT_SIZE, 249, 73);
-        elements.add(title1);
+        final SvgText titleNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.TITLE_DUTCH_TEXT, TITLE_FONT_SIZE, margin + 9, 73);
+        titleNL.setFontWeight(FontWeight.BOLD);
+        titleNL.setMaxLineWidth(COLUMN_WIDTH);
+        elements.add(titleNL);
 
-        final SvgText title2 = new SvgText(FONT, "Hoe zorg je dat het samenwerken leuk blijft", SUBTITLE_FONT_SIZE, 225, 95);
-        title2.setFontWeight(FontWeight.BOLD);
-        elements.add(title2);
+
+        final SvgText subtitleNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.SUBTITLE_DUTCH_TEXT, SUBTITLE_FONT_SIZE, margin + 20, 115);
+        subtitleNL.setFontWeight(FontWeight.BOLD);
+        subtitleNL.setMaxLineWidth(COLUMN_WIDTH);
+        elements.add(subtitleNL);
+
+        final SvgText introductionNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.INTRODUCTION_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, margin, 160);
+        introductionNL.setMaxLineWidth(COLUMN_WIDTH);
+        introductionNL.setTextAlign(TextAlign.JUSTIFY);
+        introductionNL.setMaxLineWidth(COLUMN_WIDTH);
+        elements.add(introductionNL);
 
         return elements;
     }
 
-    private List<SvgAreaElement> generateFrustration1(int hight) {
+    private List<SvgAreaElement> generateTitleEN(int margin) {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText title = new SvgText(FONT, "Frustratie 1: Gebrek aan vertrouwen", TITLE_FONT_SIZE, 222, hight);
-        title.setFontWeight(FontWeight.BOLD);
-        elements.add(title);
+        final SvgText titleEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.TITLE_ENGLISH_TEXT, TITLE_FONT_SIZE, margin + 9, 73);
+        titleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        titleEN.setMaxLineWidth(COLUMN_WIDTH);
+        elements.add(titleEN);
 
-        final SvgCircle circleBackground = new SvgCircle(370, hight + 37, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        final SvgText subtitleEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.SUBTITLE_ENGLISH_TEXT, SUBTITLE_FONT_SIZE, margin + 14, 115);
+        subtitleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        subtitleEN.setMaxLineWidth(COLUMN_WIDTH);
+        elements.add(subtitleEN);
+
+        final SvgText introductionEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.INTRODUCTION_ENGLISH_TEXT, PARAGRAPH_FONT_SIZE, margin, 160);
+        introductionEN.setTextAlign(TextAlign.JUSTIFY);
+        introductionEN.setMaxLineWidth(COLUMN_WIDTH);
+        introductionEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        elements.add(introductionEN);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateFrustration1NL(int hight, int margin) {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
         elements.add(circleBackground);
 
-        final SvgCircleSector scoreCircle = new SvgCircleSector(370, hight + 37, CIRCLE_RADIUS);
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
         scoreCircle.setPercentage(FRUSTRATION_1_CIRCLE);
         scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
-        final SvgText value = new SvgText(FRUSTRATION_1_VALUE, 22, 400, hight + 61);
+        final SvgText value = new SvgText(FRUSTRATION_1_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_1_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
-        paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
-        paragraph.setTextAlign(TextAlign.JUSTIFY);
-        elements.add(paragraph);
+        final SvgText titleNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_1_DUTCH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleNL.setFontWeight(FontWeight.BOLD);
+        titleNL.setTextAlign(TextAlign.CENTER);
+        elements.add(titleNL);
+
+        final SvgText paragraphNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_1_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphNL.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphNL.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphNL);
 
         return elements;
     }
 
-    private List<SvgAreaElement> generateFrustration2(int hight) {
+    private List<SvgAreaElement> generateFrustration1EN(int hight, int margin) {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText title = new SvgText(FONT, "Frustratie 2: De angst voor conflicten en confrontatie", TITLE_FONT_SIZE, 136, hight);
-        title.setFontWeight(FontWeight.BOLD);
-        elements.add(title);
-
-        final SvgCircle circleBackground = new SvgCircle(370, hight + 37, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
         elements.add(circleBackground);
 
-        final SvgCircleSector scoreCircle = new SvgCircleSector(370, hight + 37, CIRCLE_RADIUS);
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
+        scoreCircle.setPercentage(FRUSTRATION_1_CIRCLE);
+        scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
+        scoreCircle.getElementStroke().setStrokeWidth(0);
+        elements.add(scoreCircle);
+
+        final SvgText value = new SvgText(FRUSTRATION_1_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
+        final SvgText titleEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_1_ENGLISH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleEN.setFontWeight(FontWeight.BOLD);
+        titleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        titleEN.setTextAlign(TextAlign.CENTER);
+        elements.add(titleEN);
+
+        final SvgText paragraphEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_1_ENGLISH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphEN.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphEN.setTextAlign(TextAlign.JUSTIFY);
+        paragraphEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        elements.add(paragraphEN);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateFrustration2NL(int hight, int margin) {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        elements.add(circleBackground);
+
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
         scoreCircle.setPercentage(FRUSTRATION_2_CIRCLE);
         scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
-        final SvgText value = new SvgText(FRUSTRATION_2_VALUE, 22, 400, hight + 61);
+        final SvgText value = new SvgText(FRUSTRATION_2_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_2_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
-        paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
-        paragraph.setTextAlign(TextAlign.JUSTIFY);
-        elements.add(paragraph);
+        final SvgText titleNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_2_DUTCH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleNL.setFontWeight(FontWeight.BOLD);
+        titleNL.setTextAlign(TextAlign.CENTER);
+        elements.add(titleNL);
+
+        final SvgText paragraphNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_2_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphNL.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphNL.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphNL);
 
         return elements;
     }
 
-    private List<SvgAreaElement> generateFrustration3(int hight) {
+
+    private List<SvgAreaElement> generateFrustration2EN(int hight, int margin) {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText title = new SvgText(FONT, "Frustratie 3: Gebrek aan betrokkenheid", TITLE_FONT_SIZE, 204, hight);
-        title.setFontWeight(FontWeight.BOLD);
-        elements.add(title);
-
-        final SvgCircle circleBackground = new SvgCircle(370, hight + 37, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
         elements.add(circleBackground);
 
-        final SvgCircleSector scoreCircle = new SvgCircleSector(370, hight + 37, CIRCLE_RADIUS);
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
+        scoreCircle.setPercentage(FRUSTRATION_2_CIRCLE);
+        scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
+        scoreCircle.getElementStroke().setStrokeWidth(0);
+        elements.add(scoreCircle);
+
+        final SvgText value = new SvgText(FRUSTRATION_2_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
+        final SvgText titleEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_2_ENGLISH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleEN.setFontWeight(FontWeight.BOLD);
+        titleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        titleEN.setTextAlign(TextAlign.CENTER);
+        elements.add(titleEN);
+
+        final SvgText paragraphEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_2_ENGLISH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphEN.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphEN.setTextAlign(TextAlign.JUSTIFY);
+        paragraphEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        elements.add(paragraphEN);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateFrustration3NL(int hight, int margin) {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        elements.add(circleBackground);
+
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
         scoreCircle.setPercentage(FRUSTRATION_3_CIRCLE);
         scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
-        final SvgText value = new SvgText(FRUSTRATION_3_VALUE, 22, 400, hight + 61);
+        final SvgText value = new SvgText(FRUSTRATION_3_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_3_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
-        paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
-        paragraph.setTextAlign(TextAlign.JUSTIFY);
-        elements.add(paragraph);
+        final SvgText titleNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_3_DUTCH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleNL.setFontWeight(FontWeight.BOLD);
+        titleNL.setTextAlign(TextAlign.CENTER);
+        elements.add(titleNL);
+
+        final SvgText paragraphNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_3_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphNL.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphNL.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphNL);
 
         return elements;
     }
 
-    private List<SvgAreaElement> generateFrustration4(int hight) {
+    private List<SvgAreaElement> generateFrustration3EN(int hight, int margin) {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText title = new SvgText(FONT, "Frustratie 4: Het ontlopen of afschuiven van verantwoordelijkheid", TITLE_FONT_SIZE, 73, hight);
-        title.setFontWeight(FontWeight.BOLD);
-        elements.add(title);
-
-        final SvgCircle circleBackground = new SvgCircle(370, hight + 37, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
         elements.add(circleBackground);
 
-        final SvgCircleSector scoreCircle = new SvgCircleSector(370, hight + 37, CIRCLE_RADIUS);
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
+        scoreCircle.setPercentage(FRUSTRATION_3_CIRCLE);
+        scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
+        scoreCircle.getElementStroke().setStrokeWidth(0);
+        elements.add(scoreCircle);
+
+        final SvgText value = new SvgText(FRUSTRATION_3_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
+        final SvgText titleEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_3_ENGLISH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleEN.setFontWeight(FontWeight.BOLD);
+        titleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        titleEN.setTextAlign(TextAlign.CENTER);
+        elements.add(titleEN);
+
+        final SvgText paragraphEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_3_ENGLISH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphEN.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphEN.setTextAlign(TextAlign.JUSTIFY);
+        paragraphEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        elements.add(paragraphEN);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateFrustration4NL(int hight, int margin) {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        elements.add(circleBackground);
+
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
         scoreCircle.setPercentage(FRUSTRATION_4_CIRCLE);
         scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
-        final SvgText value = new SvgText(FRUSTRATION_4_VALUE, 22, 400, hight + 61);
+        final SvgText value = new SvgText(FRUSTRATION_4_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_4_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
-        paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
-        paragraph.setTextAlign(TextAlign.JUSTIFY);
-        elements.add(paragraph);
+        final SvgText titleNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_4_DUTCH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleNL.setFontWeight(FontWeight.BOLD);
+        titleNL.setTextAlign(TextAlign.CENTER);
+        elements.add(titleNL);
+
+        final SvgText paragraphNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_4_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphNL.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphNL.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphNL);
 
         return elements;
     }
 
-    private List<SvgAreaElement> generateFrustration5(int hight) {
+    private List<SvgAreaElement> generateFrustration4EN(int hight, int margin) {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText title = new SvgText(FONT, "Frustratie 5: Te weinig aandacht voor resultaten.", TITLE_FONT_SIZE, 160, hight);
-        title.setFontWeight(FontWeight.BOLD);
-        elements.add(title);
-
-        final SvgCircle circleBackground = new SvgCircle(370, hight + 37, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
         elements.add(circleBackground);
 
-        final SvgCircleSector scoreCircle = new SvgCircleSector(370, hight + 37, CIRCLE_RADIUS);
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
+        scoreCircle.setPercentage(FRUSTRATION_4_CIRCLE);
+        scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
+        scoreCircle.getElementStroke().setStrokeWidth(0);
+        elements.add(scoreCircle);
+
+        final SvgText value = new SvgText(FRUSTRATION_4_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
+        final SvgText titleEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_4_ENGLISH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleEN.setFontWeight(FontWeight.BOLD);
+        titleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        titleEN.setTextAlign(TextAlign.CENTER);
+        elements.add(titleEN);
+
+        final SvgText paragraphEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_4_ENGLISH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphEN.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphEN.setTextAlign(TextAlign.JUSTIFY);
+        paragraphEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        elements.add(paragraphEN);
+
+        return elements;
+    }
+
+    private List<SvgAreaElement> generateFrustration5NL(int hight, int margin) {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        elements.add(circleBackground);
+
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
         scoreCircle.setPercentage(FRUSTRATION_5_CIRCLE);
         scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
         scoreCircle.getElementStroke().setStrokeWidth(0);
         elements.add(scoreCircle);
 
-        final SvgText value = new SvgText(FRUSTRATION_5_VALUE, 22, 400, hight + 61);
+        final SvgText value = new SvgText(FRUSTRATION_5_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_5_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
-        paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
-        paragraph.setTextAlign(TextAlign.JUSTIFY);
-        elements.add(paragraph);
+        final SvgText titleNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_5_DUTCH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleNL.setFontWeight(FontWeight.BOLD);
+        titleNL.setTextAlign(TextAlign.CENTER);
+        elements.add(titleNL);
+
+        final SvgText paragraphNL = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_5_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphNL.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphNL.setTextAlign(TextAlign.JUSTIFY);
+        elements.add(paragraphNL);
 
         return elements;
     }
 
+    private List<SvgAreaElement> generateFrustration5EN(int hight, int margin) {
+        final List<SvgAreaElement> elements = new ArrayList<>();
+
+        final SvgCircle circleBackground = new SvgCircle(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS, CIRCLE_BACKGROUND);
+        elements.add(circleBackground);
+
+        final SvgCircleSector scoreCircle = new SvgCircleSector(margin + COLUMN_WIDTH / 2 - CIRCLE_RADIUS, hight, CIRCLE_RADIUS);
+        scoreCircle.setPercentage(FRUSTRATION_5_CIRCLE);
+        scoreCircle.getElementAttributes().setFill(CIRCLE_COLOR);
+        scoreCircle.getElementStroke().setStrokeWidth(0);
+        elements.add(scoreCircle);
+
+        final SvgText value = new SvgText(FRUSTRATION_5_VALUE, 22, margin + COLUMN_WIDTH / 2, hight + 24);
+        value.setTextAlign(TextAlign.CENTER);
+        elements.add(value);
+
+        final SvgText titleEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_5_ENGLISH_TITLE, CIRCLE_TITLE, margin + COLUMN_WIDTH / 2, hight + 70);
+        titleEN.setFontWeight(FontWeight.BOLD);
+        titleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        titleEN.setTextAlign(TextAlign.CENTER);
+        elements.add(titleEN);
+
+        final SvgText paragraphEN = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_5_ENGLISH_TEXT, PARAGRAPH_FONT_SIZE, margin, hight + 105);
+        paragraphEN.setMaxLineWidth(COLUMN_WIDTH);
+        paragraphEN.setTextAlign(TextAlign.JUSTIFY);
+        paragraphEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        elements.add(paragraphEN);
+
+        return elements;
+    }
+
+
     private List<SvgAreaElement> generateFooter() {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText date = new SvgText(SUBMIT_DATE + " " + SUBMIT_TIME, 14, 737, 1450);
+        final SvgText name = new SvgText(USER_NAME + " " + USER_LASTNAME, 14, 62, DOCUMENT_HEIGHT - 50);
+        elements.add(name);
+
+        final SvgText date = new SvgText(SUBMIT_DATE + " " + SUBMIT_TIME, 14, 737, DOCUMENT_HEIGHT - 50);
         date.setTextAlign(TextAlign.RIGHT);
         elements.add(date);
 
@@ -287,16 +507,22 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     public void generateFrustrationAtTeamworking() {
         frustrationOnTeamworking = new SvgTemplate();
         frustrationOnTeamworking.setUuid(TEMPLATE_ID);
-        frustrationOnTeamworking.getElementAttributes().setWidth(800);
-        frustrationOnTeamworking.getElementAttributes().setHeight(1500);
+        frustrationOnTeamworking.getElementAttributes().setWidth(DOCUMENT_WIDTH);
+        frustrationOnTeamworking.getElementAttributes().setHeight(DOCUMENT_HEIGHT);
         frustrationOnTeamworking.setSvgBackground(generateBackground());
 
-        frustrationOnTeamworking.addElements(generateTitle());
-        frustrationOnTeamworking.addElements(generateFrustration1(152));
-        frustrationOnTeamworking.addElements(generateFrustration2(423));
-        frustrationOnTeamworking.addElements(generateFrustration3(660));
-        frustrationOnTeamworking.addElements(generateFrustration4(896));
-        frustrationOnTeamworking.addElements(generateFrustration5(1165));
+        frustrationOnTeamworking.addElements(generateTitleNL(MAIN_MARGIN));
+        frustrationOnTeamworking.addElements(generateTitleEN(DOCUMENT_WIDTH / 2 + SECOND_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration1NL(340, MAIN_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration1EN(340, DOCUMENT_WIDTH / 2 + SECOND_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration2NL(590, MAIN_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration2EN(590, DOCUMENT_WIDTH / 2 + SECOND_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration3NL(825, MAIN_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration3EN(825, DOCUMENT_WIDTH / 2 + SECOND_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration4NL(1050, MAIN_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration4EN(1050, DOCUMENT_WIDTH / 2 + SECOND_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration5NL(1290, MAIN_MARGIN));
+        frustrationOnTeamworking.addElements(generateFrustration5EN(1290, DOCUMENT_WIDTH / 2 + SECOND_MARGIN));
 
         frustrationOnTeamworking.addElements(generateFooter());
     }
@@ -327,5 +553,11 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void removeUser() {
+        authenticatedUserProvider.clear();
+        userProvider.reset();
     }
 }
