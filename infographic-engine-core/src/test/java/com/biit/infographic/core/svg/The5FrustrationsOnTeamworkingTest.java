@@ -117,7 +117,7 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
     public static final String FRUSTRATION_5_DUTCH_TEXT = "Teams die niet gefocust zijn op gezamenlijke resultaten laten zich afleiden door individuele of teamstatus. Dit leidt tot stilstand en het verlies van prestatiegerichte medewerkers. Het samen vaststellen van doelen en resultaten kan helpen om scherpt te blijven en de samenwerking te versterken.";
     public static final String FRUSTRATION_5_ENGLISH_TEXT = "Teams that are not focused on joint results get distracted by individual or team status. This leads to stagnation and the loss of performance-oriented employees. Setting goals and results together can help stay sharp and strengthen cooperation.";
 
-    private static final String ENGLISH_TEXT_COLOR = "b3b3b3";
+    private static final String ENGLISH_TEXT_COLOR = "000000";
     private static final int DOCUMENT_HEIGHT = 1600;
     private static final int DOCUMENT_WIDTH = 800;
     private static final int MAIN_MARGIN = 55;

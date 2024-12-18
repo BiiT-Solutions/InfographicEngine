@@ -20,6 +20,7 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serial;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,9 @@ import java.util.List;
         })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class GeneratedInfographic extends Element<Long> {
+
+    @Serial
+    private static final long serialVersionUID = -3421632176291442021L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +63,11 @@ public class GeneratedInfographic extends Element<Long> {
     @Column(name = "drools_submitted_form", columnDefinition = "MEDIUMTEXT")
     @Convert(converter = StringCryptoConverter.class)
     private String droolsSubmittedForm;
+
+    private int maxHeight;
+
+    private int maxWidth;
+
 
     @Override
     public Long getId() {
