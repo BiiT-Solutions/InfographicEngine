@@ -118,7 +118,7 @@ public class EventController {
                 //Send PDF by email
                 sendInfographicByMail(generatedInfographic, pdfForm, createdBy);
                 //Send PDF as event
-                sendInfographicAsEvent(generatedInfographic, pdfForm, event.getSessionId(), event.getOrganization());
+                sendInfographicAsEvent(generatedInfographic, pdfForm, event.getSessionId(), event.getOrganization(), event.getUnit());
 
             } else {
                 EventsLogger.debug(this.getClass(), "No drools form obtained.");
