@@ -204,11 +204,13 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
 
         final SvgText titleEN = new SvgText(FONT, TITLE_ENGLISH_TEXT, TITLE_FONT_SIZE, margin + 9, 73);
         titleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        titleEN.setFontWeight(FontWeight.BOLD);
         titleEN.setMaxLineWidth(COLUMN_WIDTH);
         elements.add(titleEN);
 
         final SvgText subtitleEN = new SvgText(FONT, SUBTITLE_ENGLISH_TEXT, SUBTITLE_FONT_SIZE, margin + 14, 115);
         subtitleEN.getElementAttributes().setFill(ENGLISH_TEXT_COLOR);
+        subtitleEN.setFontWeight(FontWeight.BOLD);
         subtitleEN.setMaxLineWidth(COLUMN_WIDTH);
         elements.add(subtitleEN);
 

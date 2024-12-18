@@ -29,12 +29,12 @@
         <tspan x="55" dy="17" style="font-family:Montserrat;" letter-spacing="0.3333333333333333">doen het goed) en een laag cijfer als jij vindt dat er</tspan>
         <tspan style="font-family:Montserrat;" x="55" dy="17">nog ruimte voor verbetering is.</tspan>
     </text>
-    <text x="434" font-size="20" y="85.6" fill="#000000" style="font-family:Montserrat;" font-family="Montserrat" class="text3" id="text3">
-        <tspan style="font-family:Montserrat;" x="434">The 5 frustrations of teamwork</tspan>
+    <text x="434" font-size="20" y="85.6" fill="#000000" style="font-weight:bold;font-family:Montserrat;" font-family="Montserrat" class="text3" id="text3">
+        <tspan style="font-weight:bold;font-family:Montserrat;" x="434">The 5 frustrations of teamwork</tspan>
     </text>
-    <text x="439" font-size="16" y="125.08" fill="#000000" style="font-family:Montserrat;" font-family="Montserrat" class="text4" id="text4">
-        <tspan style="font-family:Montserrat;" x="439">How do you make sure that working</tspan>
-        <tspan style="font-family:Montserrat;" x="439" dy="21">together stays fun?</tspan>
+    <text x="439" font-size="16" y="125.08" fill="#000000" style="font-weight:bold;font-family:Montserrat;" font-family="Montserrat" class="text4" id="text4">
+        <tspan style="font-weight:bold;font-family:Montserrat;" x="439">How do you make sure that working</tspan>
+        <tspan style="font-weight:bold;font-family:Montserrat;" x="439" dy="21">together stays fun?</tspan>
     </text>
     <text x="425" font-size="12" y="167.56" fill="#000000" style="font-family:Montserrat;" font-family="Montserrat" class="text5" id="text5">
         <tspan style="font-family:Montserrat;" x="425" letter-spacing="0.2708333333333333">You have answered the 15 statements belonging to</tspan>
