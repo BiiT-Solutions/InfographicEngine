@@ -33,12 +33,13 @@ public class InfographicEventSender {
         this.eventConverter = eventConverter;
     }
 
-    public void sendResultEvents(GeneratedInfographic generatedInfographic, String executedBy, String organization, UUID sessionId) {
+    public void sendResultEvents(GeneratedInfographic generatedInfographic, String executedBy, String organization, UUID sessionId,
+                                 String unit) {
         EventsLogger.debug(this.getClass().getName(), "Preparing for sending events...");
         if (kafkaTemplate != null && sendTopic != null && !sendTopic.isEmpty()) {
             //Send the complete svg as an event.
             try {
-                kafkaTemplate.send(sendTopic, eventConverter.getInfographicEvent(generatedInfographic, executedBy, organization, sessionId));
+                kafkaTemplate.send(sendTopic, eventConverter.getInfographicEvent(generatedInfographic, executedBy, organization, sessionId, unit));
                 EventsLogger.debug(this.getClass().getName(), "Event with results from '{}' and version '{}' send!",
                         generatedInfographic.getFormName(), generatedInfographic.getFormVersion());
             } catch (Exception e) {

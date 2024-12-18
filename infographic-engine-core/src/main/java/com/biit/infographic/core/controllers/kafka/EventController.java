@@ -112,7 +112,7 @@ public class EventController {
                 //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
                 final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
                         event.getOrganization(), null);
-                infographicEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId());
+                infographicEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId(), event.getUnit());
 
                 final byte[] pdfForm = pdfController.generatePdfFromSvgs(generatedInfographic.getSvgContents());
                 //Send PDF by email
@@ -154,7 +154,8 @@ public class EventController {
         }
     }
 
-    private void sendInfographicAsEvent(GeneratedInfographic generatedInfographic, byte[] pdfData, UUID sessionId, String organization) {
-        infographicPdfEventSender.sendPdfInfographic(generatedInfographic, pdfData, sessionId, organization);
+    private void sendInfographicAsEvent(GeneratedInfographic generatedInfographic, byte[] pdfData, UUID sessionId,
+                                        String organization, String unit) {
+        infographicPdfEventSender.sendPdfInfographic(generatedInfographic, pdfData, sessionId, organization, unit);
     }
 }

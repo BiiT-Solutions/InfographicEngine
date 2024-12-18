@@ -26,7 +26,7 @@ public class PdfInfographicEventConverter {
         return infographicPayload;
     }
 
-    public Event getPdfEvent(byte[] pdfData, GeneratedInfographic generatedInfographic, UUID sessionId, String organization) {
+    public Event getPdfEvent(byte[] pdfData, GeneratedInfographic generatedInfographic, UUID sessionId, String organization, String unit) {
         final PdfFormPayload eventPayload = generatePayload(pdfData, generatedInfographic);
         final Event event = new Event(eventPayload);
         event.setCreatedBy(generatedInfographic.getCreatedBy());
@@ -39,6 +39,7 @@ public class PdfInfographicEventConverter {
         event.setSessionId(sessionId);
         event.setCustomProperty(EventCustomProperties.FACT_TYPE, INFOGRAPHIC_EVENT_TYPE);
         event.setOrganization(organization);
+        event.setUnit(unit);
         return event;
     }
 }

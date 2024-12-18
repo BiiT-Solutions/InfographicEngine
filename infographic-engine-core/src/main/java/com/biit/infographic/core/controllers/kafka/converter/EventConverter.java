@@ -57,7 +57,7 @@ public class EventConverter {
         return infographicPayload;
     }
 
-    public Event getInfographicEvent(GeneratedInfographic generatedInfographic, String executedBy, String organization, UUID sessionId) {
+    public Event getInfographicEvent(GeneratedInfographic generatedInfographic, String executedBy, String organization, UUID sessionId, String unit) {
         final InfographicPayload eventPayload = generatePayload(generatedInfographic);
         final Event event = new Event(eventPayload);
         event.setCreatedBy(executedBy);
@@ -70,6 +70,7 @@ public class EventConverter {
         event.setSessionId(sessionId);
         event.setCustomProperty(EventCustomProperties.FACT_TYPE, INFOGRAPHIC_VARIABLE_EVENT_TYPE);
         event.setOrganization(organization);
+        event.setUnit(unit);
         return event;
     }
 }

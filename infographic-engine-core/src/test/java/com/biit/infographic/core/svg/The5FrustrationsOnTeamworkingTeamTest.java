@@ -12,8 +12,6 @@ import com.biit.infographic.core.models.svg.components.text.FontFactory;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
-import com.biit.infographic.core.providers.UserProvider;
-import com.biit.usermanager.client.providers.AuthenticatedUserProvider;
 import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,18 +34,17 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @SpringBootTest
 @Test(groups = "frustrationOnTeamworking")
-public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringContextTests {
+public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringContextTests {
 
     protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
 
-    private static final String DROOLS_FORM_FILE_PATH = "drools/The 5 Frustrations on Teamworking.json";
-    protected static final String TEMPLATE_ID = "five_frustrations";
+    private static final String DROOLS_FORM_FILE_PATH = "drools/Frustration On Teamworking Team.json";
+    protected static final String TEMPLATE_ID = "five_frustrations_team";
 
-    private static final String TEMPLATE_NAME = "The 5 Frustrations on Teamworking";
+    private static final String TEMPLATE_NAME = "Frustration On Teamworking Team";
     private static final String TEMPLATE_BACKGROUND_COLOR = "ffffffff";
 
     private static final String FONT = "Montserrat";
@@ -60,48 +57,24 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
     private static final String CIRCLE_COLOR = "f20d5eff";
     private static final String CIRCLE_BACKGROUND = "edededff";
 
-    private static final String USER_NAME = "#USER%SUBMITTER%NAME#";
-    private static final String USER_LASTNAME = "#USER%SUBMITTER%LASTNAME#";
-
     private static final String SUBMIT_TIME = "#FORM%SUBMIT%TIME#";
     private static final String SUBMIT_DATE = "#FORM%SUBMIT%DATE#";
 
-    private static final String FRUSTRATION_1_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration1#";
-    private static final String FRUSTRATION_2_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration2#";
-    private static final String FRUSTRATION_3_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration3#";
-    private static final String FRUSTRATION_4_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration4#";
-    private static final String FRUSTRATION_5_CIRCLE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration5#";
+    private static final String FRUSTRATION_1_CIRCLE = "#DROOLS%Frustration On Teamworking Team%Frustration1#";
+    private static final String FRUSTRATION_2_CIRCLE = "#DROOLS%Frustration On Teamworking Team%Frustration2#";
+    private static final String FRUSTRATION_3_CIRCLE = "#DROOLS%Frustration On Teamworking Team%Frustration3#";
+    private static final String FRUSTRATION_4_CIRCLE = "#DROOLS%Frustration On Teamworking Team%Frustration4#";
+    private static final String FRUSTRATION_5_CIRCLE = "#DROOLS%Frustration On Teamworking Team%Frustration5#";
 
-    private static final String FRUSTRATION_1_VALUE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration1Total#";
-    private static final String FRUSTRATION_2_VALUE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration2Total#";
-    private static final String FRUSTRATION_3_VALUE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration3Total#";
-    private static final String FRUSTRATION_4_VALUE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration4Total#";
-    private static final String FRUSTRATION_5_VALUE = "#DROOLS%The 5 Frustrations on Teamworking%Frustration5Total#";
-
-    public static final String FRUSTRATION_1_DUTCH_TEXT = "Hierbij verbergen teams hun zwakheden en fouten voor elkaar, geven elkaar geen oprechte feedback en aarzelen om elkaar te hulp te schieten buiten hun eigen verantwoordelijkheid.\n"
-            + "Zonder onderling vertrouwen van leden van een team is gezonde samenwerking onmogelijk. Onder vertrouwen verstaan we de zekerheid van teamleden dat de intenties van hun collega’s goed zijn en dat er geen reden is beschermend of bezorgd over de groep te zijn. Dit wordt ook wel psychologische veiligheid genoemd. Ieder lid van de groep mag zich kwetsbaar durven opstellen. Het vertrouwen is dusdanig zijn dat eigen gebreken en tekortkomingen niet gecamoufleerd hoeven te worden. Fouten toegeven en hulp durven vragen.";
-
-    public static final String FRUSTRATION_2_DUTCH_TEXT = "Controversiële onderwerpen worden vermeden en vergaderingen zijn saai en vervelend.\n"
-            + "Alle belangrijke, duurzame relaties hebben productieve conflicten nodig om te kunnen groeien. Dit zijn principiële, ideologische conflicten die beperkt blijven tot concepten en ideeën en niet-destructieve conflicten, die op de man worden gespeeld. Zonder vertrouwen durven teamleden geen eerlijk conflict met elkaar aan te gaan. Ze kennen elkaar niet goed genoeg om het met elkaar oneens te durven zijn";
-
-    public static final String FRUSTRATION_3_DUTCH_TEXT = "Er is onduidelijkheid binnen het team over de richting en de prioriteiten.\n"
-            + "Door het conflict niet op te zoeken – en de ideeën en meningen van sommige teamleden stil te houden – ontstaat bij het nemen van beslissingen een gebrek aan betrokkenheid. Juist wanneer iedereen de kans heeft gekregen zijn zegje te doen, is de kans groter dat bij besluitvorming iedereen betrokken is. Zelfs wanneer een besluit ingaat tegen wat een van de teamleden voor ogen heeft.";
-
-    public static final String FRUSTRATION_4_DUTCH_TEXT = "Deze teams moedigen middelmatigheid aan en missen deadlines en belangrijke afspraken. Er ontstaat wrok bij de teamleden door onderlinge prestatieverschillen.\n"
-            + "Wanneer we het hebben over verantwoordelijkheid, hebben we het over de bereidheid van teamleden om elkaar aan te spreken op prestaties of gedragingen die het team kunnen schaden. Maar het is vaak moeilijk een ander ter verantwoording te roepen. Niet zozeer – al stellen we dit wel – omdat we de ander geen naar gevoel willen geven, maar omdat we zelf geen rotgevoel willen hebben. Bang voor een ongemakkelijk gevoel, houden teamleden zich stil.";
-
-    public static final String FRUSTRATION_5_DUTCH_TEXT = "Hierbij stagneert het team en laat het zich makkelijk afleiden. Ook raakt het prestatiegerichte medewerkers kwijt.\n"
-            + "Wanneer teamleden niet op hun tekortschieten worden gewezen, bestaat er een kans dat niet langer iedereen gericht is op het beoogde eindresultaat. Zo kunnen teamstatus of eigen status in de weg staan. Het eerste komt vooral voor bij niet-commerciële welzijnsinstellingen. Teamleden gaan geloven dat de verhevenheid van hun missie op zich al voldoende reden tot tevredenheid is. De individuele status betekent dat teamleden uit zijn op hun eigen positie en doelstellingen en niet op die van het team.";
+    private static final String FRUSTRATION_1_VALUE = "#DROOLS%Frustration On Teamworking Team%Frustration1Total#";
+    private static final String FRUSTRATION_2_VALUE = "#DROOLS%Frustration On Teamworking Team%Frustration2Total#";
+    private static final String FRUSTRATION_3_VALUE = "#DROOLS%Frustration On Teamworking Team%Frustration3Total#";
+    private static final String FRUSTRATION_4_VALUE = "#DROOLS%Frustration On Teamworking Team%Frustration4Total#";
+    private static final String FRUSTRATION_5_VALUE = "#DROOLS%Frustration On Teamworking Team%Frustration5Total#";
 
 
     @Autowired
     private DroolsResultController droolsResultController;
-
-    @Autowired
-    private AuthenticatedUserProvider authenticatedUserProvider;
-
-    @Autowired
-    private UserProvider userProvider;
 
     private SvgTemplate frustrationOnTeamworking;
 
@@ -132,11 +105,6 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
             }
         }
         return directoryToBeDeleted.delete();
-    }
-
-    @BeforeClass
-    public void createUser() throws IOException {
-        authenticatedUserProvider.createUser("admin@test.com", UUID.randomUUID().toString(), "Angus", "MacGyver", "123456", null);
     }
 
     private SvgBackground generateBackground() {
@@ -179,7 +147,7 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, FRUSTRATION_1_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
+        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_1_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
         paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
         paragraph.setTextAlign(TextAlign.JUSTIFY);
         elements.add(paragraph);
@@ -207,7 +175,7 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, FRUSTRATION_2_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
+        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_2_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
         paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
         paragraph.setTextAlign(TextAlign.JUSTIFY);
         elements.add(paragraph);
@@ -235,8 +203,7 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, FRUSTRATION_3_DUTCH_TEXT,
-                PARAGRAPH_FONT_SIZE, 62, hight + 111);
+        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_3_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
         paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
         paragraph.setTextAlign(TextAlign.JUSTIFY);
         elements.add(paragraph);
@@ -264,7 +231,7 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, FRUSTRATION_4_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
+        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_4_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
         paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
         paragraph.setTextAlign(TextAlign.JUSTIFY);
         elements.add(paragraph);
@@ -292,7 +259,7 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
         value.setTextAlign(TextAlign.CENTER);
         elements.add(value);
 
-        final SvgText paragraph = new SvgText(FONT, FRUSTRATION_5_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
+        final SvgText paragraph = new SvgText(FONT, The5FrustrationsOnTeamworkingTest.FRUSTRATION_5_DUTCH_TEXT, PARAGRAPH_FONT_SIZE, 62, hight + 111);
         paragraph.setMaxLineWidth(PARAGRAPH_WIDTH);
         paragraph.setTextAlign(TextAlign.JUSTIFY);
         elements.add(paragraph);
@@ -302,9 +269,6 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
 
     private List<SvgAreaElement> generateFooter() {
         final List<SvgAreaElement> elements = new ArrayList<>();
-
-        final SvgText name = new SvgText(USER_NAME + " " + USER_LASTNAME, 14, 62, 1450);
-        elements.add(name);
 
         final SvgText date = new SvgText(SUBMIT_DATE + " " + SUBMIT_TIME, 14, 737, 1450);
         date.setTextAlign(TextAlign.RIGHT);
@@ -363,11 +327,5 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));
-    }
-
-    @AfterClass(alwaysRun = true)
-    public void removeUser() {
-        authenticatedUserProvider.clear();
-        userProvider.reset();
     }
 }

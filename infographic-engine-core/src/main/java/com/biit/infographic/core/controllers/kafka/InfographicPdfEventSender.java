@@ -34,10 +34,11 @@ public class InfographicPdfEventSender {
     }
 
 
-    public void sendPdfInfographic(GeneratedInfographic generatedInfographic, byte[] pdfData, UUID sessionId, String organization) {
+    public void sendPdfInfographic(GeneratedInfographic generatedInfographic, byte[] pdfData, UUID sessionId,
+                                   String organization, String unit) {
         EventsLogger.debug(this.getClass().getName(), "Preparing for sending events...");
         if (kafkaTemplate != null && sendTopic != null && !sendTopic.isEmpty()) {
-            kafkaTemplate.send(sendTopic, pdfInfographicEventConverter.getPdfEvent(pdfData, generatedInfographic, sessionId, organization));
+            kafkaTemplate.send(sendTopic, pdfInfographicEventConverter.getPdfEvent(pdfData, generatedInfographic, sessionId, organization, unit));
             EventsLogger.debug(this.getClass().getName(), "Event with pdf from '{}' and version '{}' send!",
                     generatedInfographic.getFormName(), generatedInfographic.getFormVersion());
         }
