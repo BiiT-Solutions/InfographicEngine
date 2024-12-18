@@ -62,13 +62,14 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
      * @param droolsSubmittedForm the answers obtained from base form drool engine.
      * @param createdBy           the owner of the form.
      */
-    public GeneratedInfographic process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String organization, String timeZone) {
+    public GeneratedInfographic process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String organization,
+                                        String unit, String timeZone) {
         //Generate SVG.
         final List<String> svgContents = executeFromTemplates(droolsSubmittedForm, createdBy, timeZone);
 
         //Store SVG.
         final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents,
-                formName, createdBy, organization);
+                formName, createdBy, organization, unit);
         return generatedInfographicProvider.save(generatedInfographic);
     }
 

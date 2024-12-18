@@ -21,7 +21,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
     }
 
     public GeneratedInfographic createGeneratedInfographic(DroolsSubmittedForm droolsSubmittedForm, List<String> svgContents,
-                                                           String formName, String createdBy, String organization) {
+                                                           String formName, String createdBy, String organization, String unit) {
         final GeneratedInfographic generatedInfographic = new GeneratedInfographic();
         generatedInfographic.setSvgContents(svgContents);
         generatedInfographic.setDroolsSubmittedForm(droolsSubmittedForm.toJson());
@@ -30,6 +30,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         } else {
             generatedInfographic.setOrganization(droolsSubmittedForm.getOrganization());
         }
+        generatedInfographic.setUnit(unit);
         generatedInfographic.setCreatedBy(createdBy);
         //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
         if (formName != null) {
