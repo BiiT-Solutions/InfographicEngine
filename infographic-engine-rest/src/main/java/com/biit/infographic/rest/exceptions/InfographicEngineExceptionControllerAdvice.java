@@ -2,6 +2,7 @@ package com.biit.infographic.rest.exceptions;
 
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.exceptions.FormNotFoundException;
+import com.biit.infographic.core.exceptions.InfographicNotFoundException;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.server.exceptions.ErrorResponse;
 import com.biit.server.exceptions.NotFoundException;
@@ -44,5 +45,11 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
     public ResponseEntity<?> elementDoesNotExistsException(Exception ex) {
         RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
         return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), "element_does_not_exists", ex), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InfographicNotFoundException.class)
+    public ResponseEntity<?> infographicNotFoundException(Exception ex) {
+        RestServerExceptionLogger.severe(this.getClass().getName(), ex.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), "report_not_found", ex), HttpStatus.NOT_FOUND);
     }
 }

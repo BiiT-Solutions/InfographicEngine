@@ -3,6 +3,7 @@ package com.biit.infographic.rest.api;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
+import com.biit.infographic.core.exceptions.InfographicNotFoundException;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.pdf.PdfController;
@@ -204,7 +205,7 @@ public class SvgServices extends ImageServices {
         }
 
         if (svgCodes.isEmpty()) {
-            throw new NotFoundException(this.getClass(), "No infographics found!");
+            throw new InfographicNotFoundException(this.getClass(), "No infographics found!");
         }
 
         final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
