@@ -6,6 +6,8 @@ import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Set;
@@ -33,10 +35,14 @@ public class FormContent {
                     //#FORM%SUBMIT%DATE#
                     try {
                         if (Objects.equals(attribute, TIME_ATTRIBUTE)) {
+                            //Angular sends the time on UTC, that is set on the submittedAt field.
                             parameter.getAttributes().put(attribute, droolsSubmittedForm.getSubmittedAt()
+                                    .atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
                                     .format(DateTimeFormatter.ofPattern(TIME_ATTRIBUTE_PATTERN)));
                         } else if (Objects.equals(attribute, DATE_ATTRIBUTE)) {
+                            //Angular sends the time on UTC, that is set on the submittedAt field.
                             parameter.getAttributes().put(attribute, droolsSubmittedForm.getSubmittedAt()
+                                    .atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
                                     .format(DateTimeFormatter.ofPattern(DATE_ATTRIBUTE_PATTERN)));
                         }
                     } catch (Exception e) {
