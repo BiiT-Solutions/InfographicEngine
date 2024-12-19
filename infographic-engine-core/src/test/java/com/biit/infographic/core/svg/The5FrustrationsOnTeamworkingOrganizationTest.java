@@ -490,8 +490,8 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
     private List<SvgAreaElement> generateFooter() {
         final List<SvgAreaElement> elements = new ArrayList<>();
 
-        final SvgText name = new SvgText(USER_NAME + " " + USER_LASTNAME, 14, 62, DOCUMENT_HEIGHT - 50);
-        elements.add(name);
+//        final SvgText name = new SvgText(USER_NAME + " " + USER_LASTNAME, 14, 62, DOCUMENT_HEIGHT - 50);
+//        elements.add(name);
 
         final SvgText date = new SvgText(SUBMIT_DATE + " " + SUBMIT_TIME, 14, 737, DOCUMENT_HEIGHT - 50);
         date.setTextAlign(TextAlign.RIGHT);
