@@ -4,6 +4,7 @@ import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.server.utils.pdf.PdfDocument;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.ImgTemplate;
 import com.lowagie.text.pdf.DefaultFontMapper;
@@ -83,6 +84,7 @@ public class InfographicFromSvg extends InfographicPdf {
                     image.scaleToFit(getPageSize().getWidth() - (PdfDocument.DEFAULT_RIGHT_MARGIN + PdfDocument.DEFAULT_LEFT_MARGIN),
                             getPageSize().getHeight() - (PdfDocument.DEFAULT_TOP_MARGIN + PdfDocument.DEFAULT_BOTTOM_MARGIN));
                 }
+                image.setAlignment(Element.ALIGN_CENTER);
                 document.add(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);

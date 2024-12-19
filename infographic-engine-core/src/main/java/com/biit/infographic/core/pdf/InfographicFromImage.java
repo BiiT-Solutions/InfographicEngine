@@ -2,6 +2,7 @@ package com.biit.infographic.core.pdf;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -26,6 +27,7 @@ public class InfographicFromImage extends InfographicPdf {
                 if (image.getHeight() > getPageSize().getHeight() || image.getWidth() > getPageSize().getWidth()) {
                     image.scaleToFit(getPageSize().getWidth(), getPageSize().getHeight());
                 }
+                image.setAlignment(Element.ALIGN_CENTER);
                 document.add(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);
