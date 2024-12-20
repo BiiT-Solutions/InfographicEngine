@@ -42,8 +42,7 @@ public class InfographicEmailService extends ServerEmailService {
     @Value("${mail.copy.address:#{null}}")
     private String mailCopy;
 
-    @Value("${infographics.not.sent.by.mail}")
-    //@Value("#{'${infographics.not.sent.by.mail:}'.split(',')}")
+    @Value("${infographics.not.sent.by.mail:}")
     private List<String> infographicsIgnoredNames;
 
     private final MessageSource messageSource;
