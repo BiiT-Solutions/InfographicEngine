@@ -15,6 +15,7 @@ import org.springframework.util.MimeTypeUtils;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -41,6 +42,10 @@ public class InfographicEmailService extends ServerEmailService {
     @Value("${mail.copy.address:#{null}}")
     private String mailCopy;
 
+    @Value("${infographics.not.sent.by.mail}")
+    //@Value("#{'${infographics.not.sent.by.mail:}'.split(',')}")
+    private List<String> infographicsIgnoredNames;
+
     private final MessageSource messageSource;
 
     private final Locale locale = Locale.ENGLISH;
@@ -54,6 +59,10 @@ public class InfographicEmailService extends ServerEmailService {
     public void sendPdfInfographic(String mailTo, String submittedBy, String formName, byte[] pdfForm)
             throws EmailNotSentException, InvalidEmailAddressException,
             FileNotFoundException {
+        if (infographicsIgnoredNames.contains(formName)) {
+            EmailServiceLogger.warning(this.getClass(), "Infographic '{}' is marked as ignorable. Email will not be sent.", formName);
+            return;
+        }
         if (mailTo != null) {
             if (smtpServer != null && emailUser != null) {
                 EmailServiceLogger.info(this.getClass(), "Sending form '{}' to email '{}' by '{}'.", formName, mailTo, submittedBy);
@@ -73,7 +82,7 @@ public class InfographicEmailService extends ServerEmailService {
     }
 
 
-    protected void sendTemplate(String email, String mailSubject, String emailTemplate, String plainText, byte[] pdfForm, String attachmentName)
+    private void sendTemplate(String email, String mailSubject, String emailTemplate, String plainText, byte[] pdfForm, String attachmentName)
             throws EmailNotSentException, InvalidEmailAddressException {
         if (smtpServer != null && emailUser != null) {
             SendEmail.sendEmail(smtpServer, smtpPort, emailUser, emailPassword, emailSender, Collections.singletonList(email), null,
