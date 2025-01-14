@@ -14,8 +14,10 @@ import com.biit.server.exceptions.BadRequestException;
 import com.biit.server.exceptions.NotFoundException;
 import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.SecurityService;
+import com.biit.server.security.IAuthenticatedUser;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.server.utils.exceptions.InvalidXmlElementException;
+import com.biit.usermanager.client.providers.UserManagerClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,12 +54,15 @@ public class SvgServices extends ImageServices {
 
     private final PdfController pdfController;
 
+    private final UserManagerClient userManagerClient;
+
     public SvgServices(SecurityService securityService, DroolsResultController droolsResultController,
-                       GeneratedInfographicProvider generatedInfographicProvider, PdfController pdfController) {
+                       GeneratedInfographicProvider generatedInfographicProvider, PdfController pdfController, UserManagerClient userManagerClient) {
         super(securityService);
         this.droolsResultController = droolsResultController;
         this.generatedInfographicProvider = generatedInfographicProvider;
         this.pdfController = pdfController;
+        this.userManagerClient = userManagerClient;
     }
 
 
@@ -141,7 +146,8 @@ public class SvgServices extends ImageServices {
             Parameters:
             - form: the form name.
             - version: the form version.
-            - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
+            - createdBy: who has filled up the form. If no user is selected by default is the authenticated user.
+            - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -155,12 +161,21 @@ public class SvgServices extends ImageServices {
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
+            @Parameter(name = "createdByExternalReference", required = false) @RequestParam(value = "createdByExternalReference", required = false)
+            String externalReference,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response)
             throws InvalidXmlElementException, EmptyPdfBodyException {
         if (createdBy == null && organization == null) {
-            createdBy = authentication.getName();
+            if (externalReference == null) {
+                createdBy = authentication.getName();
+            } else {
+                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                if (user.isPresent()) {
+                    createdBy = user.get().getUsername();
+                }
+            }
         }
         canBeDoneForDifferentUsers(createdBy, authentication);
 

@@ -8,10 +8,12 @@ import com.biit.infographic.core.pdf.PdfController;
 import com.biit.infographic.rest.api.model.InfographicSearch;
 import com.biit.server.exceptions.NotFoundException;
 import com.biit.server.rest.SecurityService;
+import com.biit.server.security.IAuthenticatedUser;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.server.utils.exceptions.InvalidXmlElementException;
 import com.biit.server.utils.zip.ZipContent;
 import com.biit.server.utils.zip.ZipController;
+import com.biit.usermanager.client.providers.UserManagerClient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/jpeg")
@@ -46,12 +49,15 @@ public class JpegServices extends ImageServices {
 
     private final PdfController pdfController;
 
+    private final UserManagerClient userManagerClient;
+
     public JpegServices(SecurityService securityService, GeneratedInfographicController generatedInfographicController,
-                        ZipController zipController, PdfController pdfController) {
+                        ZipController zipController, PdfController pdfController, UserManagerClient userManagerClient) {
         super(securityService);
         this.generatedInfographicController = generatedInfographicController;
         this.zipController = zipController;
         this.pdfController = pdfController;
+        this.userManagerClient = userManagerClient;
     }
 
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
@@ -72,6 +78,7 @@ public class JpegServices extends ImageServices {
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
+            - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -87,12 +94,23 @@ public class JpegServices extends ImageServices {
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
+            @Parameter(name = "createdByExternalReference", required = false) @RequestParam(value = "createdByExternalReference", required = false)
+            String externalReference,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
-        if (createdBy == null) {
-            createdBy = authentication.getName();
+
+        if (createdBy == null && organization == null) {
+            if (externalReference == null) {
+                createdBy = authentication.getName();
+            } else {
+                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                if (user.isPresent()) {
+                    createdBy = user.get().getUsername();
+                }
+            }
         }
+
         if (page == null) {
             page = 0;
         }

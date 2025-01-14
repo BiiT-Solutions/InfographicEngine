@@ -10,6 +10,8 @@ import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
 import com.biit.server.rest.ElementServices;
+import com.biit.server.security.IAuthenticatedUser;
+import com.biit.usermanager.client.providers.UserManagerClient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -33,6 +35,7 @@ import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -41,8 +44,11 @@ import java.util.Set;
 public class GeneratedInfographicService extends ElementServices<GeneratedInfographic, Long, GeneratedInfographicDTO, GeneratedInfographicRepository,
         GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter, GeneratedInfographicController> {
 
-    protected GeneratedInfographicService(GeneratedInfographicController controller) {
+    private final UserManagerClient userManagerClient;
+
+    protected GeneratedInfographicService(GeneratedInfographicController controller, UserManagerClient userManagerClient) {
         super(controller);
+        this.userManagerClient = userManagerClient;
     }
 
     @PostFilter("hasAnyAuthority(@securityService.adminPrivilege)")
@@ -87,6 +93,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
+             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -101,6 +108,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
+            @Parameter(name = "createdByExternalReference", required = false) @RequestParam(value = "createdByExternalReference", required = false)
+            String externalReference,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-01T00:00:00.00Z")
@@ -108,8 +117,16 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Parameter(description = "Forms until the selected date", example = "2023-01-31T23:59:59.99Z")
             @RequestParam(value = "to", required = false) OffsetDateTime to,
             Authentication authentication, HttpServletRequest request) {
+
         if (createdBy == null && organization == null) {
-            createdBy = authentication.getName();
+            if (externalReference == null) {
+                createdBy = authentication.getName();
+            } else {
+                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                if (user.isPresent()) {
+                    createdBy = user.get().getUsername();
+                }
+            }
         }
 
         canBeDoneForDifferentUsers(createdBy, authentication);
@@ -124,6 +141,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
+             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -138,12 +156,23 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
+            @Parameter(name = "createdByExternalReference", required = false) @RequestParam(value = "createdByExternalReference", required = false)
+            String externalReference,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
+
         if (createdBy == null && organization == null) {
-            createdBy = authentication.getName();
+            if (externalReference == null) {
+                createdBy = authentication.getName();
+            } else {
+                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                if (user.isPresent()) {
+                    createdBy = user.get().getUsername();
+                }
+            }
         }
+
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         return getController().findLatest(form, version, organization, unit, createdBy);
@@ -155,6 +184,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
+             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -169,12 +199,23 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
+            @Parameter(name = "createdByExternalReference", required = false) @RequestParam(value = "createdByExternalReference", required = false)
+            String externalReference,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
+
         if (createdBy == null && organization == null) {
-            createdBy = authentication.getName();
+            if (externalReference == null) {
+                createdBy = authentication.getName();
+            } else {
+                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                if (user.isPresent()) {
+                    createdBy = user.get().getUsername();
+                }
+            }
         }
+
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         return GeneratedInfographicAsPngDTO.from(getController().findLatest(form, version, organization, unit, createdBy));
@@ -186,6 +227,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
+             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -200,12 +242,23 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
+            @Parameter(name = "createdByExternalReference", required = false) @RequestParam(value = "createdByExternalReference", required = false)
+            String externalReference,
             @Parameter(name = "organization", required = false) @RequestParam(value = "organization", required = false) String organization,
             @Parameter(name = "unit", required = false) @RequestParam(value = "unit", required = false) String unit,
             Authentication authentication, HttpServletRequest request) {
+
         if (createdBy == null && organization == null) {
-            createdBy = authentication.getName();
+            if (externalReference == null) {
+                createdBy = authentication.getName();
+            } else {
+                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                if (user.isPresent()) {
+                    createdBy = user.get().getUsername();
+                }
+            }
         }
+
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         return GeneratedInfographicAsJpegDTO.from(getController().findLatest(form, version, organization, unit, createdBy));
