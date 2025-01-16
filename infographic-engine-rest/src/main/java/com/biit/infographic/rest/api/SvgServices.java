@@ -191,7 +191,6 @@ public class SvgServices extends ImageServices {
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
 
         return pdfController.generatePdfFromSvgs(generatedInfographic.get().getSvgContents());
-
     }
 
 
