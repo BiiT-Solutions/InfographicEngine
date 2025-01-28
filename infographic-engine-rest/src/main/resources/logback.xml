@@ -133,7 +133,7 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
-    <logger name="org.hibernate.SQL" additivity="false" level="DEBUG">
+    <logger name="org.hibernate.SQL" additivity="false" level="ERROR">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
