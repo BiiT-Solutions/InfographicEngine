@@ -24,6 +24,9 @@ public class InfographicEmailService extends ServerEmailService {
 
     private static final String USER_ACCESS_EMAIL_TEMPLATE = "email-templates/parchment.html";
 
+    @Value("${mail.server.enabled:true}")
+    private boolean mailEnabled;
+
     @Value("${mail.server.smtp.server:#{null}}")
     private String smtpServer;
 
@@ -58,6 +61,9 @@ public class InfographicEmailService extends ServerEmailService {
     public void sendPdfInfographic(String mailTo, String submittedBy, String formName, byte[] pdfForm)
             throws EmailNotSentException, InvalidEmailAddressException,
             FileNotFoundException {
+        if (!mailEnabled) {
+            return;
+        }
         if (infographicsIgnoredNames.contains(formName)) {
             EmailServiceLogger.warning(this.getClass(), "Infographic '{}' is marked as ignorable. Email will not be sent.", formName);
             return;
@@ -83,6 +89,9 @@ public class InfographicEmailService extends ServerEmailService {
 
     private void sendTemplate(String email, String mailSubject, String emailTemplate, String plainText, byte[] pdfForm, String attachmentName)
             throws EmailNotSentException, InvalidEmailAddressException {
+        if (!mailEnabled) {
+            return;
+        }
         if (smtpServer != null && emailUser != null) {
             SendEmail.sendEmail(smtpServer, smtpPort, emailUser, emailPassword, emailSender, Collections.singletonList(email), null,
                     mailCopy != null ? Collections.singletonList(mailCopy) : null, mailSubject,
