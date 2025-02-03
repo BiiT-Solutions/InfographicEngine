@@ -4,6 +4,8 @@ import com.biit.infographic.core.exceptions.TextNotFoundException;
 import com.biit.ks.models.ITextClient;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
+
 @Component
 public class KnowledgeSystemTextProvider {
 
@@ -13,7 +15,7 @@ public class KnowledgeSystemTextProvider {
         this.textClient = textClient;
     }
 
-    public String get(String textName, String language) throws TextNotFoundException {
+    public String get(String textName, Locale language) throws TextNotFoundException {
         if (textName != null && language != null) {
             return textClient.get(textName, language).orElseThrow(()
                     -> new TextNotFoundException(this.getClass(), "Text not found with name '" + textName + "' for locale '" + language + "'."));

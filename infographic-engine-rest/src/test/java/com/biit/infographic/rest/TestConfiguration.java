@@ -6,6 +6,6 @@ import org.springframework.test.context.TestPropertySource;
 
 @Configuration
 @TestPropertySource("classpath:application.properties")
-@ComponentScan({"com.biit.infographic.rest"})
+@ComponentScan({"com.biit.infographic.rest", "com.biit.cadt.texts"})
 public class TestConfiguration {
 }

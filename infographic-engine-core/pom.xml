@@ -66,10 +66,15 @@
             <groupId>com.biit</groupId>
             <artifactId>user-manager-system-rest-client</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.biit.ks</groupId>-->
+<!--            <artifactId>knowledge-system-rest-client</artifactId>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>com.biit.ks</groupId>
-            <artifactId>knowledge-system-rest-client</artifactId>
+            <groupId>com.biit.cadt</groupId>
+            <artifactId>cadt-translator</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.biit.appointment</groupId>
             <artifactId>appointment-center-rest-client</artifactId>

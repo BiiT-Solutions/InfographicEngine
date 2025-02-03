@@ -32,7 +32,7 @@ public class KnowledgeSystemContent {
 
     public void setKnowledgeSystemValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm) {
         if (parameters != null) {
-            String locale = null;
+            Locale locale = null;
             //Search a parameter with the knowledge system tag.
             for (Parameter parameter : parameters) {
                 for (Map.Entry<String, String> attribute : parameter.getAttributes().entrySet()) {
@@ -41,7 +41,7 @@ public class KnowledgeSystemContent {
                             final String knowledgeSystemName = extractKnowledgeSystemItem(attribute.getValue());
                             if (locale == null) {
                                 final IAuthenticatedUser user = userProvider.getUser(droolsSubmittedForm.getSubmittedBy());
-                                locale = user.getLocale() != null ? user.getLocale().getLanguage() : Locale.ENGLISH.getLanguage();
+                                locale = user.getLocale() != null ? user.getLocale() : Locale.ENGLISH;
                             }
                             final String translatedText = knowledgeSystemTextProvider.get(knowledgeSystemName, locale);
                             //Replace knowledgeSystem tag with obtained text.
