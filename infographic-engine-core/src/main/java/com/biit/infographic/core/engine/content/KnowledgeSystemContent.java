@@ -41,7 +41,7 @@ public class KnowledgeSystemContent {
                             final String knowledgeSystemName = extractKnowledgeSystemItem(attribute.getValue());
                             if (locale == null) {
                                 final IAuthenticatedUser user = userProvider.getUser(droolsSubmittedForm.getSubmittedBy());
-                                locale = user.getLocale() != null ? user.getLocale() : Locale.ENGLISH;
+                                locale = user != null && user.getLocale() != null ? user.getLocale() : Locale.ENGLISH;
                             }
                             final String translatedText = knowledgeSystemTextProvider.get(knowledgeSystemName, locale);
                             //Replace knowledgeSystem tag with obtained text.

@@ -6,6 +6,7 @@ import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.providers.UserProvider;
+import com.biit.knowledge.KnowledgeTextConfig;
 import com.biit.ks.client.TestTextClient;
 import com.biit.ks.dto.TextDTO;
 import com.biit.ks.dto.TextLanguagesDTO;
@@ -16,6 +17,7 @@ import com.biit.utils.file.FileReader;
 import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -36,6 +38,7 @@ import java.util.List;
 
 
 @SpringBootTest
+@ContextConfiguration(classes = {KnowledgeTextConfig.class})
 @Test(groups = "knowledgeSystem")
 public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     protected static final String OUTPUT_FOLDER = System.getProperty("java.io.tmpdir") + File.separator + "SvgTests";
