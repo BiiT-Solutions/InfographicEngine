@@ -77,6 +77,10 @@
         <appender-ref ref="DAILY"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
+    <logger name="com.biit.cadt.texts.logger.CadtTextsLogger" additivity="false" level="DEBUG">
+        <appender-ref ref="DAILY"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
 
 
 

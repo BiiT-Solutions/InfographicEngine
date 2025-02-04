@@ -71,8 +71,8 @@
 <!--            <artifactId>knowledge-system-rest-client</artifactId>-->
 <!--        </dependency>-->
         <dependency>
-            <groupId>com.biit.cadt</groupId>
-            <artifactId>cadt-translator</artifactId>
+            <groupId>com.biit.infographic</groupId>
+            <artifactId>infographic-translator</artifactId>
         </dependency>
 
         <dependency>

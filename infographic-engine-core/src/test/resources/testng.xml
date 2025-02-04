@@ -63,6 +63,7 @@
             <class name="com.biit.infographic.core.svg.HappinessAtWorkTest"/>
             <class name="com.biit.infographic.core.svg.The5FrustrationsOnTeamworkingTest"/>
             <class name="com.biit.infographic.core.svg.KnowledgeSystemTest"/>
+<!--            <class name="com.biit.infographic.core.svg.CadtTranslationPluginTest"/>-->
         </classes>
     </test>
 </suite>
