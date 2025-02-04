@@ -22,5 +22,5 @@
   "applicationName": "",
   "submittedBy": "Chuck Norris",
   "version": 1,
-  "formVariables": "{\n  \"/DroolsSubmittedForm[@label='KnowledgeSystemTest']\" : {\n    \"Content\" : \"This text comes from '$KnowledgeSystem{greeting}' in a specific language.\" }\n}"
+  "formVariables": "{\n  \"/DroolsSubmittedForm[@label='KnowledgeSystemTest']\" : {\n    \"Content\" : \"This text comes from '$KnowledgeSystem{id123}' in a specific language.\" }\n}"
 }

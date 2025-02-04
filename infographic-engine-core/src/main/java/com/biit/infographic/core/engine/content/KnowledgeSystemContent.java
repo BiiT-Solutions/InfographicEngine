@@ -3,10 +3,10 @@ package com.biit.infographic.core.engine.content;
 
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.engine.Parameter;
-import com.biit.infographic.core.exceptions.TextNotFoundException;
 import com.biit.infographic.core.providers.KnowledgeSystemTextProvider;
 import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.logger.InfographicEngineLogger;
+import com.biit.ks.dto.exceptions.TextNotFoundException;
 import com.biit.server.security.IAuthenticatedUser;
 import org.springframework.stereotype.Component;
 
