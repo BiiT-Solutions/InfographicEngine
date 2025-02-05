@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,17 +29,18 @@ public class SvgFromDroolsConverter {
     }
 
 
-    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, String createdBy, String timeZone) {
+    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, String createdBy, String timeZone, Locale locale) {
         //Get the template for this form.
         final List<InfographicTemplate> templates = infographicEngine.getTemplates(droolsSubmittedForm);
-        return executeFromTemplates(droolsSubmittedForm, templates, timeZone);
+        return executeFromTemplates(droolsSubmittedForm, templates, timeZone, locale);
     }
 
 
-    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, List<InfographicTemplate> templates, String timeZone) {
+    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, List<InfographicTemplate> templates, String timeZone,
+                                             Locale locale) {
         //Replace template variables by drools values.
         final Map<InfographicFileElement, Set<Parameter>> values = infographicEngine.getValues(droolsSubmittedForm,
-                infographicEngine.getParamsFromTemplates(templates), timeZone);
+                infographicEngine.getParamsFromTemplates(templates), timeZone, locale);
         final List<InfographicTemplateAndContent> templateAndContents = infographicEngine.addContentToTemplates(templates, values);
 
         //Generate SVG.
@@ -55,13 +57,16 @@ public class SvgFromDroolsConverter {
         return svgContents;
     }
 
-
     public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates) {
-        return execute(droolsSubmittedForm, svgTemplates, null);
+        return execute(droolsSubmittedForm, svgTemplates, null, null);
+    }
+
+    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates, Locale locale) {
+        return execute(droolsSubmittedForm, svgTemplates, null, locale);
     }
 
 
-    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates, String timeZone) {
+    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates, String timeZone, Locale locale) {
         //Replace template variables by drools values.
         return executeFromTemplates(droolsSubmittedForm, svgTemplates.stream().map(svgTemplate -> {
             try {
@@ -71,6 +76,6 @@ public class SvgFromDroolsConverter {
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
                 throw new RuntimeException(e);
             }
-        }).toList(), timeZone);
+        }).toList(), timeZone, locale);
     }
 }

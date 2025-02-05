@@ -7,6 +7,7 @@ import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.pdf.PdfController;
 import com.biit.infographic.rest.api.model.InfographicSearch;
 import com.biit.server.exceptions.NotFoundException;
+import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.SecurityService;
 import com.biit.server.security.IAuthenticatedUser;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -85,12 +87,15 @@ public class PngServices extends ImageServices {
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
+            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public byte[] getLatest(
+            @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @Parameter(name = "page", required = false) @PathVariable(value = "page", required = false) Integer page,
             HttpServletRequest httpRequest,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
@@ -119,7 +124,7 @@ public class PngServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, unit, createdBy));
+                .from(generatedInfographicController.processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale()));
 
         if (generatedInfographicAsPngDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");
@@ -144,12 +149,15 @@ public class PngServices extends ImageServices {
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
+            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/zip", produces = MediaType.APPLICATION_JSON_VALUE)
     public byte[] getLatestAsZip(
+            @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
@@ -162,7 +170,7 @@ public class PngServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, unit, createdBy));
+                .from(generatedInfographicController.processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale()));
 
         if (generatedInfographicAsPngDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");
@@ -190,12 +198,15 @@ public class PngServices extends ImageServices {
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
+            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getLatestAsPdf(
+            @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
@@ -209,7 +220,7 @@ public class PngServices extends ImageServices {
         canBeDoneForDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
-                .from(generatedInfographicController.findLatest(form, version, organization, unit, createdBy));
+                .from(generatedInfographicController.processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale()));
 
         if (generatedInfographicAsPngDTO == null) {
             throw new NotFoundException(this.getClass(), "No infographic found!");
@@ -226,12 +237,15 @@ public class PngServices extends ImageServices {
     @Operation(summary = "Search results as a PDF generated by drools.", description = """
             Received a list of infographics, and the system puts together as one PDF document.
             Only the last version from each infographic is returned.
+            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getAsPdf(
+            @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @RequestBody List<InfographicSearch> infographicSearchs,
             Authentication authentication, HttpServletRequest request, HttpServletResponse response)
             throws InvalidXmlElementException, EmptyPdfBodyException {
@@ -242,9 +256,9 @@ public class PngServices extends ImageServices {
             canBeDoneForDifferentUsers(infographicSearch.getCreatedBy(), authentication);
             final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
                     .from(generatedInfographicController
-                            .findLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
+                            .processLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
                                     infographicSearch.getOrganization(), infographicSearch.getUnit(),
-                                    infographicSearch.getCreatedBy()));
+                                    infographicSearch.getCreatedBy(), timeZoneHeader, request.getLocale()));
 
             pngBitmaps.addAll(generatedInfographicAsPngDTO.getContents());
         }

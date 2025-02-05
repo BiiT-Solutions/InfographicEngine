@@ -1,11 +1,11 @@
 package com.biit.infographic.core.controllers.kafka;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
 import com.biit.infographic.core.email.InfographicEmailService;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.pdf.PdfController;
+import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.logger.EventsLogger;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
@@ -49,10 +49,10 @@ public class EventController {
 
     private final InfographicPdfEventSender infographicPdfEventSender;
 
-    private final GeneratedInfographicController generatedInfographicController;
+    private final GeneratedInfographicProvider generatedInfographicProvider;
 
     private EventController() {
-        this.generatedInfographicController = null;
+        this.generatedInfographicProvider = null;
         this.eventConverter = null;
         this.droolsResultRepository = null;
         this.infographicEventSender = null;
@@ -70,7 +70,7 @@ public class EventController {
                            InfographicEventSender infographicEventSender,
                            PdfController pdfController, InfographicEmailService infographicEmailService,
                            UserManagerClient userManagerClient, @Value("${mail.server.smtp.server:#{null}}") String smtpServer,
-                           InfographicPdfEventSender infographicPdfEventSender, GeneratedInfographicController generatedInfographicController) {
+                           InfographicPdfEventSender infographicPdfEventSender, GeneratedInfographicProvider generatedInfographicProvider) {
         this.eventConverter = eventConverter;
         this.droolsResultRepository = droolsResultRepository;
         this.infographicEventSender = infographicEventSender;
@@ -79,7 +79,7 @@ public class EventController {
         this.userManagerClient = userManagerClient;
         this.smtpServer = smtpServer;
         this.infographicPdfEventSender = infographicPdfEventSender;
-        this.generatedInfographicController = generatedInfographicController;
+        this.generatedInfographicProvider = generatedInfographicProvider;
 
         //Listen to a topic
         if (eventListener != null) {
@@ -110,16 +110,20 @@ public class EventController {
                 droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
                 EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
                 //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
-                final GeneratedInfographic generatedInfographic = generatedInfographicController.process(droolsForm, event.getTag(), createdBy,
-                        event.getOrganization(), event.getUnit(), null);
-                infographicEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId(), event.getUnit());
+                final Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider.process(droolsForm, event.getTag(), createdBy,
+                        event.getOrganization(), event.getUnit(), null, null);
+                if (generatedInfographic.isPresent()) {
+                    infographicEventSender.sendResultEvents(generatedInfographic.get(), createdBy, event.getOrganization(),
+                            event.getSessionId(), event.getUnit());
 
-                final byte[] pdfForm = pdfController.generatePdfFromSvgs(generatedInfographic.getSvgContents());
-                //Send PDF by email
-                sendInfographicByMail(generatedInfographic, pdfForm, createdBy);
-                //Send PDF as event
-                sendInfographicAsEvent(generatedInfographic, pdfForm, event.getSessionId(), event.getOrganization(), event.getUnit());
-
+                    final byte[] pdfForm = pdfController.generatePdfFromSvgs(generatedInfographic.get().getSvgContents());
+                    //Send PDF by email
+                    sendInfographicByMail(generatedInfographic.get(), pdfForm, createdBy);
+                    //Send PDF as event
+                    sendInfographicAsEvent(generatedInfographic.get(), pdfForm, event.getSessionId(), event.getOrganization(), event.getUnit());
+                } else {
+                    EventsLogger.warning(this.getClass(), "No infographic generated!");
+                }
             } else {
                 EventsLogger.debug(this.getClass(), "No drools form obtained.");
             }

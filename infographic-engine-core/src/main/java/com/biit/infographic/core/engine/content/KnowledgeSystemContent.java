@@ -30,9 +30,8 @@ public class KnowledgeSystemContent {
     }
 
 
-    public void setKnowledgeSystemValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm) {
+    public void setKnowledgeSystemValues(Set<Parameter> parameters, DroolsSubmittedForm droolsSubmittedForm, Locale locale) {
         if (parameters != null) {
-            Locale locale = null;
             //Search a parameter with the knowledge system tag.
             for (Parameter parameter : parameters) {
                 for (Map.Entry<String, String> attribute : parameter.getAttributes().entrySet()) {

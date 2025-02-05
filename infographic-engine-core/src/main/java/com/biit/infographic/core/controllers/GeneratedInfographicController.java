@@ -18,7 +18,9 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -74,26 +76,25 @@ public class GeneratedInfographicController extends ElementController<GeneratedI
      * @param droolsSubmittedForm the answers obtained from base form drool engine.
      * @param createdBy           the owner of the form.
      */
-    public GeneratedInfographic process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String organization,
-                                        String unit, String timeZone) {
-        //Generate SVG.
-        final List<String> svgContents = svgFromDroolsConverter.executeFromTemplates(droolsSubmittedForm, createdBy, timeZone);
-
-        //Store SVG.
-        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents,
-                formName, createdBy, organization, unit);
-        return generatedInfographicProvider.save(generatedInfographic);
+    public GeneratedInfographicDTO process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String organization,
+                                           String unit, String timeZone, Locale locale) {
+        final Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider.process(
+                droolsSubmittedForm, formName, createdBy, organization, unit, timeZone, locale);
+        return generatedInfographic.map(this::convert).orElse(null);
     }
 
 
-//    public Optional<GeneratedInfographic> fromDrools(String name, Integer version, String organization, String unit, String createdBy)
-//            throws JsonProcessingException {
-//        final List<DroolsResult> results = droolsResultRepository.findBy(name, version, createdBy, organization, unit);
-//        if (results.isEmpty()) {
-//            return Optional.empty();
-//        }
-//        final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(results.get(0).getForm());
-//
-//
-//    }
+    /**
+     * Gets the latest drools form, and process it.
+     */
+    public GeneratedInfographicDTO processLatest(String name, Integer version, String organization, String unit, String submittedBy,
+                                                 String timeZone, Locale locale) {
+        final Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider.processLatest(
+                name, version, organization, unit, submittedBy, timeZone, locale);
+        if (generatedInfographic.isEmpty()) {
+            //For testing it is possible to have an infographic without a drools form. But for production this will always must return NOT FOUND.
+            return findLatest(name, version, organization, unit, submittedBy);
+        }
+        return convert(generatedInfographic.get());
+    }
 }

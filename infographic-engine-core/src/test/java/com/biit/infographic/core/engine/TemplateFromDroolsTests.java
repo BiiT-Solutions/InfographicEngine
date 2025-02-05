@@ -82,7 +82,7 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
     @Test
     public void checkDroolsSubmittedForm() {
-        generatedInfographicController.process(droolsSubmittedForm, null, USER, null, null, null);
+        generatedInfographicController.process(droolsSubmittedForm, null, USER, null, null, null, null);
     }
 
     @Test(dependsOnMethods = "checkDroolsSubmittedForm")

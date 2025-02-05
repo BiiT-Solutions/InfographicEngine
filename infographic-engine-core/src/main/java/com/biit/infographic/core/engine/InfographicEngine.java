@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -80,7 +81,7 @@ public class InfographicEngine {
     }
 
     public Map<InfographicFileElement, Set<Parameter>> getValues(DroolsSubmittedForm droolsSubmittedForm, Map<InfographicFileElement,
-            Set<Parameter>> parameters, String timezone) throws java.security.InvalidParameterException, ElementDoesNotExistsException,
+            Set<Parameter>> parameters, String timezone, Locale locale) throws java.security.InvalidParameterException, ElementDoesNotExistsException,
             ReportNotReadyException {
         final Map<InfographicFileElement, Set<Parameter>> filledParams = new HashMap<>();
         // Group parameters by type.
@@ -120,7 +121,7 @@ public class InfographicEngine {
             CompletableFuture.allOf(completableFutureDrools, completableFutureUserData, completableFutureAppointmentData,
                     completableFutureFormData).join();
             // Knowledge System must be executed after drools
-            knowledgeSystemContent.setKnowledgeSystemValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm);
+            knowledgeSystemContent.setKnowledgeSystemValues(parametersByType.get(ParameterType.DROOLS), droolsSubmittedForm, locale);
 
         }
         InfographicEngineLogger.debug(getClass().toString(), "Filled params: '" + filledParams + "'.");

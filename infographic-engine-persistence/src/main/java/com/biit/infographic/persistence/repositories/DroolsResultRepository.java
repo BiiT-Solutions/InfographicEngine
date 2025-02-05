@@ -14,14 +14,15 @@ import java.util.List;
 public interface DroolsResultRepository extends ElementRepository<DroolsResult, Long> {
 
     /**
-     * Find all forms that matches the search parameters. If startTime and endTime is defined, will search any appointment inside this range.
+     * Find all forms that match the search parameters. If startTime and endTime are defined, will search any appointment inside this range.
      *
      * @param formName          the organization of the parameters (can be null for any organization).
      * @param formVersion       who must resolve the appointment (can be null for any organizer).
      * @param organization      the organization (can be null for any status).
+     * @param unit              the team, department, related to the infographic (can be null).
      * @param createdBy         the type of the appointment (can be null for any type).
-     * @param lowerTimeBoundary the lower limit on time for searching an appointment  (can be null for no limit).
-     * @param upperTimeBoundary the upper limit on time for searching an appointment  (can be null for no limit).
+     * @param lowerTimeBoundary the lower limit on time for searching an appointment (can be null for no limit).
+     * @param upperTimeBoundary the upper limit on time for searching an appointment (can be null for no limit).
      * @return a list of appointments.
      */
     @Query("""
@@ -39,11 +40,12 @@ public interface DroolsResultRepository extends ElementRepository<DroolsResult, 
                               LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary);
 
     /**
-     * Find all forms that matches the search parameters. If startTime and endTime is defined, will search any appointment inside this range.
+     * Find all forms that match the search parameters. If startTime and endTime are defined, will search any appointment inside this range.
      *
      * @param formName     the organization of the parameters (can be null for any organization).
      * @param formVersion  who must resolve the appointment (can be null for any organizer).
      * @param organization the organization (can be null for any status).
+     * @param unit         the team, department, related to the infographic (can be null).
      * @param createdBy    the type of the appointment (can be null for any type).
      * @return a list of appointments.
      */

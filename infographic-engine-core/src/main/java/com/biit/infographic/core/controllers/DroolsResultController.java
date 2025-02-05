@@ -30,7 +30,7 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
     }
 
 
-    public DroolsResultDTO findLatest(String name, Integer version, String organization, String unit, String createdBy, String timeZone) {
+    public DroolsResultDTO findLatest(String name, Integer version, String organization, String unit, String createdBy) {
         return convert(getProvider()
                 .findLatest(name, version, createdBy, organization, unit)
                 .orElseThrow(() -> new FormNotFoundException(this.getClass(),

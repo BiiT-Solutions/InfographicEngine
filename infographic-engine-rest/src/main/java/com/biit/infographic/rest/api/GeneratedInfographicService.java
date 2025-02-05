@@ -9,6 +9,7 @@ import com.biit.infographic.core.models.GeneratedInfographicDTO;
 import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
+import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.ElementServices;
 import com.biit.server.security.IAuthenticatedUser;
 import com.biit.usermanager.client.providers.UserManagerClient;
@@ -24,6 +25,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -88,7 +90,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
         throw new UnsupportedOperationException("Method not valid!");
     }
 
-    @Operation(summary = "Search infographics.", description = """
+    @Operation(summary = "Search for stored infographics.", description = """
             Parameters:
             - form: the form name.
             - version: the form version.
@@ -130,7 +132,6 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
         }
 
         canBeDoneForDifferentUsers(createdBy, authentication);
-
         return getController().findBy(form, version, organization, unit, createdBy,
                 from != null ? LocalDateTime.ofInstant(from.toInstant(), ZoneId.systemDefault()) : null,
                 to != null ? LocalDateTime.ofInstant(to.toInstant(), ZoneId.systemDefault()) : null);
@@ -146,13 +147,15 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
+            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest", produces = MediaType.APPLICATION_JSON_VALUE)
     public GeneratedInfographicDTO getLatest(
-            HttpServletRequest httpRequest,
+            @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
@@ -175,7 +178,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
 
         canBeDoneForDifferentUsers(createdBy, authentication);
 
-        return getController().findLatest(form, version, organization, unit, createdBy);
+        return getController().processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale());
     }
 
 
@@ -189,13 +192,15 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
+            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/png", produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public GeneratedInfographicAsPngDTO getLatestAsPng(
-            HttpServletRequest httpRequest,
+            @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
@@ -218,7 +223,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
 
         canBeDoneForDifferentUsers(createdBy, authentication);
 
-        return GeneratedInfographicAsPngDTO.from(getController().findLatest(form, version, organization, unit, createdBy));
+        return GeneratedInfographicAsPngDTO.from(getController().processLatest(form, version, organization, unit, createdBy,
+                timeZoneHeader, request.getLocale()));
     }
 
 
@@ -232,13 +238,15 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
+            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/jpeg", produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public GeneratedInfographicAsJpegDTO getLatestAsJpeg(
-            HttpServletRequest httpRequest,
+            @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) String createdBy,
@@ -261,7 +269,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
 
         canBeDoneForDifferentUsers(createdBy, authentication);
 
-        return GeneratedInfographicAsJpegDTO.from(getController().findLatest(form, version, organization, unit, createdBy));
+        return GeneratedInfographicAsJpegDTO.from(getController().processLatest(form, version, organization, unit, createdBy,
+                timeZoneHeader, request.getLocale()));
     }
 
 
