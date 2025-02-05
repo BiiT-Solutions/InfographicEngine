@@ -20,13 +20,14 @@ public class DroolsResultProvider extends ElementProvider<DroolsResult, Long, Dr
     }
 
 
-    public List<DroolsResult> findBy(String name, Integer version, String organization, String createdBy,
+    public List<DroolsResult> findBy(String name, Integer version, String organization, String unit, String createdBy,
                                      LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
-        return getRepository().findBy(name, version, organization, createdBy, lowerTimeBoundary, upperTimeBoundary);
+        return getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
     }
 
-    public Optional<DroolsResult> findLatest(String name, Integer version, String createdBy, String organization) {
-        final List<DroolsResult> results = getRepository().findBy(name, version, createdBy, organization);
+
+    public Optional<DroolsResult> findLatest(String name, Integer version, String createdBy, String organization, String unit) {
+        final List<DroolsResult> results = getRepository().findBy(name, version, createdBy, organization, unit);
         if (results.isEmpty()) {
             return Optional.empty();
         }

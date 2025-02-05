@@ -93,7 +93,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
-             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
+            - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -141,7 +141,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
-             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
+            - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -184,7 +184,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
-             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
+            - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
@@ -227,7 +227,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - form: the form name.
             - version: the form version.
             - createdBy: who has filled up the form. If no organization is selected by default is the authenticated user.
-             - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
+            - createdByExternalReference: who has filled up the form. Using an external reference for a 3rd party application.
             - organization: which organization the form belongs to.
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.

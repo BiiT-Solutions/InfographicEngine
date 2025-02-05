@@ -42,10 +42,12 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         return generatedInfographic;
     }
 
+
     public List<GeneratedInfographic> findBy(String name, Integer version, String organization, String unit, String createdBy,
                                              LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
         return getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
     }
+
 
     public Optional<GeneratedInfographic> findLatest(String name, Integer version, String createdBy, String organization, String unit) {
         final List<GeneratedInfographic> results = getRepository().findBy(name, version, createdBy, organization, unit);
@@ -54,6 +56,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         }
         return Optional.of(results.get(0));
     }
+
 
     public Map<String, GeneratedInfographic> findLatest(String name, Integer version, Set<String> creators) {
         final Map<String, GeneratedInfographic> infographics = new HashMap<>();

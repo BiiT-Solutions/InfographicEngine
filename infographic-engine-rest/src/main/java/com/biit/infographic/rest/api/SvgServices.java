@@ -1,7 +1,7 @@
 package com.biit.infographic.rest.api;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.engine.SvgFromDroolsConverter;
 import com.biit.infographic.core.exceptions.ElementDoesNotExistsException;
 import com.biit.infographic.core.exceptions.InfographicNotFoundException;
 import com.biit.infographic.core.generators.SvgGenerator;
@@ -48,7 +48,7 @@ import java.util.Optional;
 @RequestMapping("/svg")
 public class SvgServices extends ImageServices {
 
-    private final DroolsResultController droolsResultController;
+    private final SvgFromDroolsConverter svgFromDroolsConverter;
 
     private final GeneratedInfographicProvider generatedInfographicProvider;
 
@@ -56,10 +56,10 @@ public class SvgServices extends ImageServices {
 
     private final UserManagerClient userManagerClient;
 
-    public SvgServices(SecurityService securityService, DroolsResultController droolsResultController,
+    public SvgServices(SecurityService securityService, SvgFromDroolsConverter svgFromDroolsConverter,
                        GeneratedInfographicProvider generatedInfographicProvider, PdfController pdfController, UserManagerClient userManagerClient) {
         super(securityService);
-        this.droolsResultController = droolsResultController;
+        this.svgFromDroolsConverter = svgFromDroolsConverter;
         this.generatedInfographicProvider = generatedInfographicProvider;
         this.pdfController = pdfController;
         this.userManagerClient = userManagerClient;
@@ -86,7 +86,7 @@ public class SvgServices extends ImageServices {
     public List<String> createFromDrools(@RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
                                          @RequestBody DroolsSubmittedForm droolsForm, Authentication authentication, HttpServletResponse response,
                                          HttpServletRequest request) {
-        return droolsResultController.executeFromTemplates(droolsForm, authentication.getName(), timeZoneHeader);
+        return svgFromDroolsConverter.executeFromTemplates(droolsForm, authentication.getName(), timeZoneHeader);
     }
 
 
@@ -103,7 +103,7 @@ public class SvgServices extends ImageServices {
         } catch (JsonProcessingException ex) {
             throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
         }
-        return droolsResultController.executeFromTemplates(droolsSubmittedForm, authentication.getName(), timeZoneHeader);
+        return svgFromDroolsConverter.executeFromTemplates(droolsSubmittedForm, authentication.getName(), timeZoneHeader);
     }
 
 
@@ -123,7 +123,7 @@ public class SvgServices extends ImageServices {
         } catch (JsonProcessingException ex) {
             throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
         }
-        final List<String> svg = droolsResultController.executeFromTemplates(droolsSubmittedForm, authentication.getName(), timeZoneHeader);
+        final List<String> svg = svgFromDroolsConverter.executeFromTemplates(droolsSubmittedForm, authentication.getName(), timeZoneHeader);
         if (svg.isEmpty()) {
             throw new ElementDoesNotExistsException(this.getClass(), "No svg obtained from this input.");
         }

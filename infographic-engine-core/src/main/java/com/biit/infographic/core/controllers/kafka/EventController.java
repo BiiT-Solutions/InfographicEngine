@@ -1,7 +1,7 @@
 package com.biit.infographic.core.controllers.kafka;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.controllers.kafka.converter.EventConverter;
 import com.biit.infographic.core.email.InfographicEmailService;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
@@ -37,8 +37,6 @@ public class EventController {
 
     private final DroolsResultRepository droolsResultRepository;
 
-    private final DroolsResultController droolsResultController;
-
     private final InfographicEventSender infographicEventSender;
 
     private final PdfController pdfController;
@@ -51,10 +49,12 @@ public class EventController {
 
     private final InfographicPdfEventSender infographicPdfEventSender;
 
+    private final GeneratedInfographicController generatedInfographicController;
+
     private EventController() {
+        this.generatedInfographicController = null;
         this.eventConverter = null;
         this.droolsResultRepository = null;
-        this.droolsResultController = null;
         this.infographicEventSender = null;
         this.pdfController = null;
         this.infographicEmailService = null;
@@ -67,19 +67,19 @@ public class EventController {
     public EventController(EventListener eventListener,
                            EventConverter eventConverter,
                            DroolsResultRepository droolsResultRepository,
-                           DroolsResultController droolsResultController, InfographicEventSender infographicEventSender,
+                           InfographicEventSender infographicEventSender,
                            PdfController pdfController, InfographicEmailService infographicEmailService,
                            UserManagerClient userManagerClient, @Value("${mail.server.smtp.server:#{null}}") String smtpServer,
-                           InfographicPdfEventSender infographicPdfEventSender) {
+                           InfographicPdfEventSender infographicPdfEventSender, GeneratedInfographicController generatedInfographicController) {
         this.eventConverter = eventConverter;
         this.droolsResultRepository = droolsResultRepository;
-        this.droolsResultController = droolsResultController;
         this.infographicEventSender = infographicEventSender;
         this.pdfController = pdfController;
         this.infographicEmailService = infographicEmailService;
         this.userManagerClient = userManagerClient;
         this.smtpServer = smtpServer;
         this.infographicPdfEventSender = infographicPdfEventSender;
+        this.generatedInfographicController = generatedInfographicController;
 
         //Listen to a topic
         if (eventListener != null) {
@@ -110,7 +110,7 @@ public class EventController {
                 droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
                 EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
                 //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
-                final GeneratedInfographic generatedInfographic = droolsResultController.process(droolsForm, event.getTag(), createdBy,
+                final GeneratedInfographic generatedInfographic = generatedInfographicController.process(droolsForm, event.getTag(), createdBy,
                         event.getOrganization(), event.getUnit(), null);
                 infographicEventSender.sendResultEvents(generatedInfographic, createdBy, event.getOrganization(), event.getSessionId(), event.getUnit());
 

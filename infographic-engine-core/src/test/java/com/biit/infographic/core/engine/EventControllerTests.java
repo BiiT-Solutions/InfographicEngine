@@ -58,7 +58,7 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
         eventController.eventHandler(event, "", "", 0, "", System.currentTimeMillis());
 
         //Ensure that result is stored.
-        Optional<DroolsResult> droolsResultOptional = droolsResultProvider.findLatest(null, null, EVENT_CREATOR, null);
+        Optional<DroolsResult> droolsResultOptional = droolsResultProvider.findLatest(null, null, EVENT_CREATOR, null, null);
         Assert.assertTrue(droolsResultOptional.isPresent());
         final DroolsSubmittedForm droolsSubmittedFormStored = ObjectMapperFactory.getObjectMapper().readValue(
                 droolsResultOptional.get().getForm(), DroolsSubmittedForm.class);

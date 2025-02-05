@@ -1,7 +1,7 @@
 package com.biit.infographic.core.svg;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.engine.SvgFromDroolsConverter;
 import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
@@ -57,7 +57,7 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
 
 
     @Autowired
-    private DroolsResultController droolsResultController;
+    private SvgFromDroolsConverter svgFromDroolsConverter;
 
     @Autowired
     private AuthenticatedUserProvider authenticatedUserProvider;
@@ -128,7 +128,7 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     @Test(dependsOnMethods = "generateInfographic")
     public void executeInfographic() throws IOException {
         final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
-        final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(ksTemplate));
+        final List<String> svgResults = svgFromDroolsConverter.execute(droolsSubmittedForm, Collections.singletonList(ksTemplate));
         Assert.assertEquals(svgResults.size(), 1);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER

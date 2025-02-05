@@ -1,54 +1,27 @@
 package com.biit.infographic.core.controllers;
 
 
-import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.converters.DroolsResultConverter;
 import com.biit.infographic.core.converters.models.DroolsResultConverterRequest;
-import com.biit.infographic.core.engine.InfographicTemplate;
-import com.biit.infographic.core.engine.InfographicTemplateAndContent;
-import com.biit.infographic.core.engine.Parameter;
-import com.biit.infographic.core.engine.files.InfographicFileElement;
 import com.biit.infographic.core.exceptions.FormNotFoundException;
-import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.DroolsResultDTO;
-import com.biit.infographic.core.models.svg.SvgTemplate;
-import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.core.providers.DroolsResultProvider;
-import com.biit.infographic.core.providers.GeneratedInfographicProvider;
-import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.persistence.entities.DroolsResult;
-import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.server.controller.ElementController;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class DroolsResultController extends ElementController<DroolsResult, Long, DroolsResultDTO, DroolsResultRepository,
         DroolsResultProvider, DroolsResultConverterRequest, DroolsResultConverter> {
 
-
-    private final GeneratedInfographicProvider generatedInfographicProvider;
-    private final InfographicEngineController infographicEngineController;
-    private final ObjectMapper objectMapper;
-
     @Autowired
-    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter,
-                                     GeneratedInfographicProvider generatedInfographicProvider,
-                                     InfographicEngineController infographicEngineController, ObjectMapper objectMapper) {
+    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter) {
         super(provider, converter);
-        this.generatedInfographicProvider = generatedInfographicProvider;
-        this.infographicEngineController = infographicEngineController;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -56,76 +29,18 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
         return new DroolsResultConverterRequest(droolsResult);
     }
 
-    /**
-     * Gets the drools answer, executes a template and generate an SVG.
-     *
-     * @param droolsSubmittedForm the answers obtained from base form drool engine.
-     * @param createdBy           the owner of the form.
-     */
-    public GeneratedInfographic process(DroolsSubmittedForm droolsSubmittedForm, String formName, String createdBy, String organization,
-                                        String unit, String timeZone) {
-        //Generate SVG.
-        final List<String> svgContents = executeFromTemplates(droolsSubmittedForm, createdBy, timeZone);
 
-        //Store SVG.
-        final GeneratedInfographic generatedInfographic = generatedInfographicProvider.createGeneratedInfographic(droolsSubmittedForm, svgContents,
-                formName, createdBy, organization, unit);
-        return generatedInfographicProvider.save(generatedInfographic);
-    }
-
-    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, String createdBy, String timeZone) {
-        //Get the template for this form.
-        final List<InfographicTemplate> templates = infographicEngineController.getTemplates(droolsSubmittedForm);
-        return executeFromTemplates(droolsSubmittedForm, templates, timeZone);
-    }
-
-    public List<String> executeFromTemplates(DroolsSubmittedForm droolsSubmittedForm, List<InfographicTemplate> templates, String timeZone) {
-        //Replace template variables by drools values.
-        final Map<InfographicFileElement, Set<Parameter>> values = infographicEngineController.getValues(droolsSubmittedForm,
-                infographicEngineController.getParamsFromTemplates(templates), timeZone);
-        final List<InfographicTemplateAndContent> templateAndContents = infographicEngineController.addContentToTemplates(templates, values);
-
-        //Generate SVG.
-        final List<String> svgContents = new ArrayList<>();
-        for (InfographicTemplateAndContent infographicTemplateAndContent : templateAndContents) {
-            try {
-                svgContents.add(SvgGenerator.generate(ObjectMapperFactory.getObjectMapper().readValue(
-                        infographicTemplateAndContent.getProcessedTemplate(), SvgTemplate.class)));
-            } catch (JsonProcessingException e) {
-                InfographicEngineLogger.errorMessage(this.getClass(), e);
-                throw new RuntimeException(e);
-            }
-        }
-        return svgContents;
-    }
-
-    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates) {
-        return execute(droolsSubmittedForm, svgTemplates, null);
-    }
-
-    public List<String> execute(DroolsSubmittedForm droolsSubmittedForm, List<SvgTemplate> svgTemplates, String timeZone) {
-        //Replace template variables by drools values.
-        return executeFromTemplates(droolsSubmittedForm, svgTemplates.stream().map(svgTemplate -> {
-            try {
-                return new InfographicTemplate(null,
-                        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(svgTemplate));
-            } catch (JsonProcessingException e) {
-                InfographicEngineLogger.errorMessage(this.getClass(), e);
-                throw new RuntimeException(e);
-            }
-        }).toList(), timeZone);
-    }
-
-    public DroolsResultDTO findLatest(String name, Integer version, String organization, String createdBy, String timeZone) {
+    public DroolsResultDTO findLatest(String name, Integer version, String organization, String unit, String createdBy, String timeZone) {
         return convert(getProvider()
-                .findLatest(name, version, createdBy, organization)
+                .findLatest(name, version, createdBy, organization, unit)
                 .orElseThrow(() -> new FormNotFoundException(this.getClass(),
                         "No drools result found with name '" + name + "', version '" + version + "', creator '"
                                 + createdBy + "' and organization '" + organization + "'.")));
     }
 
-    public List<DroolsResultDTO> findBy(String name, Integer version, String organization, String createdBy,
+
+    public List<DroolsResultDTO> findBy(String name, Integer version, String organization, String unit, String createdBy,
                                         LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
-        return convertAll(getProvider().findBy(name, version, organization, createdBy, lowerTimeBoundary, upperTimeBoundary));
+        return convertAll(getProvider().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary));
     }
 }

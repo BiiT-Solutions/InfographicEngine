@@ -1,11 +1,7 @@
-package com.biit.infographic.core.controllers;
+package com.biit.infographic.core.engine;
 
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.engine.InfographicTemplate;
-import com.biit.infographic.core.engine.InfographicTemplateAndContent;
-import com.biit.infographic.core.engine.Parameter;
-import com.biit.infographic.core.engine.ParameterType;
 import com.biit.infographic.core.engine.content.AppointmentContent;
 import com.biit.infographic.core.engine.content.DroolsContent;
 import com.biit.infographic.core.engine.content.FormContent;
@@ -19,7 +15,7 @@ import com.biit.infographic.core.exceptions.InvalidParameterException;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.core.exceptions.ReportNotReadyException;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,8 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-@Controller
-public class InfographicEngineController {
+@Service
+public class InfographicEngine {
 
     public static final String INFOGRAPHIC_PATH = "/infographics";
     private final DroolsContent droolsContent;
@@ -40,9 +36,9 @@ public class InfographicEngineController {
     private final AppointmentContent appointmentContent;
     private final KnowledgeSystemContent knowledgeSystemContent;
 
-    public InfographicEngineController(DroolsContent droolsContent, UserContent userContent, FormContent formContent,
-                                       AppointmentContent appointmentContent,
-                                       KnowledgeSystemContent knowledgeSystemContent) {
+    public InfographicEngine(DroolsContent droolsContent, UserContent userContent, FormContent formContent,
+                             AppointmentContent appointmentContent,
+                             KnowledgeSystemContent knowledgeSystemContent) {
         this.droolsContent = droolsContent;
         this.userContent = userContent;
         this.formContent = formContent;
@@ -200,7 +196,8 @@ public class InfographicEngineController {
         return params;
     }
 
-    /*
+
+    /**
      * Sorts a List<TreeNode<>> to fit the structure from another Tree
      */
     private List<TreeNode<String>> sortForestWithReference(List<TreeNode<String>> forest, List<TreeNode<String>> referenceForest) {

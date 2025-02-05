@@ -43,6 +43,9 @@ public class DroolsResult extends Element<Long> {
     @Column(name = "organization")
     private String organization;
 
+    @Column(name = "unit")
+    private String unit;
+
     @Column(name = "created_by")
     private String createdBy;
 
@@ -99,6 +102,14 @@ public class DroolsResult extends Element<Long> {
 
     public void setForm(String form) {
         this.form = form;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     @Override

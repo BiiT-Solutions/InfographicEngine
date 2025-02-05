@@ -1,7 +1,7 @@
 package com.biit.infographic.core.svg;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.engine.SvgFromDroolsConverter;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
@@ -86,7 +86,7 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     private static final int COLUMN_WIDTH = DOCUMENT_WIDTH / 2 - MAIN_MARGIN - SECOND_MARGIN;
 
     @Autowired
-    private DroolsResultController droolsResultController;
+    private SvgFromDroolsConverter svgFromDroolsConverter;
 
     @Autowired
     private AuthenticatedUserProvider authenticatedUserProvider;
@@ -533,7 +533,7 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     public void executeFrustrationAtTeamworking() throws IOException {
         FontFactory.resetFonts();
         final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
-        final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(frustrationOnTeamworking));
+        final List<String> svgResults = svgFromDroolsConverter.execute(droolsSubmittedForm, Collections.singletonList(frustrationOnTeamworking));
         Assert.assertEquals(svgResults.size(), 1);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER

@@ -3,7 +3,6 @@ package com.biit.infographic.core.engine;
 import com.biit.drools.form.DroolsSubmittedCategory;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.drools.form.DroolsSubmittedQuestion;
-import com.biit.infographic.core.controllers.DroolsResultController;
 import com.biit.infographic.core.controllers.GeneratedInfographicController;
 import com.biit.infographic.core.models.GeneratedInfographicAsJpegDTO;
 import com.biit.infographic.core.models.GeneratedInfographicAsPngDTO;
@@ -34,9 +33,6 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
     private static final String DROOLS_VARIABLE_NAME = "Score";
     private static final String USER = "dummy@user.com";
-
-    @Autowired
-    private DroolsResultController droolsResultController;
 
     @Autowired
     private GeneratedInfographicProvider generatedInfographicProvider;
@@ -86,7 +82,7 @@ public class TemplateFromDroolsTests extends AbstractTestNGSpringContextTests {
 
     @Test
     public void checkDroolsSubmittedForm() {
-        droolsResultController.process(droolsSubmittedForm, null, USER, null, null, null);
+        generatedInfographicController.process(droolsSubmittedForm, null, USER, null, null, null);
     }
 
     @Test(dependsOnMethods = "checkDroolsSubmittedForm")

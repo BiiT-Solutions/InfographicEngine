@@ -22,6 +22,7 @@ public class EventConverter {
     @Value("${spring.application.name:#{null}}")
     private String applicationName;
 
+
     public DroolsResult getDroolsContent(DroolsSubmittedForm droolsSubmittedForm, String executedBy) {
         final DroolsResult droolsResult = new DroolsResult();
         droolsResult.setForm(droolsSubmittedForm.generateXML());
@@ -36,6 +37,7 @@ public class EventConverter {
         return droolsResult;
     }
 
+
     public DroolsResult getDroolsContent(Event event, DroolsSubmittedForm droolsSubmittedForm) throws JsonProcessingException {
         final DroolsResult receivedForm = new DroolsResult();
         receivedForm.setForm(event.getPayload());
@@ -48,14 +50,17 @@ public class EventConverter {
         }
         receivedForm.setFormVersion(droolsSubmittedForm.getVersion());
         receivedForm.setOrganization(droolsSubmittedForm.getOrganization());
+        receivedForm.setUnit(event.getUnit());
         return receivedForm;
     }
+
 
     public InfographicPayload generatePayload(GeneratedInfographic generatedInfographic) {
         final InfographicPayload infographicPayload = new InfographicPayload();
         BeanUtils.copyProperties(generatedInfographic, infographicPayload);
         return infographicPayload;
     }
+
 
     public Event getInfographicEvent(GeneratedInfographic generatedInfographic, String executedBy, String organization, UUID sessionId, String unit) {
         final InfographicPayload eventPayload = generatePayload(generatedInfographic);

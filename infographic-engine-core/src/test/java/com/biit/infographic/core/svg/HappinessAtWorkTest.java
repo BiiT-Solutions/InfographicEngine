@@ -1,8 +1,7 @@
 package com.biit.infographic.core.svg;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.DroolsResultController;
-import com.biit.infographic.core.engine.content.AppointmentContent;
+import com.biit.infographic.core.engine.SvgFromDroolsConverter;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
@@ -61,9 +60,8 @@ public class HappinessAtWorkTest extends AbstractTestNGSpringContextTests {
     private static final String JOB_SATISFACTION_CIRCLE = "#DROOLS%satisfaction%Percentage#";
     private static final String ORGANISATIONAL_AFFECTION_CIRCLE = "#DROOLS%organisational_affection%Percentage#";
 
-
     @Autowired
-    private DroolsResultController droolsResultController;
+    private SvgFromDroolsConverter svgFromDroolsConverter;
 
     private SvgTemplate happinessAtWorkTemplate;
 
@@ -218,7 +216,7 @@ public class HappinessAtWorkTest extends AbstractTestNGSpringContextTests {
     public void executeHappinessAtWork() throws IOException {
         FontFactory.resetFonts();
         final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
-        final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(happinessAtWorkTemplate));
+        final List<String> svgResults = svgFromDroolsConverter.execute(droolsSubmittedForm, Collections.singletonList(happinessAtWorkTemplate));
         Assert.assertEquals(svgResults.size(), 1);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER

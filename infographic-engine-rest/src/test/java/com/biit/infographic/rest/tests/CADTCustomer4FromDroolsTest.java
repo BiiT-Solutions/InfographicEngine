@@ -1,7 +1,7 @@
 package com.biit.infographic.rest.tests;
 
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.engine.SvgFromDroolsConverter;
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
@@ -169,7 +169,7 @@ public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTest
     private static final String INTELLECTUAL_PROPERTY_DISCLAIM_COLOR = "d3d4d4ff";
 
     @Autowired
-    private DroolsResultController droolsResultController;
+    private SvgFromDroolsConverter svgFromDroolsConverter;
 
     private SvgTemplate cadtTemplate;
 
@@ -1267,7 +1267,7 @@ public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTest
     public void executeCadt() throws IOException {
         FontFactory.resetFonts();
         final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
-        final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(cadtTemplate));
+        final List<String> svgResults = svgFromDroolsConverter.execute(droolsSubmittedForm, Collections.singletonList(cadtTemplate));
         Assert.assertEquals(svgResults.size(), 1);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER

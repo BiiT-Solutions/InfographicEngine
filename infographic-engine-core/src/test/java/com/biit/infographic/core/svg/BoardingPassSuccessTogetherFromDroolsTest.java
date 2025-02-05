@@ -2,7 +2,7 @@ package com.biit.infographic.core.svg;
 
 import com.biit.appointment.rest.client.TestAppointmentCenterClient;
 import com.biit.drools.form.DroolsSubmittedForm;
-import com.biit.infographic.core.controllers.DroolsResultController;
+import com.biit.infographic.core.engine.SvgFromDroolsConverter;
 import com.biit.infographic.core.engine.content.AppointmentContent;
 import com.biit.infographic.core.engine.content.value.ValueCalculator;
 import com.biit.infographic.core.generators.SvgGenerator;
@@ -105,7 +105,7 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     private static final String BUTTON_URL = "#APPOINTMENT%TEMPLATE%" + TEMPLATE_NAME + ValueCalculator.ATTRIBUTE_FIELDS_SEPARATION + "DURATION_TIME*0.9" + ValueCalculator.CONDITION_SEPARATION + BAD_URL + ValueCalculator.VALUE_SEPARATION + GOOD_URL + "#";
 
     @Autowired
-    private DroolsResultController droolsResultController;
+    private SvgFromDroolsConverter svgFromDroolsConverter;
 
     @Autowired
     private AuthenticatedUserProvider authenticatedUserProvider;
@@ -337,7 +337,7 @@ public class BoardingPassSuccessTogetherFromDroolsTest extends AbstractTestNGSpr
     public void executeBoardingPass() throws IOException {
         FontFactory.resetFonts();
         final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(FileReader.getResource(DROOLS_FORM_FILE_PATH, StandardCharsets.UTF_8));
-        final List<String> svgResults = droolsResultController.execute(droolsSubmittedForm, Collections.singletonList(boardingPassTemplate));
+        final List<String> svgResults = svgFromDroolsConverter.execute(droolsSubmittedForm, Collections.singletonList(boardingPassTemplate));
         Assert.assertEquals(svgResults.size(), 1);
 
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER

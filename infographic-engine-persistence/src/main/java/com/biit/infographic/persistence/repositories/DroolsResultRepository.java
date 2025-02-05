@@ -29,12 +29,13 @@ public interface DroolsResultRepository extends ElementRepository<DroolsResult, 
             (:formName IS NULL OR a.formName = :formName) AND
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
             (:organization IS NULL OR a.organization = :organization) AND
+            (:unit IS NULL OR a.unit = :unit) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy) AND
             ((:lowerTimeBoundary IS NULL OR a.createdAt >= :lowerTimeBoundary) AND
             (:upperTimeBoundary IS NULL OR a.createdAt <= :upperTimeBoundary))
             ORDER BY a.createdAt DESC
             """)
-    List<DroolsResult> findBy(String formName, Integer formVersion, String organization, String createdBy,
+    List<DroolsResult> findBy(String formName, Integer formVersion, String organization, String unit, String createdBy,
                               LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary);
 
     /**
@@ -51,9 +52,10 @@ public interface DroolsResultRepository extends ElementRepository<DroolsResult, 
             (:formName IS NULL OR a.formName = :formName) AND
             (:formVersion IS NULL OR a.formVersion = :formVersion) AND
             (:organization IS NULL OR a.organization = :organization) AND
+            (:unit IS NULL OR a.unit = :unit) AND
             (:createdBy IS NULL OR a.createdBy = :createdBy)
             ORDER BY a.createdAt DESC
             """)
-    List<DroolsResult> findBy(String formName, Integer formVersion, String createdBy, String organization);
+    List<DroolsResult> findBy(String formName, Integer formVersion, String createdBy, String organization, String unit);
 
 }
