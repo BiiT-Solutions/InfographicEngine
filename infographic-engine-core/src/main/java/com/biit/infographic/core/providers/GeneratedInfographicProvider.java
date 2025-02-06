@@ -2,6 +2,7 @@ package com.biit.infographic.core.providers;
 
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.engine.SvgFromDroolsConverter;
+import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
@@ -113,7 +114,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         try {
             final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(results.get(0).getForm());
             return process(droolsSubmittedForm, formName, droolsSubmittedForm.getSubmittedBy(), organization, unit, timeZone, locale);
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException | MalformedTemplateException e) {
             InfographicEngineLogger.errorMessage(this.getClass(), e);
             return findLatest(formName, formVersion, submittedBy, organization, unit);
         }
