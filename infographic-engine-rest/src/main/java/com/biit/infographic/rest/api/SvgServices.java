@@ -21,6 +21,8 @@ import com.biit.usermanager.client.providers.UserManagerClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -95,7 +97,13 @@ public class SvgServices extends ImageServices {
     @Operation(summary = "Generates a SVG from a drools input. The template must be on the system.", description = """
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
-            """, security = @SecurityRequirement(name = "bearerAuth"))
+            """, security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @PostMapping(value = "/create/drools/plain", consumes = MediaType.TEXT_PLAIN_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -117,7 +125,13 @@ public class SvgServices extends ImageServices {
             + " The template must be on the system.", description = """
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
-            """, security = @SecurityRequirement(name = "bearerAuth"))
+            """, security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @PostMapping(value = "/create/drools/plain/page/{index}", consumes = MediaType.TEXT_PLAIN_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -165,7 +179,13 @@ public class SvgServices extends ImageServices {
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -207,6 +227,11 @@ public class SvgServices extends ImageServices {
                 .filename((form != null ? form : "infographic") + ".pdf").build();
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
 
+        if (generatedInfographic.get().getSvgContents() == null
+                || generatedInfographic.get().getSvgContents().isEmpty()) {
+            throw new NotFoundException(this.getClass(), "No infographic found!");
+        }
+
         return pdfController.generatePdfFromSvgs(generatedInfographic.get().getSvgContents());
     }
 
@@ -217,7 +242,13 @@ public class SvgServices extends ImageServices {
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)

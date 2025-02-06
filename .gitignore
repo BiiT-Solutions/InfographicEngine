@@ -24,3 +24,4 @@ node_modules
 .vscode
 .angular
 .attach_*
+*.postgres

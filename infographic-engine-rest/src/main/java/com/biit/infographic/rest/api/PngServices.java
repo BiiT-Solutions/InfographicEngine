@@ -17,6 +17,8 @@ import com.biit.server.utils.zip.ZipController;
 import com.biit.usermanager.client.providers.UserManagerClient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -90,7 +92,13 @@ public class PngServices extends ImageServices {
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -152,7 +160,13 @@ public class PngServices extends ImageServices {
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/zip", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -201,7 +215,13 @@ public class PngServices extends ImageServices {
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -240,7 +260,13 @@ public class PngServices extends ImageServices {
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)

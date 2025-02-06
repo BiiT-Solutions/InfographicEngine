@@ -97,7 +97,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
                 formName, createdBy, organization, unit);
         if (generatedInfographic == null) {
             return Optional.empty();
-        }
+    }
         return Optional.of(save(generatedInfographic));
     }
 
@@ -114,7 +114,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         try {
             final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(results.get(0).getForm());
             return process(droolsSubmittedForm, formName, droolsSubmittedForm.getSubmittedBy(), organization, unit, timeZone, locale);
-        } catch (JsonProcessingException | MalformedTemplateException e) {
+        } catch (JsonProcessingException | MalformedTemplateException | NullPointerException e) {
             InfographicEngineLogger.errorMessage(this.getClass(), e);
             return findLatest(formName, formVersion, submittedBy, organization, unit);
         }

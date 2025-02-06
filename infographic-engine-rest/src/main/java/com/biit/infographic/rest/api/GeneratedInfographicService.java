@@ -15,6 +15,8 @@ import com.biit.server.security.IAuthenticatedUser;
 import com.biit.usermanager.client.providers.UserManagerClient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -150,7 +152,13 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -195,7 +203,13 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/png", produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -241,7 +255,13 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
             - Timezone is obtained from 'X-Time-Zone' header.
             """,
-            security = @SecurityRequirement(name = "bearerAuth"))
+            security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest/jpeg", produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.APPLICATION_JSON_VALUE})
