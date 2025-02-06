@@ -147,8 +147,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
-            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
-            Timezone is obtained from 'X-Time-Zone' header.
+            - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            - Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
@@ -192,8 +192,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
-            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
-            Timezone is obtained from 'X-Time-Zone' header.
+            - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            - Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
@@ -238,8 +238,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - unit: related to a team, department or any other group of users.
             - startDate: filtering forms from this day.
             - endDate: filtering facts to this day.
-            Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
-            Timezone is obtained from 'X-Time-Zone' header.
+            - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            - Timezone is obtained from 'X-Time-Zone' header.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
