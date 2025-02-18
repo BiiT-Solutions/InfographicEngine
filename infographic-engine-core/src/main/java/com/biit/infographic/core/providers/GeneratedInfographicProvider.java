@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.biit.database.encryption.KeyProperty.getEncryptionKey;
+
 @Service
 public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfographic, Long, GeneratedInfographicRepository> {
 
@@ -61,12 +63,22 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
 
     public List<GeneratedInfographic> findBy(String name, Integer version, String organization, String unit, String createdBy,
                                              LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
-        return getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
+        final List<GeneratedInfographic> results;
+        if (getEncryptionKey() != null && !getEncryptionKey().isBlank()) {
+            return getRepository().findByHash(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
+        } else {
+            return getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
+        }
     }
 
 
-    public Optional<GeneratedInfographic> findLatest(String name, Integer version, String createdBy, String organization, String unit) {
-        final List<GeneratedInfographic> results = getRepository().findBy(name, version, createdBy, organization, unit);
+    public Optional<GeneratedInfographic> findLatest(String formName, Integer formVersion, String createdBy, String organization, String unit) {
+        final List<GeneratedInfographic> results;
+        if (getEncryptionKey() != null && !getEncryptionKey().isBlank()) {
+            results = getRepository().findByHash(formName, formVersion, createdBy, organization, unit);
+        } else {
+            results = getRepository().findBy(formName, formVersion, createdBy, organization, unit);
+        }
         if (results.isEmpty()) {
             return Optional.empty();
         }
@@ -97,7 +109,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
                 formName, createdBy, organization, unit);
         if (generatedInfographic == null) {
             return Optional.empty();
-    }
+        }
         return Optional.of(save(generatedInfographic));
     }
 

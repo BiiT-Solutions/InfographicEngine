@@ -88,14 +88,6 @@ public class DroolsResult extends Element<Long> {
         this.organization = organization;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getForm() {
         return form;
     }
