@@ -30,7 +30,6 @@ public class DroolsResultProvider extends ElementProvider<DroolsResult, Long, Dr
         } else {
             droolsResults = getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
         }
-        droolsResults.forEach(this::populateHash);
         return droolsResults;
     }
 
@@ -45,12 +44,7 @@ public class DroolsResultProvider extends ElementProvider<DroolsResult, Long, Dr
         if (results.isEmpty()) {
             return Optional.empty();
         }
-        populateHash(results.get(0));
         return Optional.of(results.get(0));
-    }
-
-    private void populateHash(DroolsResult droolsResult) {
-        droolsResult.setCreatedByHash(droolsResult.getCreatedBy());
     }
 
 }

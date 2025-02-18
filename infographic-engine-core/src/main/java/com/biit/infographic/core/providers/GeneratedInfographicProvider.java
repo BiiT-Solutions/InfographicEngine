@@ -69,7 +69,6 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         } else {
             results = getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
         }
-        results.forEach(this::populateHash);
         return results;
     }
 
@@ -84,7 +83,6 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         if (results.isEmpty()) {
             return Optional.empty();
         }
-        populateHash(results.get(0));
         return Optional.of(results.get(0));
     }
 
@@ -113,7 +111,6 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         if (generatedInfographic == null) {
             return Optional.empty();
         }
-        populateHash(generatedInfographic);
         return Optional.of(save(generatedInfographic));
     }
 
@@ -139,9 +136,5 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
             InfographicEngineLogger.errorMessage(this.getClass(), e);
             return findLatest(formName, formVersion, submittedBy, organization, unit);
         }
-    }
-
-    private void populateHash(GeneratedInfographic generatedInfographic) {
-        generatedInfographic.setCreatedByHash(generatedInfographic.getCreatedBy());
     }
 }
