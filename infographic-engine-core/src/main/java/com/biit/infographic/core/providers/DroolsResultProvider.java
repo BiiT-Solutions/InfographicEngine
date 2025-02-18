@@ -24,11 +24,14 @@ public class DroolsResultProvider extends ElementProvider<DroolsResult, Long, Dr
 
     public List<DroolsResult> findBy(String name, Integer version, String organization, String unit, String createdBy,
                                      LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
+        final List<DroolsResult> droolsResults;
         if (getEncryptionKey() != null && !getEncryptionKey().isBlank()) {
-            return getRepository().findByHash(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
+            droolsResults = getRepository().findByHash(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
         } else {
-            return getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
+            droolsResults = getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
         }
+        droolsResults.forEach(this::populateHash);
+        return droolsResults;
     }
 
 
@@ -42,7 +45,12 @@ public class DroolsResultProvider extends ElementProvider<DroolsResult, Long, Dr
         if (results.isEmpty()) {
             return Optional.empty();
         }
+        populateHash(results.get(0));
         return Optional.of(results.get(0));
+    }
+
+    private void populateHash(DroolsResult droolsResult) {
+        droolsResult.setCreatedByHash(droolsResult.getCreatedBy());
     }
 
 }

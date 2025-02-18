@@ -65,10 +65,12 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
                                              LocalDateTime lowerTimeBoundary, LocalDateTime upperTimeBoundary) {
         final List<GeneratedInfographic> results;
         if (getEncryptionKey() != null && !getEncryptionKey().isBlank()) {
-            return getRepository().findByHash(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
+            results = getRepository().findByHash(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
         } else {
-            return getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
+            results = getRepository().findBy(name, version, organization, unit, createdBy, lowerTimeBoundary, upperTimeBoundary);
         }
+        results.forEach(this::populateHash);
+        return results;
     }
 
 
@@ -82,6 +84,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         if (results.isEmpty()) {
             return Optional.empty();
         }
+        populateHash(results.get(0));
         return Optional.of(results.get(0));
     }
 
@@ -110,6 +113,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         if (generatedInfographic == null) {
             return Optional.empty();
         }
+        populateHash(generatedInfographic);
         return Optional.of(save(generatedInfographic));
     }
 
@@ -119,7 +123,12 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
      */
     public Optional<GeneratedInfographic> processLatest(String formName, Integer formVersion, String organization, String unit, String submittedBy,
                                                         String timeZone, Locale locale) {
-        final List<DroolsResult> results = droolsResultRepository.findBy(formName, formVersion, submittedBy, organization, unit);
+        final List<DroolsResult> results;
+        if (getEncryptionKey() != null && !getEncryptionKey().isBlank()) {
+            results = droolsResultRepository.findByHash(formName, formVersion, submittedBy, organization, unit);
+        } else {
+            results = droolsResultRepository.findBy(formName, formVersion, submittedBy, organization, unit);
+        }
         if (results.isEmpty()) {
             return Optional.empty();
         }
@@ -130,5 +139,9 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
             InfographicEngineLogger.errorMessage(this.getClass(), e);
             return findLatest(formName, formVersion, submittedBy, organization, unit);
         }
+    }
+
+    private void populateHash(GeneratedInfographic generatedInfographic) {
+        generatedInfographic.setCreatedByHash(generatedInfographic.getCreatedBy());
     }
 }
