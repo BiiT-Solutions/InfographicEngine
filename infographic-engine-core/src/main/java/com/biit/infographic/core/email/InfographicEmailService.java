@@ -1,6 +1,7 @@
 package com.biit.infographic.core.email;
 
 import com.biit.logger.mail.SendEmail;
+import com.biit.logger.mail.SendEmailThread;
 import com.biit.logger.mail.exceptions.EmailNotSentException;
 import com.biit.logger.mail.exceptions.InvalidEmailAddressException;
 import com.biit.server.email.EmailSendPool;
@@ -143,6 +144,11 @@ public class InfographicEmailService extends ServerEmailService {
             throws FileNotFoundException, EmailNotSentException, InvalidEmailAddressException {
         if (!mailEnabled || !mailSupervisorEnabled) {
             EmailServiceLogger.debug(this.getClass(), "Emails disabled. No supervisor confirmation email sent.");
+            return;
+        }
+        //Avoid testing emails if possible.
+        if (SendEmailThread.filterMails(userEmail).isEmpty()) {
+            EmailServiceLogger.debug(this.getClass(), "Email is from a testing domain. Ignoring email to manager.");
             return;
         }
         if (supervisorEmail != null && userEmail != null && (emailSupervisorConfirmationPool == null
