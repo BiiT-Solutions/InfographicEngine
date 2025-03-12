@@ -149,8 +149,22 @@ public class EventController {
             if (smtpServer != null) {
                 final Optional<IAuthenticatedUser> user = userManagerClient.findByUsername(createdBy);
                 if (user.isPresent()) {
-                    infographicEmailService.sendPdfInfographic(user.get().getEmailAddress(), createdBy,
-                            generatedInfographic.getFormName(), pdfData);
+                    try {
+                        infographicEmailService.sendPdfInfographic(user.get().getEmailAddress(), createdBy,
+                                generatedInfographic.getFormName(), pdfData);
+                    } catch (Exception e) {
+                        EventsLogger.errorMessage(this.getClass(), e);
+                    }
+                    try {
+                        infographicEmailService.sendUserHasAReportEmail(user.get().getEmailAddress());
+                    } catch (Exception e) {
+                        EventsLogger.errorMessage(this.getClass(), e);
+                    }
+                    try {
+                        infographicEmailService.sendUserHasAReportToManagerEmail(user.get().getEmailAddress());
+                    } catch (Exception e) {
+                        EventsLogger.errorMessage(this.getClass(), e);
+                    }
                 }
             }
         } catch (Exception e) {
