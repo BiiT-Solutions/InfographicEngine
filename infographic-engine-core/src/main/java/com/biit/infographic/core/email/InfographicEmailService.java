@@ -6,6 +6,8 @@ import com.biit.logger.mail.exceptions.InvalidEmailAddressException;
 import com.biit.server.email.EmailSendPool;
 import com.biit.server.email.ServerEmailService;
 import com.biit.server.logger.EmailServiceLogger;
+import com.biit.server.security.IAuthenticatedUser;
+import com.biit.usermanager.client.providers.UserManagerClient;
 import com.biit.utils.file.FileReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -72,14 +74,17 @@ public class InfographicEmailService extends ServerEmailService {
     private final EmailConfirmationPool emailConfirmationPool;
     private final EmailSupervisorConfirmationPool emailSupervisorConfirmationPool;
 
+    private final UserManagerClient userManagerClient;
+
     public InfographicEmailService(Optional<EmailSendPool> emailSendPool,
                                    Optional<EmailConfirmationPool> emailConfirmationPool,
                                    Optional<EmailSupervisorConfirmationPool> emailSupervisorConfirmationPool,
-                                   MessageSource messageSource) {
+                                   MessageSource messageSource, UserManagerClient userManagerClient) {
         super(emailSendPool, messageSource);
         this.emailConfirmationPool = emailConfirmationPool.orElse(null);
         this.emailSupervisorConfirmationPool = emailSupervisorConfirmationPool.orElse(null);
         this.messageSource = messageSource;
+        this.userManagerClient = userManagerClient;
     }
 
 
@@ -95,6 +100,7 @@ public class InfographicEmailService extends ServerEmailService {
         }
         if (mailTo != null) {
             if (smtpServer != null && emailUser != null) {
+                final Locale locale = getUserLocale(userManagerClient.findByEmailAddress(mailTo).orElse(null));
                 EmailServiceLogger.info(this.getClass(), "Sending form '{}' to email '{}' by '{}'.", formName, mailTo, submittedBy);
                 final String emailTemplate = populateUserAccessMailFields(FileReader.getResource(USER_REPORT_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         new String[]{submittedBy}, locale);
@@ -120,6 +126,7 @@ public class InfographicEmailService extends ServerEmailService {
         }
         if (email != null && (emailConfirmationPool == null || (emailConfirmationPool.getElement(email) == null))) {
             if (smtpServer != null && emailUser != null) {
+                final Locale locale = getUserLocale(userManagerClient.findByEmailAddress(email).orElse(null));
                 final String emailTemplate = populateUserHasAReportFields(FileReader.getResource(USER_REPORT_READY_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         new String[]{email}, locale);
                 sendTemplate(email, getMessage("user.infographic.mail.subject", null, locale),
@@ -141,6 +148,7 @@ public class InfographicEmailService extends ServerEmailService {
         if (supervisorEmail != null && userEmail != null && (emailSupervisorConfirmationPool == null
                 || (emailSupervisorConfirmationPool.getElement(userEmail) == null))) {
             if (smtpServer != null && emailUser != null) {
+                final Locale locale = getUserLocale(userManagerClient.findByEmailAddress(userEmail).orElse(null));
                 final String emailTemplate = populateUserHasAReportToManagerFields(
                         FileReader.getResource(USER_SUPERVISOR_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         new String[]{userEmail, name, lastname, dashboardLink}, locale);
@@ -196,7 +204,12 @@ public class InfographicEmailService extends ServerEmailService {
                 .replace(EMAIL_FOOTER_TAG, getMessage("supervisor.infographic.mail.footer", args, locale));
     }
 
-
+    /**
+     * Must be duplicated this method to ensure message source loads the correct context?
+     *
+     * @return
+     */
+    @Override
     protected String getMessage(String key, Object[] args, Locale locale) {
         try {
             return messageSource.getMessage(key, args, locale);
@@ -204,5 +217,12 @@ public class InfographicEmailService extends ServerEmailService {
             EmailServiceLogger.severe(this.getClass(), e.getMessage());
             return key;
         }
+    }
+
+    private Locale getUserLocale(IAuthenticatedUser user) {
+        if (user != null && user.getLocale() != null) {
+            return user.getLocale();
+        }
+        return locale;
     }
 }
