@@ -101,12 +101,13 @@ public class InfographicEmailService extends ServerEmailService {
         }
         if (mailTo != null) {
             if (smtpServer != null && emailUser != null) {
+                final String[] args = new String[]{submittedBy};
                 final Locale locale = getUserLocale(userManagerClient.findByEmailAddress(mailTo).orElse(null));
                 EmailServiceLogger.info(this.getClass(), "Sending form '{}' to email '{}' by '{}'.", formName, mailTo, submittedBy);
                 final String emailTemplate = populateUserAccessMailFields(FileReader.getResource(USER_REPORT_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
-                        new String[]{submittedBy}, locale);
+                        args, locale);
                 sendTemplate(mailTo, getMessage("pdf.infographic.mail.subject", null, locale),
-                        emailTemplate, getMessage("pdf.infographic.mail.text", new String[]{submittedBy}, locale), pdfForm, formName + ".pdf");
+                        emailTemplate, getMessage("pdf.infographic.mail.text", args, locale), pdfForm, formName + ".pdf");
             } else {
                 EmailServiceLogger.debug(this.getClass(), "Email settings not set. Emails will be ignored.");
                 EmailServiceLogger.debug(this.getClass(), "Values are smtpServer '{}', emailUser '{}'.",
@@ -127,11 +128,12 @@ public class InfographicEmailService extends ServerEmailService {
         }
         if (email != null && (emailConfirmationPool == null || (emailConfirmationPool.getElement(email) == null))) {
             if (smtpServer != null && emailUser != null) {
+                final String[] args = new String[]{email};
                 final Locale locale = getUserLocale(userManagerClient.findByEmailAddress(email).orElse(null));
                 final String emailTemplate = populateUserHasAReportFields(FileReader.getResource(USER_REPORT_READY_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
-                        new String[]{email}, locale);
-                sendTemplate(email, getMessage("user.infographic.mail.subject", null, locale),
-                        emailTemplate, getMessage("user.infographic.mail.text", new String[]{email}, locale));
+                        args, locale);
+                sendTemplate(email, getMessage("user.infographic.mail.subject", args, locale),
+                        emailTemplate, getMessage("user.infographic.mail.text", args, locale));
             }
         }
         if (emailConfirmationPool != null) {
@@ -155,11 +157,12 @@ public class InfographicEmailService extends ServerEmailService {
                 || (emailSupervisorConfirmationPool.getElement(userEmail) == null))) {
             if (smtpServer != null && emailUser != null) {
                 final Locale locale = getUserLocale(userManagerClient.findByEmailAddress(userEmail).orElse(null));
+                final String[] args = new String[]{userEmail, name, lastname, dashboardLink};
                 final String emailTemplate = populateUserHasAReportToManagerFields(
                         FileReader.getResource(USER_SUPERVISOR_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
-                        new String[]{userEmail, name, lastname, dashboardLink}, locale);
-                sendTemplate(supervisorEmail, getMessage("supervisor.infographic.mail.subject", null, locale),
-                        emailTemplate, getMessage("supervisor.infographic.mail.text", new String[]{userEmail, name, lastname, dashboardLink}, locale));
+                        args, locale);
+                sendTemplate(supervisorEmail, getMessage("supervisor.infographic.mail.subject", args, locale),
+                        emailTemplate, getMessage("supervisor.infographic.mail.text", args, locale));
             }
         }
         if (emailSupervisorConfirmationPool != null) {
