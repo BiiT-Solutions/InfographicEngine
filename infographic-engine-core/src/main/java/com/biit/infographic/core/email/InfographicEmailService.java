@@ -145,7 +145,7 @@ public class InfographicEmailService extends ServerEmailService {
                         FileReader.getResource(USER_SUPERVISOR_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         new String[]{userEmail, name, lastname, dashboardLink}, locale);
                 sendTemplate(supervisorEmail, getMessage("supervisor.infographic.mail.subject", null, locale),
-                        emailTemplate, getMessage("supervisor.infographic.mail.text", new String[]{userEmail}, locale));
+                        emailTemplate, getMessage("supervisor.infographic.mail.text", new String[]{userEmail, name, lastname, dashboardLink}, locale));
             }
         }
         if (emailSupervisorConfirmationPool != null) {
