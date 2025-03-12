@@ -120,7 +120,7 @@ public class InfographicEmailService extends ServerEmailService {
         }
         if (email != null && (emailConfirmationPool == null || (emailConfirmationPool.getElement(email) == null))) {
             if (smtpServer != null && emailUser != null) {
-                final String emailTemplate = populateUserReportMailFields(FileReader.getResource(USER_REPORT_READY_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
+                final String emailTemplate = populateUserHasAReportFields(FileReader.getResource(USER_REPORT_READY_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         new String[]{email}, locale);
                 sendTemplate(email, getMessage("user.infographic.mail.subject", null, locale),
                         emailTemplate, getMessage("user.infographic.mail.text", new String[]{email}, locale));
@@ -141,14 +141,15 @@ public class InfographicEmailService extends ServerEmailService {
         if (supervisorEmail != null && userEmail != null && (emailSupervisorConfirmationPool == null
                 || (emailSupervisorConfirmationPool.getElement(userEmail) == null))) {
             if (smtpServer != null && emailUser != null) {
-                final String emailTemplate = populateManagerMailFields(FileReader.getResource(USER_SUPERVISOR_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
+                final String emailTemplate = populateUserHasAReportToManagerFields(
+                        FileReader.getResource(USER_SUPERVISOR_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         new String[]{userEmail, name, lastname, dashboardLink}, locale);
                 sendTemplate(supervisorEmail, getMessage("supervisor.infographic.mail.subject", null, locale),
                         emailTemplate, getMessage("supervisor.infographic.mail.text", new String[]{userEmail}, locale));
             }
         }
-        if (emailConfirmationPool != null) {
-            emailConfirmationPool.addElement(userEmail, userEmail);
+        if (emailSupervisorConfirmationPool != null) {
+            emailSupervisorConfirmationPool.addElement(userEmail, userEmail);
         }
     }
 
@@ -180,7 +181,7 @@ public class InfographicEmailService extends ServerEmailService {
     }
 
 
-    private String populateUserReportMailFields(String html, Object[] args, Locale locale) {
+    private String populateUserHasAReportFields(String html, Object[] args, Locale locale) {
         return html.replace(EMAIL_TITLE_TAG, getMessage("user.infographic.mail.title", args, locale))
                 .replace(EMAIL_SUBTITLE_TAG, getMessage("user.infographic.mail.subtitle", args, locale))
                 .replace(EMAIL_BODY_TAG, getMessage("user.infographic.mail.body", args, locale))
@@ -188,7 +189,7 @@ public class InfographicEmailService extends ServerEmailService {
     }
 
 
-    private String populateManagerMailFields(String html, Object[] args, Locale locale) {
+    private String populateUserHasAReportToManagerFields(String html, Object[] args, Locale locale) {
         return html.replace(EMAIL_TITLE_TAG, getMessage("supervisor.infographic.mail.title", args, locale))
                 .replace(EMAIL_SUBTITLE_TAG, getMessage("supervisor.infographic.mail.subtitle", args, locale))
                 .replace(EMAIL_BODY_TAG, getMessage("supervisor.infographic.mail.body", args, locale))
