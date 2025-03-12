@@ -161,7 +161,8 @@ public class EventController {
                         EventsLogger.errorMessage(this.getClass(), e);
                     }
                     try {
-                        infographicEmailService.sendUserHasAReportToManagerEmail(user.get().getEmailAddress());
+                        infographicEmailService.sendUserHasAReportToManagerEmail(user.get().getEmailAddress(),
+                                user.get().getName(), user.get().getLastname());
                     } catch (Exception e) {
                         EventsLogger.errorMessage(this.getClass(), e);
                     }
