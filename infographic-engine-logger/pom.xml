@@ -8,7 +8,7 @@
     <parent>
         <artifactId>infographic-engine</artifactId>
         <groupId>com.biit.infographic</groupId>
-        <version>2.3.362</version>
+        <version>2.3.363-SNAPSHOT</version>
     </parent>
 
     <properties>
