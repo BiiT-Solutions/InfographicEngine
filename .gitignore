@@ -25,3 +25,4 @@ node_modules
 .angular
 .attach_*
 *.postgres
+*-testing.properties

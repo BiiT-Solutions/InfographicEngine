@@ -71,10 +71,11 @@ public class PngServices extends ImageServices {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public byte[] getAll(@RequestBody SvgTemplate svgTemplate, Authentication authentication, HttpServletResponse response,
                          HttpServletRequest request) {
+        final byte[] bytes = PngGenerator.generate(svgTemplate);
         final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
                 .filename("Infographic.png").build();
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
-        return PngGenerator.generate(svgTemplate);
+        return bytes;
     }
 
 
@@ -190,16 +191,17 @@ public class PngServices extends ImageServices {
             throw new NotFoundException(this.getClass(), "No infographic found!");
         }
 
-        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
-                .filename((form != null ? form : "infographic") + ".zip").build();
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
         final List<ZipContent> content = new ArrayList<>();
         int page = 1;
         for (byte[] image : generatedInfographicAsPngDTO.getContents()) {
             content.add(new ZipContent("Page_" + page, "png", image));
             page++;
         }
-        return zipController.createZipData(content);
+        final byte[] bytes = zipController.createZipData(content);
+        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                .filename((form != null ? form : "infographic") + ".zip").build();
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        return bytes;
     }
 
 
@@ -224,7 +226,7 @@ public class PngServices extends ImageServices {
                             schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/find/latest/pdf", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public byte[] getLatestAsPdf(
             @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
@@ -246,11 +248,11 @@ public class PngServices extends ImageServices {
             throw new NotFoundException(this.getClass(), "No infographic found!");
         }
 
+        final byte[] bytes = pdfController.generatePdfFromImage(generatedInfographicAsPngDTO.getContents());
         final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
                 .filename((form != null ? form : "infographic") + ".pdf").build();
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
-
-        return pdfController.generatePdfFromImage(generatedInfographicAsPngDTO.getContents());
+        return bytes;
     }
 
 
@@ -269,7 +271,7 @@ public class PngServices extends ImageServices {
                             schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(value = "/find/latest/pdf", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public byte[] getAsPdf(
             @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @RequestBody List<InfographicSearch> infographicSearchs,
@@ -293,10 +295,10 @@ public class PngServices extends ImageServices {
             throw new NotFoundException(this.getClass(), "No infographics found!");
         }
 
+        final byte[] bytes = pdfController.generatePdfFromImage(pngBitmaps);
         final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
                 .filename("infographic.pdf").build();
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
-
-        return pdfController.generatePdfFromImage(pngBitmaps);
+        return bytes;
     }
 }

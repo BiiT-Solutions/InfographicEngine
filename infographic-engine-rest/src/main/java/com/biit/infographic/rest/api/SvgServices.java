@@ -151,13 +151,13 @@ public class SvgServices extends ImageServices {
         if (svg.isEmpty()) {
             throw new ElementDoesNotExistsException(this.getClass(), "No svg obtained from this input.");
         }
-        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
-                .filename("Infographic.svg").build();
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
         if (index == null || svg.size() == 1) {
             return svg.get(0);
         }
         try {
+            final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                    .filename("Infographic.svg").build();
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
             return svg.get(index);
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new BadRequestException(this.getClass(), "No index '" + index
@@ -188,7 +188,7 @@ public class SvgServices extends ImageServices {
                             schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/find/latest/pdf", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public byte[] getLatestAsPdf(
             @Parameter(name = "form", required = false) @RequestParam(value = "form", required = false) String form,
             @Parameter(name = "version", required = false) @RequestParam(value = "version", required = false) Integer version,
@@ -216,23 +216,23 @@ public class SvgServices extends ImageServices {
                 .processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale());
 
         if (generatedInfographic.isEmpty()) {
-            //For testing it is possible to have an infographic without a drools form. But for production this will always must return NOT FOUND.
+            //For testing it is possible to have an infographic without a drools form. But for production, this will always must return NOT FOUND.
             generatedInfographic = generatedInfographicProvider.findLatest(form, version, createdBy, organization, unit);
             if (generatedInfographic.isEmpty()) {
                 throw new NotFoundException(this.getClass(), "No infographic found!");
             }
         }
 
-        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
-                .filename((form != null ? form : "infographic") + ".pdf").build();
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
-
         if (generatedInfographic.get().getSvgContents() == null
                 || generatedInfographic.get().getSvgContents().isEmpty()) {
             throw new NotFoundException(this.getClass(), "No infographic found!");
         }
 
-        return pdfController.generatePdfFromSvgs(generatedInfographic.get().getSvgContents());
+        final byte[] bytes = pdfController.generatePdfFromSvgs(generatedInfographic.get().getSvgContents());
+        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                .filename((form != null ? form : "infographic") + ".pdf").build();
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        return bytes;
     }
 
 
@@ -251,7 +251,7 @@ public class SvgServices extends ImageServices {
                             schema = @Schema(type = "string"))})
     @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping(value = "/find/latest/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(value = "/find/latest/pdf", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public byte[] getAsPdf(
             @RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
             @RequestBody List<InfographicSearch> infographicSearches,
@@ -280,10 +280,10 @@ public class SvgServices extends ImageServices {
             throw new InfographicNotFoundException(this.getClass(), "No infographics found!");
         }
 
+        final byte[] bytes = pdfController.generatePdfFromSvgs(svgCodes);
         final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
                 .filename("infographic.pdf").build();
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
-
-        return pdfController.generatePdfFromSvgs(svgCodes);
+        return bytes;
     }
 }
