@@ -9,11 +9,13 @@
             <run>
                 <include name="infographicRest"/>
                 <include name="language"/>
+                <include name="svgTests"/>
             </run>
         </groups>
         <classes>
             <class name="com.biit.infographic.rest.tests.InfographicRestTests"/>
             <class name="com.biit.infographic.rest.tests.InfographicEmailTests"/>
+            <class name="com.biit.infographic.rest.tests.SvgTests"/>
         </classes>
     </test>
 </suite>
