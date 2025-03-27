@@ -38,7 +38,7 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>
-    <logger name="com.biit.infographic.logger.EventsLogger" additivity="false" level="INFO">
+    <logger name="com.biit.infographic.logger.EventsLogger" additivity="false" level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY"/>
     </logger>

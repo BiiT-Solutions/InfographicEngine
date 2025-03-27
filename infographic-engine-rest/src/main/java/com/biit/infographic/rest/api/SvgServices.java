@@ -219,7 +219,7 @@ public class SvgServices extends ImageServices {
             //For testing it is possible to have an infographic without a drools form. But for production, this will always must return NOT FOUND.
             generatedInfographic = generatedInfographicProvider.findLatest(form, version, createdBy, organization, unit);
             if (generatedInfographic.isEmpty()) {
-                throw new NotFoundException(this.getClass(), "No infographic found!");
+                throw new InfographicNotFoundException(this.getClass(), "No infographic found!");
             }
         }
 
