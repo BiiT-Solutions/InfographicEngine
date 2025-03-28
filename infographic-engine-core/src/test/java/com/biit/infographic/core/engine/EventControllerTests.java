@@ -34,9 +34,6 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
     @Autowired
     private DroolsResultProvider droolsResultProvider;
 
-    @Autowired
-    private GeneratedInfographicProvider generatedInfographicProvider;
-
     private String readEventPayload(String resourceFile) {
         try {
             return new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
@@ -64,9 +61,5 @@ public class EventControllerTests extends AbstractTestNGSpringContextTests {
                 droolsResultOptional.get().getForm(), DroolsSubmittedForm.class);
         Assert.assertEquals(droolsSubmittedFormStored.getName(), "CADT");
         Assert.assertFalse(droolsSubmittedFormStored.getFormVariables().isEmpty());
-
-        Optional<GeneratedInfographic> generatedInfographicOptional = generatedInfographicProvider.findLatest(null, null, EVENT_CREATOR, null, null);
-        Assert.assertTrue(generatedInfographicOptional.isPresent());
-        Assert.assertTrue(generatedInfographicOptional.get().getSvgContents().get(0).length() > 10000);
     }
 }
