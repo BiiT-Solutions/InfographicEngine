@@ -111,7 +111,7 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         if (generatedInfographic == null) {
             return Optional.empty();
         }
-        return Optional.of(save(generatedInfographic));
+        return Optional.of(generatedInfographic);
     }
 
 

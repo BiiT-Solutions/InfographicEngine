@@ -113,6 +113,7 @@ public class EventController {
                 final Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider.process(droolsForm, event.getTag(), createdBy,
                         event.getOrganization(), event.getUnit(), null, null);
                 if (generatedInfographic.isPresent()) {
+                    generatedInfographicProvider.save(generatedInfographic.get());
                     infographicEventSender.sendResultEvents(generatedInfographic.get(), createdBy, event.getOrganization(),
                             event.getSessionId(), event.getUnit());
 
