@@ -26,3 +26,4 @@ node_modules
 .attach_*
 *.postgres
 *-testing.properties
+*-space2grow.properties
