@@ -264,11 +264,11 @@ public class SvgServices extends ImageServices {
             canBeDoneForDifferentUsers(infographicSearch.getCreatedBy(), authentication);
             Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider
                     .processLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
-                            infographicSearch.getCreatedBy(), infographicSearch.getOrganization(), infographicSearch.getUnit(),
+                            infographicSearch.getOrganization(), infographicSearch.getUnit(), infographicSearch.getCreatedBy(),
                             timeZoneHeader, request.getLocale());
 
             if (generatedInfographic.isEmpty()) {
-                //For testing it is possible to have an infographic without a drools form. But for production this will always must return NOT FOUND.
+                //For testing it is possible to have an infographic without a drools form. But for production, this will always must return NOT FOUND.
                 generatedInfographic = generatedInfographicProvider.findLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
                         infographicSearch.getCreatedBy(), infographicSearch.getOrganization(), infographicSearch.getUnit());
             }

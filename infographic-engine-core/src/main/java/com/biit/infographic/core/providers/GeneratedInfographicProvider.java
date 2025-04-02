@@ -105,7 +105,6 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         //Generate SVG.
         final List<String> svgContents = svgFromDroolsConverter.executeFromTemplates(droolsSubmittedForm, createdBy, timeZone, locale);
 
-        //Store SVG.
         final GeneratedInfographic generatedInfographic = createGeneratedInfographic(droolsSubmittedForm, svgContents,
                 formName, createdBy, organization, unit);
         if (generatedInfographic == null) {
