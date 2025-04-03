@@ -1,3 +1,5 @@
+#Define secret SONARQUBE_TOKEN and var PROJECT in the Gitea project
+
 on:
   push:
     branches:
