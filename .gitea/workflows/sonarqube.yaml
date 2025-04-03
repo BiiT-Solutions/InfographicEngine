@@ -30,6 +30,12 @@ jobs:
           rm maven.zip
           ln -s /usr/share/apache-maven-3.9.9/bin/mvn /usr/bin/mvn
           echo "M2_HOME=/usr/share/apache-maven-3.9.9" | tee -a /etc/environment
+    - name: Cache Maven packages
+      uses: actions/cache@v1
+      with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
     - name: Build and analyze
       env:
         SONAR_TOKEN: ${{ secrets.SONARQUBE_HOST }}
