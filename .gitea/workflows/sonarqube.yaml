@@ -35,7 +35,7 @@ jobs:
         with:
           repositories: '[{ "id": "central", "url": "https://artifactory.biit-solutions.com/artifactory/libs-release" }]'
           plugin_repositories: '[{ "id": "central", "url": "https://artifactory.biit-solutions.com/artifactory/libs-release" }]'
-          servers: '[{ "id": "central", "username": "gitea", "password": "AP5DfcDZteY8xcMFQiF4nFTmx4jzUkNowq3ZDY" }]'
+          servers: '[{ "id": "central", "username": "secrets.ARTIFACTORY_USER", "password": "secrets.ARTIFACTORY_TOKEN" }]'
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONARQUBE_HOST }}
