@@ -21,7 +21,6 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-          cache: maven
       - name: Download Maven
         run: |
           curl -sL https://www-eu.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip -o maven.zip
@@ -36,7 +35,7 @@ jobs:
         with:
           repositories: '[{ "id": "central", "url": "https://artifactory.biit-solutions.com/artifactory/libs-release" }]'
           plugin_repositories: '[{ "id": "central", "url": "https://artifactory.biit-solutions.com/artifactory/libs-release" }]'
-          servers: '[{ "id": "central", "username": "gitea", "password": "Auh9vEa9LM!EWFTcPni2F" }]'
+          servers: '[{ "id": "central", "username": "gitea", "password": "AP5DfcDZteY8xcMFQiF4nFTmx4jzUkNowq3ZDY" }]'
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONARQUBE_HOST }}
