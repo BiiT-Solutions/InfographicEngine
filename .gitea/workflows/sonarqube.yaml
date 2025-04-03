@@ -40,4 +40,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONARQUBE_HOST }}
           SONAR_HOST_URL: ${{ secrets.SONARQUBE_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=infographic-engine
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.PROJECT }}
