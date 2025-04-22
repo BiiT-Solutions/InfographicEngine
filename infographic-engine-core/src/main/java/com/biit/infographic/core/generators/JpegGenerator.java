@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 
 public final class JpegGenerator {
     private static final float JPG_QUALITY = 0.8F;
-    private static final float EIGHT_K = 8192;
 
     private JpegGenerator() {
 

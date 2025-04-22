@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -129,7 +130,7 @@ public class InfographicEngine {
     }
 
     private Map<ParameterType, Set<Parameter>> groupParametersByType(Set<Parameter> parameters) throws InvalidParameterException {
-        final Map<ParameterType, Set<Parameter>> parametersByType = new HashMap<>();
+        final Map<ParameterType, Set<Parameter>> parametersByType = new EnumMap<>(ParameterType.class);
         for (Parameter parameter : parameters) {
             if (parameter.getType().equalsIgnoreCase(ParameterType.DROOLS.name())) {
                 parametersByType.computeIfAbsent(ParameterType.DROOLS, k -> new HashSet<>());

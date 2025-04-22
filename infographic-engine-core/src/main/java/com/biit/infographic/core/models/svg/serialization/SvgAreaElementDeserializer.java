@@ -8,20 +8,18 @@ import com.biit.infographic.core.models.svg.clip.SvgClipPath;
 import com.biit.infographic.core.models.svg.components.SvgLink;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
-import java.io.IOException;
 
 public abstract class SvgAreaElementDeserializer<T extends SvgAreaElement> extends SvgElementDeserializer<T> {
 
-    public SvgAreaElementDeserializer(Class<T> aClass) {
+    protected SvgAreaElementDeserializer(Class<T> aClass) {
         super(aClass);
     }
 
     @Override
-    public void deserialize(T element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        super.deserialize(element, jsonObject, context);
+    public void deserialize(T element, JsonNode jsonObject) throws JsonProcessingException {
+        super.deserialize(element, jsonObject);
 
         if (jsonObject.get("commonAttributes") != null) {
             element.setElementAttributes(ObjectMapperFactory.getObjectMapper().readValue(
@@ -39,7 +37,6 @@ public abstract class SvgAreaElementDeserializer<T extends SvgAreaElement> exten
             element.setLink(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("link").toPrettyString(), SvgLink.class));
         }
         if (jsonObject.get("clipPath") != null) {
-            //element.setClipPath(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(), SvgClipPath.class));
             final ElementType elementType = ElementType.fromString(jsonObject.get("clipPath").get("elementType").asText());
             element.setClipPath((SvgClipPath) ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("clipPath").toPrettyString(),
                     elementType.getRelatedClass()));

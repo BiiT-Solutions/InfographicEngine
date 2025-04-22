@@ -20,7 +20,6 @@ import org.w3c.dom.Element;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -485,7 +484,7 @@ public class SvgText extends SvgAreaElement {
 
     @Override
     public Collection<Element> generateSvg(Document doc) {
-        final Element text = doc.createElementNS(NAMESPACE, "text");
+        final Element elementText = doc.createElementNS(NAMESPACE, "text");
 
         List<Line> lines;
         int longestLinePixels;
@@ -529,7 +528,6 @@ public class SvgText extends SvgAreaElement {
                         dy = getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation();
                     }
                 } else {
-                    // elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1) + getLineSeparation())));
                     //It is a phrase split, but not the starting of the phrase.
                     dy = getRealFontSize() * (emptyLinesCounter + 1) + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation()
                             : getLineSeparation());
@@ -544,7 +542,7 @@ public class SvgText extends SvgAreaElement {
                 if (lines.get(i).startOfPhrase && !lines.get(i).endOfPhrase && getSamePhraseLineSeparation() != null) {
                     elementLine.setAttribute("dy", String.valueOf((getRealFontSize() * (emptyLinesCounter + 1)
                             + getLineSeparation()
-                            - ((getFontSize() + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation() : 0) / 2)))));
+                            - (getFontSize() + (getSamePhraseLineSeparation() != null ? getSamePhraseLineSeparation() : 0) / 2))));
                 }
             }
             elementLine.setAttribute("x", String.valueOf(getElementAttributes().getXCoordinate()));
@@ -558,45 +556,45 @@ public class SvgText extends SvgAreaElement {
                 elementLine.setAttribute("style", style);
             }
             //Add text without new line character.
-            elementLine.setTextContent(lines.get(i).text.replaceAll(NEW_LINE_SYMBOL, " "));
-            text.appendChild(elementLine);
+            elementLine.setTextContent(lines.get(i).text.replace(NEW_LINE_SYMBOL, " "));
+            elementText.appendChild(elementLine);
             emptyLinesCounter = 0;
         }
 
-        text.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
-        text.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()
+        elementText.setAttributeNS(null, "x", String.valueOf(getElementAttributes().getXCoordinate()));
+        elementText.setAttributeNS(null, "y", String.valueOf(getElementAttributes().getYCoordinate()
                 + getRealFontSize() * MAGIC_INKSCAPE_FONT_Y_CORRECTION));
         if (getFontVariant() != null) {
-            text.setAttributeNS(null, "font-variant", getFontVariant().getTag());
+            elementText.setAttributeNS(null, "font-variant", getFontVariant().getTag());
         }
         if (getRealFontSize() != 0) {
-            text.setAttributeNS(null, "font-size", String.valueOf(getRealFontSize()));
+            elementText.setAttributeNS(null, "font-size", String.valueOf(getRealFontSize()));
         }
         if (getFontFamily() != null) {
-            text.setAttributeNS(null, "font-family", getMainFontFamily());
+            elementText.setAttributeNS(null, "font-family", getMainFontFamily());
         }
         if (getFontStyle() != null) {
-            text.setAttributeNS(null, "font-style", getFontStyle().getName());
+            elementText.setAttributeNS(null, "font-style", getFontStyle().getName());
         }
         if (getRotate() != 0) {
-            text.setAttributeNS(null, "transform", "rotate(" + getRotate() + ")");
+            elementText.setAttributeNS(null, "transform", "rotate(" + getRotate() + ")");
         }
         if (getLengthAdjust() != null) {
-            text.setAttributeNS(null, "lengthAdjust", getLengthAdjust().getTag());
+            elementText.setAttributeNS(null, "lengthAdjust", getLengthAdjust().getTag());
         }
         if (getTextLength() != null) {
-            text.setAttributeNS(null, "textLength", getTextLengthValue());
+            elementText.setAttributeNS(null, "textLength", getTextLengthValue());
         }
         if (getDx() != null) {
-            text.setAttributeNS(null, "dx", getDxValue());
+            elementText.setAttributeNS(null, "dx", getDxValue());
         }
         if (getDy() != null) {
-            text.setAttributeNS(null, "dy", getDyValue());
+            elementText.setAttributeNS(null, "dy", getDyValue());
         }
 
-        elementStroke(text);
-        elementAttributes(text);
-        return Collections.singletonList(text);
+        elementStroke(elementText);
+        elementAttributes(elementText);
+        return Collections.singletonList(elementText);
     }
 
     @Override
@@ -679,6 +677,9 @@ public class SvgText extends SvgAreaElement {
     }
 
     private double getLetterSpacing(String text, int maxLinePixels) {
+        if (text == null) {
+            return 0d;
+        }
         final int currentPixels = getLineWidthPixels(text);
         return (double) (maxLinePixels - currentPixels) / text.length();
     }
@@ -774,7 +775,6 @@ public class SvgText extends SvgAreaElement {
                         break;
                     }
                 }
-//                if (!line.isEmpty()) {
                 try {
                     lines.add(new Line(line, (lines.isEmpty() || lines.get(lines.size() - 1).text.endsWith(NEW_LINE_SYMBOL)),
                             line.endsWith(NEW_LINE_SYMBOL) || words.isEmpty()));
@@ -783,7 +783,6 @@ public class SvgText extends SvgAreaElement {
                             + "'.");
                     InfographicEngineLogger.errorMessage(this.getClass(), r);
                 }
-//                }
                 for (int i = 0; i < extraLines; i++) {
                     lines.add(new Line(" "));
                 }
@@ -810,17 +809,11 @@ public class SvgText extends SvgAreaElement {
         SvgGeneratorLogger.debug(this.getClass(), "Embedding font '{}'.", mainFont);
         final Element style = doc.createElementNS(NAMESPACE, "style");
         style.setAttributeNS(null, "type", "text/css");
-        try {
-            style.setTextContent(embeddedFontScript(mainFont));
-        } catch (IOException e) {
-            SvgGeneratorLogger.severe(this.getClass(), "Cannot embed font '{}'.", mainFont);
-            SvgGeneratorLogger.errorMessage(this.getClass(), e);
-            return null;
-        }
+        style.setTextContent(embeddedFontScript(mainFont));
         return style;
     }
 
-    private String embeddedFontScript(String fontFamily) throws IOException {
+    private String embeddedFontScript(String fontFamily) {
         final StringBuilder script = new StringBuilder();
         script.append("\n\t\t@font-face {\n");
         script.append("\t\t\tfont-family: '").append(fontFamily).append("';\n");

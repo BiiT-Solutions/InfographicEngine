@@ -173,14 +173,16 @@ public class SvgRectangleSector extends SvgAreaElement {
         final StringBuilder path = new StringBuilder();
 
         //Start at the middle.
-        final Point center = new Point(generateRealXCoordinate() + (getElementAttributes().getWidth() / 2),
-                generateRealYCoordinate() - (getElementAttributes().getHeight() / 2));
+        final Point center = new Point(generateRealXCoordinate() + (getElementAttributes().getWidth() / 2d),
+                generateRealYCoordinate() - (getElementAttributes().getHeight() / 2d));
         path.append(center.getX()).append(" ").append(center.getY()).append(" ");
 
         //Go to the first intersection of the angle with the square.
         final Point angleZeroIntersection = getIntesectionPoint(getStartAngle());
-        path.append(angleZeroIntersection.getX()).append(",").append(angleZeroIntersection.getY()).append(" ");
-        //Add needed square corners;
+        if (angleZeroIntersection != null) {
+            path.append(angleZeroIntersection.getX()).append(",").append(angleZeroIntersection.getY()).append(" ");
+        }
+        // Add needed square corners;
         if (getStartAngle() < FIRST_CORNER_DEGREES && getCalculatedEndAngle() > FIRST_CORNER_DEGREES) {
             path.append(generateRealXCoordinate() + getElementAttributes().getWidth()).append(",")
                     .append(generateRealYCoordinate() - getElementAttributes().getHeight()).append(" ");
@@ -202,7 +204,9 @@ public class SvgRectangleSector extends SvgAreaElement {
         }
 
         final Point angleIntersection = getIntesectionPoint(getCalculatedEndAngle());
-        path.append(angleIntersection.getX()).append(",").append(angleIntersection.getY()).append(" Z");
+        if (angleIntersection != null) {
+            path.append(angleIntersection.getX()).append(",").append(angleIntersection.getY()).append(" Z");
+        }
 
         return path.toString();
     }

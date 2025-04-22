@@ -31,26 +31,26 @@ public abstract class SvgAreaElement extends SvgElement implements ISvgElement {
     @JsonProperty("clipPath")
     private SvgClipPath clipPath;
 
-    public SvgAreaElement() {
+    protected SvgAreaElement() {
         setElementAttributes(new ElementAttributes());
         setElementStroke(new ElementStroke());
     }
 
-    public SvgAreaElement(String width, String height, String fill) {
+    protected SvgAreaElement(String width, String height, String fill) {
         setElementAttributes(new ElementAttributes(width, height, fill));
         setElementStroke(new ElementStroke());
     }
 
-    public SvgAreaElement(Number xCoordinate, Number yCoordinate, String width, String height, String fill) {
+    protected SvgAreaElement(Number xCoordinate, Number yCoordinate, String width, String height, String fill) {
         this(xCoordinate != null ? xCoordinate.longValue() : null, yCoordinate != null ? yCoordinate.longValue() : null, width, height, fill);
     }
 
-    public SvgAreaElement(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
+    protected SvgAreaElement(Long xCoordinate, Long yCoordinate, String width, String height, String fill) {
         setElementAttributes(new ElementAttributes(xCoordinate, yCoordinate, width, height, fill));
         setElementStroke(new ElementStroke());
     }
 
-    public SvgAreaElement(ElementAttributes elementAttributes) {
+    protected SvgAreaElement(ElementAttributes elementAttributes) {
         setElementAttributes(elementAttributes);
         setElementStroke(new ElementStroke());
     }

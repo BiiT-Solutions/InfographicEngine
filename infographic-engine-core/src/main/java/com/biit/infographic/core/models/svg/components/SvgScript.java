@@ -45,10 +45,10 @@ public class SvgScript extends SvgAreaElement {
 
     @Override
     public Collection<Element> generateSvg(Document doc) {
-        final Element script = doc.createElementNS(NAMESPACE, "script");
-        script.setTextContent(getScript());
-        elementAttributes(script);
-        return Collections.singletonList(script);
+        final Element elementScript = doc.createElementNS(NAMESPACE, "script");
+        elementScript.setTextContent(getScript());
+        elementAttributes(elementScript);
+        return Collections.singletonList(elementScript);
     }
 
     @Override

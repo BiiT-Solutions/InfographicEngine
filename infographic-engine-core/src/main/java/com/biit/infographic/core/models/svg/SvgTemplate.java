@@ -7,7 +7,6 @@ import com.biit.infographic.core.models.svg.components.SvgLine;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
-import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.ObjectMapperFactory;
 import com.biit.infographic.core.models.svg.serialization.SvgTemplateDeserializer;
 import com.biit.infographic.logger.InfographicEngineLogger;
@@ -77,11 +76,6 @@ public class SvgTemplate extends SvgAreaElement {
         this(new ElementAttributes(String.valueOf(width), String.valueOf(height), null));
         getElementAttributes().setWidthUnit(Unit.PIXELS);
         getElementAttributes().setHeightUnit(Unit.PIXELS);
-    }
-
-    @Override
-    public void validateAttributes() throws InvalidAttributeException {
-        super.validateAttributes();
     }
 
     public SvgBackground getSvgBackground() {
@@ -213,27 +207,23 @@ public class SvgTemplate extends SvgAreaElement {
                 }
                 x = Math.min(x, element.getElementAttributes().getXCoordinate());
                 y = Math.min(y, element.getElementAttributes().getYCoordinate());
-                if (element instanceof SvgCircle) {
-                    height = Math.max(height, ((SvgCircle) element).getRadius() * 2 + element.getElementAttributes().getYCoordinate());
-                    width = Math.max(width, ((SvgCircle) element).getRadius() * 2 + element.getElementAttributes().getXCoordinate());
-//                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - ((SvgCircle) element).getRadius());
-//                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - ((SvgCircle) element).getRadius());
+                if (element instanceof SvgCircle svgCircle) {
+                    height = Math.max(height, svgCircle.getRadius() * 2 + element.getElementAttributes().getYCoordinate());
+                    width = Math.max(width, svgCircle.getRadius() * 2 + element.getElementAttributes().getXCoordinate());
                 }
                 if (element instanceof SvgEllipse) {
                     height = Math.max(height, element.getElementAttributes().getHeight() + element.getElementAttributes().getYCoordinate());
                     width = Math.max(width, element.getElementAttributes().getWidth() + element.getElementAttributes().getXCoordinate());
-//                    x = Math.min(x, element.getElementAttributes().getXCoordinate() - element.getElementAttributes().getWidth());
-//                    y = Math.min(y, element.getElementAttributes().getYCoordinate() - element.getElementAttributes().getHeight());
                 }
-                if (element instanceof SvgLine) {
+                if (element instanceof SvgLine svgLine) {
                     height = Math.max(height, element.getElementAttributes().getYCoordinate());
                     width = Math.max(width, element.getElementAttributes().getXCoordinate());
-                    height = Math.max(height, ((SvgLine) element).getY2Coordinate());
-                    width = Math.max(width, ((SvgLine) element).getX2Coordinate());
+                    height = Math.max(height, svgLine.getY2Coordinate());
+                    width = Math.max(width, svgLine.getX2Coordinate());
                 }
-                if (element instanceof SvgText) {
-                    height = Math.max(height, element.getElementAttributes().getYCoordinate() + ((SvgText) element).getFontSize());
-                    final Long maxLineLength = ((SvgText) element).getMaxLineLength();
+                if (element instanceof SvgText svgText) {
+                    height = Math.max(height, element.getElementAttributes().getYCoordinate() + svgText.getFontSize());
+                    final Long maxLineLength = svgText.getMaxLineLength();
                     width = Math.max(width, element.getElementAttributes().getXCoordinate() + (maxLineLength != null ? maxLineLength : 0));
                 }
             }
@@ -286,18 +276,16 @@ public class SvgTemplate extends SvgAreaElement {
                     createGradientDef(doc, element.getElementStroke().getGradient(), defs,
                             element.getElementType().name().toLowerCase() + "_stroke", idCounter);
                 }
-                if (element instanceof SvgText && isEmbedFonts()) {
-                    if (((SvgText) element).mustEmbedFont()
-                            && (embeddedFonts.get(((SvgText) element).getMainFontFamily()) == null
-                            || !embeddedFonts.get(((SvgText) element).getMainFontFamily()).contains(((SvgText) element).getFontWeight()))) {
-                        final Element fontScript = ((SvgText) element).embeddedFont(doc);
-                        if (fontScript != null) {
-                            defs.appendChild(fontScript);
-                            embeddedFonts.computeIfAbsent(((SvgText) element).getMainFontFamily(), k -> new HashSet<>());
-                            embeddedFonts.get(((SvgText) element).getMainFontFamily()).add(((SvgText) element).getFontWeight());
-                            SvgGeneratorLogger.info(this.getClass(), "Font '{}' embedded!", ((SvgText) element).getFontFamily());
-                            idCounter.incrementAndGet();
-                        }
+                if (element instanceof SvgText svgText && isEmbedFonts() && svgText.mustEmbedFont()
+                        && (embeddedFonts.get(svgText.getMainFontFamily()) == null
+                        || !embeddedFonts.get(svgText.getMainFontFamily()).contains(svgText.getFontWeight()))) {
+                    final Element fontScript = svgText.embeddedFont(doc);
+                    if (fontScript != null) {
+                        defs.appendChild(fontScript);
+                        embeddedFonts.computeIfAbsent(svgText.getMainFontFamily(), k -> new HashSet<>());
+                        embeddedFonts.get(svgText.getMainFontFamily()).add(svgText.getFontWeight());
+                        SvgGeneratorLogger.info(this.getClass(), "Font '{}' embedded!", svgText.getFontFamily());
+                        idCounter.incrementAndGet();
                     }
                 }
                 if (element.getLink() != null) {
@@ -317,8 +305,8 @@ public class SvgTemplate extends SvgAreaElement {
             //Ensure gradient has coordinates.
             gradient.setDefaultCoordinates(getElementAttributes().getXCoordinate(), getElementAttributes().getYCoordinate() / 2,
                     getElementAttributes().getXCoordinate() + getElementAttributes().getWidth(), getElementAttributes().getYCoordinate() / 2);
-            final Collection<Element> elements = gradient.generateSvg(doc);
-            elements.forEach(defs::appendChild);
+            final Collection<Element> gradientElements = gradient.generateSvg(doc);
+            gradientElements.forEach(defs::appendChild);
         }
     }
 

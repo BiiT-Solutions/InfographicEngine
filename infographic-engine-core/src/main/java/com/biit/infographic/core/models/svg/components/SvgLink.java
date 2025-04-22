@@ -5,14 +5,12 @@ import com.biit.infographic.core.models.svg.FillAttributes;
 import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgLinkDeserializer;
-import com.biit.infographic.logger.SvgGeneratorLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -69,17 +67,12 @@ public class SvgLink extends SvgElement {
         //We only embed the first font choice.
         final Element style = doc.createElementNS(NAMESPACE, "style");
         style.setAttributeNS(null, "type", "text/css");
-        try {
-            style.setTextContent(embeddedStyleScript());
-        } catch (IOException e) {
-            SvgGeneratorLogger.errorMessage(this.getClass(), e);
-            return null;
-        }
+        style.setTextContent(embeddedStyleScript());
         return style;
     }
 
 
-    private String embeddedStyleScript() throws IOException {
+    private String embeddedStyleScript() {
         final StringBuilder script = new StringBuilder();
         script.append("\n\t\t.").append(getCssClass()).append(" {\n");
         script.append("\t\t}\n");

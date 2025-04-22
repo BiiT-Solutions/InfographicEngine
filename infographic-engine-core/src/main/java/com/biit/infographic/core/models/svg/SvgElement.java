@@ -61,9 +61,6 @@ public abstract class SvgElement implements ISvgElement {
         this.cssClass = cssClass;
     }
 
-    //Each child must implement and filter invalid attributes.
-    public abstract void validateAttributes() throws InvalidAttributeException;
-
     @Override
     public String toString() {
         if (getId() == null) {

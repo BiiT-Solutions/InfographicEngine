@@ -103,8 +103,8 @@ public class SvgBackground implements ISvgElement {
             rectangle.setYRadius(yRadius);
             return rectangle.generateSvg(doc);
         } else if (getImage() != null) {
-            final SvgImage image = new SvgImage(new ElementAttributes("100%", "100%"), "background", getImage());
-            return image.generateSvg(doc);
+            final SvgImage svgImage = new SvgImage(new ElementAttributes("100%", "100%"), "background", getImage());
+            return svgImage.generateSvg(doc);
         }
         return new ArrayList<>();
     }

@@ -3,20 +3,23 @@ package com.biit.infographic.core.models.svg.serialization;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.Unit;
 import com.biit.infographic.core.models.svg.VerticalAlignment;
-import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.IOException;
+import java.io.Serial;
 
 public class ElementAttributesDeserializer extends FillAttributesDeserializer<ElementAttributes> {
+
+    @Serial
+    private static final long serialVersionUID = 7499501566491992527L;
 
     protected ElementAttributesDeserializer() {
         super(ElementAttributes.class);
     }
 
     @Override
-    public void deserialize(ElementAttributes element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        super.deserialize(element, jsonObject, context);
+    public void deserialize(ElementAttributes element, JsonNode jsonObject) throws JsonProcessingException {
+        super.deserialize(element, jsonObject);
         element.setWidth(DeserializerParser.parseLong("width", jsonObject));
         element.setWidthUnit(Unit.getUnit(DeserializerParser.parseString("widthUnit", jsonObject)));
         element.setHeight(DeserializerParser.parseLong("height", jsonObject));

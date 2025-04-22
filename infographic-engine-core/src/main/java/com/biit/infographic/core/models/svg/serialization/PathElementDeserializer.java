@@ -4,8 +4,8 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.components.path.PathElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -15,17 +15,17 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class PathElementDeserializer<T extends PathElement> extends StdDeserializer<T> {
 
-    public PathElementDeserializer(Class<T> vc) {
+    protected PathElementDeserializer(Class<T> vc) {
         super(vc);
     }
 
-    public void deserialize(T element, JsonNode jsonObject, DeserializationContext context) throws IOException {
+    public void deserialize(T element, JsonNode jsonObject) throws JsonProcessingException {
         element.setRelativeCoordinates(DeserializerParser.parseBoolean("relativeCoordinates", jsonObject));
     }
 
 
     @Override
-    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final JsonNode jsonObject = jsonParser.getCodec().readTree(jsonParser);
 
         try {
@@ -35,7 +35,7 @@ public abstract class PathElementDeserializer<T extends PathElement> extends Std
             }
 
             final T element = (T) type.getRelatedClass().getDeclaredConstructor().newInstance();
-            deserialize(element, jsonObject, deserializationContext);
+            deserialize(element, jsonObject);
             return element;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException
                  | NullPointerException e) {

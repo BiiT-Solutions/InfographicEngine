@@ -5,24 +5,25 @@ import com.biit.infographic.core.models.svg.SvgElement;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 
 public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDeserializer<T> {
 
-
-    private final Class<T> specificClass;
+    @Serial
+    private static final long serialVersionUID = 3230953973225036097L;
 
     public SvgElementDeserializer(Class<T> aClass) {
         super(aClass);
-        this.specificClass = aClass;
     }
 
-    public void deserialize(T element, JsonNode jsonObject, DeserializationContext context) throws IOException {
+    public void deserialize(T element, JsonNode jsonObject) throws JsonProcessingException {
         element.setId(DeserializerParser.parseString("id", jsonObject));
     }
 
@@ -38,7 +39,7 @@ public abstract class SvgElementDeserializer<T extends SvgElement> extends StdDe
             }
 
             final T element = (T) type.getRelatedClass().getDeclaredConstructor().newInstance();
-            deserialize(element, jsonObject, deserializationContext);
+            deserialize(element, jsonObject);
             return element;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException
                  | NullPointerException e) {

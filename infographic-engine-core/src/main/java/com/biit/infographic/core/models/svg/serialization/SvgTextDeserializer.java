@@ -8,20 +8,23 @@ import com.biit.infographic.core.models.svg.components.text.FontWeight;
 import com.biit.infographic.core.models.svg.components.text.LetterCase;
 import com.biit.infographic.core.models.svg.components.text.SvgText;
 import com.biit.infographic.core.models.svg.components.text.TextAlign;
-import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.IOException;
+import java.io.Serial;
 
 public class SvgTextDeserializer extends SvgAreaElementDeserializer<SvgText> {
+
+    @Serial
+    private static final long serialVersionUID = -1966618220058304890L;
 
     public SvgTextDeserializer() {
         super(SvgText.class);
     }
 
     @Override
-    public void deserialize(SvgText element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        super.deserialize(element, jsonObject, context);
+    public void deserialize(SvgText element, JsonNode jsonObject) throws JsonProcessingException {
+        super.deserialize(element, jsonObject);
         element.setText(DeserializerParser.parseString("contentText", jsonObject));
         element.setFontFamily(DeserializerParser.parseString("fontFamily", jsonObject));
         element.setFontSize(DeserializerParser.parseInteger("fontSize", jsonObject));

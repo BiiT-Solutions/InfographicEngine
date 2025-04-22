@@ -3,7 +3,6 @@ package com.biit.infographic.core.models.svg.components;
 import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
-import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.core.models.svg.serialization.SvgEllipseDeserializer;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -48,10 +47,5 @@ public class SvgEllipse extends SvgAreaElement {
         elementStroke(ellipse);
         elementAttributes(ellipse);
         return Collections.singletonList(ellipse);
-    }
-
-    @Override
-    public void validateAttributes() throws InvalidAttributeException {
-        super.validateAttributes();
     }
 }

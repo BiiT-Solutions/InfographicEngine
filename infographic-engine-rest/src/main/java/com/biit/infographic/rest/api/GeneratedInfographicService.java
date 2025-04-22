@@ -37,6 +37,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,6 +56,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
         this.userManagerClient = userManagerClient;
     }
 
+    @Override
     @PostFilter("hasAnyAuthority(@securityService.adminPrivilege)")
     @Operation(summary = "Gets all", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -311,7 +313,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             @Parameter(name = "createdBy", required = false) @RequestParam(value = "createdBy", required = false) Set<String> creators,
             Authentication authentication, HttpServletRequest request) {
         if (creators == null || creators.isEmpty()) {
-            return null;
+            return new HashMap<>();
         }
         creators.forEach(creator ->
                 canBeDoneForDifferentUsers(creator, authentication));

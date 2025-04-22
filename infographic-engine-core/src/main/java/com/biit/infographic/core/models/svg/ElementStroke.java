@@ -74,7 +74,6 @@ public class ElementStroke {
             setStrokeOpacity(Color.getOpacity(strokeColor));
         } else if (Color.isValidName(strokeColor)) {
             this.strokeColor = strokeColor;
-            //this.strokeOpacity = null;
         } else {
             //Some predefined tags.
             SvgGeneratorLogger.warning(this.getClass(), "Stroke color value '" + strokeColor + "' is invalid and therefore ignored.");

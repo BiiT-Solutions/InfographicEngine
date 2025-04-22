@@ -3,7 +3,6 @@ package com.biit.infographic.rest;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -24,9 +23,6 @@ import java.util.HashMap;
 public class DatabaseConfiguration {
     public static final String PACKAGE = "com.biit.infographic.persistence";
 
-    @Autowired
-    private Environment environment;
-
     @Bean
     @Primary
     @ConfigurationProperties(prefix = "spring.infographic.datasource")
@@ -36,7 +32,7 @@ public class DatabaseConfiguration {
 
     @Bean
     @Primary
-    public LocalContainerEntityManagerFactoryBean infographicEngineFactory(EntityManagerFactoryBuilder builder,
+    public LocalContainerEntityManagerFactoryBean infographicEngineFactory(EntityManagerFactoryBuilder builder, Environment environment,
                                                                           @Qualifier("infographicEngineDataSource") DataSource dataSource) {
         final HashMap<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", environment.getProperty("spring.infographic.datasource.jpa.hibernate.ddl-auto"));

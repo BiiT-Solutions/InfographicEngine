@@ -21,6 +21,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
@@ -107,12 +108,12 @@ public class DroolsContent {
                                 String value = getValue(path, document, xpathCompiler);
                                 // Not a variable, maybe a question value.
                                 if (value == null) {
-                                    path = submittedObject.getXPath() + "/" + element + "/text()";
+                                    path = submittedObject.getXPath() + File.separator + element + "/text()";
                                     value = getValue(path, document, xpathCompiler);
                                 }
                                 //Get the answer if not
                                 if (value == null) {
-                                    final ISubmittedObject child = submittedObject.getChild(element.replaceAll("/form/", ""));
+                                    final ISubmittedObject child = submittedObject.getChild(element.replace("/form/", ""));
                                     if (child != null) {
                                         path = child.getXPath() + "/value/text()";
                                         value = getValue(path, document, xpathCompiler);

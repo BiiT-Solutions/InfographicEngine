@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.Set;
 public final class FontFactory {
     public static final String FONTS_FOLDER = "fonts";
     private static final String FONTS_REGULAR = "Regular";
-    private static final long FONTS_POOL_EXPIRATION_TIME = 60 * 60 * 1000;
+    private static final long FONTS_POOL_EXPIRATION_TIME = 60 * 60 * 1000L;
     //Font Family --> Font Weight --> Font
     private static Map<String, Map<FontWeight, Font>> fonts;
     //Font Family --> Font Weight --> Font File
@@ -89,9 +90,9 @@ public final class FontFactory {
                 final String fontName = normalizeFonts(font.getFamily(Locale.ENGLISH));
                 final FontWeight fontWeight = getFontWeight(fontFile);
 
-                fonts.computeIfAbsent(fontName, k -> new HashMap<>());
-                fontsFiles.computeIfAbsent(fontName, k -> new HashMap<>());
-                fontsPaths.computeIfAbsent(fontName, k -> new HashMap<>());
+                fonts.computeIfAbsent(fontName, k -> new EnumMap<>(FontWeight.class));
+                fontsFiles.computeIfAbsent(fontName, k -> new EnumMap<>(FontWeight.class));
+                fontsPaths.computeIfAbsent(fontName, k -> new EnumMap<>(FontWeight.class));
 
                 fonts.get(fontName).put(fontWeight, font);
                 fontsFiles.get(fontName).put(fontWeight, fontFile);
@@ -113,7 +114,7 @@ public final class FontFactory {
     }
 
     private static String normalizeFonts(String fontName) {
-        return fontName.replaceAll(FONTS_REGULAR, "").trim();
+        return fontName.replace(FONTS_REGULAR, "").trim();
     }
 
     public static void resetFonts() {
@@ -127,10 +128,8 @@ public final class FontFactory {
         }
         final String[] fontsArray = fontsName.split(",");
         for (String fontName : fontsArray) {
-            if (fontWeight == null) {
-                if (fonts.get(fontName) != null) {
-                    return fonts.get(fontName).get(FontWeight.NORMAL);
-                }
+            if (fontWeight == null && fonts.get(fontName) != null) {
+                return fonts.get(fontName).get(FontWeight.NORMAL);
             }
             for (Map.Entry<String, Map<FontWeight, Font>> fontEntry : fonts.entrySet()) {
                 if (fontEntry.getKey().startsWith(normalizeFonts(fontName))) {
@@ -147,10 +146,8 @@ public final class FontFactory {
         }
         final String[] fontsArray = fontsName.split(",");
         for (String fontName : fontsArray) {
-            if (fontWeight == null) {
-                if (fonts.get(fontName) != null) {
+            if (fontWeight == null && fonts.get(fontName) != null) {
                     return fontsFiles.get(fontName).get(FontWeight.NORMAL);
-                }
             }
             for (Map.Entry<String, Map<FontWeight, String>> fontEntry : fontsFiles.entrySet()) {
                 if (fontEntry.getKey().startsWith(normalizeFonts(fontName))) {
@@ -167,11 +164,9 @@ public final class FontFactory {
         }
         final String[] fontsArray = fontsName.split(",");
         for (String fontName : fontsArray) {
-            if (fontWeight == null) {
-                if (fonts.get(fontName) != null) {
+            if (fontWeight == null && fonts.get(fontName) != null) {
                     return fontsPaths.get(fontName).get(FontWeight.NORMAL);
                 }
-            }
             for (Map.Entry<String, Map<FontWeight, String>> fontEntry : fontsPaths.entrySet()) {
                 if (fontEntry.getKey().startsWith(normalizeFonts(fontName))) {
                     return fontEntry.getValue().get(fontWeight);

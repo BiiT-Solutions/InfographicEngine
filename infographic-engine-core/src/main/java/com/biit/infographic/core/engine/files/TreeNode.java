@@ -78,7 +78,7 @@ public class TreeNode<T> {
     }
 
     public List<T> flattenTree() {
-        final List<T> flatTree = new ArrayList<T>();
+        final List<T> flatTree = new ArrayList<>();
         final List<TreeNode<T>> children = getChildren();
         flatTree.add(getJsonFile());
         if (children != null && !children.isEmpty()) {
@@ -90,7 +90,7 @@ public class TreeNode<T> {
     }
 
     public List<T> flattenTreeLeafs() {
-        final List<T> flatTree = new ArrayList<T>();
+        final List<T> flatTree = new ArrayList<>();
         final List<TreeNode<T>> children = getChildren();
         if (children != null && !children.isEmpty()) {
             for (TreeNode<T> child : getChildren()) {

@@ -11,7 +11,7 @@ public abstract class PathElement {
     @JsonProperty("relativeCoordinates")
     private boolean relativeCoordinates;
 
-    public PathElement() {
+    protected PathElement() {
         this.relativeCoordinates = false;
     }
 

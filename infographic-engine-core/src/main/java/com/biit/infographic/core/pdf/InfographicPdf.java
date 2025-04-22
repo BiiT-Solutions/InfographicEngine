@@ -7,7 +7,7 @@ import com.lowagie.text.pdf.PdfWriter;
 
 public abstract class InfographicPdf extends PdfDocument {
 
-    public InfographicPdf() {
+    protected InfographicPdf() {
         super();
         setRightMargin(DEFAULT_RIGHT_MARGIN);
         setLeftMargin(DEFAULT_LEFT_MARGIN);

@@ -128,7 +128,7 @@ public class SvgGradient extends SvgElement {
 
     @Override
     public Collection<Element> generateSvg(Document doc) {
-        final Element gradient = doc.createElementNS(NAMESPACE, "linearGradient");
+        final Element gradient = doc.createElementNS(NAMESPACE, ID_PREFIX);
         if (getId() != null) {
             gradient.setAttributeNS(null, "id", getId());
         }
@@ -155,7 +155,7 @@ public class SvgGradient extends SvgElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-
+        //No validation yet!
     }
 
     public void setDefaultCoordinates(Number x1, Number y1, Number x2, Number y2) {

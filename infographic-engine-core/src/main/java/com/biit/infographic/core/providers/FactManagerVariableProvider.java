@@ -6,7 +6,7 @@ import com.biit.factmanager.dto.FactDTO;
 import com.biit.kafka.events.EventSubject;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class FactManagerVariableProvider {
 
     public String getVariableValue(String formName, String variableName, String factType, EventSubject subject, String createdBy,
                                    String application, LocalDateTime submittedAt) {
-        final Map<SearchParameters, Object> filter = new HashMap<>();
+        final Map<SearchParameters, Object> filter = new EnumMap<>(SearchParameters.class);
         filter.put(SearchParameters.ELEMENT_NAME, formName);
         filter.put(SearchParameters.FACT_TYPE, factType);
         filter.put(SearchParameters.CREATED_BY, createdBy);

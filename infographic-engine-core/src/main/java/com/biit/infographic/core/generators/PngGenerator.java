@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public final class PngGenerator {
-    private static final int XML_INDENTATION = 4;
     private static final float EIGHT_K = 8192;
 
     private PngGenerator() {

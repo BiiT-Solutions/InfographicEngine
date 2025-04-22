@@ -2,10 +2,8 @@ package com.biit.infographic.core.models.svg.serialization;
 
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
-import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
-import java.io.IOException;
 
 public class SvgGradientDeserializer extends SvgElementDeserializer<SvgGradient> {
 
@@ -14,8 +12,8 @@ public class SvgGradientDeserializer extends SvgElementDeserializer<SvgGradient>
     }
 
     @Override
-    public void deserialize(SvgGradient element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        super.deserialize(element, jsonObject, context);
+    public void deserialize(SvgGradient element, JsonNode jsonObject) throws JsonProcessingException {
+        super.deserialize(element, jsonObject);
 
         element.setX1Coordinate(DeserializerParser.parseLong("x1", jsonObject));
         element.setY1Coordinate(DeserializerParser.parseLong("y1", jsonObject));
@@ -23,13 +21,11 @@ public class SvgGradientDeserializer extends SvgElementDeserializer<SvgGradient>
         element.setY2Coordinate(DeserializerParser.parseLong("y2", jsonObject));
 
         final JsonNode stops = jsonObject.get("stops");
-        if (stops != null) {
-            if (stops.isArray()) {
-                for (JsonNode stop : stops) {
-                    final SvgGradientStop childElement = ObjectMapperFactory.getObjectMapper()
-                            .readValue(stop.toPrettyString(), SvgGradientStop.class);
-                    element.addStops(childElement);
-                }
+        if (stops != null && stops.isArray()) {
+            for (JsonNode stop : stops) {
+                final SvgGradientStop childElement = ObjectMapperFactory.getObjectMapper()
+                        .readValue(stop.toPrettyString(), SvgGradientStop.class);
+                element.addStops(childElement);
             }
         }
     }

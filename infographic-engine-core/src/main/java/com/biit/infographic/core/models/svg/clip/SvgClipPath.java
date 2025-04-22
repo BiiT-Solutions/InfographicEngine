@@ -85,7 +85,7 @@ public abstract class SvgClipPath extends SvgElement {
     public Collection<Element> generateSvg(Document doc) {
         validateAttributes();
         final ArrayList<Element> elements = new ArrayList<>();
-        final Element clipPath = doc.createElementNS(NAMESPACE, "clipPath");
+        final Element clipPath = doc.createElementNS(NAMESPACE, ID_PREFIX);
         clipPath.setAttributeNS(null, "id", getId());
         elements.add(clipPath);
         //Add layout.

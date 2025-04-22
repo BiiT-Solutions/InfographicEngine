@@ -5,23 +5,26 @@ import com.biit.infographic.core.models.svg.LayoutType;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
-import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SvgTemplateDeserializer extends SvgAreaElementDeserializer<SvgTemplate> {
 
 
+    @Serial
+    private static final long serialVersionUID = -3528557423415520609L;
+
     public SvgTemplateDeserializer() {
         super(SvgTemplate.class);
     }
 
     @Override
-    public void deserialize(SvgTemplate element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        super.deserialize(element, jsonObject, context);
+    public void deserialize(SvgTemplate element, JsonNode jsonObject) throws JsonProcessingException {
+        super.deserialize(element, jsonObject);
         if (jsonObject.get("background") != null) {
             element.setSvgBackground(ObjectMapperFactory.getObjectMapper().readValue(jsonObject.get("background").toPrettyString(), SvgBackground.class));
         }
@@ -38,18 +41,16 @@ public class SvgTemplateDeserializer extends SvgAreaElementDeserializer<SvgTempl
 
         final List<SvgAreaElement> templateElements = new ArrayList<>();
         final JsonNode elementsJson = jsonObject.get("elements");
-        if (elementsJson != null) {
-            if (elementsJson.isArray()) {
-                for (JsonNode elementJson : elementsJson) {
-                    final ElementType type = ElementType.fromString(elementJson.get("elementType").textValue());
-                    if (type != null) {
-                        final SvgAreaElement childElement = (SvgAreaElement) ObjectMapperFactory.getObjectMapper()
-                                .readValue(elementJson.toPrettyString(), type.getRelatedClass());
-                        if (childElement.getElementType() == ElementType.SVG) {
-                            childElement.setElementType(ElementType.NESTED_SVG);
-                        }
-                        templateElements.add(childElement);
+        if (elementsJson != null && elementsJson.isArray()) {
+            for (JsonNode elementJson : elementsJson) {
+                final ElementType type = ElementType.fromString(elementJson.get("elementType").textValue());
+                if (type != null) {
+                    final SvgAreaElement childElement = (SvgAreaElement) ObjectMapperFactory.getObjectMapper()
+                            .readValue(elementJson.toPrettyString(), type.getRelatedClass());
+                    if (childElement.getElementType() == ElementType.SVG) {
+                        childElement.setElementType(ElementType.NESTED_SVG);
                     }
+                    templateElements.add(childElement);
                 }
             }
         }

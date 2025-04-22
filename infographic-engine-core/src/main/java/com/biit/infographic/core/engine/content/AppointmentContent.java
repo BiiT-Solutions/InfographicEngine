@@ -158,7 +158,7 @@ public class AppointmentContent {
         } else {
             InfographicEngineLogger.warning(this.getClass(), "No timezone provided.");
         }
-        return localDateTime.atZone(ZoneOffset.systemDefault());
+        return localDateTime.atZone(ZoneId.systemDefault());
     }
 
     /**

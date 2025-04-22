@@ -21,14 +21,14 @@ public final class DeserializerParser {
 
     }
 
-    public static String parseString(String name, JsonNode jsonObject) {
+    public static String parseString(String name, JsonNode jsonObject) throws JsonProcessingException {
         if (jsonObject != null && jsonObject.get(name) != null) {
             return jsonObject.get(name).textValue();
         }
         return null;
     }
 
-    public static Timestamp parseTimestamp(String name, JsonNode jsonObject) {
+    public static Timestamp parseTimestamp(String name, JsonNode jsonObject) throws JsonProcessingException {
         if (jsonObject != null && jsonObject.get(name) != null) {
             final String value = jsonObject.get(name).asText();
             try {
@@ -44,21 +44,21 @@ public final class DeserializerParser {
         return null;
     }
 
-    public static Long parseLong(String name, JsonNode jsonObject) {
+    public static Long parseLong(String name, JsonNode jsonObject) throws JsonProcessingException {
         if (jsonObject != null && jsonObject.get(name) != null) {
             return jsonObject.get(name).longValue();
         }
         return null;
     }
 
-    public static Integer parseInteger(String name, JsonNode jsonObject) {
+    public static Integer parseInteger(String name, JsonNode jsonObject) throws JsonProcessingException {
         if (jsonObject != null && jsonObject.get(name) != null) {
             return jsonObject.get(name).intValue();
         }
         return null;
     }
 
-    public static Double parseDouble(String name, JsonNode jsonObject) {
+    public static Double parseDouble(String name, JsonNode jsonObject) throws JsonProcessingException {
         if (jsonObject != null && jsonObject.get(name) != null) {
             return jsonObject.get(name).doubleValue();
         }
@@ -85,7 +85,7 @@ public final class DeserializerParser {
         return new HashMap<>();
     }
 
-    public static boolean parseBoolean(String name, JsonNode jsonObject) {
+    public static boolean parseBoolean(String name, JsonNode jsonObject) throws JsonProcessingException {
         if (jsonObject != null && jsonObject.get(name) != null) {
             return jsonObject.get(name).booleanValue();
         }

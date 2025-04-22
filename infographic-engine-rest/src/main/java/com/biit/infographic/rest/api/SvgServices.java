@@ -75,9 +75,6 @@ public class SvgServices extends ImageServices {
     )
     public String create(@RequestBody SvgTemplate svgTemplate, Authentication authentication, HttpServletResponse response,
                          HttpServletRequest request) {
-//        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
-//                .filename("Infographic.svg").build();
-//        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
         return SvgGenerator.generate(svgTemplate);
     }
 

@@ -77,10 +77,8 @@ public class InfographicSearcher {
     }
 
     public static String getInfographicPath(String path, InfographicFileElement definition) {
-        if (definition.isFolder()) {
-            if (!path.endsWith(File.separator)) {
-                path += File.separator;
-            }
+        if (definition.isFolder() && !path.endsWith(File.separator)) {
+            path += File.separator;
         }
         path = path + definition.getJsonFile();
 

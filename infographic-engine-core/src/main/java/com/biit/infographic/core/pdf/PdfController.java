@@ -21,9 +21,6 @@ public class PdfController {
 
     private static final String FOOTER_TEXT = "";
 
-    public PdfController() {
-    }
-
     /**
      * Infographics without background can be cut by the PDF generator!
      */

@@ -162,7 +162,7 @@ public class SvgEmbedded extends SvgAreaElement {
 
     @Override
     public void validateAttributes() throws InvalidAttributeException {
-
+        //No validation yet.
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
 import com.biit.kafka.events.EventSubject;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -38,7 +37,7 @@ public class EventConverter {
     }
 
 
-    public DroolsResult getDroolsContent(Event event, DroolsSubmittedForm droolsSubmittedForm) throws JsonProcessingException {
+    public DroolsResult getDroolsContent(Event event, DroolsSubmittedForm droolsSubmittedForm) {
         final DroolsResult receivedForm = new DroolsResult();
         receivedForm.setForm(event.getPayload());
         receivedForm.setCreatedBy(event.getCreatedBy());

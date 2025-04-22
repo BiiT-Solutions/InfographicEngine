@@ -66,10 +66,6 @@
             <groupId>com.biit</groupId>
             <artifactId>user-manager-system-rest-client</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.biit.ks</groupId>-->
-<!--            <artifactId>knowledge-system-rest-client</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.biit.infographic</groupId>
             <artifactId>infographic-translator</artifactId>

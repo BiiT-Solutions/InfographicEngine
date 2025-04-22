@@ -14,7 +14,6 @@ import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
 import com.biit.server.security.IAuthenticatedUser;
 import com.biit.usermanager.client.providers.UserManagerClient;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -98,11 +97,9 @@ public class EventController {
                 : event.getCreatedBy();
 
         try {
-            if (event.getCustomProperties() != null) {
-                if (!Objects.equals(event.getCustomProperty(EventCustomProperties.FACT_TYPE), ALLOWED_FACT_TYPE)) {
-                    EventsLogger.debug(this.getClass(), "Event ignored.");
-                    return;
-                }
+            if (event.getCustomProperties() != null && !Objects.equals(event.getCustomProperty(EventCustomProperties.FACT_TYPE), ALLOWED_FACT_TYPE)) {
+                EventsLogger.debug(this.getClass(), "Event ignored.");
+                return;
             }
             final DroolsSubmittedForm droolsForm = getDroolsForm(event);
             if (droolsForm != null) {
@@ -129,16 +126,13 @@ public class EventController {
             }
         } catch (MalformedTemplateException e) {
             EventsLogger.warning(this.getClass(), "Template does not exists!. " + e.getMessage());
-        } catch (JsonProcessingException e) {
-            EventsLogger.severe(this.getClass(), "Event cannot be parsed!!\n" + event);
-            EventsLogger.errorMessage(this.getClass(), e);
         } catch (Exception e) {
             EventsLogger.severe(this.getClass(), "Invalid event received!!\n" + event);
             EventsLogger.errorMessage(this.getClass(), e);
         }
     }
 
-    private DroolsSubmittedForm getDroolsForm(Event event) throws JsonProcessingException {
+    private DroolsSubmittedForm getDroolsForm(Event event) {
         return event.getEntity(DroolsSubmittedForm.class);
     }
 

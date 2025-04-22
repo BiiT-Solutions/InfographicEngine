@@ -4,8 +4,8 @@ import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.FillAttributes;
 import com.biit.infographic.core.models.svg.exceptions.InvalidAttributeException;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -24,7 +24,7 @@ public class FillAttributesDeserializer<T extends FillAttributes> extends StdDes
         super(aClass);
     }
 
-    public void deserialize(T element, JsonNode jsonObject, DeserializationContext context) throws IOException {
+    public void deserialize(T element, JsonNode jsonObject) throws JsonProcessingException {
         element.setFill(DeserializerParser.parseString("fill", jsonObject));
         element.setFillOpacity(DeserializerParser.parseString("fillOpacity", jsonObject));
         element.setHoverFillColor(DeserializerParser.parseString("hoverFillColor", jsonObject));
@@ -33,7 +33,7 @@ public class FillAttributesDeserializer<T extends FillAttributes> extends StdDes
 
 
     @Override
-    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final JsonNode jsonObject = jsonParser.getCodec().readTree(jsonParser);
 
         try {
@@ -49,7 +49,7 @@ public class FillAttributesDeserializer<T extends FillAttributes> extends StdDes
             }
 
             final T element = (T) type.getRelatedClass().getDeclaredConstructor().newInstance();
-            deserialize(element, jsonObject, deserializationContext);
+            deserialize(element, jsonObject);
             return element;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException
                  | NullPointerException e) {

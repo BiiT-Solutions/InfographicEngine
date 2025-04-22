@@ -4,22 +4,25 @@ import com.biit.form.log.FormStructureLogger;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.path.PathElement;
-import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SvgPathDeserializer extends SvgAreaElementDeserializer<SvgPath> {
+
+    @Serial
+    private static final long serialVersionUID = 8854438003454071723L;
 
     public SvgPathDeserializer() {
         super(SvgPath.class);
     }
 
     @Override
-    public void deserialize(SvgPath element, JsonNode jsonObject, DeserializationContext context) throws IOException {
-        super.deserialize(element, jsonObject, context);
+    public void deserialize(SvgPath element, JsonNode jsonObject) throws JsonProcessingException {
+        super.deserialize(element, jsonObject);
 
         final JsonNode elementsJson = jsonObject.get("elements");
         final List<PathElement> elements = new ArrayList<>();
