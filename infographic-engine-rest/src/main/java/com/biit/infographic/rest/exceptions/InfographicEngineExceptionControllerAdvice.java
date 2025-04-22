@@ -7,12 +7,14 @@ import com.biit.infographic.core.exceptions.InvalidParameterException;
 import com.biit.infographic.core.exceptions.MalformedTemplateException;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.kafka.exceptions.InvalidEventException;
+import com.biit.logger.mail.exceptions.EmailNotSentException;
 import com.biit.server.exceptions.ErrorResponse;
 import com.biit.server.exceptions.ServerExceptionControllerAdvice;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.usermanager.client.exceptions.ElementNotFoundException;
 import com.biit.usermanager.client.exceptions.InvalidConfigurationException;
 import com.biit.usermanager.client.exceptions.InvalidValueException;
+import com.biit.usermanager.logger.UserManagerLogger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,7 +44,7 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
     @ExceptionHandler(ElementDoesNotExistsException.class)
     public ResponseEntity<Object> elementDoesNotExistsException(Exception ex) {
         InfographicEngineLogger.severe(this.getClass().getName(), ex.getMessage());
-        return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), "element_does_not_exists", ex), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), "not_found", ex), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InfographicNotFoundException.class)
@@ -79,5 +81,11 @@ public class InfographicEngineExceptionControllerAdvice extends ServerExceptionC
     public ResponseEntity<Object> invalidValueException(Exception ex) {
         InfographicEngineLogger.errorMessage(this.getClass().getName(), ex);
         return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), "invalid_parameter", ex), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailNotSentException.class)
+    public ResponseEntity<Object> emailNotSentException(Exception ex) {
+        UserManagerLogger.errorMessage(this.getClass().getName(), ex);
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), "email_not_sent"), HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
