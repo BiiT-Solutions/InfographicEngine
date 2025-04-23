@@ -24,7 +24,7 @@ jobs:
           java-version: 17
           distribution: 'temurin'
       - name: Install Fonts
-        run: sudo apt-get install ttf-mscorefonts-installer
+        run: sudo apt-get install -y ttf-mscorefonts-installer
       - name: Download Maven
         run: |
           curl -sL https://www-eu.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip -o maven.zip
