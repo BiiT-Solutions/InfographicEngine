@@ -104,7 +104,7 @@ public class InfographicEmailService extends ServerEmailService {
                 final String[] args = new String[]{submittedBy};
                 final Locale userLocale = getUserLocale(userManagerClient.findByEmailAddress(mailTo).orElse(null));
                 EmailServiceLogger.info(this.getClass(), "Sending form '{}' to email '{}' by '{}'.", formName, mailTo, submittedBy);
-                final String emailTemplate = populateUserAccessMailFields(FileReader.getResource(USER_REPORT_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
+                final String emailTemplate = populateUserPdfMailFields(FileReader.getResource(USER_REPORT_EMAIL_TEMPLATE, StandardCharsets.UTF_8),
                         args, userLocale);
                 sendTemplate(mailTo, getMessage("pdf.infographic.mail.subject", null, userLocale),
                         emailTemplate, getMessage("pdf.infographic.mail.text", args, userLocale), pdfForm, formName + ".pdf");
@@ -187,7 +187,7 @@ public class InfographicEmailService extends ServerEmailService {
     }
 
 
-    private String populateUserAccessMailFields(String html, Object[] args, Locale locale) {
+    private String populateUserPdfMailFields(String html, Object[] args, Locale locale) {
         return html.replace(EMAIL_TITLE_TAG, getMessage("pdf.infographic.mail.title", args, locale))
                 .replace(EMAIL_SUBTITLE_TAG, getMessage("pdf.infographic.mail.subtitle", args, locale))
                 .replace(EMAIL_BODY_TAG, getMessage("pdf.infographic.mail.body", args, locale))
