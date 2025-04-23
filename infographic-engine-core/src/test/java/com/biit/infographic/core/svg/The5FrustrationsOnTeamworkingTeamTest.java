@@ -60,9 +60,6 @@ public class The5FrustrationsOnTeamworkingTeamTest extends AbstractTestNGSpringC
     private static final String CIRCLE_BACKGROUND = "edededff";
     private static final int CIRCLE_TITLE = 16;
 
-    private static final String USER_NAME = "#USER%SUBMITTER%NAME#";
-    private static final String USER_LASTNAME = "#USER%SUBMITTER%LASTNAME#";
-
     private static final String SUBMIT_TIME = "#FORM%SUBMIT%TIME#";
     private static final String SUBMIT_DATE = "#FORM%SUBMIT%DATE#";
 
