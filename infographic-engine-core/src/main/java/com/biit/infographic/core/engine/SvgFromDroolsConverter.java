@@ -50,6 +50,8 @@ public class SvgFromDroolsConverter {
                 svgContents.add(SvgGenerator.generate(ObjectMapperFactory.getObjectMapper().readValue(
                         infographicTemplateAndContent.getProcessedTemplate(), SvgTemplate.class)));
             } catch (JsonProcessingException e) {
+                InfographicEngineLogger.severe(this.getClass(), "Failed to generate svg template on:\n "
+                        + infographicTemplateAndContent.getProcessedTemplate());
                 InfographicEngineLogger.errorMessage(this.getClass(), e);
                 throw new RuntimeException(e);
             }
