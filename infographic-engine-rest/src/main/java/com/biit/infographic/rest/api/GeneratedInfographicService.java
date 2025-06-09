@@ -9,6 +9,7 @@ import com.biit.infographic.core.models.GeneratedInfographicDTO;
 import com.biit.infographic.core.providers.GeneratedInfographicProvider;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
+import com.biit.server.providers.StorableObjectProvider;
 import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.ElementServices;
 import com.biit.server.security.IAuthenticatedUser;
@@ -60,8 +61,11 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
     @PostFilter("hasAnyAuthority(@securityService.adminPrivilege)")
     @Operation(summary = "Gets all", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GeneratedInfographicDTO> getAll(HttpServletRequest request) {
-        return super.getAll(request);
+    public List<GeneratedInfographicDTO> getAll(
+            @RequestParam(name = "page", defaultValue = "0") Optional<Integer> page,
+            @RequestParam(name = "size", defaultValue = StorableObjectProvider.MAX_PAGE_SIZE + "") Optional<Integer> size,
+            HttpServletRequest request) {
+        return super.getAll(page, size, request);
     }
 
     @Operation(hidden = true)
