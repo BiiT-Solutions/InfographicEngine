@@ -24,18 +24,18 @@ public class ActionableSVGTest extends SvgGeneration {
                   const R = Math.round(Math.random() * 255)
                     .toString(16)
                     .padStart(2, "0");
-                        
+            
                   const G = Math.round(Math.random() * 255)
                     .toString(16)
                     .padStart(2, "0");
-                        
+            
                   const B = Math.round(Math.random() * 255)
                     .toString(16)
                     .padStart(2, "0");
-                        
+            
                   return `#${R}${G}${B}`;
                 }
-                
+            
                 document.querySelector("circle").addEventListener("mouseover", (e) => {
                     e.target.style.fill = getColor();
                 });
@@ -53,6 +53,7 @@ public class ActionableSVGTest extends SvgGeneration {
     public void generateSvgWithButton() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate(SvgTemplate.DEFAULT_WIDTH, SvgTemplate.DEFAULT_HEIGHT);
         svgTemplate.setUuid(TEMPLATE_ID);
+        svgTemplate.setId(TEMPLATE_ID);
         SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 4, SvgTemplate.DEFAULT_HEIGHT / 4,
                 SvgTemplate.DEFAULT_WIDTH / 4);
         svgCircle.setLink("http://www.google.es");

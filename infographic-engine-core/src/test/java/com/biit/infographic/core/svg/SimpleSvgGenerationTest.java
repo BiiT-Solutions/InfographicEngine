@@ -47,18 +47,18 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
                   const R = Math.round(Math.random() * 255)
                     .toString(16)
                     .padStart(2, "0");
-                        
+            
                   const G = Math.round(Math.random() * 255)
                     .toString(16)
                     .padStart(2, "0");
-                        
+            
                   const B = Math.round(Math.random() * 255)
                     .toString(16)
                     .padStart(2, "0");
-                        
+            
                   return `#${R}${G}${B}`;
                 }
-                
+            
                 document.querySelector("circle").addEventListener("click", (e) => {
                     e.target.style.fill = getColor();
                 });
@@ -151,6 +151,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     public void documentDrawRectanglesWithGradientTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
         svgTemplate.setUuid(TEMPLATE_ID);
+        svgTemplate.setId(TEMPLATE_ID);
         final SvgRectangle svgRectangle1 = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), null);
         svgRectangle1.setGradient(new SvgGradient(new SvgGradientStop("#ff0000", 1.0, 0.0), new SvgGradientStop("#0000ff", 1.0, 1.0)));
@@ -469,6 +470,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     public void outerBorderWithGradientTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
         svgTemplate.setUuid(TEMPLATE_ID);
+        svgTemplate.setId(TEMPLATE_ID);
 
         final SvgCircle svgCircle = new SvgCircle(SvgTemplate.DEFAULT_WIDTH / 8, SvgTemplate.DEFAULT_HEIGHT / 8,
                 SvgTemplate.DEFAULT_WIDTH / 8);
@@ -504,6 +506,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     public void documentDrawRectangleWithLinkHoverTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
         svgTemplate.setUuid(TEMPLATE_ID);
+        svgTemplate.setId(TEMPLATE_ID);
         final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000");
         rectangle.setLink("https://google.es");
@@ -522,6 +525,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
     public void documentDrawRectangleWithLinkHoverOpacityTest() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
         svgTemplate.setUuid(TEMPLATE_ID);
+        svgTemplate.setId(TEMPLATE_ID);
         final SvgRectangle rectangle = new SvgRectangle(SvgTemplate.DEFAULT_WIDTH / 2, SvgTemplate.DEFAULT_HEIGHT / 2,
                 String.valueOf(SvgTemplate.DEFAULT_WIDTH / 2), String.valueOf(SvgTemplate.DEFAULT_HEIGHT / 2), "ff0000");
         rectangle.setLink("https://google.es");

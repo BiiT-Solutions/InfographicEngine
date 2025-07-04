@@ -162,6 +162,8 @@ public class SvgTemplate extends SvgAreaElement {
             defineViewBox(svgRoot);
         }
 
+        svgRoot.setAttributeNS(null, "id", getId());
+
         if (isDocumentSize()) {
             svgRoot.setAttributeNS(null, "width", String.valueOf(getElementAttributes().getWidth() != null
                     && getElementAttributes().getWidth() != 0 ? getElementAttributes().getWidth() : DEFAULT_WIDTH));
