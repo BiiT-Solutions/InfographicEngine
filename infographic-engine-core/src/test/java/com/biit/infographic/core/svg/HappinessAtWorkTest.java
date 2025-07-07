@@ -202,6 +202,7 @@ public class HappinessAtWorkTest extends AbstractTestNGSpringContextTests {
     public void generateHappinessAtWork() {
         happinessAtWorkTemplate = new SvgTemplate();
         happinessAtWorkTemplate.setUuid(TEMPLATE_ID);
+        happinessAtWorkTemplate.setId(TEMPLATE_ID);
         happinessAtWorkTemplate.getElementAttributes().setHeight(842);
         happinessAtWorkTemplate.getElementAttributes().setWidth(596);
         happinessAtWorkTemplate.setSvgBackground(generateBackground());

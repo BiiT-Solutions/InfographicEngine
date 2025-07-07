@@ -114,6 +114,7 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
     public void generateInfographic() {
         ksTemplate = new SvgTemplate();
         ksTemplate.setUuid(TEMPLATE_ID);
+        ksTemplate.setId(TEMPLATE_ID);
         ksTemplate.getElementAttributes().setHeight(480L);
         ksTemplate.getElementAttributes().setWidth(640L);
 

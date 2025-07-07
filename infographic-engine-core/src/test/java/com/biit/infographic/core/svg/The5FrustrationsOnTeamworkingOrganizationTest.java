@@ -510,6 +510,7 @@ public class The5FrustrationsOnTeamworkingOrganizationTest extends AbstractTestN
     public void generateFrustrationAtTeamworking() {
         frustrationOnTeamworking = new SvgTemplate();
         frustrationOnTeamworking.setUuid(TEMPLATE_ID);
+        frustrationOnTeamworking.setId(TEMPLATE_ID);
         frustrationOnTeamworking.getElementAttributes().setWidth(DOCUMENT_WIDTH);
         frustrationOnTeamworking.getElementAttributes().setHeight(DOCUMENT_HEIGHT);
         frustrationOnTeamworking.setSvgBackground(generateBackground());

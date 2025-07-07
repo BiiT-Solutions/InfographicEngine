@@ -45,7 +45,7 @@ public abstract class SvgElement implements ISvgElement {
     }
 
     public void elementAttributes(Element element) throws InvalidAttributeException {
-        if (getId() != null) {
+        if (getId() != null && !getId().isEmpty()) {
             element.setAttribute("id", getId());
         }
         if (getCssClass() != null) {
