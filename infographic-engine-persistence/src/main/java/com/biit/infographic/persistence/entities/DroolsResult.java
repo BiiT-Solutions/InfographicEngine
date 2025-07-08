@@ -46,9 +46,6 @@ public class DroolsResult extends Element<Long> {
     @Column(name = "unit")
     private String unit;
 
-    @Column(name = "created_by")
-    private String createdBy;
-
     @Column(name = "drools_content", columnDefinition = "TEXT", nullable = false)
     @Convert(converter = StringCryptoConverter.class)
     private String form;

@@ -8,7 +8,6 @@ import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
-import com.biit.server.persistence.entities.CreatedElement;
 import com.biit.server.providers.ElementProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
@@ -131,8 +130,9 @@ public class GeneratedInfographicProvider extends ElementProvider<GeneratedInfog
         if (results.isEmpty()) {
             return Optional.empty();
         }
-        //Get the latest!
-        Collections.sort(results, Comparator.comparing(CreatedElement::getCreatedAt).reversed());
+        //Get the latest with higher version!
+        Collections.sort(results, Comparator.comparing(DroolsResult::getFormVersion, Comparator.nullsLast(Comparator.naturalOrder()))
+                .thenComparing(DroolsResult::getCreatedAt, Comparator.nullsLast(Comparator.naturalOrder())).reversed());
         try {
             final DroolsSubmittedForm droolsSubmittedForm = DroolsSubmittedForm.getFromJson(results.get(0).getForm());
             return process(droolsSubmittedForm, formName, droolsSubmittedForm.getSubmittedBy(), organization, unit, timeZone, locale);
