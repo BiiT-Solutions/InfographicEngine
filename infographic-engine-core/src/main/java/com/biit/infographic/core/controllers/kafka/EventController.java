@@ -106,7 +106,7 @@ public class EventController {
                 EventsLogger.info(this.getClass(), "Received Drools Result '{}'/'{}' v{} from '{}'.", droolsForm.getName(), event.getTag(),
                         droolsForm.getVersion(), event.getCreatedBy());
                 droolsResultRepository.save(eventConverter.getDroolsContent(event, droolsForm));
-                EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' saved.", droolsForm.getName(), event.getTag());
+                EventsLogger.debug(this.getClass(), "Drools Result '{}'/'{}' v{} saved.", droolsForm.getName(), event.getTag(), droolsForm.getVersion());
                 //As Drools now can execute multiples rules from one form, the rule form name is on the event tag.
                 final Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider.process(droolsForm, event.getTag(), createdBy,
                         event.getOrganization(), event.getUnit(), null, null);
