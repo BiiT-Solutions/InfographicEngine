@@ -3,6 +3,7 @@ package com.biit.infographic.core.svg;
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.core.engine.SvgFromDroolsConverter;
 import com.biit.infographic.core.generators.SvgGenerator;
+import com.biit.infographic.core.models.svg.Colors;
 import com.biit.infographic.core.models.svg.SvgAreaElement;
 import com.biit.infographic.core.models.svg.SvgBackground;
 import com.biit.infographic.core.models.svg.SvgTemplate;
@@ -56,8 +57,8 @@ public class The5FrustrationsOnTeamworkingTest extends AbstractTestNGSpringConte
     private static final int PARAGRAPH_FONT_SIZE = 12;
 
     private static final int CIRCLE_RADIUS = 30;
-    private static final String CIRCLE_COLOR = "f20d5eff";
-    private static final String CIRCLE_BACKGROUND = "edededff";
+    private static final String CIRCLE_COLOR = Colors.MAGENTA;
+    private static final String CIRCLE_BACKGROUND = Colors.LIGHT_GREY;
     private static final int CIRCLE_TITLE = 16;
 
     private static final String USER_NAME = "#USER%SUBMITTER%NAME#";

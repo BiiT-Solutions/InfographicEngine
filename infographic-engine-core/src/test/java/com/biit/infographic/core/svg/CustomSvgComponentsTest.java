@@ -102,25 +102,6 @@ public class CustomSvgComponentsTest extends SvgGeneration {
         checkContent(SvgGenerator.generate(svgTemplate), "documentGauge5ValuesFlip.svg");
     }
 
-
-    @Test
-    public void horizontalBarsTests() throws IOException {
-        SvgTemplate svgTemplate = new SvgTemplate();
-        final SvgHorizontalBar horizontalBar = new SvgHorizontalBar(50, 50, 200, 20, 3.5, 5.0);
-        svgTemplate.addElement(horizontalBar);
-        horizontalBar.getElementStroke().setStrokeWidth(1d);
-
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
-                + File.separator + "horizontalBar.svg")), true)) {
-            out.println(SvgGenerator.generate(svgTemplate));
-        }
-
-        checkContent(SvgGenerator.generate(svgTemplate), "horizontalBar.svg");
-
-        SvgTemplate svgTemplate1 = SvgTemplate.fromJson(svgTemplate.toJson());
-        Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(svgTemplate));
-    }
-
     @AfterClass
     public void removeFolder() {
         Assert.assertTrue(deleteDirectory(new File(OUTPUT_FOLDER)));

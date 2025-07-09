@@ -31,6 +31,7 @@
                 <include name="happinessAtWork"/>
                 <include name="knowledgeSystem"/>
                 <include name="frustrationOnTeamworking"/>
+                <include name="chartTests"/>
             </run>
         </groups>
         <classes>
@@ -63,6 +64,7 @@
             <class name="com.biit.infographic.core.svg.HappinessAtWorkTest"/>
             <class name="com.biit.infographic.core.svg.The5FrustrationsOnTeamworkingTest"/>
             <class name="com.biit.infographic.core.svg.KnowledgeSystemTest"/>
+            <class name="com.biit.infographic.core.svg.ChartTests"/>
 <!--            <class name="com.biit.infographic.core.svg.CadtTranslationPluginTest"/>-->
         </classes>
     </test>

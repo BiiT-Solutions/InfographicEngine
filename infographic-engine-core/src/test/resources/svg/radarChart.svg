@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="350" zoomAndPan="magnify" contentStyleType="text/css" height="350" viewBox="0 0 350 350" preserveAspectRatio="xMidYMid meet" version="1.0">
+    <rect x="50.0" y="50.0" fill="#ffdddd" width="300.0" class="radar_chart0" height="300.0" id="radar_chart0"/>
+    <path fill="none" d="m 200 200 L 200 80 " stroke-width="1.0" stroke="#ffffff"/>
+    <path fill="none" d="m 200 200 L 293 124 " stroke-width="1.0" stroke="#ffffff"/>
+    <path fill="none" d="m 200 200 L 317 224 " stroke-width="1.0" stroke="#ffffff"/>
+    <path fill="none" d="m 200 200 L 254 306 " stroke-width="1.0" stroke="#ffffff"/>
+    <path fill="none" d="m 200 200 L 151 309 " stroke-width="1.0" stroke="#ffffff"/>
+    <path fill="none" d="m 200 200 L 84 231 " stroke-width="1.0" stroke="#ffffff"/>
+    <path fill="none" d="m 200 200 L 102 129 " stroke-width="1.0" stroke="#ffffff"/>
+    <path fill="#ededed" d="M 102,129 84,231 151,309 254,306 317,224 293,124 200,80 Z" fill-opacity="0.6"/>
+    <path fill="#f20d5e" d="M 170,178 118,221 160,287 238,274 317,224 255,154 200,92 Z" fill-opacity="0.6"/>
+    <text x="200" font-size="10" y="66.3" style="text-align:center;text-anchor:middle;font-family:sans-serif;" font-family="sans-serif">
+        <tspan style="text-align:center;text-anchor:middle;font-family:sans-serif;" x="200">Label1</tspan>
+    </text>
+    <text x="308" font-size="10" y="117.3" style="text-align:center;text-anchor:middle;font-family:sans-serif;" font-family="sans-serif">
+        <tspan style="text-align:center;text-anchor:middle;font-family:sans-serif;" x="308">Label2</tspan>
+    </text>
+    <text x="336" font-size="10" y="235.3" style="text-align:center;text-anchor:middle;font-family:sans-serif;" font-family="sans-serif">
+        <tspan style="text-align:center;text-anchor:middle;font-family:sans-serif;" x="336">Label3</tspan>
+    </text>
+    <text x="263" font-size="10" y="330.3" style="text-align:center;text-anchor:middle;font-family:sans-serif;" font-family="sans-serif">
+        <tspan style="text-align:center;text-anchor:middle;font-family:sans-serif;" x="263">Label4</tspan>
+    </text>
+    <text x="143" font-size="10" y="333.3" style="text-align:center;text-anchor:middle;font-family:sans-serif;" font-family="sans-serif">
+        <tspan style="text-align:center;text-anchor:middle;font-family:sans-serif;" x="143">Label5</tspan>
+    </text>
+    <text x="64" font-size="10" y="242.3" style="text-align:center;text-anchor:middle;font-family:sans-serif;" font-family="sans-serif">
+        <tspan style="text-align:center;text-anchor:middle;font-family:sans-serif;" x="64">Label6</tspan>
+    </text>
+    <text x="86" font-size="10" y="123.3" style="text-align:center;text-anchor:middle;font-family:sans-serif;" font-family="sans-serif">
+        <tspan style="text-align:center;text-anchor:middle;font-family:sans-serif;" x="86">Label7</tspan>
+    </text>
+</svg>
+

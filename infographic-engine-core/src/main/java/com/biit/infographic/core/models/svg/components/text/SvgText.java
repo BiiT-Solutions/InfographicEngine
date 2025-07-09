@@ -37,7 +37,7 @@ public class SvgText extends SvgAreaElement {
     public static final int MAX_ITERATIONS = 1000;
     private static final int LINE_SEPARATION = 5;
     private static final int MIN_LINE_SEPARATION = 2;
-    private static final int DEFAULT_FONT_SIZE = 10;
+    public static final int DEFAULT_FONT_SIZE = 10;
     private static final int MINIMUM_FONT_SIZE = 4;
     private static final String DEFAULT_FONT = "sans-serif";
     private static final double MAGIC_INKSCAPE_FONT_Y_CORRECTION = 0.63;
