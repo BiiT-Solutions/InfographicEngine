@@ -5,6 +5,7 @@ import com.biit.infographic.core.models.svg.SvgTemplate;
 import com.biit.infographic.core.models.svg.components.bars.SvgHorizontalBar;
 import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -115,6 +116,9 @@ public class CustomSvgComponentsTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "horizontalBar.svg");
+
+        SvgTemplate svgTemplate1 = SvgTemplate.fromJson(svgTemplate.toJson());
+        Assert.assertEquals(SvgGenerator.generate(svgTemplate1), SvgGenerator.generate(svgTemplate));
     }
 
     @AfterClass

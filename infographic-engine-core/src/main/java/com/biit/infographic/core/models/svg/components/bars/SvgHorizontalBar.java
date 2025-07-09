@@ -5,7 +5,7 @@ import com.biit.infographic.core.models.svg.ElementAttributes;
 import com.biit.infographic.core.models.svg.ElementType;
 import com.biit.infographic.core.models.svg.StrokeAlign;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
-import com.biit.infographic.core.models.svg.serialization.SvgGaugeDeserializer;
+import com.biit.infographic.core.models.svg.serialization.SvgHorizontalBarDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@JsonDeserialize(using = SvgGaugeDeserializer.class)
+@JsonDeserialize(using = SvgHorizontalBarDeserializer.class)
 @JsonRootName(value = "horizontal_bar")
 public class SvgHorizontalBar extends SvgRectangle {
 
