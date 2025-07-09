@@ -133,7 +133,8 @@ public class SvgRectangle extends SvgAreaElement {
         }
     }
 
-    private Collection<Element> createOuterStroke(Document doc) {
+
+    protected Collection<Element> createOuterStroke(Document doc) {
         final SvgPath border = new SvgPath(
                 (long) (generateRealXCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2),
                 (long) (generateRealYCoordinate().longValue() - getElementStroke().getStrokeWidth() / 2),

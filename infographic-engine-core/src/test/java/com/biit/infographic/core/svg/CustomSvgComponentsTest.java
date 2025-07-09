@@ -2,6 +2,7 @@ package com.biit.infographic.core.svg;
 
 import com.biit.infographic.core.generators.SvgGenerator;
 import com.biit.infographic.core.models.svg.SvgTemplate;
+import com.biit.infographic.core.models.svg.components.bars.SvgHorizontalBar;
 import com.biit.infographic.core.models.svg.components.gauge.GaugeType;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
 import org.testng.Assert;
@@ -98,6 +99,22 @@ public class CustomSvgComponentsTest extends SvgGeneration {
         }
 
         checkContent(SvgGenerator.generate(svgTemplate), "documentGauge5ValuesFlip.svg");
+    }
+
+
+    @Test
+    public void horizontalBarsTests() throws IOException {
+        SvgTemplate svgTemplate = new SvgTemplate();
+        final SvgHorizontalBar horizontalBar = new SvgHorizontalBar(50, 50, 200, 20, 3.5, 5.0);
+        svgTemplate.addElement(horizontalBar);
+        horizontalBar.getElementStroke().setStrokeWidth(1d);
+
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OUTPUT_FOLDER
+                + File.separator + "horizontalBar.svg")), true)) {
+            out.println(SvgGenerator.generate(svgTemplate));
+        }
+
+        checkContent(SvgGenerator.generate(svgTemplate), "horizontalBar.svg");
     }
 
     @AfterClass

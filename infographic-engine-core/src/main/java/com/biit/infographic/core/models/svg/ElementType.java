@@ -12,6 +12,7 @@ import com.biit.infographic.core.models.svg.components.SvgPath;
 import com.biit.infographic.core.models.svg.components.SvgRectangle;
 import com.biit.infographic.core.models.svg.components.SvgRectangleSector;
 import com.biit.infographic.core.models.svg.components.SvgScript;
+import com.biit.infographic.core.models.svg.components.bars.SvgHorizontalBar;
 import com.biit.infographic.core.models.svg.components.gauge.SvgGauge;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradient;
 import com.biit.infographic.core.models.svg.components.gradient.SvgGradientStop;
@@ -51,7 +52,8 @@ public enum ElementType {
     LINK(SvgLink.class),
     CLIP_PATH(SvgClipPath.class),
     RECTANGLE_CLIP_PATH(SvgRectangleClipPath.class),
-    ELEMENT_ATTRIBUTES(ElementAttributes.class);
+    ELEMENT_ATTRIBUTES(ElementAttributes.class),
+    HORIZONTAL_BAR(SvgHorizontalBar.class);
 
     private final Class<?> relatedClass;
 
