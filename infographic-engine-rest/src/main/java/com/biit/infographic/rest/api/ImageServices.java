@@ -16,7 +16,7 @@ public abstract class ImageServices {
         this.securityService = securityService;
     }
 
-    protected void canBeDoneForDifferentUsers(String userName, Authentication authentication) {
+    protected void canBeDoneByDifferentUsers(String userName, Authentication authentication) {
         if (userName != null && !Objects.equals(userName, authentication.getName())) {
             final List<String> grantedAuthorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             if (!grantedAuthorities.contains(securityService.getAdminPrivilege()) && !grantedAuthorities.contains(this.securityService.getEditorPrivilege())) {

@@ -7,7 +7,7 @@ import com.biit.logger.mail.exceptions.InvalidEmailAddressException;
 import com.biit.server.email.EmailSendPool;
 import com.biit.server.email.ServerEmailService;
 import com.biit.server.logger.EmailServiceLogger;
-import com.biit.server.security.IAuthenticatedUser;
+import com.biit.server.security.model.IAuthenticatedUser;
 import com.biit.usermanager.client.providers.UserManagerClient;
 import com.biit.utils.file.FileReader;
 import org.springframework.beans.factory.annotation.Value;

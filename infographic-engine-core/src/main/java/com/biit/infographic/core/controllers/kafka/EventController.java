@@ -12,8 +12,8 @@ import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.kafka.consumers.EventListener;
 import com.biit.kafka.events.Event;
 import com.biit.kafka.events.EventCustomProperties;
-import com.biit.server.security.IAuthenticatedUser;
 import com.biit.usermanager.client.providers.UserManagerClient;
+import com.biit.usermanager.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -142,7 +142,7 @@ public class EventController {
         try {
             //Check if email is enabled now to avoid the search for a user.
             if (smtpServer != null) {
-                final Optional<IAuthenticatedUser> user = userManagerClient.findByUsername(createdBy);
+                final Optional<UserDTO> user = userManagerClient.findByUsername(createdBy);
                 if (user.isPresent()) {
                     try {
                         infographicEmailService.sendPdfInfographic(user.get().getEmailAddress(), createdBy,

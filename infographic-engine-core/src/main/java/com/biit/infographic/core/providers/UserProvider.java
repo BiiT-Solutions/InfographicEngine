@@ -2,21 +2,22 @@ package com.biit.infographic.core.providers;
 
 import com.biit.drools.form.DroolsSubmittedForm;
 import com.biit.infographic.logger.InfographicEngineLogger;
-import com.biit.server.security.IAuthenticatedUser;
 import com.biit.server.security.IAuthenticatedUserProvider;
+import com.biit.server.security.model.IAuthenticatedUser;
+import com.biit.usermanager.dto.UserDTO;
 import com.biit.utils.pool.BasePool;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
-public class UserProvider extends BasePool<String, IAuthenticatedUser> {
+public class UserProvider extends BasePool<String, UserDTO> {
 
     private static final Long USER_POOL_TIME = (long) (10 * 60 * 1000);
 
-    private final IAuthenticatedUserProvider authenticatedUserProvider;
+    private final IAuthenticatedUserProvider<UserDTO> authenticatedUserProvider;
 
-    public UserProvider(IAuthenticatedUserProvider authenticatedUserProvider) {
+    public UserProvider(IAuthenticatedUserProvider<UserDTO> authenticatedUserProvider) {
         this.authenticatedUserProvider = authenticatedUserProvider;
     }
 
@@ -46,7 +47,7 @@ public class UserProvider extends BasePool<String, IAuthenticatedUser> {
 
     public IAuthenticatedUser getUser(String username) {
         if (username != null) {
-            IAuthenticatedUser user = getElement(username);
+            UserDTO user = getElement(username);
             if (user == null) {
                 user = authenticatedUserProvider.findByUsername(username).orElse(null);
                 if (user == null) {
@@ -68,7 +69,7 @@ public class UserProvider extends BasePool<String, IAuthenticatedUser> {
     }
 
     @Override
-    public boolean isDirty(IAuthenticatedUser element) {
+    public boolean isDirty(UserDTO element) {
         return false;
     }
 }

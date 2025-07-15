@@ -9,6 +9,8 @@ import com.biit.infographic.core.providers.DroolsResultProvider;
 import com.biit.infographic.persistence.entities.DroolsResult;
 import com.biit.infographic.persistence.repositories.DroolsResultRepository;
 import com.biit.server.controller.ElementController;
+import com.biit.server.security.IUserOrganizationProvider;
+import com.biit.server.security.model.IUserOrganization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -20,8 +22,9 @@ public class DroolsResultController extends ElementController<DroolsResult, Long
         DroolsResultProvider, DroolsResultConverterRequest, DroolsResultConverter> {
 
     @Autowired
-    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter) {
-        super(provider, converter);
+    protected DroolsResultController(DroolsResultProvider provider, DroolsResultConverter converter,
+                                     List<IUserOrganizationProvider<? extends IUserOrganization>> userOrganizationProvider) {
+        super(provider, converter, userOrganizationProvider);
     }
 
     @Override

@@ -11,6 +11,8 @@ import com.biit.infographic.persistence.entities.GeneratedInfographic;
 import com.biit.infographic.persistence.repositories.GeneratedInfographicRepository;
 import com.biit.logger.ExceptionType;
 import com.biit.server.controller.ElementController;
+import com.biit.server.security.IUserOrganizationProvider;
+import com.biit.server.security.model.IUserOrganization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -30,8 +32,9 @@ public class GeneratedInfographicController extends ElementController<GeneratedI
 
     @Autowired
     protected GeneratedInfographicController(GeneratedInfographicProvider provider, GeneratedInfographicConverter converter,
-                                             GeneratedInfographicProvider generatedInfographicProvider) {
-        super(provider, converter);
+                                             GeneratedInfographicProvider generatedInfographicProvider,
+                                             List<IUserOrganizationProvider<? extends IUserOrganization>> userOrganizationProvider) {
+        super(provider, converter, userOrganizationProvider);
         this.generatedInfographicProvider = generatedInfographicProvider;
     }
 

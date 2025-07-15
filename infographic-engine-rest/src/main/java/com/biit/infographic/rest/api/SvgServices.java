@@ -14,10 +14,10 @@ import com.biit.server.exceptions.BadRequestException;
 import com.biit.server.exceptions.NotFoundException;
 import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.SecurityService;
-import com.biit.server.security.IAuthenticatedUser;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.server.utils.exceptions.InvalidXmlElementException;
 import com.biit.usermanager.client.providers.UserManagerClient;
+import com.biit.usermanager.dto.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -201,13 +201,13 @@ public class SvgServices extends ImageServices {
             if (externalReference == null) {
                 createdBy = authentication.getName();
             } else {
-                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                final Optional<UserDTO> user = userManagerClient.findByExternalReference(externalReference);
                 if (user.isPresent()) {
                     createdBy = user.get().getUsername();
                 }
             }
         }
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
 
         Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider
                 .processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale());
@@ -258,7 +258,7 @@ public class SvgServices extends ImageServices {
         final ArrayList<String> svgCodes = new ArrayList<>();
 
         for (InfographicSearch infographicSearch : infographicSearches) {
-            canBeDoneForDifferentUsers(infographicSearch.getCreatedBy(), authentication);
+            canBeDoneByDifferentUsers(infographicSearch.getCreatedBy(), authentication);
             Optional<GeneratedInfographic> generatedInfographic = generatedInfographicProvider
                     .processLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
                             infographicSearch.getOrganization(), infographicSearch.getUnit(), infographicSearch.getCreatedBy(),

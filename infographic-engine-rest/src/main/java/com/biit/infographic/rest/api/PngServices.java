@@ -9,12 +9,12 @@ import com.biit.infographic.rest.api.model.InfographicSearch;
 import com.biit.server.exceptions.NotFoundException;
 import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.SecurityService;
-import com.biit.server.security.IAuthenticatedUser;
 import com.biit.server.utils.exceptions.EmptyPdfBodyException;
 import com.biit.server.utils.exceptions.InvalidXmlElementException;
 import com.biit.server.utils.zip.ZipContent;
 import com.biit.server.utils.zip.ZipController;
 import com.biit.usermanager.client.providers.UserManagerClient;
+import com.biit.usermanager.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -120,7 +120,7 @@ public class PngServices extends ImageServices {
             if (externalReference == null) {
                 createdBy = authentication.getName();
             } else {
-                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                final Optional<UserDTO> user = userManagerClient.findByExternalReference(externalReference);
                 if (user.isPresent()) {
                     createdBy = user.get().getUsername();
                 }
@@ -130,7 +130,7 @@ public class PngServices extends ImageServices {
         if (page == null) {
             page = 0;
         }
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
                 .from(generatedInfographicController.processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale()));
@@ -182,7 +182,7 @@ public class PngServices extends ImageServices {
         if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
                 .from(generatedInfographicController.processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale()));
@@ -239,7 +239,7 @@ public class PngServices extends ImageServices {
         if (createdBy == null && organization == null) {
             createdBy = authentication.getName();
         }
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
 
         final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
                 .from(generatedInfographicController.processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale()));
@@ -281,7 +281,7 @@ public class PngServices extends ImageServices {
         final ArrayList<byte[]> pngBitmaps = new ArrayList<>();
 
         for (InfographicSearch infographicSearch : infographicSearchs) {
-            canBeDoneForDifferentUsers(infographicSearch.getCreatedBy(), authentication);
+            canBeDoneByDifferentUsers(infographicSearch.getCreatedBy(), authentication);
             final GeneratedInfographicAsPngDTO generatedInfographicAsPngDTO = GeneratedInfographicAsPngDTO
                     .from(generatedInfographicController
                             .processLatest(infographicSearch.getForm(), infographicSearch.getVersion(),

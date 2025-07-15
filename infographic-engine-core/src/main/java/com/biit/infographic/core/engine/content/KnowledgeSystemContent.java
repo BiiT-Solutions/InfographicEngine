@@ -7,7 +7,7 @@ import com.biit.infographic.core.providers.KnowledgeSystemTextProvider;
 import com.biit.infographic.core.providers.UserProvider;
 import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.ks.dto.exceptions.TextNotFoundException;
-import com.biit.server.security.IAuthenticatedUser;
+import com.biit.server.security.model.IAuthenticatedUser;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;

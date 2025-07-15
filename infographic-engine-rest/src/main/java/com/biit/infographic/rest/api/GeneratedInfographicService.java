@@ -12,8 +12,8 @@ import com.biit.infographic.persistence.repositories.GeneratedInfographicReposit
 import com.biit.server.providers.StorableObjectProvider;
 import com.biit.server.rest.CustomHeaders;
 import com.biit.server.rest.ElementServices;
-import com.biit.server.security.IAuthenticatedUser;
 import com.biit.usermanager.client.providers.UserManagerClient;
+import com.biit.usermanager.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -64,8 +64,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
     public List<GeneratedInfographicDTO> getAll(
             @RequestParam(name = "page", defaultValue = "0") Optional<Integer> page,
             @RequestParam(name = "size", defaultValue = StorableObjectProvider.MAX_PAGE_SIZE + "") Optional<Integer> size,
-            HttpServletRequest request) {
-        return super.getAll(page, size, request);
+            Authentication authentication, HttpServletRequest request) {
+        return super.getAll(page, size, authentication, request);
     }
 
     @Operation(hidden = true)
@@ -132,14 +132,14 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             if (externalReference == null) {
                 createdBy = authentication.getName();
             } else {
-                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                final Optional<UserDTO> user = userManagerClient.findByExternalReference(externalReference);
                 if (user.isPresent()) {
                     createdBy = user.get().getUsername();
                 }
             }
         }
 
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
         return getController().findBy(form, version, organization, unit, createdBy,
                 from != null ? LocalDateTime.ofInstant(from.toInstant(), ZoneId.systemDefault()) : null,
                 to != null ? LocalDateTime.ofInstant(to.toInstant(), ZoneId.systemDefault()) : null);
@@ -183,14 +183,14 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             if (externalReference == null) {
                 createdBy = authentication.getName();
             } else {
-                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                final Optional<UserDTO> user = userManagerClient.findByExternalReference(externalReference);
                 if (user.isPresent()) {
                     createdBy = user.get().getUsername();
                 }
             }
         }
 
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
 
         return getController().processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale());
     }
@@ -234,14 +234,14 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             if (externalReference == null) {
                 createdBy = authentication.getName();
             } else {
-                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                final Optional<UserDTO> user = userManagerClient.findByExternalReference(externalReference);
                 if (user.isPresent()) {
                     createdBy = user.get().getUsername();
                 }
             }
         }
 
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
 
         return GeneratedInfographicAsPngDTO.from(getController().processLatest(form, version, organization, unit, createdBy,
                 timeZoneHeader, request.getLocale()));
@@ -286,14 +286,14 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             if (externalReference == null) {
                 createdBy = authentication.getName();
             } else {
-                final Optional<IAuthenticatedUser> user = userManagerClient.findByExternalReference(externalReference);
+                final Optional<UserDTO> user = userManagerClient.findByExternalReference(externalReference);
                 if (user.isPresent()) {
                     createdBy = user.get().getUsername();
                 }
             }
         }
 
-        canBeDoneForDifferentUsers(createdBy, authentication);
+        canBeDoneByDifferentUsers(createdBy, authentication);
 
         return GeneratedInfographicAsJpegDTO.from(getController().processLatest(form, version, organization, unit, createdBy,
                 timeZoneHeader, request.getLocale()));
@@ -320,7 +320,7 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             return new HashMap<>();
         }
         creators.forEach(creator ->
-                canBeDoneForDifferentUsers(creator, authentication));
+                canBeDoneByDifferentUsers(creator, authentication));
 
         return getController().findLatest(form, version, creators);
     }
