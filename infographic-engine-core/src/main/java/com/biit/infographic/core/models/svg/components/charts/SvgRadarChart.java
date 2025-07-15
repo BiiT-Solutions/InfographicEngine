@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import static com.biit.infographic.core.models.svg.components.text.SvgText.DEFAULT_FONT_SIZE;
 
@@ -224,7 +225,8 @@ public class SvgRadarChart extends SvgAreaElement {
     private String createPathArea(Map<String, Double> values) {
         final StringBuilder path = new StringBuilder();
         final long maxRadius = (getElementAttributes().getHeight() / 2) - LABELS_MARGIN * 2 - getFontSize();
-        for (Map.Entry<String, Double> entry : values.entrySet()) {
+        final TreeMap<String, Double> sortedLabels = new TreeMap<>(values);
+        for (Map.Entry<String, Double> entry : sortedLabels.entrySet()) {
             final Point coordinate = polarToCartesian(
                     getElementAttributes().getXCoordinate() + getElementAttributes().getWidth() / 2,
                     getElementAttributes().getYCoordinate() + getElementAttributes().getHeight() / 2,

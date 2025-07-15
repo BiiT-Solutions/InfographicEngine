@@ -58,6 +58,7 @@ public class ChartTests extends SvgGeneration {
         );
         radarChart.getElementAttributes().setFill("#ffdddd");
         radarChart.setDrawRadius(true);
+        radarChart.setDrawWeb(true);
 
         svgTemplate.addElement(radarChart);
 
