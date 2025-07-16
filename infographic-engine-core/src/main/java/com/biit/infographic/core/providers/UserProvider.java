@@ -5,8 +5,10 @@ import com.biit.infographic.logger.InfographicEngineLogger;
 import com.biit.server.security.IAuthenticatedUserProvider;
 import com.biit.server.security.model.IAuthenticatedUser;
 import com.biit.utils.pool.BasePool;
+import jakarta.ws.rs.InternalServerErrorException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -14,10 +16,10 @@ public class UserProvider extends BasePool<String, IAuthenticatedUser> {
 
     private static final Long USER_POOL_TIME = (long) (10 * 60 * 1000);
 
-    private final IAuthenticatedUserProvider<IAuthenticatedUser> authenticatedUserProvider;
+    private final List<IAuthenticatedUserProvider<? extends IAuthenticatedUser>> userServices;
 
-    public UserProvider(IAuthenticatedUserProvider<IAuthenticatedUser> authenticatedUserProvider) {
-        this.authenticatedUserProvider = authenticatedUserProvider;
+    public UserProvider(List<IAuthenticatedUserProvider<? extends IAuthenticatedUser>> userServices) {
+        this.userServices = userServices;
     }
 
     public String getUserName(DroolsSubmittedForm droolsSubmittedForm) {
@@ -48,7 +50,10 @@ public class UserProvider extends BasePool<String, IAuthenticatedUser> {
         if (username != null) {
             IAuthenticatedUser user = getElement(username);
             if (user == null) {
-                user = authenticatedUserProvider.findByUsername(username).orElse(null);
+                if (userServices.isEmpty()) {
+                    throw new InternalServerErrorException("User connector is not ready!");
+                }
+                user = userServices.get(0).findByUsername(username).orElse(null);
                 if (user == null) {
                     InfographicEngineLogger.severe(this.getClass(), "No user found with username '{}'.", username);
                 } else {
