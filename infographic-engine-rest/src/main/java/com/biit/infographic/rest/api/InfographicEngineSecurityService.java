@@ -9,35 +9,22 @@ import org.springframework.stereotype.Service;
 @Service("securityService")
 public class InfographicEngineSecurityService extends SecurityService {
 
-    private static final String VIEWER = "InfographicEngine_VIEWER";
-    private static final String ADMIN = "InfographicEngine_ADMIN";
-    private static final String EDITOR = "InfographicEngine_EDITOR";
-
-    private String viewerPrivilege = null;
-    private String adminPrivilege = null;
-    private String editorPrivilege = null;
-
     @Override
     public String getViewerPrivilege() {
-        if (viewerPrivilege == null) {
-            viewerPrivilege = VIEWER.toUpperCase();
-        }
-        return viewerPrivilege;
+        return "INFOGRAPHICENGINE_VIEWER";
     }
 
     @Override
     public String getAdminPrivilege() {
-        if (adminPrivilege == null) {
-            adminPrivilege = ADMIN.toUpperCase();
-        }
-        return adminPrivilege;
+        return "INFOGRAPHICENGINE_ADMIN";
     }
 
     @Override
     public String getEditorPrivilege() {
-        if (editorPrivilege == null) {
-            editorPrivilege = EDITOR.toUpperCase();
-        }
-        return editorPrivilege;
+        return "INFOGRAPHICENGINE_EDITOR";
+    }
+
+    public String getOrganizationAdminPrivilege() {
+        return "INFOGRAPHICENGINE_ORGANIZATION_ADMIN";
     }
 }
