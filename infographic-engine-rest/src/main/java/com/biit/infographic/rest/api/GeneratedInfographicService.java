@@ -51,10 +51,13 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
         GeneratedInfographicProvider, GeneratedInfographicConverterRequest, GeneratedInfographicConverter, GeneratedInfographicController> {
 
     private final UserManagerClient userManagerClient;
+    private final InfographicEngineSecurityService securityService;
 
-    protected GeneratedInfographicService(GeneratedInfographicController controller, UserManagerClient userManagerClient) {
+    protected GeneratedInfographicService(GeneratedInfographicController controller, UserManagerClient userManagerClient,
+                                          InfographicEngineSecurityService securityService) {
         super(controller);
         this.userManagerClient = userManagerClient;
+        this.securityService = securityService;
     }
 
     @Override
@@ -139,7 +142,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             }
         }
 
-        canBeDoneByDifferentUsers(createdBy, authentication);
+        organization = isAllowedOrganization(organization, authentication, securityService.getAdminPrivilege(), securityService.getEditorPrivilege());
+
         return getController().findBy(form, version, organization, unit, createdBy,
                 from != null ? LocalDateTime.ofInstant(from.toInstant(), ZoneId.systemDefault()) : null,
                 to != null ? LocalDateTime.ofInstant(to.toInstant(), ZoneId.systemDefault()) : null);
@@ -192,6 +196,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
 
         canBeDoneByDifferentUsers(createdBy, authentication);
 
+        organization = isAllowedOrganization(organization, authentication, securityService.getAdminPrivilege(), securityService.getEditorPrivilege());
+
         return getController().processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale());
     }
 
@@ -242,6 +248,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
         }
 
         canBeDoneByDifferentUsers(createdBy, authentication);
+
+        organization = isAllowedOrganization(organization, authentication, securityService.getAdminPrivilege(), securityService.getEditorPrivilege());
 
         return GeneratedInfographicAsPngDTO.from(getController().processLatest(form, version, organization, unit, createdBy,
                 timeZoneHeader, request.getLocale()));
@@ -294,6 +302,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
         }
 
         canBeDoneByDifferentUsers(createdBy, authentication);
+
+        organization = isAllowedOrganization(organization, authentication, securityService.getAdminPrivilege(), securityService.getEditorPrivilege());
 
         return GeneratedInfographicAsJpegDTO.from(getController().processLatest(form, version, organization, unit, createdBy,
                 timeZoneHeader, request.getLocale()));
