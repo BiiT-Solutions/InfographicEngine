@@ -113,7 +113,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
             - endDate: filtering facts to this day.
             """,
             security = @SecurityRequirement(name = "bearerAuth"))
-    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
+    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege,"
+            + "@securityService.organizationAdminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<GeneratedInfographicDTO> getForms(
@@ -169,7 +170,8 @@ public class GeneratedInfographicService extends ElementServices<GeneratedInfogr
                             description = "Language requested for the texts",
                             example = "en-EN",
                             schema = @Schema(type = "string"))})
-    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
+    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege,"
+            + "@securityService.organizationAdminPrivilege)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/find/latest", produces = MediaType.APPLICATION_JSON_VALUE)
     public GeneratedInfographicDTO getLatest(
