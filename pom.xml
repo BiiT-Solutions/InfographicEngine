@@ -4,7 +4,7 @@
     <artifactId>infographic-engine</artifactId>
     <name>Infographic Engine v2</name>
     <groupId>com.biit.infographic</groupId>
-    <version>2.3.622</version>
+    <version>2.3.623-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -23,7 +23,7 @@
     <scm>
         <connection>scm:git:git.biit-solutions.com:Java/InfographicEngineV2.git</connection>
         <developerConnection>scm:git:git.biit-solutions.com:Java/InfographicEngineV2.git</developerConnection>
-        <tag>infographic-engine-2.3.622</tag>
+        <tag>Infographic Engine v2</tag>
     </scm>
 
     <distributionManagement>
