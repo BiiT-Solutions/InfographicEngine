@@ -6,7 +6,7 @@ import com.biit.utils.file.FileReader;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -43,7 +43,7 @@ public class InfographicTemplateAndContent {
         this.content = content;
     }
 
-    public void setTemplateFromResource(String resourceName) throws FileNotFoundException {
+    public void setTemplateFromResource(String resourceName) throws IOException {
         template = FileReader.readFile(FileReader.getResource(resourceName));
     }
 
