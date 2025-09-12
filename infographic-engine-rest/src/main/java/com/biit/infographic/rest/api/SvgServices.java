@@ -73,8 +73,7 @@ public class SvgServices extends ImageServices {
     @Operation(summary = "Converts a template to a SVG. No post processing is done.", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
-    public String create(@RequestBody SvgTemplate svgTemplate, Authentication authentication, HttpServletResponse response,
-                         HttpServletRequest request) {
+    public String create(@RequestBody SvgTemplate svgTemplate) {
         return SvgGenerator.generate(svgTemplate);
     }
 
@@ -88,6 +87,24 @@ public class SvgServices extends ImageServices {
                                          @RequestBody DroolsSubmittedForm droolsForm, Authentication authentication, HttpServletResponse response,
                                          HttpServletRequest request) {
         return svgFromDroolsConverter.executeFromTemplates(droolsForm, authentication.getName(), timeZoneHeader, request.getLocale());
+    }
+
+
+    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
+    @Operation(summary = "Generates a PDF from a drools input. The template must be installed on the system",
+            security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping(value = "/create/drools/pdf", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public byte[] createFromDroolsAsPdf(@RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
+                                        @RequestBody DroolsSubmittedForm droolsForm, Authentication authentication, HttpServletResponse response,
+                                        HttpServletRequest request) throws InvalidXmlElementException, EmptyPdfBodyException {
+        final List<String> svgs = svgFromDroolsConverter.executeFromTemplates(droolsForm, authentication.getName(), timeZoneHeader, request.getLocale());
+
+        final byte[] bytes = pdfController.generatePdfFromSvgs(svgs);
+        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                .filename(droolsForm.getName() + ".pdf").build();
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        return bytes;
     }
 
 
@@ -115,6 +132,41 @@ public class SvgServices extends ImageServices {
             throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
         }
         return svgFromDroolsConverter.executeFromTemplates(droolsSubmittedForm, authentication.getName(), timeZoneHeader, request.getLocale());
+    }
+
+
+    @Operation(summary = "Generates a PDF from a drools input. The template must be on the system.", description = """
+            - Locale from infographic is obtained from the 'Accept-Language' header or the locale obtained by the user who has send the form.
+            - Timezone is obtained from 'X-Time-Zone' header.
+            """, security = @SecurityRequirement(name = "bearerAuth"),
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "Accept-Language",
+                            description = "Language requested for the texts",
+                            example = "en-EN",
+                            schema = @Schema(type = "string"))})
+    @PreAuthorize("hasAnyAuthority(@securityService.viewerPrivilege, @securityService.editorPrivilege, @securityService.adminPrivilege)")
+    @PostMapping(value = "/create/drools/plain/pdf", consumes = MediaType.TEXT_PLAIN_VALUE,
+            produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public byte[] executeDroolsEngineFromTextAsPdf(@RequestHeader(name = CustomHeaders.TIMEZONE_HEADER, required = false) String timeZoneHeader,
+                                                   @RequestBody final String droolsFormContent, Authentication authentication,
+                                                   HttpServletRequest request, HttpServletResponse response)
+            throws InvalidXmlElementException, EmptyPdfBodyException {
+        final DroolsSubmittedForm droolsSubmittedForm;
+        try {
+            droolsSubmittedForm = DroolsSubmittedForm.getFromJson(droolsFormContent);
+        } catch (JsonProcessingException ex) {
+            throw new BadRequestException(this.getClass(), "Input cannot be converted to drools result.");
+        }
+        final List<String> svgs = svgFromDroolsConverter.executeFromTemplates(droolsSubmittedForm, authentication.getName(), timeZoneHeader,
+                request.getLocale());
+
+        final byte[] bytes = pdfController.generatePdfFromSvgs(svgs);
+        final ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                .filename(droolsSubmittedForm.getName() + ".pdf").build();
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        return bytes;
     }
 
 
@@ -213,7 +265,7 @@ public class SvgServices extends ImageServices {
                 .processLatest(form, version, organization, unit, createdBy, timeZoneHeader, request.getLocale());
 
         if (generatedInfographic.isEmpty()) {
-            //For testing it is possible to have an infographic without a drools form. But for production, this will always must return NOT FOUND.
+            //For testing, it is possible to have an infographic without a drools form. But for production, this will always must return NOT FOUND.
             generatedInfographic = generatedInfographicProvider.findLatest(form, version, createdBy, organization, unit);
             if (generatedInfographic.isEmpty()) {
                 throw new InfographicNotFoundException(this.getClass(), "No infographic found!");
@@ -265,7 +317,7 @@ public class SvgServices extends ImageServices {
                             timeZoneHeader, request.getLocale());
 
             if (generatedInfographic.isEmpty()) {
-                //For testing it is possible to have an infographic without a drools form. But for production, this will always must return NOT FOUND.
+                //For testing, it is possible to have an infographic without a drools form. But for production, this will always must return NOT FOUND.
                 generatedInfographic = generatedInfographicProvider.findLatest(infographicSearch.getForm(), infographicSearch.getVersion(),
                         infographicSearch.getCreatedBy(), infographicSearch.getOrganization(), infographicSearch.getUnit());
             }
