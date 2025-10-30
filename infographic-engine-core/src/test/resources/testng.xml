@@ -15,13 +15,6 @@
                 <include name="colorValidation"/>
                 <include name="jsonGeneration"/>
                 <include name="templateFromDrools"/>
-                <include name="cadt"/>
-                <include name="cadtCustomer1"/>
-                <include name="cadtCustomer2"/>
-                <include name="cadtCustomer3"/>
-                <include name="cadtCustomer4"/>
-                <include name="nca"/>
-                <include name="ncai"/>
                 <include name="boardingPass"/>
                 <include name="eventParser"/>
                 <include name="eventController"/>
