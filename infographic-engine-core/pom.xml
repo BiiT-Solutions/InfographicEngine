@@ -7,7 +7,7 @@
 
     <parent>
         <artifactId>infographic-engine</artifactId>
-        <groupId>com.biit.infographic</groupId>
+        <groupId>com.biit-solutions.infographic</groupId>
         <version>2.3.646-SNAPSHOT</version>
     </parent>
 
@@ -17,33 +17,33 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.biit.infographic</groupId>
+            <groupId>com.biit-solutions.infographic</groupId>
             <artifactId>infographic-engine-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>rest-server-definitions</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>form-structure-drools</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>rest-server-dto</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>rest-server-utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>fact-manager-rest-client</artifactId>
         </dependency>
         <!-- Kafka -->
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions.kafka</groupId>
             <artifactId>kafka-client</artifactId>
         </dependency>
         <dependency>
@@ -63,16 +63,16 @@
             <artifactId>batik-codec</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>user-manager-system-rest-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit.infographic</groupId>
+            <groupId>com.biit-solutions.infographic</groupId>
             <artifactId>infographic-translator</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.biit.appointment</groupId>
+            <groupId>com.biit-solutions.appointment</groupId>
             <artifactId>appointment-center-rest-client</artifactId>
         </dependency>
         <dependency>
@@ -98,17 +98,17 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>user-manager-system-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.biit.appointment</groupId>
+            <groupId>com.biit-solutions.appointment</groupId>
             <artifactId>appointment-center-rest-client-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.biit.ks</groupId>
+            <groupId>com.biit-solutions.ks</groupId>
             <artifactId>knowledge-system-rest-client-test</artifactId>
             <scope>test</scope>
         </dependency>

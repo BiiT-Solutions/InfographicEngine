@@ -7,7 +7,7 @@
 
     <parent>
         <artifactId>infographic-engine</artifactId>
-        <groupId>com.biit.infographic</groupId>
+        <groupId>com.biit-solutions.infographic</groupId>
         <version>2.3.646-SNAPSHOT</version>
     </parent>
 
@@ -17,16 +17,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.biit.infographic</groupId>
+            <groupId>com.biit-solutions.infographic</groupId>
             <artifactId>infographic-engine-logger</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>rest-server-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>rest-server-persistence</artifactId>
         </dependency>
         <dependency>

@@ -7,7 +7,7 @@
 
     <parent>
         <artifactId>infographic-engine</artifactId>
-        <groupId>com.biit.infographic</groupId>
+        <groupId>com.biit-solutions.infographic</groupId>
         <version>2.3.646-SNAPSHOT</version>
     </parent>
 
@@ -17,28 +17,28 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.biit.infographic</groupId>
+            <groupId>com.biit-solutions.infographic</groupId>
             <artifactId>infographic-engine-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>rest-server-defaults</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>user-manager-system-rest-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>messagebird-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>rest-server-rest</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>user-manager-system-security</artifactId>
         </dependency>
         <dependency>
@@ -70,7 +70,7 @@
 
         <!--Testing-->
         <dependency>
-            <groupId>com.biit</groupId>
+            <groupId>com.biit-solutions</groupId>
             <artifactId>user-manager-system-test</artifactId>
             <scope>test</scope>
         </dependency>
