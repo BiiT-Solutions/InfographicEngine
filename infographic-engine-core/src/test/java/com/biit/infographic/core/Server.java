@@ -29,7 +29,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ConfigurationPropertiesScan({"com.biit.infographic"})
+@ConfigurationPropertiesScan({"com.biit.infographic", "com.biit.usermanager.client"})
 @EnableJpaRepositories({"com.biit.infographic.persistence.repositories"})
 @EntityScan({"com.biit.infographic.persistence.entities"})
 public class Server {
