@@ -219,7 +219,7 @@ public class CADTCustomer4FromDroolsTest extends AbstractTestNGSpringContextTest
         //Logo
         final SvgImage logo = new SvgImage();
         logo.setId("logo");
-        logo.setFromPath("images/NHM-Logo.png");
+        logo.setFromPath("images/BIIT-logo.png");
         logo.getElementAttributes().setXCoordinate(2052L);
         logo.getElementAttributes().setYCoordinate(67L);
         logo.getElementAttributes().setWidth(282L);
