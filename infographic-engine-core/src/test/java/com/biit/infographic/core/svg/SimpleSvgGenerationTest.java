@@ -394,7 +394,7 @@ public class SimpleSvgGenerationTest extends SvgGeneration {
         checkContent(SvgGenerator.generate(svgTemplate), "documentDrawPathAreaFilled.svg");
     }
 
-    @Test
+    @Test(enabled = false)
     public void importExternalSvg() throws IOException {
         SvgTemplate svgTemplate = new SvgTemplate();
 

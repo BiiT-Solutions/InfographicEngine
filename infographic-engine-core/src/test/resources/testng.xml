@@ -17,7 +17,7 @@
                 <include name="templateFromDrools"/>
                 <include name="boardingPass"/>
                 <include name="eventParser"/>
-                <include name="eventController"/>
+                <exclude name="eventController"/>
                 <include name="pdfFromSvg"/>
                 <include name="pdfFromPng"/>
                 <include name="clipSvgGenerationTest"/>

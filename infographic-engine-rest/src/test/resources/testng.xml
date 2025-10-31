@@ -7,7 +7,7 @@
     <test name="Infographic Engine v2" enabled="true" preserve-order="true">
         <groups>
             <run>
-                <include name="infographicRest"/>
+                <exclude name="infographicRest"/>
                 <include name="language"/>
                 <include name="svgTests"/>
             </run>

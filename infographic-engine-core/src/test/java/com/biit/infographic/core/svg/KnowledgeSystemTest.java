@@ -70,11 +70,11 @@ public class KnowledgeSystemTest extends AbstractTestNGSpringContextTests {
 
     private static final String DROOLS_FORM_FILE_PATH = "drools/KnowledgeSystemTest.json";
 
-    private final static String TEXT_LA = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tortor sem, pharetra vel ornare quis, cursus sed nibh.";
-    private final static String TEXT_ES = "El cliente es muy importante, el cliente será seguido por el cliente. Hasta el torturador, la aljaba o el adorno, el curso pero el nibh.";
+    private static final String TEXT_LA = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tortor sem, pharetra vel ornare quis, cursus sed nibh.";
+    private static final String TEXT_ES = "El cliente es muy importante, el cliente será seguido por el cliente. Hasta el torturador, la aljaba o el adorno, el curso pero el nibh.";
 
     //The one that has submitted the drools json.
-    private final static String USER_NAME = "Chuck Norris";
+    private static final String USER_NAME = "Chuck Norris";
 
 
     @Autowired
