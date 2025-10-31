@@ -15,7 +15,7 @@
                 <include name="colorValidation"/>
                 <include name="jsonGeneration"/>
                 <include name="templateFromDrools"/>
-                <include name="boardingPass"/>
+                <exclude name="boardingPass"/>
                 <include name="eventParser"/>
                 <exclude name="eventController"/>
                 <include name="pdfFromSvg"/>
