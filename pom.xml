@@ -4,7 +4,7 @@
     <artifactId>infographic-engine</artifactId>
     <name>Infographic Engine v2</name>
     <groupId>com.biit-solutions.infographic</groupId>
-    <version>2.3.646</version>
+    <version>2.3.647-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -37,7 +37,7 @@
         <connection>scm:git:ssh://git@github.com/BiiT-Solutions/InfographicEngine.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/BiiT-Solutions/InfographicEngine.git</developerConnection>
         <url>https://github.com/BiiT-Solutions/InfographicEngine.git</url>
-        <tag>infographic-engine-2.3.646</tag>
+        <tag>infographic-engine-2.3.647-SNAPSHOT</tag>
     </scm>
 
     <distributionManagement>
