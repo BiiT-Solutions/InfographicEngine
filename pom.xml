@@ -37,7 +37,7 @@
         <connection>scm:git:ssh://git@github.com/BiiT-Solutions/InfographicEngine.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/BiiT-Solutions/InfographicEngine.git</developerConnection>
         <url>https://github.com/BiiT-Solutions/InfographicEngine.git</url>
-        <tag>infographic-engine-2.3.647-SNAPSHOT</tag>
+        <tag>Infographic Engine</tag>
     </scm>
 
     <distributionManagement>
