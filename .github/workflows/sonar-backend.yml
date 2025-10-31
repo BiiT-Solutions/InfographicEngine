@@ -41,7 +41,7 @@ jobs:
           args: >
             -Dsonar.organization=biit-solutions
             "-Dsonar.projectName=Infographic Engine"
-            -Dsonar.projectKey=BiiT-Solutions_InfographicEngine
+            -Dsonar.projectKey=BiiT-Solutions_InfographicEngine2
             -Dsonar.java.binaries=.
             -Dsonar.verbose=true
             -Dsonar.test.exclusions=**/test/*
