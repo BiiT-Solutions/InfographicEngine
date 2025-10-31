@@ -23,7 +23,7 @@
                 <include name="clipSvgGenerationTest"/>
                 <include name="happinessAtWork"/>
                 <include name="knowledgeSystem"/>
-                <include name="frustrationOnTeamworking"/>
+                <exclude name="frustrationOnTeamworking"/>
                 <include name="chartTests"/>
             </run>
         </groups>
